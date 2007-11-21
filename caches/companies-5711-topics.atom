@@ -1,0 +1,289 @@
+  <feed 
+   xmlns="http://www.w3.org/2005/Atom" 
+   xmlns:sfn="http://api.getsatisfaction.com/schema/0.1" 
+   xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://api.getsatisfaction.com/companies/5711/topics?page=1</id>
+    <title>Topics in The O'Reilly Factor</title>
+    <updated>1970-01-01T00:00:00Z</updated>
+    
+    
+    
+    
+    
+
+    
+<entry>
+  <id>http://api.getsatisfaction.com/topics/43781</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/43781" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Did you enjoy your appearance on the Colbert Report?</title>
+  <updated>2007-11-20T04:54:37Z</updated>
+  <author>
+   <name>Cameron Walters</name>
+   <url>http://api.getsatisfaction.com/people/17</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>0</sfn:reply_count>
+  <sfn:follower_count>1</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/42631</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/42631" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>We miss Michele Malkin.  Will she be on Bill's show again?</title>
+  <updated>2007-11-17T02:50:12Z</updated>
+  <author>
+   <name>Cupcake 42661</name>
+   <url>http://api.getsatisfaction.com/people/42661</url>
+  </author>
+  <content>
+    Michele was a great feature on the program.  Better than Pinhead and Patriots.
+  </content>
+  
+  <sfn:reply_count>0</sfn:reply_count>
+  <sfn:follower_count>1</sfn:follower_count>
+  <sfn:flag_count>1</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/42371</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/42371" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>How can one report a news item to O'Reilly???</title>
+  <updated>2007-11-16T18:59:41Z</updated>
+  <author>
+   <name>Cupcake 42221</name>
+   <url>http://api.getsatisfaction.com/people/42221</url>
+  </author>
+  <content>
+    Check out cbs7.com and read about a Texas border town named El Cenizo.  Please do a report on it for every LEGAL U.S. citizen to hear.  Or is this just a website to make more money for O'Reilly????? How can I get in touch with him?  This is very important!!!  I am more interested in the news than in buying something.  Please contact me.
+  </content>
+  
+  <sfn:reply_count>0</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>2</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/38511</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/38511" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Bill: You were asking about what to do with Mark Cubin.  Have you never heard of the word Treason?  Ron Warpness, Riverton Wy.</title>
+  <updated>2007-11-13T20:32:49Z</updated>
+  <author>
+   <name>Cupcake 38761</name>
+   <url>http://api.getsatisfaction.com/people/38761</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>2</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/38551</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/38551" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Mr. O'reilly,  Do you think it is possible to report something positive in the world's day to day issues about weather?</title>
+  <updated>2007-11-13T20:32:29Z</updated>
+  <author>
+   <name>Cupcake 38801</name>
+   <url>http://api.getsatisfaction.com/people/38801</url>
+  </author>
+  <content>
+    Perhaps, a positive thing that maybe could have happened in politics or, in health matters of concern.  I do and am shocked you are so, to be blunt unaware.  I feel you should be ashamed of yourself for this is not good!  Thanks if you see a good thing in your day.  I am starting to think bad of you.  Mary in Boca Raton Florida.  P.S. I still have the" No Spin Zone" door matt but it is spinning off the second floor and I don't care if you don't.  Get the picture?  Think and say something in the news that is positive and we will have less angry people.  It is distorted to feel that news is all negative.  I can think of plenty important good news that needs your recognition.  I am not reconizeing you much longer even if you know how to use big words. So there. I will not have your station in this house if you do not have something good to say about something once in a while.  We will not be listening to you much more because it is distorted and unproductive.
+  </content>
+  
+  <sfn:reply_count>2</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>2</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/37431</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/37431" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>What are the American people goning to do about the TAX Code?</title>
+  <updated>2007-11-12T06:23:18Z</updated>
+  <author>
+   <name>Cupcake 37531</name>
+   <url>http://api.getsatisfaction.com/people/37531</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>4</sfn:follower_count>
+  <sfn:flag_count>2</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/34461</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/34461" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Children vs. Kids</title>
+  <updated>2007-11-06T19:05:28Z</updated>
+  <author>
+   <name>Cupcake 34591</name>
+   <url>http://api.getsatisfaction.com/people/34591</url>
+  </author>
+  <content>
+    There was a time when our Children were known as Children but now they are Kids. A Kid is a Goat and not a child. Our children have been devalued in recent years as abortion has been legalized. I do wish that Bill O'Reilly would be the one to return our Children back to their respected position in this world. They are not animals but humans. Those who wish to have them murdered while being borned are the ones who wish to put them on the level of animals.  Bill of chester, Va
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>3</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/32731</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/32731" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Hello Mr. O'Reilly, I am concerned about the way money is being taken out of the Social Security fund and never put back</title>
+  <updated>2007-11-05T19:27:12Z</updated>
+  <author>
+   <name>Cupcake 32211</name>
+   <url>http://api.getsatisfaction.com/people/32211</url>
+  </author>
+  <content>
+    I have this question, is it legal for the government to take monies out of the Social Security fund without ever putting it back.  This is being done for over 10 years now, and the money, originally designated for the security of the elderly and paid in by them, has never been put back.  What say you, Mr. O'Reilly.<br />
+Charlotte Jones, Tyngsborough, MA
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>3</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/31171</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/31171" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Why is it that the whole world keeps up with dates by using BC &amp; AD?  If they do not believe that Jesus Christ was.JY</title>
+  <updated>2007-10-29T01:57:04Z</updated>
+  <author>
+   <name>Cupcake 30641</name>
+   <url>http://api.getsatisfaction.com/people/30641</url>
+  </author>
+  <content>
+    If Jesus was of no important.?? How come we are now in the year 2008  years after he die for the world. I feel sure there  had to be something else  they could have used. if they did not believe he was somebody great ???       John R Young, Jacksonville, Fla
+  </content>
+  
+  <sfn:reply_count>0</sfn:reply_count>
+  <sfn:follower_count>1</sfn:follower_count>
+  <sfn:flag_count>1</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/29601</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/29601" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Zoology offers some wonderful and pithy words to describe pinheads. Examples: luparene and oviparous.</title>
+  <updated>2007-10-25T16:07:05Z</updated>
+  <author>
+   <name>Cupcake 29041</name>
+   <url>http://api.getsatisfaction.com/people/29041</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>1</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/28621</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/28621" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Where is tonight's poll re the senator and comments about the president</title>
+  <updated>2007-10-23T03:53:13Z</updated>
+  <author>
+   <name>Cupcake 28191</name>
+   <url>http://api.getsatisfaction.com/people/28191</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/28261</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/28261" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Are you running for president like Colber is?</title>
+  <updated>2007-10-21T23:40:58Z</updated>
+  <author>
+   <name>Cupcake 27801</name>
+   <url>http://api.getsatisfaction.com/people/27801</url>
+  </author>
+  <content>
+    Colber is running as a Republican and a Democrat.<br />
+You are fear and balanced, could you be running as independent also
+  </content>
+  
+  <sfn:reply_count>0</sfn:reply_count>
+  <sfn:follower_count>1</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/27041</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/27041" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Mr. OReilly:  I am a regular online and tv watcher of your show.</title>
+  <updated>2007-10-20T18:14:10Z</updated>
+  <author>
+   <name>Cupcake 26701</name>
+   <url>http://api.getsatisfaction.com/people/26701</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>4</sfn:follower_count>
+  <sfn:flag_count>1</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/27561</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/27561" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/5711" type="text/html"/>
+  
+  <title>Welcome!</title>
+  <updated>2007-10-19T17:09:45Z</updated>
+  <author>
+   <name>Amy</name>
+   <url>http://api.getsatisfaction.com/people/12</url>
+  </author>
+  <content>
+    This is a space for an open conversation between you and other people with interests and passions in this company or organization. Sometimes representatives from the company or organization may take part in the conversation too.<br /><br />
+This is a place for real people to get the most from their products and services, and for companies to get real with their customers. It isn't a collection of generic responses, but rather a community that collaborates on answers, solutions and ideas through conversation. <br /><br />
+The community here isn't owned by any one person, company or organization. It is brought to life through the care and feeding of all the participants.<br /><br />
+If you need some help getting started, <a href="http://getsatisfaction.com/satisfaction/topics/593-Getting_started_with_Satisfaction" rel="nofollow" target="_blank">go here</a>. And be sure to go here to check out our <a href="http://getsatisfaction.com/community_guidelines" rel="nofollow" target="_blank">community guidelines</a> for some simple ground rules.<br /><br />
+For questions, comments, ideas or anything you want to say to or about Satisfaction, please <a href="http://getsatisfaction.com/satisfaction" rel="nofollow">go here</a>.
+  </content>
+  
+  <sfn:reply_count>0</sfn:reply_count>
+  <sfn:follower_count>1</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+    
+
+</feed>

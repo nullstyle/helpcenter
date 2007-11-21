@@ -1,0 +1,74 @@
+  <feed 
+   xmlns="http://www.w3.org/2005/Atom" 
+   xmlns:sfn="http://api.getsatisfaction.com/schema/0.1" 
+   xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://api.getsatisfaction.com/topics/40621?page=1</id>
+    <title>You guys should consider responding to more of these comments. The "0 replies" everywhere really doesn't present a good image. Just a thought.</title>
+    
+    <updated>2007-11-15T05:09:08Z</updated>
+    <link rel="self" href="http://api.getsatisfaction.com/topics/40621?page=1" type="application/atom+xml"/>
+<link rel="first" href="http://api.getsatisfaction.com/topics/40621?page=1" type="application/atom+xml"/>
+<link rel="last" href="http://api.getsatisfaction.com/topics/40621?page=1" type="application/atom+xml"/>
+    
+    
+<entry>
+  <id>http://api.getsatisfaction.com/topics/40621</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/40621" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/2881" type="text/html"/>
+  
+  <title>You guys should consider responding to more of these comments. The "0 replies" everywhere really doesn't present a good image. Just a thought.</title>
+  <updated>2007-11-15T05:09:08Z</updated>
+  <author>
+   <name>Cupcake 40451</name>
+   <url>http://api.getsatisfaction.com/people/40451</url>
+  </author>
+  <content>
+    
+  </content>
+  
+  <sfn:reply_count>2</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+    
+<entry>
+  <id>http://api.getsatisfaction.com/topics/40621/replies/81381</id>
+  <link rel="reply" href="http://api.getsatisfaction.com/topics/40621/replies/81381" type="application/atom+xml"/>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/40621" type="application/atom+xml"/>
+  <title>Rael Dornfest responded to "You guys should consider responding to more of these comments. The "0 replies" everywhere really doesn't present a good image. Just a thought."</title>
+  <updated>2007-11-15T05:09:08Z</updated>
+  <author>
+   <name>Rael Dornfest</name>
+   <url>http://api.getsatisfaction.com/people/15881</url>
+  </author>
+  <content>
+    Sorry we weren't able to get to all the topics today. We posted and will continue to post any updates to http://getsatisfaction.com/iwantsandy/topics/updates and have now called that topic out (albeit still a small link) in the company links section of the GetSatisfaction sidebar over there to the left.
+  </content>
+  
+  <sfn:flag_count>0</sfn:flag_count>
+  <sfn:star_count>0</sfn:star_count>
+  
+  
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/40621/replies/80581</id>
+  <link rel="reply" href="http://api.getsatisfaction.com/topics/40621/replies/80581" type="application/atom+xml"/>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/40621" type="application/atom+xml"/>
+  <title>neil97 responded to "You guys should consider responding to more of these comments. The "0 replies" everywhere really doesn't present a good image. Just a thought."</title>
+  <updated>2007-11-14T21:21:24Z</updated>
+  <author>
+   <name>neil97</name>
+   <url>http://api.getsatisfaction.com/people/40481</url>
+  </author>
+  <content>
+    I agree, and staff members seem to be around; I don't 'get' why they don't answer the forum posts :-(
+  </content>
+  
+  <sfn:flag_count>0</sfn:flag_count>
+  <sfn:star_count>0</sfn:star_count>
+  
+  
+  
+</entry>
+</feed>

@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Satisfaction Unlimited</title>
+  </head>
+  <body>
+
+
+<div id="hcard-satisfaction" class="vcard company">
+  <a href="http://api.getsatisfaction.com/companies/4" class="fn org url" rel="me">Satisfaction Unlimited</a>
+  <img alt="Satisfaction_logo_header" class="logo" src="http://3.static.getsatisfaction.com/uploaded_images/0000/0132/satisfaction_logo_header.png" />
+
+  
+  <span class="note">Welcome to the Satisfaction customer service site. This is the place to share questions, ideas, problems and conversation about Satisfaction's tools and services.</span>
+  
+  
+  <a href="http://api.getsatisfaction.com/companies/4/topics" rel="topics">Satisfaction Unlimited's topics</a>
+  <a href="/companies/4/people" rel="people">Satisfaction Unlimited's people</a>
+  <a href="/companies/4/products" rel="products">Satisfaction Unlimited's products</a>
+  <a href="/companies/4/tags" rel="tags">Satisfaction Unlimited's tags</a>
+</div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Facebook</title>
+  </head>
+  <body>
+
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/6681" class="name uri">Facebook</a>
+  
+  
+    <img alt="Product_default_thumb" class="image thumb" rel="image thumb" src="http://3.static.getsatisfaction.com/images/product_default_thumb.png" />
+    <p class="description">
+      
+    </p>
+  
+    <a href="http://api.getsatisfaction.com/products/6681/topics" rel="topics">Topics associated with Facebook</a>
+    <a href="http://api.getsatisfaction.com/products/6681/companies" rel="companies">Companies associated with Facebook</a>
+  
+</div>
+  </body>
+</html>

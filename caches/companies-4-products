@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Products in Satisfaction</title>
+  </head>
+  <body>
+  <h1>Products</h1>
+  <ul>
+    <li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/6681" class="name uri">Facebook</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/4561" class="name uri">flicker</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/4361" class="name uri">Typepad</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/3971" class="name uri">dalachapa</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/3171" class="name uri">Notifications</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/111" class="brand">Microsoft Corporation</a>
+  <a href="http://api.getsatisfaction.com/products/2751" class="name uri">Windows XP</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/111" class="brand">Microsoft Corporation</a>
+  <a href="http://api.getsatisfaction.com/products/2731" class="name uri">Internet Explorer 6</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/2671" class="name uri">Satisfaction API</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/2291" class="name uri">Yahoo</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/2171" class="name uri">N800</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/1581" class="name uri">icon</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/1531" class="name uri">Twitter on the Mobile</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/1231" class="name uri">united airlines</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/891" class="name uri">Synergy</a>
+  
+  
+</div></li>
+<li>
+
+<div class="hproduct">
+  <a href="http://api.getsatisfaction.com/companies/4" class="brand">Satisfaction Unlimited</a>
+  <a href="http://api.getsatisfaction.com/products/681" class="name uri">Customer Service is the New Marketing Summit</a>
+  
+  
+</div></li>
+  </ul>
+  <a href="http://api.getsatisfaction.com/products?page=1" rel="self">self</a>
+<a href="http://api.getsatisfaction.com/products?page=1" rel="first">first</a>
+<a href="http://api.getsatisfaction.com/products?page=2" rel="next">next</a>
+<a href="http://api.getsatisfaction.com/products?page=2" rel="last">last</a>
+  </body>
+</html>
