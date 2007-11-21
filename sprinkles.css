@@ -1,0 +1,159 @@
+body {
+  font-family: helvetica, sans-serif;
+  background-color: #b8fff7;
+  color: #333;
+}
+
+textarea, input { border: 1px solid gray; }
+
+hr { border: 1px solid gray; }
+
+a { text-decoration: none; }
+
+div#content {
+  width: 550pt;
+  margin-top: 12pt;
+}
+
+div#backdrop {
+  background-color : #fff;
+  padding: 1pc;
+}
+
+h1 { color: #989898; font-size: 14pt; }
+h2 { color: #444; font-size: 14pt; font-weight: bold; margin: 0pt; }
+h2 .lighter { font-weight: normal; }
+h3 { color: #444; font-size: 12pt; font-weight: bold; margin: 0pt; }
+
+td { vertical-align: top; }
+
+.question { margin: 1pc 1pc 1pc 2pc; border-bottom: 1px solid gray; }
+
+.questionbox {
+  padding: 0pt; margin: 0pt; 
+  width: 280pt; height:20pt; 
+  border: 1px solid gray
+}
+
+div.header { border-bottom: 1px solid gray; }
+
+ul.topnav { float: right; }
+ul.topnav li {
+  display: inline;
+  font-size: 11pt; 
+  padding-right: 1pc;
+  color: #444;
+}
+
+ul.topic-list { 
+  list-style-type: none;
+  padding: 0pt;
+}
+
+ul.topic-list li {
+  margin: 3pt;
+  padding: 2pt;
+  font-size: 11pt;
+  font-weight: bold;
+  border-bottom: 1px solid #9090c0;
+}
+
+div#what-satisfaction {
+  border-top: 1px solid gray;
+  padding: 1pc;
+}
+
+div#what-satisfaction h4 {
+  font-weight: bold;
+  font-size: 11pt;
+  margin: 0pt;
+}
+
+div#what-satisfaction h5 {
+  color: #555;
+  font-size: 11pt;
+  margin: 10pt 0pt 0pt 0pt;
+}
+
+div#what-satisfaction p {
+  color: #555;
+  font-size: 10pt;
+  margin: 0pt;
+}
+
+.byline { float: right }
+
+.right { text-align: right }
+
+.pin-right {
+  position: absolute;
+  right: 0pt;
+}
+
+.sidebar { 
+  background-color: #eee;
+  padding: 6pt; margin: 6pt;
+}
+
+.sidepane {
+  float: right;
+  width: 120pt;
+}
+
+.sidebar h2 { color: #777; margin: 0pt 0pt 4pt 0pt; font-size: 12pt; }
+
+td.form-label { text-align: right; }
+
+input.admin, textarea.admin { width: 160pt; }
+
+.topic-list { margin-right: 6pt; width: 330pt; }
+
+.gutter { margin: 6pt; }
+
+.topic-head {
+  background-color: #bbb;
+  padding: 4pt 8pt 4pt 8pt;
+}
+
+.topic-head h3 strong {
+  color: #000;
+}
+
+.discuss-topic-list h3, .topic-head h3 {
+  font-size: 12pt;
+  margin: 0pt;
+  color: #888;
+}
+
+.topic-byline {
+  font-weight: bold;
+}
+
+.topic-author-caption {
+  font-size: 10pt;
+}
+
+.topic-author-pic {
+  width: 32pt;
+  height: 32pt;
+}
+
+.topic-author-pic-small {
+  width: 24pt;
+  height: 24pt;
+}
+
+.topic-replies {
+  list-style-type: none;
+}
+
+ul.product-list li {
+  display: inline;
+  font-size: 11pt; 
+  padding-right: 1pc;
+  color: #444;
+}
+
+.huge { font-size: 24pt; }
+
+#contactus h3 { font-size: 14pt; font-weight: normal; margin: 6pt 0pt 0pt 0pt; }

@@ -1,0 +1,12 @@
+
+<div class="question">
+<h2>How can we help you?</h2>
+
+<form style="width: 100%; position: relative;" action="dead">
+<input name="question" class="questionbox" />
+<button type="submit">Go</button>
+
+<img class="pin-right" alt="Powered by Satisfaction" src="poweredbysmallStack.png" width="113" height="30" />
+</form>
+</div>
+
