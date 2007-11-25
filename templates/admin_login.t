@@ -19,14 +19,21 @@
 
 <p>Next, Login to your Twitter Satisfaction Admin account.</p>
 
-<table>
+{if $message}
+<div class="error-box">{$message}</div>
+{/if}
+
+<form action="handle_admin_login.php">
+<table width="100%">
 <tr>
 <td>
 <table>
 <tr>
 <td class="form-label">Choose your account:</td>
-<td> <select
-       <option>foo</option>
+<td> <select name="username">
+{foreach from=$accts key=i item=acct}
+       <option value="{$acct.name}">{$acct.name}</option>
+{/foreach}
      </select>
 </td>
 </tr>
@@ -40,16 +47,12 @@
 Password gone missing? </td>
 </tr>
 </table>
+</form>
+
 </td>
-<td>Can't find your account? Ask one of the people listed here to give you Admin status on Satisfaction <br />
+<td style="width: 200pt;">Can't find your account? Ask one of the people listed here to give you Admin status on Satisfaction <br />
 <strong>OR</strong> <a href="">apply to be an Admin here</a>. </td>
 </tr>
 </table>
 
-</div>
-
 {include file="footer.t"}
-
-</div>
-</body>
-</html>

@@ -8,10 +8,7 @@ $h = new hkit;
 ###### GET COMPANY INFO ######
 
 # TBD: pull this into utils.php
-$company_url = $quick_mode ?
-  $cache_dir.'companies-' . $company_id : 
-  $api_root.'/companies/'.$companyid;
-# print $company_url;
+$company_url = api_url('/companies/' . $company_id);
 if ($quick_mode) {
   $company_hcard = $h->getByString('hcard', file_get_contents($company_url));
 } else {
@@ -22,11 +19,8 @@ if ($quick_mode) {
 # dump($company_hcard);
 $company_name = $company_hcard[0]["fn"];
 
-if ($quick_mode) {
-  $topics_feed_url = $cache_dir . 'companies-' . $company_id . '-topics.atom';
-} else {
-  $topics_feed_url = $api_root . "/companies/'.$company_id.'/topics";
-}
+$topics_feed_url = api_url('/companies/'.$company_id.'/topics');
+# print "getting topics feed $topics_feed_url.";
 $atom = new myAtomParser($topics_feed_url);
 foreach ($atom->output as $feed) {
   $topics = $feed[""]["ENTRY"];        # FIXME extra level here.
@@ -41,9 +35,7 @@ foreach ($topics as &$topic) {
 }
 
 ###### GET COMPANY'S PEOPLE LIST ######
-$company_people_url = $quick_mode ? 
-    $cache_dir.'companies-' . $company_id . '-people' : 
-    $api_root.'/companies/'.$company_id.'/people';
+$company_people_url = api_url('companies/'.$company_id.'/people');
 # print($company_people_url);
 if ($quick_mode) {
   $company_people_list = $h->getByString('hcard',
@@ -51,7 +43,6 @@ if ($quick_mode) {
 } else {
   $company_people_list = $h->getByURL('hcard',$company_people_url);
 }
-# dump($company_people_list);
 ###### FETCH THE PEOPLE RECORDS ######
 $company_people = array();
 foreach ($company_people_list as $person) {
@@ -62,9 +53,7 @@ foreach ($company_people_list as $person) {
 }
 
 ###### GET PRODUCT LIST ######
-$company_products_url = $quick_mode ? 
-    $cache_dir.'companies-' . 4 . '-products' : 
-    $api_root.'/companies/'. 4 .'/products';
+$company_products_url = api_url('/companies/'. $company_id .'/products');
 #print($company_products_url);
 
 if ($quick_mode) {
@@ -82,6 +71,7 @@ foreach ($company_products_list as $product) {
     $product = $h->getByString('hproduct', file_get_contents($cache_dir.'/products-6681'));
   } else {
     $product = $h->getByURL('hproduct', $product["uri"]);
+    assert(is_array($product));
   }
   array_push($company_products, $product[0]);
 }

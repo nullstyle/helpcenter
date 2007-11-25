@@ -1,12 +1,3 @@
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
-</head>
-<body>
-
-<div id="content">
-<div id="backdrop">
-
 {include file="header.t"}
 
 <h1>Help Start</h1>
@@ -38,7 +29,7 @@
     <li><a href="topic.php?id={$entry.ID}">{$entry.TITLE}</a></li>
 {/foreach}
 </ul>
-<div class="right">See more topics of discussion</div>
+<div class="right"><a href="discuss.php">See more topics of discussion</a></div>
 </div>
 
 <div>
@@ -47,7 +38,7 @@
 <table>
 {foreach from=$company_people key=i item=person}
 <tr>
-<td><img style="float:left;" src="{$person.photo}" /> {$person.fn} </td>
+<td><img class="topic-author-pic" style="float:left;" src="{$person.photo}" /> {$person.fn} </td>
 </tr>
 {/foreach}
 </table>
@@ -66,10 +57,4 @@ href="http://www.getsatisfaction.com/">Satisfaction</a>.
 </p>
 </div>
 
-</div>
-
 {include file="footer.t"}
-
-</div>
-</body>
-</html>

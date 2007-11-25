@@ -1,12 +1,3 @@
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
-</head>
-<body>
-
-<div id="content">
-<div id="backdrop">
-
 {include file="header.t"}
 
 <h1>Discuss with us</h1>
@@ -36,10 +27,4 @@ xxx
 {/foreach}
 </table>
 
-</div>
-
 {include file="footer.t"}
-
-</div>
-</body>
-</html>

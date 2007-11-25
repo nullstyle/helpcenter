@@ -1,0 +1,331 @@
+  <feed 
+   xmlns="http://www.w3.org/2005/Atom" 
+   xmlns:sfn="http://api.getsatisfaction.com/schema/0.1" 
+   xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://api.getsatisfaction.com/companies/4/topics?page=1</id>
+    <title>Topics in Satisfaction Unlimited</title>
+    <updated>1970-01-01T00:00:00Z</updated>
+    
+    
+    
+    
+    
+
+    
+<entry>
+  <id>http://api.getsatisfaction.com/topics/46271</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/46271" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>An Idea for Satisfaction Unlimited</title>
+  <updated>2007-11-23T19:42:26Z</updated>
+  <author>
+   <name>WebGuy</name>
+   <url>http://api.getsatisfaction.com/people/46241</url>
+  </author>
+  <content>
+    I love your products and website. I saw a company that might help new customers understand what Satisfaction are all about. Look at <a href="http://www.eyeviewdigital.com" rel="nofollow">www.eyeviewdigital.com</a> these guys prepare videos for online websites showing how to get things done on the website. Could really be helpful for new visitorsâ¦ Hope this helps!
+  </content>
+  
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/5541</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/5541" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Annoucing our first "Customer Service is the New Marketing" Summit.</title>
+  <updated>2007-11-23T16:40:47Z</updated>
+  <author>
+   <name>Lane Becker</name>
+   <url>http://api.getsatisfaction.com/people/14</url>
+  </author>
+  <content>
+    Since Thor first presented on "Customer Service is the New Marketing" at SXSW and then followed up with a <a href="http://blog.getsatisfaction.com/2007/03/19/why-customer-service-is-the-new-marketing/">post about it</a> on our blog, we've had a steady drumbeat of interest on the subject from people across a wide spectrum of industries, companies and job titles.<br /><br />
+Clearly, the topic has struck a nerve. We knew it was a subject we were obsessed with, but we had no idea so many people felt so passionately about what at a glance seems like it might make for pretty mundane subject matter. People from all sorts of industries have contacted us, wanting to share their stories about how to make customer service a better experience all around, or asking for tips and suggestions about how to get their own organizations to do customer service differently.<br /><br />
+And, hey, we're a customer service organization, right? Give the customers what they want, and what our community  wants is a chance to learn, organize, and share around some of these emerging ideas. And so we're announcing our first "Customer Service is the New Marketing" Summit, to be held in mid-November here in lovely San Francisco, California (exact date and location to be determined shortly.)<br /><br />
+We're currently hard at work putting together a full roster of speakers, pulling from a variety of industries (and not just the usual Web 2.0 crowd, though we'll have some of them, too), all of whom are finding ways to make customer service more meaningful for their organizations. We'll round out the day with some collaborative workshops, some probing interviews, some group discussion, plenty of food and of course the opportunity to mingle and network. More information on all this soon, we promise.<br /><br />
+But first, of course, we want to hear from you: Would this be something you would be interested in? Who would you like to see speak? What kinds of other attendees would you want to meet? What topics would you find the most valuable? Let us know!
+  </content>
+  
+  <sfn:reply_count>23</sfn:reply_count>
+  <sfn:follower_count>16</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/46181</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/46181" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>I am trying to add a company, but keep getting an internal error message</title>
+  <updated>2007-11-23T16:23:02Z</updated>
+  <author>
+   <name>JPersch</name>
+   <url>http://api.getsatisfaction.com/people/46171</url>
+  </author>
+  <content>
+    I am using Firefox browser and XP OS. The company is Bass Pro Shops
+  </content>
+  
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/45551</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/45551" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>you need a bookmarklet!  :)</title>
+  <updated>2007-11-23T11:25:19Z</updated>
+  <author>
+   <name>mingyeow</name>
+   <url>http://api.getsatisfaction.com/people/30511</url>
+  </author>
+  <content>
+    since most of the companies are web companies, why not have a web marklet that pulls the url directly and show your beautiful ajax screen, saving the poor user much work?
+  </content>
+  
+  <sfn:reply_count>5</sfn:reply_count>
+  <sfn:follower_count>4</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/45901</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/45901" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Private messaging users</title>
+  <updated>2007-11-22T19:25:29Z</updated>
+  <author>
+   <name>mingyeow</name>
+   <url>http://api.getsatisfaction.com/people/30511</url>
+  </author>
+  <content>
+    Was trying to private message amy to ask her about her "due date", but I did not notice a way for users to privately message each other - why not? I am sure that you folks have thought about the pros and cons many times before, but it might be very useful in terms of building up relationships between users. <br /><br />
+So why have relationships between users? Cause I think the key power of conversational marketing from a company really comes through when a group of advocates are visibly visible. And ultimately, groups starts off one relationship at a time, with certain people being very active in contacting other members with similar interests, etc. <br /><br />
+That way, you can also identify who amongst your userbase are more likely to be the ones who are going to have the highest potential of forming these groups.<br /><br />
+I believe this type of potential "group builders" is different from a user who types in many comments and questions. Those might just be power users with a lot of power/suggestions, but they might not be particularly social. <br /><br />
+In a platform where people have the ability to privately message each other., you start see who are the potential "group builders". At some stage, targeting these people will be fantastic for kickstarting various groups. <br /><br />
+It becomes even more interesting when your facebook app encourages and facilitates me in terms of bringing my friends into the conversation... many ways of doing so, but the key thing here is bringing FB friends into the conversation in your site itself.<br /><br />
+Ok, I am going all over the place now from a single feature thought.... sorry sorry! End of the day, it is all about identifying "group builders", and giving them the tools to build these groups of advocates! That is what conversational marketing can be ya? :)
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/6881</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/6881" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Can I wear more than one hat?</title>
+  <updated>2007-11-22T17:07:21Z</updated>
+  <author>
+   <name>sfllaw</name>
+   <url>http://api.getsatisfaction.com/people/2031</url>
+  </author>
+  <content>
+    I don't _just_ work for my company and I want to be able to use Satisfaction as just a plain-old regular Joe.<br /><br />
+Can I have more than one e-mail address tied to my profile?  That way, I can tie my work e-mail to stuff that I say about work.  And the rest of the time, I can speak as myself.
+  </content>
+  
+  <sfn:reply_count>13</sfn:reply_count>
+  <sfn:follower_count>6</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/45761</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/45761" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>My company logo is all pixelated and ugly!</title>
+  <updated>2007-11-22T16:44:39Z</updated>
+  <author>
+   <name>sfllaw</name>
+   <url>http://api.getsatisfaction.com/people/2031</url>
+  </author>
+  <content>
+    When I upload a logo in PNG or GIF form, it gets compressed way down as a JPEG.  This in turn makes everything look pretty ugly.<br /><br />
+Could you tweak that so it looks OK?  Or even better, leave the images as they are if they're already in PNG, GIF, or JPEG format?
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/45291</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/45291" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>The search bar up top needs to query the entire site!</title>
+  <updated>2007-11-22T00:59:10Z</updated>
+  <author>
+   <name>J.O.D</name>
+   <url>http://api.getsatisfaction.com/people/162</url>
+  </author>
+  <content>
+    I want to type in the upper right search field and get a list of companies, products and users who match what I typed. <br /><br />
+The status quo is, type something in and receive results explicitly for the company the user is parked on. <br /><br />
+I'd like as a first step towards the broader search, to be able just to search topics across the entire site. That would be imminently useful and increase my participation dramatically.<br /><br />
+Thanks, everyone! Satisfaction is a pleasure to use and I love the twitter widget.
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/21981</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/21981" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Satisfaction didn't like my email address!</title>
+  <updated>2007-11-21T21:43:23Z</updated>
+  <author>
+   <name>oren</name>
+   <url>http://api.getsatisfaction.com/people/20491</url>
+  </author>
+  <content>
+    When I created my account just now, I gave my email address, which is <a href="mailto:oren@washington.edu" rel="nofollow">oren@washington.edu</a>, and it told me that's an invalid address!<br /><br />
+When I added a third level qualifier in the domain (u.washington.edu) it let me create the account - whassup with that?
+  </content>
+  
+  <sfn:reply_count>5</sfn:reply_count>
+  <sfn:follower_count>4</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/45071</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/45071" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Can i add multiple websites to my profile?</title>
+  <updated>2007-11-21T20:26:07Z</updated>
+  <author>
+   <name>Kathy Jacobs</name>
+   <url>http://api.getsatisfaction.com/people/45071</url>
+  </author>
+  <content>
+    I have both a website and a blog. I would like to list both in my profile. I don't see a way to do it and a search turned up no posted information either.
+  </content>
+  
+  <sfn:reply_count>6</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/286</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/286" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Include author name in List Feeds</title>
+  <updated>2007-11-21T05:17:40Z</updated>
+  <author>
+   <name>Thor</name>
+   <url>http://api.getsatisfaction.com/people/20</url>
+  </author>
+  <content>
+    As I watch the feeds come in it would be good to know who created them. This information has an impact on how high priority it is (e.g. it's more important if the topic comes from outside the organization).
+  </content>
+  
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/9751</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/9751" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>Admin How To: Managing Accounts and Roles</title>
+  <updated>2007-11-20T22:14:42Z</updated>
+  <author>
+   <name>Amy</name>
+   <url>http://api.getsatisfaction.com/people/12</url>
+  </author>
+  <content>
+    The Accounts &amp; Roles page of the Admin section is where Admins can add employees, invite employees, assign roles and edit roles.<br /><br />
+There are three levels of roles:<br /><br />
+1. Employee = An Employee title is attached to their avatar in your Satisfaction site so that users know that they have an internal perspective. They do not have access to other tools or the Admin section. They can not mark a reply as the "Official Response" and their intereaction within the your Satisfaction site is not considered the official voice.<br /><br />
+2. Official Rep = An Employee title is attached to your avatar in your Satisfaction site and your topic posts and replies within your own site are accompanied by an Official Rep badge which indicates that you are an official voice of the company. You can set your reply and other employee replies as the "Official Response". <br /><br />
+3. Admin = Same controls and advantages of an Official Representative. You also will have access to the Admin tools via the Admin link in the top bar.<br /><br />
+Adding employees:<br /><br />
+- If you have an official email domain, add it under "Add a company website" and click the "Add it" button. Any employees already registered in Satisfaction with their official email address will automatically show up in the list above as an Employee. <br /><br />
+- To add individual users add their email address under "Upgrade one person to employee status" and click  the "Upgrade" button. If they're already in the system with that email address they'll show up as an employee in the list above. If they're not, you'll be prompted to send them an invite to Satisfaction.<br /><br />
+- Managing the roles: Once you have your list of employees under "Manage roles" you can change their role status or downgrade. Downgrading their employee affiliation will not delete their user account.
+  </content>
+  
+  <sfn:reply_count>14</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/40771</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/40771" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>"Access Denied"</title>
+  <updated>2007-11-20T17:12:53Z</updated>
+  <author>
+   <name>SirWired</name>
+   <url>http://api.getsatisfaction.com/people/40601</url>
+  </author>
+  <content>
+    When attempting to confirm my address for a one-time post, the system returned "Access Denied" when I used the supplied link in e-mail.  To get my post to "confirm" I had to upgrade my account, which did work.
+  </content>
+  
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/43841</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/43841" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>security through obscurity?</title>
+  <updated>2007-11-20T16:44:09Z</updated>
+  <author>
+   <name>Monty Python</name>
+   <url>http://api.getsatisfaction.com/people/43971</url>
+  </author>
+  <content>
+    re: email confirmation<br /><br />
+goodness!   Is that security through obscurity??  Why such long tokens??
+  </content>
+  
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/9931</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/9931" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+  
+  <title>You can follow a topic</title>
+  <updated>2007-11-19T18:11:16Z</updated>
+  <author>
+   <name>Amy</name>
+   <url>http://api.getsatisfaction.com/people/12</url>
+  </author>
+  <content>
+    By replying to a topic you are automatically following it. However, if you'd like to follow a topic without replying to it just click the "Follow this topic" link under the topic post as illustrated here:<br /><br />
+<a href="http://myskitch.com/amymuller/how_do_i_join_or_follow_something_on_satisfaction_-20070912-120855/" rel="nofollow"><img src="http://myskitch.com/amymuller/how_do_i_join_or_follow_something_on_satisfaction_-20070912-120855.png/preview.jpg" alt="How do I join or follow something on Satisfaction?" /></a><br /><br /><br />
+Following a topic means you'll receive email notifications when an update is made to the topic. If you've replied to a topic it will also appear in your dashboard.<br /><br />
+If you want to "un-follow" a topic click the "stop" link next to "Following this topic" under the topic post. As illustrated here:<br /><br />
+<a href="http://myskitch.com/amymuller/how_do_i_join_or_follow_something_on_satisfaction_-20070912-122705/" rel="nofollow"><img src="http://myskitch.com/amymuller/how_do_i_join_or_follow_something_on_satisfaction_-20070912-122705.png/preview.jpg" alt="How do I join or follow something on Satisfaction?" /></a><br />
+  </content>
+  
+  <sfn:reply_count>2</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+</entry>
+    
+
+</feed>

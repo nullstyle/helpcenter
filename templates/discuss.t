@@ -1,11 +1,4 @@
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
-</head>
-<body>
-
-<div id="content">
-<div id="backdrop">
+{* Smarty *}
 
 {include file="header.t"}
 
@@ -37,7 +30,7 @@ xxx
 
 <table class="discuss-topic-list">
 {foreach from=$topics key=i item=topic}
-    <tr><td><img src="" /></td>
+    <tr><td><img src="" alt="q/i/p" /></td>
     <td> <h3><a href="topic.php?id={$topic.ID}">{$topic.TITLE}</a></h3>
     Last reply xxx ago.
 
@@ -48,10 +41,4 @@ xxx
 {/foreach}
 </table>
 
-</div>
-
 {include file="footer.t"}
-
-</div>
-</body>
-</html>

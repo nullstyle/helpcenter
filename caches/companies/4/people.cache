@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>People in Satisfaction</title>
+  </head>
+  <body>
+  <h1>People</h1>
+  <ul>
+    <li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/18" class="fn nickname url">Jonathan</a>
+  
+  
+  <span class="note">I like pie. If everything in the world were divided into two categories -- pie and cake -- and I had to give up one forever, it would be cake. Pie has different parts, each with a different texture and flavor, while cake is all the same. And don't try to use layer cake as a defense for cake, because each major layer is just more cake.</span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/20" class="fn nickname url">Thor</a>
+  
+  
+  <span class="note">Don't shoot me, I'm just the piano player</span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/32" class="fn nickname url">kimlaama</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/34" class="fn nickname url">hieverybody</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/3" class="fn nickname url">cee-dub</a>
+  
+  
+  <span class="note">Satisfaction development is what I do.
+
+Did somebody take my stapler?
+
+http://chuddup.com/</span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/38" class="fn nickname url">theinfonaut@gm.....com</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/46" class="fn nickname url">btam@em.....com</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/47" class="fn nickname url">dallarde</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/54" class="fn nickname url">sat...@spamgourmet.com</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/62" class="fn nickname url">Brian Oberkirch</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/69" class="fn nickname url">Percolater</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/78" class="fn nickname url">KevinLiu</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/116" class="fn nickname url">Sean</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/135" class="fn nickname url">jonathangrubb</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+<li>
+
+<div id="hcard" class="vcard person">
+  <a href="http://api.getsatisfaction.com/people/138" class="fn nickname url">faketed</a>
+  
+  
+  <span class="note"></span>
+</div></li>
+  </ul>
+  <a href="http://api.getsatisfaction.com/people?page=1" rel="self">self</a>
+<a href="http://api.getsatisfaction.com/people?page=1" rel="first">first</a>
+<a href="http://api.getsatisfaction.com/people?page=2" rel="next">next</a>
+<a href="http://api.getsatisfaction.com/people?page=16" rel="last">last</a>
+  </body>
+</html>

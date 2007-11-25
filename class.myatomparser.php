@@ -43,9 +43,10 @@
       $fp = @fopen($file, "r") or die("myAtomParser: Could not open $file for input");
       while($data = fread($fp, 4096)) {
         xml_parse($xml_parser, $data, feof($fp)) or die(
-          sprintf("myAtomParser: Error <b>%s</b> at line <b>%d</b><br>",
+          sprintf("myAtomParser: Error <b>%s</b> at line <b>%d</b> of %s<br />",
                   xml_error_string(xml_get_error_code($xml_parser)),
-                  xml_get_current_line_number($xml_parser))
+                  xml_get_current_line_number($xml_parser),
+                  $file)
         );
       }
       fclose($fp);

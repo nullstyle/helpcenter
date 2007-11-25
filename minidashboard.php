@@ -7,11 +7,8 @@ $h = new hkit;
 
 ###### GET COMPANY INFO ######
 
-# TBD: pull this into utils.php
-$company_url = $quick_mode ?
-  $cache_dir.'companies-' . $company_id : 
-  $api_root.'/companies/'.$companyid;
-# print $company_url;
+## TBD: pull this into utils.php
+$company_url = api_url('companies/' . $company_id);
 if ($quick_mode) {
   $company_hcard = $h->getByString('hcard', file_get_contents($company_url));
 } else {

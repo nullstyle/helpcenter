@@ -6,9 +6,7 @@ require_once("utils.php");
 $h = new hkit;
 
 # TBD: pull this into utils.php
-$company_url = $quick_mode ?
-  $cache_dir.'companies-' . $company_id : 
-  $api_root.'/companies/'.$companyid;
+$company_url = api_url('companies/'.$company_id);
 # print $company_url;
 if ($quick_mode) {
   $company_hcard = $h->getByString('hcard', file_get_contents($company_url));
@@ -19,11 +17,7 @@ if ($quick_mode) {
 # dump($company_hcard);
 $company_name = $company_hcard[0]["fn"];
 
-if ($quick_mode) {
-  $topics_feed_url = $cache_dir . 'companies-' . $company_id . '-topics.atom';
-} else {
-  $topics_feed_url = $api_root . "/companies/'.$company_id.'/topics";
-}
+$topics_feed_url = api_url('companies/' . $company_id . '/topics');
 $atom = new myAtomParser($topics_feed_url);
 # dump($atom->output);
 foreach ($atom->output as $feed) {
@@ -31,12 +25,7 @@ foreach ($atom->output as $feed) {
   $entries = take($helpstart_topic_count, $entries);
 }
 
-$company_people_url = $quick_mode ? 
-    $cache_dir.'companies-' . $company_id . '-people' : 
-    $api_root.'/companies/'.$company_id.'/people';
-# print($company_people_url);
-
-# $h = new hKit;
+$company_people_url = api_url('companies/'.$company_id.'/people');
 
 if ($quick_mode) {
   $company_people_list = $h->getByString('hcard',
@@ -46,6 +35,7 @@ if ($quick_mode) {
 }
 
 $smarty->assign('company_name', $company_name);
+$smarty->assign('body_css_id', 'contactus');
 $smarty->display('contactus.t');
 
 ?>

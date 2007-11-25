@@ -1,14 +1,5 @@
 {* Smarty *}
 
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
-</head>
-<body>
-
-<div id="content">
-<div id="backdrop">
-
 {include file="header.t"}
 
 <div class="topic-head">
@@ -79,10 +70,4 @@ x official rep is here <br />
   </ul>
 </div>
 
-</div>
-
 {include file="footer.t"}
-
-</div>
-</body>
-</html>

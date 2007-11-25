@@ -1,6 +1,6 @@
 body {
   font-family: helvetica, sans-serif;
-  background-color: #b8fff7;
+  background-color: #a7efff;
   color: #333;
 }
 
@@ -24,6 +24,7 @@ h1 { color: #989898; font-size: 14pt; }
 h2 { color: #444; font-size: 14pt; font-weight: bold; margin: 0pt; }
 h2 .lighter { font-weight: normal; }
 h3 { color: #444; font-size: 12pt; font-weight: bold; margin: 0pt; }
+h4 { margin: 10pt 0pt 0pt 0pt; }
 
 td { vertical-align: top; }
 
@@ -81,9 +82,13 @@ div#what-satisfaction p {
   margin: 0pt;
 }
 
-.byline { float: right }
+.byline { float: right; }
 
 .right { text-align: right }
+
+.float-right { float: right; }
+
+.left-hed { float: left; margin: 3pt 3pt 0pt 0pt; }
 
 .pin-right {
   position: absolute;
@@ -105,6 +110,8 @@ div#what-satisfaction p {
 td.form-label { text-align: right; }
 
 input.admin, textarea.admin { width: 160pt; }
+
+#contact-form input, #contact-form textarea { width: 260pt; }
 
 .topic-list { margin-right: 6pt; width: 330pt; }
 
@@ -157,3 +164,18 @@ ul.product-list li {
 .huge { font-size: 24pt; }
 
 #contactus h3 { font-size: 14pt; font-weight: normal; margin: 6pt 0pt 0pt 0pt; }
+
+.discuss-topic-list tr { margin: 6pt; }
+
+.error-box {
+  color: #c03030; 
+  border: 1px solid red;
+  padding: 6px;
+  margin: 3pt;
+}
+
+.error-message {
+  color: #c03030;
+}
+
+.small-note { font-size: 8pt; }

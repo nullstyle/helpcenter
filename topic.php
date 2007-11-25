@@ -6,10 +6,7 @@ require_once('hkit.class.php');
 $h = new hKit;
 
 # TBD: pull this into utils.php
-$company_url = $quick_mode ?
-  $cache_dir.'companies-' . $company_id : 
-  $api_root.'/companies/'.$companyid;
-# print $company_url;
+$company_url = api_url('companies/'.$company_id);
 if ($quick_mode) {
   $company_hcard = $h->getByString('hcard', file_get_contents($company_url));
 } else {
@@ -20,12 +17,9 @@ if ($quick_mode) {
 $company_name = $company_hcard[0]["fn"];
 
 $topic_id = $_GET['id'];
-if ($quick_mode) {
-  $topic_url = $cache_dir . '/topic-40621.atom';
-} else {
-  $topic_url = $topic_id;
-}
-
+$topic_url = $quick_mode ?
+     $cache_dir . 'topics/40621.cache' : 
+     $topic_id;
 assert(!!$topic_url);
 
 $topic_feed = new myAtomParser($topic_url);
