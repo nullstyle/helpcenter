@@ -10,7 +10,7 @@
 
 <ul class="product-list">
 {foreach from=$products key=i item=product}
-<li> <img src="{$product.image}" /> {$product.name} </li>
+<li> <img src="{$product.image}" />{$product.name} </li>
 {/foreach}
 </ul>
 
@@ -19,18 +19,23 @@
 
 <div class="sidepane">
 <div class="sidebar">
-View discussions by:
-xxx
+<h4>View discussions by:</h4>
+<ul class="straight">
+<li>All Topics xxx</li>
+<li>Questions xxx</li>
+<li>Ideas xxx</li>
+<li>Problems xxx</li>
+<li>Talk Topics xxx</li>
+<li>Unanswered xxx</li>
+</ul>
 </div>
-<div class="sidebar">
-Related Tpoics from across Satisfaction:
-xxx
-</div>
+{include file="related-topics.t"}
+<div class="sidebar blue">Go to your Satisfaction Dashboard</div>
 </div>
 
 <table class="discuss-topic-list">
 {foreach from=$topics key=i item=topic}
-    <tr><td><img src="" alt="q/i/p" /></td>
+    <tr><td><img src="images/{$topic.TOPIC_STYLE}_med.png" alt="{$topic.TOPIC_STYLE}" /></td>
     <td> <h3><a href="topic.php?id={$topic.ID}">{$topic.TITLE}</a></h3>
     Last reply xxx ago.
 

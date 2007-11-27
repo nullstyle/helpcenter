@@ -100,12 +100,17 @@ div#what-satisfaction p {
   padding: 6pt; margin: 6pt;
 }
 
+.blue {
+  background-color: #a7efff;
+}
+
 .sidepane {
   float: right;
   width: 120pt;
 }
 
-.sidebar h2 { color: #777; margin: 0pt 0pt 4pt 0pt; font-size: 12pt; }
+.sidepane h2 { color: #777; margin: 0pt 0pt 4pt 0pt; font-size: 14pt; }
+.sidepane h3 { color: #aaa; margin: 0pt 0pt 4pt 0pt; font-size: 14pt; }
 
 td.form-label { text-align: right; }
 
@@ -126,6 +131,12 @@ input.admin, textarea.admin { width: 160pt; }
   color: #000;
 }
 
+.discus-topic-list li {
+  margin-top: 6pt;
+  padding-bottom: 6pt;
+  border-bottom: 1px solid gray;
+}
+
 .discuss-topic-list h3, .topic-head h3 {
   font-size: 12pt;
   margin: 0pt;
@@ -141,13 +152,13 @@ input.admin, textarea.admin { width: 160pt; }
 }
 
 .topic-author-pic {
-  width: 32pt;
-  height: 32pt;
+  width: 48pt;
+  height: 48pt;
 }
 
-.topic-author-pic-small {
-  width: 24pt;
-  height: 24pt;
+.reply-author-pic {
+  width: 32pt;
+  height: 32pt;
 }
 
 .topic-replies {
@@ -179,3 +190,5 @@ ul.product-list li {
 }
 
 .small-note { font-size: 8pt; }
+
+ul.straight { list-style-type: none; padding-left: 0pt; }

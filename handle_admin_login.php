@@ -1,6 +1,7 @@
 <?
 
-require_once('utils.php');
+require_once('Sprinkles.php');
+$sprink = new Sprinkles($company_id);
 
 $username = $_GET['username'];
 $password = $_GET['password'];
@@ -13,7 +14,7 @@ $cols = mysql_fetch_assoc($result);
 # dump($cols);
 if ($cols['password'] == $password) {
   # FIXME encryption!
-  open_session($username);
+  $sprink->open_session($username);
   header('Location: admin.php', true, 302);
 #  http_redirect('admin_login.php');
 } else {

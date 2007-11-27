@@ -1,15 +1,16 @@
 <?
-require_once('utils.php');
+require_once('Sprinkles.php');
 require_once('admin-page.php');
 
 $hexcolor_regex = "/^\s*#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$\s*/";
+
 $nonspecial_regex = '[A-Za-z0-9_~`!%^\'#*&$\/|=+-]';
 $nonspecial_or_dot_regex = '[A-Za-z0-9_~`,!%^\'#*&$\/|.=+-]';
 $word_regex = "[A-Za-z]($nonspecial_regex+[A-Za-z0-9])?";
 # $email_regex = "/[A-Za-z0-9.-]+@[A-Za-z0-9.-]+/";
 $email_regex = "/$nonspecial_or_dot_regex*@$word_regex(\.$word_regex)*/";
-# c.f. RFC 821 p. 30. Doesn't handle quoted local-parts, #number domain 
-# segments or dotted-quad domain segments.
+  # c.f. RFC 821 p. 30. Doesn't handle quoted local-parts, #number domain 
+  # segments or dotted-quad domain segments.
 
 ## Validation
 

@@ -1,8 +1,10 @@
 <?
 
-require_once('utils.php');
+require_once('Sprinkles.php');
 
-close_session();
+$sprink = new Sprinkles($company_id);
+
+$sprink->close_session();
 
 redirect('dead-end.php');
 

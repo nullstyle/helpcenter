@@ -9,7 +9,7 @@ $quick_mode = true;
 
 # API root URL and caching directory
 
-$api_root = 'http://api.staging.getsatisfaction.com';
+$api_root = 'http://api.getsatisfaction.com/';
 global $cache_dir;
 $cache_dir = $sprinkles_dir . "caches/";
 

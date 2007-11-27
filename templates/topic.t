@@ -8,13 +8,13 @@ Hey { $company_name }!
 
 <table>
 <tr>
-<td style="width:40pt;">
+<td style="width:48pt;">
 <div><img src="{$lead.AUTHOR.PHOTO}" class="topic-author-pic" /></div>
 <div class="topic-author-caption">
 <span class="topic-byline">
 { $lead.AUTHOR.NAME }
 </span>
-asked this question xxx ago
+asked this question {$topic_updated_relative}
 </div>
 </td>
 
@@ -45,11 +45,7 @@ x official rep is here <br />
 <div class="sidepane">
   <img style="padding: 6pt; margin: 6pt;" src="poweredbysmallStack.png" alt="Powered by: Satisfaction" />
 
-  <div class="sidebar">
-  Related Topics from across Satisfcation:
-
-  <p>xxx TBD. </p>
-  </div>
+  {include file="related-topics.t"}
 </div>
 
 <div>
@@ -59,7 +55,7 @@ x official rep is here <br />
   <li>
     <table><tr>
     <td>
-      <img src="{$reply.AUTHOR.PHOTO}" class="topic-author-pic-small" />
+      <img src="{$reply.AUTHOR.PHOTO}" class="reply-author-pic" />
     </td><td>
       {$reply.AUTHOR.NAME} (xxx credentials) replied {$reply.UPDATED_RELATIVE}:
         <p>{$reply.CONTENT}</p>

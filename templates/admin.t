@@ -2,7 +2,7 @@
 
 {include file="header.t"}
 
-<div class="right">Hello {$username} from {$company_name}.
+<div class="right">Hello <strong>{$username}</strong> from {$company_name}.
   Are you someone else?
   <a href="admin_login.php">Sign in as you</a>.
   <a href="sign_out.php">Sign out</a>.
@@ -18,15 +18,17 @@ Your settings could not be saved. Please correct the errors below.
 
 <div class="sidepane">
 <div class="sidebar ">
-Need help?
+<h3>Need help?</h3>
 
 Sprinkles is...
 
+<div>
 API information
+</div>
 
 Helpful topics from Satisfaction
-<ul>
-<li>...</li>
+<ul class="straight">
+<li>xxx</li>
 </ul>
 </div>
 </div>

@@ -1,20 +1,12 @@
 <? 
-require("setup.php");
-require("utils.php");
-require("class.myatomparser.php");
-require_once('hkit.class.php');
-$h = new hKit;
+require_once("setup.php");
+require_once("Sprinkles.php");
+require_once("class.myatomparser.php");
 
-# TBD: pull this into utils.php
-$company_url = api_url('companies/'.$company_id);
-if ($quick_mode) {
-  $company_hcard = $h->getByString('hcard', file_get_contents($company_url));
-} else {
-  $company_hcard = $h->getByURL('hcard',$company_url);
-}
+$sprink = new Sprinkles($company_id);
 
-# dump($company_hcard);
-$company_name = $company_hcard[0]["fn"];
+$company_hcard = $sprink->company_hcard();
+$company_name = $company_hcard["fn"];
 
 $topic_id = $_GET['id'];
 $topic_url = $quick_mode ?
@@ -23,19 +15,16 @@ $topic_url = $quick_mode ?
 assert(!!$topic_url);
 
 $topic_feed = new myAtomParser($topic_url);
-# dump($topic_feed->output);
+
+$topic_updated = $topic_feed->output["FEED"][""]["UPDATED"];
 
 $items = array();
 foreach ($topic_feed->output["FEED"][""]["ENTRY"] as $entry) {
   $item = array();
 	# FIXME watch out for format changes here
   $item["AUTHOR"] = $entry["AUTHOR"];
-#  if ($quick_mode) {
-#    $person = $h->getByString('hcard', file_get_contents($cache_dir . "people-40451.html"));
-#  } else {
-    $person = $h->getByURL('hcard', $item["AUTHOR"]["URL"]);
-#  }
-  # dump($person);
+  $person = $sprink->get_person($item["AUTHOR"]["URL"]);
+
   $item["AUTHOR"]["PHOTO"] = $person[0]["photo"];
   $item["TITLE"] = $entry["TITLE"];
   $item["ID"] = $entry["ID"];
@@ -43,8 +32,15 @@ foreach ($topic_feed->output["FEED"][""]["ENTRY"] as $entry) {
   $item["UPDATED"] = $entry["UPDATED"];
   $item["UPDATED_EPOCH"] = strtotime($entry["UPDATED"]);
   $item["UPDATED_RELATIVE"] = ago(strtotime($entry["UPDATED"]), time());
+  $item["TOPIC_STYLE"] = ago(strtotime($entry["SFN:TOPIC_STYLE"]), time());
   array_push($items, $item);
 }
+
+#$smarty->assign('topic_updated', $topic_updated);
+#$smarty->assign('topic_updated_relative', ago(strtotime($topic_updated), time()));
+$smarty->assign(array('topic_updated' => $topic_updated,
+                      'topic_updated_relative' =>
+                           ago(strtotime($topic_updated), time())));
 
 $smarty->assign('company_name', $company_name);
 $smarty->assign('test', array('foo' => array('baz' => 'bonk')));

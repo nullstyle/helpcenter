@@ -1,0 +1,5 @@
+#!/bin/sh
+
+api_root=http://api.getsatisfaction.com
+path=$1
+wget $api_root/$path -O caches/$path.cache
