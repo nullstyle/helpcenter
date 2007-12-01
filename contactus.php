@@ -9,7 +9,7 @@ $sprink = new Sprinkles($company_id);
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
-$entries = $sprink->topics();
+$entries = $sprink->topics(array());
 $entries = take($helpstart_topic_count, $entries);
 
 $smarty->assign('company_name', $company_name);

@@ -10,6 +10,8 @@ hr { border: 1px solid gray; }
 
 a { text-decoration: none; }
 
+img { border: 0px }
+
 div#content {
   width: 550pt;
   margin-top: 12pt;
@@ -21,9 +23,9 @@ div#backdrop {
 }
 
 h1 { color: #989898; font-size: 14pt; }
-h2 { color: #444; font-size: 14pt; font-weight: bold; margin: 0pt; }
+h2 { color: #444; font-size: 14pt; font-weight: bold; margin: 10pt 0pt 0pt 0pt; }
 h2 .lighter { font-weight: normal; }
-h3 { color: #444; font-size: 12pt; font-weight: bold; margin: 0pt; }
+h3 { color: #aaa; font-size: 12pt; font-weight: bold; margin: 0pt; }
 h4 { margin: 10pt 0pt 0pt 0pt; }
 
 td { vertical-align: top; }
@@ -131,10 +133,10 @@ input.admin, textarea.admin { width: 160pt; }
   color: #000;
 }
 
-.discus-topic-list li {
+.topic-replies li, .discuss-topic-list li {
   margin-top: 6pt;
   padding-bottom: 6pt;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #ccc;
 }
 
 .discuss-topic-list h3, .topic-head h3 {

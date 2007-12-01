@@ -1,6 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="sprinkles.css">
+<title>{$company_name} Powered by: Satisfaction</title>
 </head>
 <body{if $body_css_id}id="{$body_css_id}"{/if}>
 
@@ -8,7 +9,7 @@
 <div id="backdrop">
 
 <div class="header">
-<img src="" alt="{ $company_name } Powered by: Satisfaction" />
+<img src="logo.jpeg" alt="{ $company_name } Powered by: Satisfaction" />
 
 <ul class="topnav">
 <li><a href="helpstart.php">Help Start</a></li>

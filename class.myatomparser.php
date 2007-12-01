@@ -105,38 +105,36 @@
     {
       # return if data contains no text
       if(!trim($data)) return;
-      $evalcode =& $this->output;
+      $text_contents_ref =& $this->output;
       $depth = count($this->tags);
       $i = 0;
       foreach ($this->tags as $tag) {
         if (is_array($tag)) {
           list($tagname, $indexes) = each($tag);
-#          print $tagname . " ";
-#          print "(indexes: ";
-#          var_dump($indexes);
-#          print ")";
-          $evalcode =& $evalcode[$tagname][${$tagname}];
+          $text_contents_ref =& $text_contents_ref[$tagname][${$tagname}];
           if ($indexes) extract($indexes);
         } else {
-#          print ($tag);
           if (preg_match("/^([A-Z]+):([A-Z]+)$/", $tag, $matches)) {
-            $evalcode =& $evalcode[$matches[1]][$matches[2]];
+            $text_contents_ref =& $text_contents_ref[$matches[1]][$matches[2]];
           } else {
-            $evalcode =& $evalcode[$tag];
+            $text_contents_ref =& $text_contents_ref[$tag];
+          }
+          if ($tag == 'UPDATED') {
+            if ($text_contents_ref) {
+              return; # HACK FANTASTIC
+            }
           }
         }
-        if (++$i < $depth && !is_array($evalcode))
-          $evalcode = array();
+        if (++$i < $depth && !is_array($text_contents_ref))
+          $text_contents_ref = array();
       }
-#      print "<br />";
 
       if(isset($this->encoding['CONTENT']) && 
          $this->encoding['CONTENT'] == "text/plain") {
         $data = "<pre>$data</pre>";
       }
 
-#      $evalcode .= addslashes($data);
-      $evalcode .= $data;
+      $text_contents_ref .= $data;
     }
 
     # display a single feed as HTML

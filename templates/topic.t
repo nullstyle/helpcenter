@@ -4,23 +4,23 @@
 
 <div class="topic-head">
 Hey { $company_name }!
-<h3><strong> { $lead.AUTHOR.NAME }</strong> has a question.</h3>
+<h3><strong> { $lead_item.AUTHOR.NAME }</strong> has a question.</h3>
 
 <table>
 <tr>
 <td style="width:48pt;">
-<div><img src="{$lead.AUTHOR.PHOTO}" class="topic-author-pic" /></div>
+<div><img src="{$lead_item.AUTHOR.PHOTO}" class="topic-author-pic" /></div>
 <div class="topic-author-caption">
 <span class="topic-byline">
-{ $lead.AUTHOR.NAME }
+{ $lead_item.AUTHOR.NAME }
 </span>
 asked this question {$topic_updated_relative}
 </div>
 </td>
 
 <td style="top; margin: 1pc;">
-<h3><strong>{ $lead.TITLE }</strong></h3>
-{ $lead.CONTENT }
+<h3><strong>{ $lead_item.TITLE }</strong></h3>
+{ $lead_item.CONTENT }
 </td>
 
 <td style="width: 120pt;">
@@ -49,6 +49,7 @@ x official rep is here <br />
 </div>
 
 <div>
+({$reply_count} replies)
   <h2>Login to reply</h2>
   <ul class="topic-replies">
   {foreach from=$replies key=i item=reply}
@@ -64,6 +65,18 @@ x official rep is here <br />
   </li>
   {/foreach}
   </ul>
+
+{if ($page_num > 0)}
+<a href="topic.php?id={$topic_id}&page={$page_num-1}">&lt;</a>
+{else}
+&nbsp;
+{/if}
+Page {$page_num+1} of {$num_pages}
+{if ($page_num+1 < $num_pages)}
+<a href="topic.php?id={$topic_id}&page={$page_num+1}">&gt;</a>
+{else}
+&nbsp;
+{/if}
 </div>
 
 {include file="footer.t"}

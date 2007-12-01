@@ -17,11 +17,13 @@
   <link rel="topic" href="http://api.getsatisfaction.com/topics/9751" type="application/atom+xml"/>
   <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
   
+  <updated>2007-11-20T22:14:42Z</updated>  
+  
   <title type="html">Admin How To: Managing Accounts and Roles</title>
   <updated>2007-11-20T22:14:42Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     The Accounts &amp; Roles page of the Admin section is where Admins can add employees, invite employees, assign roles and edit roles.&lt;br /&gt;&lt;br /&gt;
@@ -55,7 +57,7 @@ Adding employees:&lt;br /&gt;&lt;br /&gt;
   <updated>2007-11-20T22:14:42Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     Understood.
@@ -81,7 +83,7 @@ Adding employees:&lt;br /&gt;&lt;br /&gt;
   <updated>2007-11-20T19:29:55Z</updated>
   <author>
    <name>dean</name>
-   <url>http://api.getsatisfaction.com/people/8421</url>
+   <uri>http://api.getsatisfaction.com/people/8421</uri>
   </author>
   <content type="html">
     Thank you.
@@ -109,7 +111,7 @@ I was making changes to whose those folks are, so asking them to up my permissio
   <updated>2007-11-20T19:23:12Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     Hi Dean. I just did. 
@@ -135,7 +137,7 @@ FYI, you can also ask the person/people who is/are admin(s) to do this for you. 
   <updated>2007-11-20T19:14:41Z</updated>
   <author>
    <name>dean</name>
-   <url>http://api.getsatisfaction.com/people/8421</url>
+   <uri>http://api.getsatisfaction.com/people/8421</uri>
   </author>
   <content type="html">
     Hmm. Doesn't look like I am an Admin for my company. Can you please up my access to Me.dium? 
@@ -161,7 +163,7 @@ Thanks
   <updated>2007-09-13T23:59:53Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     I think it must have been a caching issue for you. I just successfully upgraded her for you. However, if you see this again, please let us know.
@@ -187,7 +189,7 @@ Thanks for your bug reporting!
   <updated>2007-09-13T23:13:48Z</updated>
   <author>
    <name>scotth</name>
-   <url>http://api.getsatisfaction.com/people/741</url>
+   <uri>http://api.getsatisfaction.com/people/741</uri>
   </author>
   <content type="html">
     I'm still seeing the same problem.  Our second employee is listed as employee status and there's a &quot;downgrade&quot; link showing up.  When I click the official representative radio button, nothing happens.  I navigate away to a new page and then back to the admin area and she is back at employee status -- the official rep selection isn't sticking.
@@ -213,7 +215,7 @@ Thanks for your bug reporting!
   <updated>2007-09-13T22:38:14Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     Hi Scott, a fix for updating employee status deployed with our launch last  night so this should be working now. Let me know if you have any further problems with it.
@@ -239,7 +241,7 @@ Thanks for your bug reporting!
   <updated>2007-09-12T23:04:29Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     Thanks, Scott. We'll investigate.
@@ -265,7 +267,7 @@ Thanks for your bug reporting!
   <updated>2007-09-12T22:58:16Z</updated>
   <author>
    <name>scotth</name>
-   <url>http://api.getsatisfaction.com/people/741</url>
+   <uri>http://api.getsatisfaction.com/people/741</uri>
   </author>
   <content type="html">
     It did hang again this second time around.  I was able to click a blank spot on the screen and that made the &quot;posting&quot; go away but the button changed back to &quot;post reply.&quot;  So I clicked it a second time and this time the page refreshed right away and I saw my previous post on the site.
@@ -289,7 +291,7 @@ Thanks for your bug reporting!
   <updated>2007-09-12T22:57:11Z</updated>
   <author>
    <name>scotth</name>
-   <url>http://api.getsatisfaction.com/people/741</url>
+   <uri>http://api.getsatisfaction.com/people/741</uri>
   </author>
   <content type="html">
     Congrats on launching tomorrow -- and good luck!  I definitely know the chaos you guys must be experiencing right now.  But you guys have built a really cool site so it should all be worth it.  :-)
@@ -317,7 +319,7 @@ I did clear my cache and came back to this page -- sadly, the smiley faces are s
   <updated>2007-09-12T21:53:59Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     Yeah, we identified, fixed and deployed the fix for this bug this morning. If you just saw this happen it could be a browser caching issue. Could you try refreshinig your browser and replying again? If it happens again please let us know.
@@ -343,7 +345,7 @@ I did clear my cache and came back to this page -- sadly, the smiley faces are s
   <updated>2007-09-12T21:49:47Z</updated>
   <author>
    <name>Amy Muller</name>
-   <url>http://api.getsatisfaction.com/people/12</url>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     Hi scotth -- Yeah, we just discovered the bug ourselves with trying to change employee role status. We're working on it as I type.
@@ -373,7 +375,7 @@ We're formally launching tomorrow so as you can imagine there is a LOT of work a
   <updated>2007-09-12T21:14:32Z</updated>
   <author>
    <name>scotth</name>
-   <url>http://api.getsatisfaction.com/people/741</url>
+   <uri>http://api.getsatisfaction.com/people/741</uri>
   </author>
   <content type="html">
     When I just tried to submit the response above, the &quot;post reply&quot; button turned into &quot;posting&quot; with an animation on it and it just stayed there forever.  I eventually closed my browser and came back to the site using Firefox, thinking I would have to re-submit my post (above).  But it looks like the site did in fact capture what I wrote, so I think you just need to figure out why the posting animation never went away.
@@ -399,7 +401,7 @@ I generally use IE 7.0 on Vista, btw, in case that's helpful in diagnosing the p
   <updated>2007-09-12T21:10:11Z</updated>
   <author>
    <name>scotth</name>
-   <url>http://api.getsatisfaction.com/people/741</url>
+   <uri>http://api.getsatisfaction.com/people/741</uri>
   </author>
   <content type="html">
     One of our employees just signed up and I see her listed as an employee on our admin page.  I'd like to make her an official rep, so I click that radio button but nothing happens.  I don't see a save or submit button, so I'm not sure how to execute the change.  There is a &quot;downgrade&quot; link showing up there but I want to upgrade her, not downgrade.  I even tried clicking &quot;downgrade&quot; but nothing happens.

@@ -36,11 +36,15 @@
 <h2>We're here to help</h2>
 
 <table>
-{foreach from=$company_people key=i item=person}
 <tr>
-<td><img class="topic-author-pic" style="float:left;" src="{$person.photo}" /> {$person.fn} </td>
+{foreach from=$company_people key=i item=person}
+<td><img class="topic-author-pic" style="float:left;" src="{$person.photo}" /> {$person.fn}</td>
+{if $i % 2 == 1 && $i != count($company_people)-1}
 </tr>
+<tr>
+{/if}
 {/foreach}
+</tr>
 </table>
 </div>
 

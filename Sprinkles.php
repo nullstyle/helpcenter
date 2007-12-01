@@ -1,13 +1,28 @@
 <?php
+# $Id$
+
 #require_once 'XML/Feed/Parser.php';
 require_once 'setup.php';
 
 function take($n, $list) {
+  assert(is_array($list));
   $result = array();
   $i = 0;
   foreach ($list as $item) {
     if ($i++ > $n) { break; }
     array_push($result, $item);
+  }
+  return $result;
+}
+
+function take_range($lo, $hi, $list) {
+  $result = array();
+  $i = 0;
+  foreach ($list as $item) {
+    if ($i++ > $hi) { break; }
+    if ($i >= $lo) {
+      array_push($result, $item);
+    }
   }
   return $result;
 }
@@ -22,11 +37,16 @@ function ago($time, $now) {
     return (ceil($diff/3600)) . " hours ago";
   } else if ($diff < 7 * 24 * 3600) {
     return (ceil($diff/(24*3600))) . " days ago";
-  } else if ($diff < 365 * 3600) {
+  } else if ($diff < 365 * 24 * 3600) {
     return (ceil($diff/(30*24*3600))) . " months ago";
   } else {
     return (ceil($diff/(365.24*24*3600))) . " years ago";
   }
+}
+
+function is_url($str) {
+  # Naive regex for detecting URLs in the http schemes.
+  return preg_match("|^https?://|", $str);
 }
 
 function dump($obj) {
@@ -58,6 +78,11 @@ require_once('hkit.class.php');
 global $h;
 $h = new hKit;
     
+global $robust_mode;   # Causes Sprinkles to filter a feed even if it 
+                       # is supposed to be filtered already.
+# $robust_mode = true;
+$robust_mode = false;
+
 class Sprinkles {
 
   var $company_id;
@@ -78,13 +103,45 @@ class Sprinkles {
     return $company_hcards[0];
   }
 
-  ## All topics for the company
-  function topics() {
-    $topics_feed_url= $this->api_url('companies/'.$this->company_id.'/topics');
+  ## Topics for the company, filter by values in $options
+  function topics($options) {
+    assert(!($options['product'] && $options['tag']));
+    if ($options['product']) {
+      $url_path = is_url($options['product']) ?
+                      $options['product'] . "/topics" :
+                      $url_path = 'products/' . $options['product'] . '/topics';
+    } else if ($options['tag']) {
+      $url_path = 'tags/' . $options['tag'] . '/topics';
+    } else {
+      $url_path = 'companies/'.$this->company_id.'/topics';
+    }
+    if ($options['style']) {
+      if ($options['style'] == 'unanswered')
+        $url_path .= '?sort=unanswered';
+      else
+        $url_path .= '?style=' . $options['style'];
+    }
+    $topics_feed_url = $this->api_url($url_path);
     # print "getting topics feed $topics_feed_url.";
     $atom = new myAtomParser($topics_feed_url);
-    foreach ($atom->output as $feed) {
-      $topics = $feed[""]["ENTRY"];        # FIXME extra level here.
+    $topics = $atom->output['FEED'][""]["ENTRY"];      # FIXME extra level here.
+    if (!$topics) { return array(); }
+
+    foreach ($topics as &$topic) {
+      $topic['UPDATED_EPOCH'] = strtotime($topic['UPDATED']);
+      $topic['UPDATED_RELATIVE'] = ago(strtotime($topic['UPDATED']), time());
+    }
+
+    global $robust_mode;
+    if ($robust_mode && $options['style']) {
+      # Filter the topics down to those of the given style
+      $new_topics = array();
+      foreach ($topics as $t) {
+        if ($t['SFN:TOPIC_STYLE'] == $options['style']) {
+          array_push($new_topics, $t);
+        }
+      }
+      $topics = $new_topics;
     }
     return $topics;
   }
@@ -122,14 +179,25 @@ class Sprinkles {
     
   function get_person($url) {
     global $h;
-    $person = array();
     if ($quick_mode) {
+      # FIXME
       $person = $h->getByString('hcard',
                           file_get_contents($cache_dir . "people-40451.html"));
     } else {
       $person = $h->getByURL('hcard', $url);
     }
     return $person;
+  }
+
+  function product_api_url($id) {
+    $path = is_url($id) ? $id : 'products/' . $id;
+    return $this->api_url($path);
+  }
+
+  function get_product($url) {
+    global $h;
+    $result = $h->getByURL('hproduct', $url);
+    return $result[0];   # Assume just one product in the document.
   }
 
   ## Return a list of the company's products
@@ -154,12 +222,10 @@ class Sprinkles {
     if (!$products_list) { print "Couldn't get product list"; die(); }
     global $h, $quick_mode, $cache_dir;
     foreach ($products_list as $product) {
-      if ($quick_mode) {
-        $product = $h->getByString('hproduct',
-                       file_get_contents($cache_dir.'/products/6681.cache'));
-      } else {
-        $product = $h->getByURL('hproduct', $product["uri"]);
-      }
+      $url = $this->api_url($product["uri"]);
+      if (is_url($url))
+        $product = $h->getByURL('hproduct', $url);
+      else  $product = $h->getByString('hproduct', file_get_contents($url));
       assert(is_array($product));
       array_push($products, $product[0]);
     }
@@ -168,9 +234,19 @@ class Sprinkles {
   }
   
   function api_url($path) {
+    # print "Getting api_url for $path";
+    # if (is_url($path)) return $path;   # FIXME: Do we want to trust URLs?
+    if (is_url($path)) {
+      $parts = parse_url($path);
+      $path = $parts['path'] . ($parts['query'] ? '?'. $parts['query'] : '')
+                . ($parts['fragment'] ? '#' : $parts['fragment']);
+    }
     global $cache_dir;
     global $api_root;
     global $quick_mode;
+    preg_match('|^/*(.*)|', $path, &$temp);
+    $path = $temp[1];
+    # print " as $path";
     return ($quick_mode ?
       ($cache_dir . $path . ".cache") :
       ($api_root . $path));
