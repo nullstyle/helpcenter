@@ -1,5 +1,4 @@
 <?
-require_once("class.myatomparser.php");
 require_once("setup.php");
 require_once("Sprinkles.php");
 

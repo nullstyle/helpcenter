@@ -1,5 +1,4 @@
 <?
-require("class.myatomparser.php");
 require_once("Sprinkles.php");
 
 $sprink = new Sprinkles($company_id);
@@ -31,10 +30,8 @@ $topic_count = count($topics);
 $topics = take($discuss_topic_count, $topics);
 
 foreach ($topics as &$topic) {
-  $topic["REPLY_COUNT"] = $topic["SFN:REPLY_COUNT"];
-  if (!($topic["REPLY_COUNT"] > 0)) 
-    $topic["REPLY_COUNT"] = 0;
-  $topic["TOPIC_STYLE"] = $topic["SFN:TOPIC_STYLE"];
+  if (!($topic["reply_count"] > 0)) 
+    $topic["reply_count"] = 0;
 }
 
 $top_topic_tags = array('underwear');

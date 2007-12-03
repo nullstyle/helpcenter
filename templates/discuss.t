@@ -54,18 +54,14 @@ xxx
 
 <table class="discuss-topic-list">
 {foreach from=$topics key=i item=topic}
-    <tr><td><img src="images/{$topic.TOPIC_STYLE}_med.png" alt="{$topic.TOPIC_STYLE}" /></td>
-    <td> <h3><a href="topic.php?id={$topic.ID}">{$topic.TITLE}</a></h3>
-{if $topic.REPLY_COUNT}
-    Last reply
-{else}
-    Posted
-{/if}
-{$topic.UPDATED_RELATIVE}.
+    <tr><td><img src="images/{$topic.topic_style}_med.png" alt="{$topic.topic_style}" /></td>
+    <td> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
+{if $topic.reply_count} Last reply
+                 {else} Posted {/if} {$topic.updated_relative}.
 
-   <p>{$topic.CONTENT}</p>
+   <p>{$topic.content}</p>
    </td>
-   <td> <span class="huge">{$topic.REPLY_COUNT}</a></span> <br />replies </td>
+   <td> <span class="huge">{$topic.reply_count}</a></span> <br />replies </td>
    </tr>
 {/foreach}
 </table>

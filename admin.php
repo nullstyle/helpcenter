@@ -9,8 +9,6 @@ $username = $sprink->current_user();
 if (!$username)
   header('Location: admin_login.php', true, 302);
 
-require("class.myatomparser.php");
-
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 

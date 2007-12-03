@@ -1,4 +1,4 @@
-  <feed 
+<feed 
    xmlns="http://www.w3.org/2005/Atom" 
    xmlns:sfn="http://api.getsatisfaction.com/schema/0.1" 
    xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
@@ -327,7 +327,7 @@ on &lt;a href=&quot;http://getsatisfaction.com/nintendo/products/nintendo_ninten
    <uri>http://api.getsatisfaction.com/people/46241</uri>
   </author>
   <content type="html">
-    I love your products and website. I saw a company that might help new customers understand what Satisfaction are all about. Look at &lt;a href=&quot;http://www.eyeviewdigital.com&quot; rel=&quot;nofollow&quot;&gt;www.eyeviewdigital.com&lt;/a&gt; these guys prepare videos for online websites showing how to get things done on the website. Could really be helpful for new visitors… Hope this helps!
+    I love your products and website. I saw a company that might help new customers understand what Satisfaction are all about. Look at &lt;a href=&quot;http://www.eyeviewdigital.com&quot; rel=&quot;nofollow&quot;&gt;www.eyeviewdigital.com&lt;/a&gt; these guys prepare videos for online websites showing how to get things done on the website. Could really be helpful for new visitorsâ¦ Hope this helps!
   </content>
   
   <sfn:topic_style>idea</sfn:topic_style>

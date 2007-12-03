@@ -17,11 +17,13 @@
   <link rel="topic" href="http://api.getsatisfaction.com/topics/40621" type="application/atom+xml"/>
   <link rel="company" href="http://api.getsatisfaction.com/companies/2881" type="text/html"/>
   
+  <updated>2007-11-15T05:09:08Z</updated>  
+  
   <title type="html">You guys should consider responding to more of these comments. The &quot;0 replies&quot; everywhere really doesn't present a good image. Just a thought.</title>
   <updated>2007-11-15T05:09:08Z</updated>
   <author>
    <name>Cupcake 40451</name>
-   <url>http://api.getsatisfaction.com/people/40451</url>
+   <uri>http://api.getsatisfaction.com/people/40451</uri>
   </author>
   <content type="html">
     
@@ -47,7 +49,7 @@
   <updated>2007-11-15T05:09:08Z</updated>
   <author>
    <name>Rael Dornfest</name>
-   <url>http://api.getsatisfaction.com/people/15881</url>
+   <uri>http://api.getsatisfaction.com/people/15881</uri>
   </author>
   <content type="html">
     Sorry we weren't able to get to all the topics today. We posted and will continue to post any updates to http://getsatisfaction.com/iwantsandy/topics/updates and have now called that topic out (albeit still a small link) in the company links section of the GetSatisfaction sidebar over there to the left.
@@ -71,7 +73,7 @@
   <updated>2007-11-14T21:21:24Z</updated>
   <author>
    <name>neil97</name>
-   <url>http://api.getsatisfaction.com/people/40481</url>
+   <uri>http://api.getsatisfaction.com/people/40481</uri>
   </author>
   <content type="html">
     I agree, and staff members seem to be around; I don't 'get' why they don't answer the forum posts :-(

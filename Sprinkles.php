@@ -1,7 +1,7 @@
 <?php
 # $Id$
 
-#require_once 'XML/Feed/Parser.php';
+require_once 'XML_Feed_Parser-1.0.2/Parser.php';
 require_once 'setup.php';
 
 function take($n, $list) {
@@ -83,6 +83,8 @@ global $robust_mode;   # Causes Sprinkles to filter a feed even if it
 # $robust_mode = true;
 $robust_mode = false;
 
+$xml_sfn_ns = 'http://api.getsatisfaction.com/schema/0.1';
+
 class Sprinkles {
 
   var $company_id;
@@ -101,6 +103,59 @@ class Sprinkles {
       $company_hcards = $h->getByURL('hcard', $company_url);
     }
     return $company_hcards[0];
+  }
+
+  function fix_atom_reply($entry) {
+    return $this->fix_atom_entry($entry, 'reply');
+  }
+
+  function sfn_element($entry, $elem_name) {
+    global $xml_sfn_ns;
+    if ($elem = $entry->model->getElementsByTagNameNS($xml_sfn_ns, $elem_name)->item(0))
+      return $elem->nodeValue;
+  }
+
+  function sfn_element_present($entry, $elem_name) {
+    global $xml_sfn_ns;
+    return !!$entry->model->getElementsByTagNameNS($xml_sfn_ns,
+                                                   $elem_name)->item(0);
+  }
+
+  # Argument $kind is one of topic, reply
+  function fix_atom_entry($entry, $kind) {
+    $item = array();
+    $item['id'] = $entry->id;
+    if (!$item['id']) die('no id');
+    $item['title'] = $entry->title;
+    $item['content'] = $entry->content;
+    $item['author'] = array();
+    $item['author']['name'] = $entry->author();
+    $item['author']['uri'] = $entry->author(0, array('param' => 'uri'));
+    $person = $this->get_person($item["author"]["uri"]);
+    $person = $person[0];
+    foreach ($person as $key => $value) {
+      $item['author'][$key] = $value;
+    }
+    $item['updated'] = $entry->updated;
+    $item['updated_relative'] = ago($entry->updated, time());
+    $item['updated_relative'] = ago($entry->updated, time());
+    global $xml_sfn_ns;
+    if (!$xml_sfn_ns) die("no satisfaction namespace!");
+    $item['topic_style'] = $this->sfn_element($entry, 'topic_style');
+    if ($kind == 'topic' && !$item['topic_style'])
+      die("SFN feed problem: no sfn:topic_style");
+    $item['reply_count'] = $this->sfn_element($entry, 'reply_count');
+    $emotitag_elem = $entry->model->getElementsByTagNameNS(
+                                        $xml_sfn_ns, 'emotitag')->item(0);
+    if ($emotitag_elem) {
+      $item['emotitag_face'] = $emotitag_elem->getAttribute('face');
+      $item['emotitag_severity'] = $emotitag_elem->getAttribute('severity');
+      $item['emotitag_emotion'] = $emotitag_elem->getAttribute('emotion');
+    }
+
+    $item['star_promoted'] = $this->sfn_element_present($entry, 'star_promoted');
+    $item['company_promoted'] = $this->sfn_element_present($entry, 'company_promoted');
+    return $item;
   }
 
   ## Topics for the company, filter by values in $options
@@ -122,28 +177,48 @@ class Sprinkles {
         $url_path .= '?style=' . $options['style'];
     }
     $topics_feed_url = $this->api_url($url_path);
-    # print "getting topics feed $topics_feed_url.";
-    $atom = new myAtomParser($topics_feed_url);
-    $topics = $atom->output['FEED'][""]["ENTRY"];      # FIXME extra level here.
-    if (!$topics) { return array(); }
-
-    foreach ($topics as &$topic) {
-      $topic['UPDATED_EPOCH'] = strtotime($topic['UPDATED']);
-      $topic['UPDATED_RELATIVE'] = ago(strtotime($topic['UPDATED']), time());
-    }
-
-    global $robust_mode;
-    if ($robust_mode && $options['style']) {
-      # Filter the topics down to those of the given style
-      $new_topics = array();
-      foreach ($topics as $t) {
-        if ($t['SFN:TOPIC_STYLE'] == $options['style']) {
-          array_push($new_topics, $t);
-        }
+    print "getting topics feed $topics_feed_url.";
+    try {
+      $feed = new XML_Feed_Parser(file_get_contents($topics_feed_url));
+      $topics = array();
+      foreach ($feed as $entry) {
+        $topic = $this->fix_atom_entry($entry, 'topic');
+        array_push($topics, $topic);
       }
-      $topics = $new_topics;
+
+      global $robust_mode;
+      if ($robust_mode && $options['style']) {
+        # Filter the topics down to those of the given style
+        $new_topics = array();
+        foreach ($topics as $t) {
+          if ($t['topic_style'] == $options['style']) {
+            array_push($new_topics, $t);
+          }
+        }
+        $topics = $new_topics;
+      }
+      return $topics;
+    } catch (XML_Feed_Parser_Exception $e) {
+      die('Satisfaction feed did not pass validation: ' . $e->getMessage());
     }
-    return $topics;
+  }
+
+  function topic($id) {
+    $url = $quick_mode ?
+         $cache_dir . 'topics/40621.cache' : 
+         $id;
+# TBD: add check that $url is rooted at a sanctioned base URL
+    assert(!!$url);
+
+    $topic_feed = new XML_Feed_Parser(file_get_contents($url));
+
+# FIXME: needs to return metadata on the topic besides just the entries
+    $items = array();
+    foreach ($topic_feed as $entry) {
+      $item = $this->fix_atom_entry($entry, 'reply');
+      array_push($items, $item);
+    }
+    return $items;
   }
 
   ## Get list of people associated with the company

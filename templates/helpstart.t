@@ -26,7 +26,7 @@
 
 <ul class="topic-list">
 {foreach from=$entries key=i item=entry}
-    <li><a href="topic.php?id={$entry.ID}">{$entry.TITLE}</a></li>
+    <li><a href="topic.php?id={$entry.id}">{$entry.title}</a></li>
 {/foreach}
 </ul>
 <div class="right"><a href="discuss.php">See more topics of discussion</a></div>

@@ -1,5 +1,4 @@
 <?
-require("class.myatomparser.php");
 require_once("Sprinkles.php");
 
 $h = new hkit;

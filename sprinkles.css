@@ -194,3 +194,7 @@ ul.product-list li {
 .small-note { font-size: 8pt; }
 
 ul.straight { list-style-type: none; padding-left: 0pt; }
+
+.emotitag_face { vertical-align: middle; }
+
+.flagged { border: 1px solid black; padding: 3px; float: right; }
