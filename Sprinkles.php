@@ -177,7 +177,7 @@ class Sprinkles {
         $url_path .= '?style=' . $options['style'];
     }
     $topics_feed_url = $this->api_url($url_path);
-    print "getting topics feed $topics_feed_url.";
+#    print "getting topics feed $topics_feed_url.";
     try {
       $feed = new XML_Feed_Parser(file_get_contents($topics_feed_url));
       $topics = array();
