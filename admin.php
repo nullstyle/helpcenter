@@ -12,9 +12,6 @@ if (!$username)
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
-$entries = $sprink->topics(array());
-$entries = take($helpstart_topic_count, $entries);
-
 $sql = "select background_color, logo_url, contact_email, contact_phone, " . 
        "contact_address, map_url, faq_type from site_settings";
 $result = mysql_query($sql);
@@ -27,6 +24,9 @@ foreach ($fields as $i => $field) {
   }
 }
 
+$smarty->assign('background_color', $sprink->site_background_color());
+
+$smarty->assign('site_dirty', true);       # FIXME: make it false at first setup
 $smarty->assign('invalid', $_GET['invalid']);
 $smarty->assign('errors', $_GET['errors']);
 $smarty->assign('settings', $settings);

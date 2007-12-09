@@ -8,6 +8,8 @@ $company_name = $company_hcard["fn"];
 
 $topics = array();
 
+$smarty->assign('background_color', $sprink->site_background_color());
+
 $smarty->assign('company_name', $company_name);
 $smarty->assign('topics', $topics);
 $smarty->display('minidashboard.t');

@@ -1,11 +1,12 @@
 <?
+
 # Directory where the Sprinkles code, and the caches, reside.
 $sprinkles_dir = '/Library/WebServer/Documents/sprinkles/';
 
 # Use cached feeds?
 global $quick_mode;
-$quick_mode = true;
-# $quick_mode = false;
+# $quick_mode = true;
+$quick_mode = false;
 
 # API root URL and caching directory
 

@@ -1,6 +1,6 @@
 body {
   font-family: helvetica, sans-serif;
-  background-color: #a7efff;
+#  background-color: #a7efff;
   color: #333;
 }
 
@@ -139,6 +139,15 @@ input.admin, textarea.admin { width: 160pt; }
   border-bottom: 1px solid #ccc;
 }
 
+#.topic-replies .subordinate {
+#  margin-left: 32pt;
+#}
+
+.topic-replies .subordinate .reply-core {
+  padding: 3pt;
+  background-color: #ccc;
+}
+
 .discuss-topic-list h3, .topic-head h3 {
   font-size: 12pt;
   margin: 0pt;
@@ -159,8 +168,22 @@ input.admin, textarea.admin { width: 160pt; }
 }
 
 .reply-author-pic {
+  position:absolute;
+  right: 0pt;
+}
+
+.toplevel .reply-author-pic {
   width: 32pt;
   height: 32pt;
+}
+
+.reply-author-column {
+  width: 36pt;
+}
+
+.subordinate .reply-author-pic {
+  width: 24pt;
+  height: 24pt;
 }
 
 .topic-replies {
@@ -197,4 +220,5 @@ ul.straight { list-style-type: none; padding-left: 0pt; }
 
 .emotitag_face { vertical-align: middle; }
 
-.flagged { border: 1px solid black; padding: 3px; float: right; }
+.star_button { border: 1px solid black; padding: 3px; color: blue; }
+.flag_button { padding: 3px; color: blue; }

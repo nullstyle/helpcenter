@@ -36,6 +36,7 @@ foreach ($topics as &$topic) {
 
 $top_topic_tags = array('underwear');
 
+$smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign('filter_product', $filter_product);
 $smarty->assign('filter_style', $filter_style);

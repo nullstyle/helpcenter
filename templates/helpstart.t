@@ -9,14 +9,23 @@
 <input name="question" class="questionbox" />
 <button type="submit">Go</button>
 
-<img class="pin-right" alt="Powered by Satisfaction" src="poweredbysmallStack.png" width="113" height="30" />
+<img class="pin-right" alt="Powered by Satisfaction" 
+     src="poweredbysmallStack.png" width="113" height="30" />
 </form>
 </div>
 
 <div class="sidepane">
 <div class="sidebar">
   <h2>Our Contact info</h2>
- blah blah blah 
+<h3>Phone</h3>
+  {$contact_info.contact_phone}
+
+<h3>Email</h3>
+  {$contact_info.contact_email}
+
+<h3>Physical</h3>
+  {$contact_info.contact_address}
+  {$contact_info.map_url}
 </div>
 </div>
 

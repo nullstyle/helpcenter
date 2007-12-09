@@ -4,6 +4,7 @@
 require_once 'XML_Feed_Parser-1.0.2/Parser.php';
 require_once 'setup.php';
 
+# take: return a list of the first $n elements from $list
 function take($n, $list) {
   assert(is_array($list));
   $result = array();
@@ -15,14 +16,16 @@ function take($n, $list) {
   return $result;
 }
 
+# take_range: return a list of elements from $list numbered $lo through $hi-1
 function take_range($lo, $hi, $list) {
   $result = array();
   $i = 0;
   foreach ($list as $item) {
-    if ($i++ > $hi) { break; }
+    if ($i >= $hi) { break; }
     if ($i >= $lo) {
       array_push($result, $item);
     }
+    $i++;
   }
   return $result;
 }
@@ -55,13 +58,24 @@ function dump($obj) {
   print("</pre>");
 }
 
+function unbollocks($str) {  ## CURSE CURSE CURSE
+  ## unencodes strings that are needlessly encoded by default in PHP < 6.0
+  return preg_replace(array("/\\\\'/", "/\\\\\\\\/", "/\\\\0/"),
+                      array("'", "\\", "\x00"),
+                      $str);
+}
+
 function request_param($name) {
   if ($_GET[$name]) {
-    return $_GET[$name];
+    $result = $_GET[$name];
   } else if ($_POST[$name]) {
-    return $_POST[$name];
+    $result = $_POST[$name];
   }
-  return;
+  $php_version_six = false; # FIXME: get the real version
+  if ($php_version_six)
+    return $result;
+  else
+    return unbollocks($result);
 }
 
 function mysql_now() {
@@ -139,6 +153,9 @@ class Sprinkles {
     $item['updated'] = $entry->updated;
     $item['updated_relative'] = ago($entry->updated, time());
     $item['updated_relative'] = ago($entry->updated, time());
+    $in_reply_to_elem = $entry->model->getElementsByTagName('in-reply-to')->item(0);
+    if ($in_reply_to_elem)
+      $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
     global $xml_sfn_ns;
     if (!$xml_sfn_ns) die("no satisfaction namespace!");
     $item['topic_style'] = $this->sfn_element($entry, 'topic_style');
@@ -185,6 +202,7 @@ class Sprinkles {
         $topic = $this->fix_atom_entry($entry, 'topic');
         array_push($topics, $topic);
       }
+      dump($topics);
 
       global $robust_mode;
       if ($robust_mode && $options['style']) {
@@ -203,14 +221,58 @@ class Sprinkles {
     }
   }
 
+  function thread_items($feed, $root) {
+    $items = array();
+    foreach ($feed as $item) {
+      $items[$item['id']] = $item;
+    }
+
+    foreach ($items as $item) {
+      if ($item['in_reply_to'])
+        if ($items[$item['in_reply_to']]) {
+          # List subordinates as field of parent
+          if (!is_array($items[$item['in_reply_to']]))
+            $items[$item['in_reply_to']]['replies'] = array();
+          if (!is_array($items[$item['in_reply_to']]['replies']))
+            $items[$item['in_reply_to']]['replies'] = array();
+          array_push($items[$item['in_reply_to']]['replies'], $item);
+}
+    }
+    foreach ($items as $item) {
+      if ($item['in_reply_to'])
+        if ($item['in_reply_to'] != $root) {
+          unset($items[$item['id']]);
+        } else {
+}
+    }
+    return $items;
+  }
+
+  function flatten_threads($items) {
+    $result = array();
+    foreach ($items as $item) {
+      array_push($result, $item);
+      if ($item['replies']) 
+        foreach ($item['replies'] as $reply) {
+          array_push($result, $reply);
+        }
+    }
+    return $result;
+  }
+
   function topic($id) {
+    global $quick_mode, $cache_dir;
     $url = $quick_mode ?
-         $cache_dir . 'topics/40621.cache' : 
+         $cache_dir . 'topics/299.cache' : 
          $id;
 # TBD: add check that $url is rooted at a sanctioned base URL
     assert(!!$url);
 
+    print "Getting $url";
+
     $topic_feed = new XML_Feed_Parser(file_get_contents($url));
+
+    if (!$topic_feed) die("Couldn't get topic feed from $url");
 
 # FIXME: needs to return metadata on the topic besides just the entries
     $items = array();
@@ -361,6 +423,25 @@ class Sprinkles {
     }
     return $users;
   }
+
+  function site_background_color() {
+    $sql = 'select background_color from site_settings';
+    $result = mysql_query($sql);
+    list($background_color) = mysql_fetch_array($result);
+    return $background_color;
+  }
+
+  function site_contact_info() {
+    $sql = 'select contact_email, contact_phone, contact_address, map_url '.
+           'from site_settings';
+    $result = mysql_query($sql);
+    list($contact_email, $contact_phone, $contact_address, $map_url) = mysql_fetch_array($result);
+    return array('contact_email' => $contact_email,
+                 'contact_phone' => $contact_phone,
+                 'contact_address' => $contact_address, 
+                 'map_url' => $map_url);
+  }
+
 }
 
 function redirect($url) {

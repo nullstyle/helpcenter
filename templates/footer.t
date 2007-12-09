@@ -11,7 +11,7 @@
   </div>
 
   <div style="padding: 4px">
-    <a href="admin_login.php">Admin sign-in</a>
+    <a href="admin.php">Admin sign-in</a>
   </div>
 </div>
 

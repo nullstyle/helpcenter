@@ -67,11 +67,11 @@ Contact email must be a valid email address.
 </tr>
 <tr>
 <td class="form-label"> Mailing Address </td>
-<td> <textarea class="admin" name="contact_address" rows="2"></textarea> </td>
+<td> <textarea class="admin" name="contact_address" rows="2">{$settings.contact_address}</textarea> </td>
 </tr>
 <tr>
 <td class="form-label"> Link to a map </td>
-<td> <input class="admin" name="map_url" /> </td>
+<td> <input class="admin" name="map_url" value="{$settings.map_url}" /> </td>
 </tr>
 <tr>
 <td class="form-label"> Add another link </td>
@@ -92,7 +92,13 @@ xxx
 <td>
 </td>
 <td>
-<button type="submit" name="save">OK, Start up Sprinkles! </button>
+<button type="submit" name="save">
+{if $site_dirty}
+Save changes
+{else}
+OK, Start up Sprinkles!
+{/if}
+</button>
 </td>
 </tr>
 </table>

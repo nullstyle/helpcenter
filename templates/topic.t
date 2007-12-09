@@ -13,7 +13,7 @@ a question{else}{if $lead_item.topic_style == 'problem'}
 a problem{/if}{/if}{/if}{/if}.
 </h3>
 
-<table>
+<table width="100%">
 <tr>
 <td style="width:48pt;">
 <div><img src="{$lead_item.author.photo}" class="topic-author-pic" /></div>
@@ -35,7 +35,7 @@ reported this problem{/if}{/if}{/if}{/if}
 { $lead_item.content }
 
  <p><img src="images/{$topic.emotitag_face}.png" style="vertical-align:middle""
-      alt="{$topic.emotitag_emotion}"> {$topic.emotitag_emotion} </p>
+         alt="{$topic.emotitag_emotion}"> {$topic.emotitag_emotion} </p>
 
 </td>
 
@@ -64,37 +64,46 @@ x official rep is here <br />
   {include file="related-topics.t"}
 </div>
 
-<div>
-({$reply_count} replies)
+<div>  <p>({$reply_count} total replies)</p>
   <h2>Login to reply</h2>
-  <ul class="topic-replies">
+
+  <table class="topic-replies">
   {foreach from=$replies key=i item=reply}
-  <li>
-    <table><tr>
-    <td>
+  <tr class="{if $reply.in_reply_to == $lead_item.id}toplevel{else}subordinate{/if}">
+    <td class="reply-author-column">
+      <div style="position:relative; width:34pt;">
       <img src="{$reply.author.photo}" class="reply-author-pic" />
-    </td><td>
+      </div>
+    </td><td class="reply-core" width="100%">
       {$reply.author.name} (xxx credentials) replied {$reply.updated_relative}:
         <p>{$reply.content}</p>
-{if $reply.star_promoted || $reply.company_promoted}
-<div class="flagged">
-{if $lead_item.topic_style == 'question'}
-This answered the question{else}{if $lead_item.topic_style == 'idea'}
-Good point!{else}{if $lead_item.topic_style == 'talk'}
-This answered the question{else}{if $lead_item.topic_style == 'problem'}
-This solved the problem!{/if}{/if}{/if}{/if}
-</div>
-{/if}
-        {if $reply.emotitag_face}
+        <div class="float-right">
+          {if $reply.in_reply_to == $lead_item.id} {* A top-level reply. *}
+          <span class="star_button">
+          {if $lead_item.topic_style == 'question'}
+          This answered the question
+          {else}{if $lead_item.topic_style == 'idea'}
+          Good point!{else}
+          {if $lead_item.topic_style == 'talk'}
+          This answered the question{else}
+          {if $lead_item.topic_style == 'problem'}
+          This solved the problem!
+          {/if}{/if}{/if}{/if}
+          </span>
+          {/if}
+          <span class="flag_button">
+          Flag
+          </span>
+        </div>
+       {if $reply.emotitag_face}
         <p><img src="images/{$reply.emotitag_face}.png" 
                 alt="{$reply.emotitag_emotion}"
-                class="emotitag_face"> {$reply.emotitag_emotion} </p>
+                class="emotitag_face"> I'm {$reply.emotitag_emotion} </p>
         {/if}
     </td>
-    </tr></table>
-  </li>
+  </tr>
   {/foreach}
-  </ul>
+  </table>
 
 {if $num_pages > 1}
 {if ($page_num > 0)}
