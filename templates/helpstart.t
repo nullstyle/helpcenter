@@ -57,6 +57,8 @@
 </table>
 </div>
 
+<hr />
+
 <div id="what-satisfaction">
 <h4>Welcome to {$company_name}'s customer services Satisfaction site.</h4>
 

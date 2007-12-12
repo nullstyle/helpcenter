@@ -152,7 +152,7 @@ class Sprinkles {
     }
     $item['updated'] = $entry->updated;
     $item['updated_relative'] = ago($entry->updated, time());
-    $item['updated_relative'] = ago($entry->updated, time());
+    $item['updated_formatted'] = strftime("%B %e, %y", $entry->updated);
     $in_reply_to_elem = $entry->model->getElementsByTagName('in-reply-to')->item(0);
     if ($in_reply_to_elem)
       $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
@@ -162,6 +162,8 @@ class Sprinkles {
     if ($kind == 'topic' && !$item['topic_style'])
       die("SFN feed problem: no sfn:topic_style");
     $item['reply_count'] = $this->sfn_element($entry, 'reply_count');
+    $item['star_count'] = $this->sfn_element($entry, 'star_count');
+    $item['flag_count'] = $this->sfn_element($entry, 'flag_count');
     $emotitag_elem = $entry->model->getElementsByTagNameNS(
                                         $xml_sfn_ns, 'emotitag')->item(0);
     if ($emotitag_elem) {
@@ -202,7 +204,7 @@ class Sprinkles {
         $topic = $this->fix_atom_entry($entry, 'topic');
         array_push($topics, $topic);
       }
-      dump($topics);
+#      dump($topics);
 
       global $robust_mode;
       if ($robust_mode && $options['style']) {
@@ -222,11 +224,13 @@ class Sprinkles {
   }
 
   function thread_items($feed, $root) {
+    # First, index them all by ID
     $items = array();
     foreach ($feed as $item) {
       $items[$item['id']] = $item;
     }
 
+    # Next, point to each sub-reply from its parent
     foreach ($items as $item) {
       if ($item['in_reply_to'])
         if ($items[$item['in_reply_to']]) {
@@ -236,14 +240,16 @@ class Sprinkles {
           if (!is_array($items[$item['in_reply_to']]['replies']))
             $items[$item['in_reply_to']]['replies'] = array();
           array_push($items[$item['in_reply_to']]['replies'], $item);
-}
+        }
     }
+
+
+    # Then, remove each sub-reply from the toplevel stream
     foreach ($items as $item) {
       if ($item['in_reply_to'])
         if ($item['in_reply_to'] != $root) {
           unset($items[$item['id']]);
-        } else {
-}
+        }
     }
     return $items;
   }
@@ -268,13 +274,13 @@ class Sprinkles {
 # TBD: add check that $url is rooted at a sanctioned base URL
     assert(!!$url);
 
-    print "Getting $url";
+#    print "Getting $url";
 
     $topic_feed = new XML_Feed_Parser(file_get_contents($url));
 
     if (!$topic_feed) die("Couldn't get topic feed from $url");
 
-# FIXME: needs to return metadata on the topic besides just the entries
+# FIXME: needs to return metadata on the topic, not just the entries
     $items = array();
     foreach ($topic_feed as $entry) {
       $item = $this->fix_atom_entry($entry, 'reply');
@@ -293,7 +299,7 @@ class Sprinkles {
     } else {
       $people_list = $h->getByURL('hcard', $people_url);
     }
-    if (!$people_list) { print "no people list"; die(1); }
+    if (!$people_list) { die("no people list"); }
     return $people_list;
   }
 
@@ -356,7 +362,7 @@ class Sprinkles {
   function products() {
     $products = array();
     $products_list = $this->product_list();
-    if (!$products_list) { print "Couldn't get product list"; die(); }
+    if (!$products_list) { die("Couldn't get product list"); }
     global $h, $quick_mode, $cache_dir;
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
@@ -408,7 +414,7 @@ class Sprinkles {
     $sql = "select session_id, username from sessions where session_id = " . 
            $session_id;
     $result = mysql_query($sql);
-    if (!$result) { print mysql_error(); return; }
+    if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
     return $cols[1];
   }

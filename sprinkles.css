@@ -6,7 +6,7 @@ body {
 
 textarea, input { border: 1px solid gray; }
 
-hr { border: 1px solid gray; }
+hr { border: 0px; border-bottom: 1px solid gray; height: 0px; }
 
 a { text-decoration: none; }
 
@@ -62,7 +62,6 @@ ul.topic-list li {
 }
 
 div#what-satisfaction {
-  border-top: 1px solid gray;
   padding: 1pc;
 }
 
@@ -214,11 +213,11 @@ ul.product-list li {
   color: #c03030;
 }
 
-.small-note { font-size: 8pt; }
+.small-note { font-size: 8pt; color: #777; }
 
 ul.straight { list-style-type: none; padding-left: 0pt; }
 
 .emotitag_face { vertical-align: middle; }
 
-.star_button { border: 1px solid black; padding: 3px; color: blue; }
-.flag_button { padding: 3px; color: blue; }
+.star_button { border: 1px solid black; padding: 3px;  }
+.flag_button { padding: 3px; }

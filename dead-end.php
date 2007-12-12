@@ -1,4 +1,3 @@
 <?
-print $_COOKIE['session_id'] . ' ';
-print "You have logged out.";
+print "This is a dead end.";
 ?>

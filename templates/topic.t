@@ -7,10 +7,10 @@ Hey { $company_name }!
 <h3>
 <strong> { $lead_item.author.name }</strong> has
 {if $lead_item.topic_style == 'question'}
-a question{else}{if $lead_item.topic_style == 'idea'}
-an idea{else}{if $lead_item.topic_style == 'talk'}
-a question{else}{if $lead_item.topic_style == 'problem'}
-a problem{/if}{/if}{/if}{/if}.
+a question{elseif $lead_item.topic_style == 'idea'}
+an idea{elseif $lead_item.topic_style == 'talk'}
+a question{elseif $lead_item.topic_style == 'problem'}
+a problem{/if}
 </h3>
 
 <table width="100%">
@@ -22,10 +22,10 @@ a problem{/if}{/if}{/if}{/if}.
 { $lead_item.author.name }
 </span>
 {if $lead_item.topic_style == 'question'}
-asked this question{else}{if $lead_item.topic_style == 'idea'}
-shared this idea{else}{if $lead_item.topic_style == 'talk'}
-asked this question{else}{if $lead_item.topic_style == 'problem'}
-reported this problem{/if}{/if}{/if}{/if}
+asked this question{elseif $lead_item.topic_style == 'idea'}
+shared this idea{elseif $lead_item.topic_style == 'talk'}
+asked this question{elseif $lead_item.topic_style == 'problem'}
+reported this problem{/if}
 {$topic_updated_relative}
 </div>
 </td>
@@ -40,8 +40,12 @@ reported this problem{/if}{/if}{/if}{/if}
 </td>
 
 <td style="width: 120pt;">
-Share or follow this topic
+
+{if $username}
+<a href="share_topic?id={$topic_id}">Share</a> or follow this topic
 <input style="width:120pt;" value="I have this question too!" />
+{/if}
+
 <div>
 In this topic<br />
 x people<br />
@@ -64,8 +68,8 @@ x official rep is here <br />
   {include file="related-topics.t"}
 </div>
 
-<div>  <p>({$reply_count} total replies)</p>
-  <h2>Login to reply</h2>
+<div>  <p>({$reply_count} total replies, {$toplevel_reply_count} to the topic)</p>
+  <h2><a href="user-login.php">Login to reply</a></h2>
 
   <table class="topic-replies">
   {foreach from=$replies key=i item=reply}
@@ -79,21 +83,23 @@ x official rep is here <br />
         <p>{$reply.content}</p>
         <div class="float-right">
           {if $reply.in_reply_to == $lead_item.id} {* A top-level reply. *}
-          <span class="star_button">
-          {if $lead_item.topic_style == 'question'}
-          This answered the question
-          {else}{if $lead_item.topic_style == 'idea'}
-          Good point!{else}
-          {if $lead_item.topic_style == 'talk'}
-          This answered the question{else}
-          {if $lead_item.topic_style == 'problem'}
-          This solved the problem!
-          {/if}{/if}{/if}{/if}
-          </span>
+          <form action="star-it.php" style="display: inline; vertical-align: middle;">
+            <input type="hidden" name="topic_id" value="{$lead_item.id}"></input>
+            <button href="dead-end.php">
+            {if $lead_item.topic_style == 'question'}
+            This answered the question
+            {elseif $lead_item.topic_style == 'idea'}
+            Good point!{elseif $lead_item.topic_style == 'talk'}
+            This answered the question{elseif $lead_item.topic_style =='problem'}
+            This solved the problem!
+            {/if}
+{if $reply.star_count}({$reply.star_count}){/if}
+            </button>
+          </form>
           {/if}
-          <span class="flag_button">
+          <a href="dead-end.php" class="flag_button">
           Flag
-          </span>
+          </a>
         </div>
        {if $reply.emotitag_face}
         <p><img src="images/{$reply.emotitag_face}.png" 
