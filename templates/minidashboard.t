@@ -1,5 +1,7 @@
 {include file="header.t"}
 
+{include file="topnav.t"}
+
 <h1>Discuss with us</h1>
 
 {include file="question-box.t"}

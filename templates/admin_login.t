@@ -1,13 +1,10 @@
 {* Smarty *}
 
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
-</head>
-<body>
-
-<div id="content">
-<div id="backdrop">
+{if $first_config}
+{include file="lite-header.t"}
+{else}
+{include file="header.t"}
+{/if}
 
 <h1>Welcome to your Satisfaction Sprinkles</h1>
 

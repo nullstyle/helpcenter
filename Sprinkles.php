@@ -3,6 +3,7 @@
 
 require_once 'XML_Feed_Parser-1.0.2/Parser.php';
 require_once 'setup.php';
+require_once 'hkit.class.php';
 
 # take: return a list of the first $n elements from $list
 function take($n, $list) {
@@ -88,7 +89,7 @@ function mysql_now() {
   return $cols[0];
 }
   
-require_once('hkit.class.php');
+#require_once('hkit.class.php');
 global $h;
 $h = new hKit;
     
@@ -114,9 +115,15 @@ class Sprinkles {
     if ($quick_mode) {
       $company_hcards = $h->getByString('hcard', file_get_contents($company_url));
     } else {
+#      $h = new hKit();
       $company_hcards = $h->getByURL('hcard', $company_url);
     }
     return $company_hcards[0];
+  }
+
+  function company_name() {
+    $card = $this->company_hcard();
+    return $card['fn'];
   }
 
   function fix_atom_reply($entry) {
@@ -146,13 +153,16 @@ class Sprinkles {
     $item['author']['name'] = $entry->author();
     $item['author']['uri'] = $entry->author(0, array('param' => 'uri'));
     $person = $this->get_person($item["author"]["uri"]);
-    $person = $person[0];
-    foreach ($person as $key => $value) {
-      $item['author'][$key] = $value;
+    $person = $person[0];                    # get_person returns a list; FIXME?
+    if ($person) {
+      foreach ($person as $key => $value) {
+        $item['author'][$key] = $value;
+      }
     }
     $item['updated'] = $entry->updated;
     $item['updated_relative'] = ago($entry->updated, time());
     $item['updated_formatted'] = strftime("%B %e, %y", $entry->updated);
+
     $in_reply_to_elem = $entry->model->getElementsByTagName('in-reply-to')->item(0);
     if ($in_reply_to_elem)
       $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
@@ -175,6 +185,17 @@ class Sprinkles {
     $item['star_promoted'] = $this->sfn_element_present($entry, 'star_promoted');
     $item['company_promoted'] = $this->sfn_element_present($entry, 'company_promoted');
     return $item;
+  }
+
+  function get_tags($url) {
+    global $h;
+#    $tag_records = $h->getByURL('htag', $url);
+    $tag_records = array();
+    $result = array();
+    foreach($tag_records as $tag_record) {
+      array_push($result, $tag_record['name']);
+    }
+    return $result;
   }
 
   ## Topics for the company, filter by values in $options
@@ -202,10 +223,13 @@ class Sprinkles {
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
+        $topic_tags_url = $topic['id'] . '/tags';         # FIXME: is this safe?
+        $topic['tags'] = $this->get_tags($topic_tags_url);
         array_push($topics, $topic);
       }
 #      dump($topics);
 
+# FIXME: expand robust mode to "sort" option
       global $robust_mode;
       if ($robust_mode && $options['style']) {
         # Filter the topics down to those of the given style
@@ -294,9 +318,9 @@ class Sprinkles {
     $people_url = $this->api_url('companies/'.$this->company_id.'/people');
     global $h, $quick_mode;
     if ($quick_mode) {
-      $people_list = $h->getByString('hcard',
-                                       file_get_contents($people_url));
+      $people_list = $h->getByString('hcard', file_get_contents($people_url));
     } else {
+#       $h = new hkit();
       $people_list = $h->getByURL('hcard', $people_url);
     }
     if (!$people_list) { die("no people list"); }
@@ -309,10 +333,11 @@ class Sprinkles {
     $people = array();
     global $h;
     foreach ($people_list as $person) {
-    if ($quick_mode) {
+      if ($quick_mode) {
         $url = api_url("people/40451");
         $person_record = $h->getByString('hcard', $url);
       } else {
+#        $h = new hKit();
         $person_record = $h->getByURL('hcard', $person["url"]);
       }
       array_push($people, $person_record[0]);
@@ -321,12 +346,15 @@ class Sprinkles {
   }
     
   function get_person($url) {
+    # FIXME: this returns a (singleton) list of persons. Maybe it
+    # should return just a person?
     global $h;
     if ($quick_mode) {
       # FIXME
       $person = $h->getByString('hcard',
                           file_get_contents($cache_dir . "people-40451.html"));
     } else {
+#      $h = new hKit();
       $person = $h->getByURL('hcard', $url);
     }
     return $person;
@@ -446,6 +474,14 @@ class Sprinkles {
                  'contact_phone' => $contact_phone,
                  'contact_address' => $contact_address, 
                  'map_url' => $map_url);
+  }
+
+  function site_logo() {
+    $sql = 'select logo_data '.
+           'from site_settings';
+    $result = mysql_query($sql);
+    list($logo_data) = mysql_fetch_array($result);
+    return $logo_data;
   }
 
 }

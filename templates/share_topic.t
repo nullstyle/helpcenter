@@ -1,5 +1,7 @@
 {include file="header.t"}
 
+{include file="topnav.t"}
+
 <h1><a href="topic.php?id={$topic_id}">Back to the topic page</a></h1>
 
 <div>

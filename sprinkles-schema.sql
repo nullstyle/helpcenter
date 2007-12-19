@@ -13,12 +13,12 @@ create table site_links (
 
 create table site_settings (
   background_color varchar(255),
-  logo_url text,
   contact_email varchar(255),
   contact_phone varchar(255),
   contact_address text,
   map_url text,
-  faq_type varchar(255)
+  faq_type varchar(255),
+  logo_data blob
 );
 
 insert into site_settings values ();

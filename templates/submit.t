@@ -1,13 +1,6 @@
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
-</head>
-<body>
-
-<div id="content">
-<div id="backdrop">
-
 {include file="header.t"}
+
+{include file="topnav.t"}
 
 <h1>Do any of these help?</h1>
 

@@ -1,0 +1,135 @@
+company lists
+=============
+
+- /companies
+
+# sorts
+- /companies?sort=recently_active
+- /companies?sort=recently_create
+- /companies?sort=alpha
+
+# paging
+- /companies?page=3&limit=10
+
+#searching
+- /companies?query=Moo
+
+# filters
+- /companies?show=public # => set to public in the admin section plus has a topic posted
+- /companies?show=private # => explicitly set to hidden by admin
+- /companies?show=not_hidden  # =>  set to public but doesn't have a topic posted
+- /companies?show=all
+
+People lists
+============
+
+- /people
+- /people?page=3&limit=10
+
+# filters
+# not valid outside of a companies scope
+- /companies/satisfaction/people?filter=contributors
+- /companies/satisfaction/people?role=employee
+- /companies/satisfaction/people?role=company_rep
+- /companies/satisfaction/people?role=company_admin
+ 
+Product Lists
+============
+
+- /products
+- /products?page=3&limit=10
+
+#sorts
+- /products?sort=recently_created
+- /products?sort=alpha
+
+#search, only available in global scope
+- /products?query=macbook
+
+Tag lists
+========
+
+- /tags
+- /tags?page=3&limit=10
+
+Topic Lists
+==========
+- /topics
+
+#sorts.  Search methods aren't allowed to be sorted, apart from by match quality
+- /topics?sort=recently_created
+- /topics?sort=recently_active
+- /topics?sort=most_flagged
+- /topics?sort=unanswered  #=> also filters the list
+
+#paging
+- /topics?page=3&limit=10  # => shows page if the topics list were broken into 10 topics per page.
+
+#filters
+
+- /topics?style=problem  # => only show problems
+- /topics?filter=flagged  # => only show topics that have been flagged atleast once.  can't be used with the search results
+
+#searches
+- /topics?query=foo
+
+Reply lists
+===========
+
+#replies do not exits at the global level, they are always nested under topics
+- /topics/why_doesnt_my_brain_work/replies
+- /topics/why_doesnt_my_brain_work/replies?page=1&limit=10
+
+#sorts
+- /topics/why_doesnt_my_brain_work/replies?sort=most_useful
+- /topics/why_doesnt_my_brain_work/replies?sort=recently_created
+
+#filters
+- /topics/why_doesnt_my_brain_work/replies?filter=best
+- /topics/why_doesnt_my_brain_work/replies?filter=star_promoted
+- /topics/why_doesnt_my_brain_work/replies?filter=company_promoted
+
+- /topics/why_doesnt_my_brain_work/replies?user=13 #replies created by user with id 13
+
+Nestings
+========
+All of the various resources above are exposed through various nestings to expose useful relationships and attributes.
+These nesting accept the same parameters as the lists above, with a few exceptions
+
+- /companies/timbuk2/topics  # => topics posted to timbuk2
+- /companies/timbuk2/people  # => people who have been to timbuk2's site
+- /companies/timbuk2/products # => products that timbuk2 is related to
+- /companies/timbuk2/products/timbuk2_classic_messenger/topics # => topics posted to timbuk2 about the classic messenger bag
+- /companies/timbuk2/tags # => tags that have been applied to timbuk2
+- /companies/timbuk2/tags/foo/topics # => topics posted to timbuk2 that have the foo tag applied to them
+
+- /people/scott/topics # => topics I posted
+- /people/scott/companies # => companies I created
+- /people/scott/products # => products I created
+- /people/scott/replies # => replies I created
+- /people/scott/followed/topics # => topics i am following
+- /people/scott/followed/companies # => companies i am following
+- /people/scott/followed/products # => products i am following
+- /people/scott/followed/people # => people i am following, not implemented yet
+- /people/scott/followed/tags # => tags i am following, not implemented yet
+
+- /products/apple_ipod/companies # => companies related to the ipod
+- /products/apple_ipod/topics # => topics related to the ipod
+- /products/apple_ipod/people # => people following the ipod
+- /products/apple_ipod/tags # => tags applied to the ipod
+
+- /tags/foo/companies # => companies tagged foo
+- /tags/foo/topics # => topics tagged foo
+- /tags/foo/products # => products tagged foo
+
+- /topics/my_shit_is_busted/replies # => replies for topic
+- /topics/my_shit_is_busted/related # => occasionally related topics to "my shit is busted" topic
+- /topics/my_shit_is_busted/tags # => tags applied to the topic
+- /topics/my_shit_is_busted/people # => people participating in the topic
+- /topics/my_shit_is_busted/products # => products that the topic is about
+
+- /flagged/topics # => topics that have been flagged
+- /flagged/replies # => replies that have been flagged
+- /flagged/people # => people that have been flagged
+- /flagged/companies # => companies that have been flagged
+- /flagged/products # => products that have been flagged

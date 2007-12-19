@@ -1,5 +1,7 @@
 {include file="header.t"}
 
+{include file="topnav.t"}
+
 <h1>Login OR Sign Up</h1>
 
 <table>

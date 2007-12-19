@@ -1,6 +1,10 @@
 {* Smarty *}
 
+{if $first_config}
+{include file="lite-header.t"}
+{else}
 {include file="header.t"}
+{/if}
 
 <div class="right">Hello <strong>{$username}</strong> from {$company_name}.
   Are you someone else?
@@ -35,7 +39,7 @@ Helpful topics from Satisfaction
 
 <h2>Edit your current settings</h2>
 
-<form action="handle_admin.php" method="POST">
+<form action="handle_admin.php" method="POST" enctype="multipart/form-data">
 <table>
 <tr>
 <td class="form-label"> Background color </td>
@@ -77,15 +81,36 @@ Contact email must be a valid email address.
 <td class="form-label"> Add another link </td>
 <td> xxx </td>
 </tr>
-</table>
-
-<table>
 <tr>
-<td>
+<td class="form-label">
 Set up your FAQ section
 </td>
 <td>
-xxx
+
+  <table>
+  <tr>
+  <td><input id="faq_type_auto" name="faq_type" type="radio" value="auto"> </input></td>
+  <td><label for="faq_type_auto">Auto-generate FAQs using Satisfaction</label></td>
+  </tr><tr>
+   <td></td>
+   <td>  Use the most frequented questions from Satisfaction
+   </td>
+  </tr><tr>
+   <td>
+    <input id="faq_type_manual" name="faq_type" type="radio" value="manual"> </input>
+   </td>
+   <td>
+    <label for="faq_type_manual"> Manually enter FAQs </label>
+   </td>
+  </tr><tr>
+   <td></td>
+    <td>
+     Add my own FAQs on Satisfaction and show them here (we'll tell you
+     how in an extra step)
+    </td>
+  </tr>
+  </table>
+
 </td>
 </tr>
 <tr>

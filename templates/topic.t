@@ -20,19 +20,20 @@ a problem{/if}
 <div class="topic-author-caption">
 <span class="topic-byline">
 { $lead_item.author.name }
-</span>
-{if $lead_item.topic_style == 'question'}
-asked this question{elseif $lead_item.topic_style == 'idea'}
-shared this idea{elseif $lead_item.topic_style == 'talk'}
-asked this question{elseif $lead_item.topic_style == 'problem'}
-reported this problem{/if}
+</span> 
+{if $lead_item.topic_style == 'question'} asked this question
+{elseif $lead_item.topic_style == 'idea'} shared this idea
+{elseif $lead_item.topic_style == 'talk'} asked this question
+{elseif $lead_item.topic_style == 'problem'} reported this problem
+{/if}
 {$topic_updated_relative}
 </div>
 </td>
 
 <td style="top; margin: 1pc;">
 <h3><strong>{ $lead_item.title }</strong></h3>
-{ $lead_item.content }
+
+ <p>{ $lead_item.content }</p>
 
  <p><img src="images/{$topic.emotitag_face}.png" style="vertical-align:middle""
          alt="{$topic.emotitag_emotion}"> {$topic.emotitag_emotion} </p>
@@ -79,7 +80,7 @@ x official rep is here <br />
       <img src="{$reply.author.photo}" class="reply-author-pic" />
       </div>
     </td><td class="reply-core" width="100%">
-      {$reply.author.name} (xxx credentials) replied {$reply.updated_relative}:
+      {$reply.author.name} (role xxx) replied {$reply.updated_relative}:
         <p>{$reply.content}</p>
         <div class="float-right">
           {if $reply.in_reply_to == $lead_item.id} {* A top-level reply. *}
@@ -93,7 +94,7 @@ x official rep is here <br />
             This answered the question{elseif $lead_item.topic_style =='problem'}
             This solved the problem!
             {/if}
-{if $reply.star_count}({$reply.star_count}){/if}
+ {if $reply.star_count}({$reply.star_count}){/if}
             </button>
           </form>
           {/if}

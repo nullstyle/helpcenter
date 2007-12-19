@@ -6,7 +6,7 @@ body {
 
 textarea, input { border: 1px solid gray; }
 
-hr { border: 0px; border-bottom: 1px solid gray; height: 0px; }
+hr { border: 0px; border-bottom: 1px solid #999999; height: 0px; }
 
 a { text-decoration: none; }
 
@@ -15,6 +15,7 @@ img { border: 0px }
 div#content {
   width: 550pt;
   margin-top: 12pt;
+  margin: 0 auto;
 }
 
 div#backdrop {
@@ -22,15 +23,15 @@ div#backdrop {
   padding: 1pc;
 }
 
-h1 { color: #989898; font-size: 14pt; }
+h1 { color: #999999; font-size: 14pt; }
 h2 { color: #444; font-size: 14pt; font-weight: bold; margin: 10pt 0pt 0pt 0pt; }
 h2 .lighter { font-weight: normal; }
 h3 { color: #aaa; font-size: 12pt; font-weight: bold; margin: 0pt; }
-h4 { margin: 10pt 0pt 0pt 0pt; }
+h4 { margin: 10pt 0pt 0pt 0pt; font-weight: normal; }
 
 td { vertical-align: top; }
 
-.question { margin: 1pc 1pc 1pc 2pc; border-bottom: 1px solid gray; }
+.question { margin: 1pc 1pc 1pc 2pc; }
 
 .questionbox {
   padding: 0pt; margin: 0pt; 
@@ -39,6 +40,10 @@ td { vertical-align: top; }
 }
 
 div.header { border-bottom: 1px solid gray; }
+
+img.header-logo {
+  width: 150px;
+}
 
 ul.topnav { float: right; }
 ul.topnav li {
@@ -58,7 +63,7 @@ ul.topic-list li {
   padding: 2pt;
   font-size: 11pt;
   font-weight: bold;
-  border-bottom: 1px solid #9090c0;
+  border-bottom: 1px solid #999999;
 }
 
 div#what-satisfaction {
@@ -96,6 +101,10 @@ div#what-satisfaction p {
   right: 0pt;
 }
 
+p {
+ font-size: 12px;
+}
+
 .sidebar { 
   background-color: #eee;
   padding: 6pt; margin: 6pt;
@@ -110,8 +119,8 @@ div#what-satisfaction p {
   width: 120pt;
 }
 
-.sidepane h2 { color: #777; margin: 0pt 0pt 4pt 0pt; font-size: 14pt; }
-.sidepane h3 { color: #aaa; margin: 0pt 0pt 4pt 0pt; font-size: 14pt; }
+.sidepane h2 { color: #777; margin: 4pt 0pt 4pt 0pt; font-size: 14pt; }
+.sidepane h3 { color: #aaa; margin: 4pt 0pt 4pt 0pt; font-size: 14pt; }
 
 td.form-label { text-align: right; }
 
@@ -171,18 +180,23 @@ input.admin, textarea.admin { width: 160pt; }
   right: 0pt;
 }
 
-.toplevel .reply-author-pic {
+.small-author-pic, .toplevel .reply-author-pic {
   width: 32pt;
   height: 32pt;
-}
-
-.reply-author-column {
-  width: 36pt;
 }
 
 .subordinate .reply-author-pic {
   width: 24pt;
   height: 24pt;
+}
+
+.tiny-author-pic {
+  width: 16pt;
+  height: 16pt;
+}
+
+.reply-author-column {
+  width: 36pt;
 }
 
 .topic-replies {
@@ -200,7 +214,7 @@ ul.product-list li {
 
 #contactus h3 { font-size: 14pt; font-weight: normal; margin: 6pt 0pt 0pt 0pt; }
 
-.discuss-topic-list tr { margin: 6pt; }
+.discuss-topic-list tr { margin: 8pt; }
 
 .error-box {
   color: #c03030; 

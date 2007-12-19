@@ -12,7 +12,7 @@ if (!$username)
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
-$sql = "select background_color, logo_url, contact_email, contact_phone, " . 
+$sql = "select background_color, contact_email, contact_phone, " . 
        "contact_address, map_url, faq_type from site_settings";
 $result = mysql_query($sql);
 

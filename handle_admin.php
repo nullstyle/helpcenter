@@ -45,6 +45,10 @@ $contact_address = request_param('contact_address');
 
 $map_url = request_param('map_url');
 
+if ($_FILES['logo']['tmp_name']) {
+  $logo_data = file_get_contents($_FILES['logo']['tmp_name']);
+  file_put_contents('logo.png', $logo_data);
+}
 
 if ($ok) {
   ## Save the settings
@@ -55,7 +59,10 @@ if ($ok) {
          'contact_email = \'' . mysql_real_escape_string($contact_email). '\', ' .
          'contact_address = \'' . mysql_real_escape_string($contact_address). '\', ' .
          'map_url = \'' . mysql_real_escape_string($map_url). '\', ' .
-         'contact_phone = \'' . mysql_real_escape_string($contact_phone). '\' ' ;
+         'contact_phone = \'' . mysql_real_escape_string($contact_phone). '\' ' .
+         ($logo_data ?
+           ', logo_data = \'' . mysql_real_escape_string($logo_data) . '\'' : '')
+ ;
 #  print $sql;
   $result = mysql_query($sql);
   if (!$result) { print mysql_error(); return; }

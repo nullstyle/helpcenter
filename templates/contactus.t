@@ -29,7 +29,7 @@
 </table>
 
 <div id="contact-form">
-<h4>Summary of your issue</h4>
+<h4> <img src="images/required.png" alr="*" /> Summary of your issue</h4>
 <input name="summary" />
 
 <h4>This is what I DID</h4>

@@ -27,5 +27,5 @@ $company_id = 4;
 # page limits
 
 $helpstart_topic_count = 5; 
-$discuss_topic_count = 3;
+$discuss_topic_page_limit = 3;
 ?>

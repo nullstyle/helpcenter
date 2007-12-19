@@ -2,17 +2,7 @@
 
 <h1>Help Start</h1>
 
-<div class="question">
-<h2>How can we help you?</h2>
-
-<form style="width: 100%; position: relative;" action="dead">
-<input name="question" class="questionbox" />
-<button type="submit">Go</button>
-
-<img class="pin-right" alt="Powered by Satisfaction" 
-     src="poweredbysmallStack.png" width="113" height="30" />
-</form>
-</div>
+{include file="question-box.t"}
 
 <div class="sidepane">
 <div class="sidebar">
@@ -47,7 +37,10 @@
 <table>
 <tr>
 {foreach from=$company_people key=i item=person}
-<td><img class="topic-author-pic" style="float:left;" src="{$person.photo}" /> {$person.fn}</td>
+<td><img class="small-author-pic" style="float:left;" src="{$person.photo}" />
+    <div style="padding: 3pt;"><strong>{$person.fn}</strong> <br /> 
+                               role xxx
+    </div></td>
 {if $i % 2 == 1 && $i != count($company_people)-1}
 </tr>
 <tr>

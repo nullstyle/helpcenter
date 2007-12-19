@@ -6,7 +6,12 @@
 <input name="question" class="questionbox" />
 <button type="submit">Go</button>
 
-<img class="pin-right" alt="Powered by Satisfaction" src="poweredbysmallStack.png" width="113" height="30" />
+<a href="http://www.getsatisfaction.com/">
+<img class="pin-right" alt="Powered by Satisfaction"
+     src="poweredbysmallStack.png" width="113" height="30" />
+</a>
+
 </form>
 </div>
 
+<hr />

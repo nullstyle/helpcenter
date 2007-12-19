@@ -27,14 +27,22 @@
 </ul>
 {/if}
 
+{if !$filter_tag && !filter_product}
 <h4 style="display:inline;">Top Topic Tags</h4>
-{foreach from=$top_topic_tags key=i item=tag}
-<a href="discuss.php?tag={$tag}">{$tag}</a>
-{/foreach}
+  {foreach from=$top_topic_tags key=i item=tag}
+  <a href="discuss.php?tag={$tag}">{$tag}</a>
+  {/foreach}
 xxx
+{/if}
 
 <h2>Recent Discussions</h2>
-<h3>All Topics ({$topic_count})</h3>
+<h3>All topics
+{if $filter_product}
+about the product: {$filter_product.name}
+{elseif $filter_tag}
+about the tag: {$filter_tag}
+{/if}
+ ({$topic_count})</h3>
 
 <div class="sidepane">
 <div class="sidebar">
@@ -60,6 +68,14 @@ xxx
                  {else} Posted {/if} {$topic.updated_relative}.
 
    <p>{$topic.content}</p>
+
+   <p><img class="tiny-author-pic" style="vertical-align: middle;" src="{$topic.author.photo}" /> {$topic.author.name} 
+   {if $topic.topic_style == 'question'} asked this question
+   {elseif $topic.topic_style == 'idea'} shared this idea
+   {elseif $topic.topic_style == 'talk'} asked this question
+   {elseif $topic.topic_style == 'problem'} reported this problem
+   {/if}
+ {$topic.updated_relative}. It's tagged xxx </p>
    </td>
    <td> <span class="huge">{$topic.reply_count}</a></span> <br />replies </td>
    </tr>

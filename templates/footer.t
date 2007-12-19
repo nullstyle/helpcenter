@@ -7,7 +7,7 @@
 <div class="gutter">
 
   <div class="byline">
-    <img src="poweredbysmallStack.png" alt="Powered by: Satisfaction"/>
+    {include file="powered-by.t"}
   </div>
 
   <div style="padding: 4px">

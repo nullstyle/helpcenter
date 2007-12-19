@@ -27,7 +27,7 @@ if ($filter_tag) $options['tag'] = $filter_tag;
 $topics = $sprink->topics($options);
 assert(is_array($topics));
 $topic_count = count($topics);
-$topics = take($discuss_topic_count, $topics);
+$topics = take($discuss_topic_page_limit, $topics); # FIXME needs pagination
 
 foreach ($topics as &$topic) {
   if (!($topic["reply_count"] > 0)) 
@@ -38,8 +38,9 @@ $top_topic_tags = array('underwear');
 
 $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('top_topic_tags', $top_topic_tags);
-$smarty->assign('filter_product', $filter_product);
-$smarty->assign('filter_style', $filter_style);
+$smarty->assign(array('filter_product' => $filter_product,
+                      'filter_style' => $filter_style,
+                      'filter_tag' => $filter_tag));
 $smarty->assign('products', $sprink->products());
 $smarty->assign('company_name', $company_name);
 $smarty->assign('topics', $topics);
