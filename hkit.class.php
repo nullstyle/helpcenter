@@ -243,7 +243,7 @@ class hKit
     {
 
         $tag_name    = strtoupper(dom_import_simplexml($node)->tagName);
-        $s            = false;
+        $s           = false;
         
         // ignore DEL tags
         if ($tag_name == 'DEL') return $s;

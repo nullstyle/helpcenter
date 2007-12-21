@@ -5,10 +5,13 @@
 {if $filter_product}
 <h2>Discuss the {$filter_product.name}</h2>
 <a href="discuss.php">Return to all Discussions about all products &amp; services</a>
-<table>
+<table width="100%">
 <tr>
-<td><img src="{$filter_product.image}" /> {$filter_product.description}</td>
-<td>Product Tags xxx</td>
+<td><img style="vertical-align: top;" src="{$filter_product.image}" /> {$filter_product.description}</td>
+<td>Product Tags</td>
+<td class="tag-box">
+    {foreach from=$filter_product.tags item=tag}<a href="{discuss_tag_url tag=$tag}">{$tag}</a>{if !$smarty.foreach.tag.last},{/if} {/foreach}
+</td>
 </tr>
 </table>
 {else}
@@ -17,7 +20,7 @@
 
 {include file="question-box.t"}
 
-{if !$filter_product}
+{if !$filter_product && !$filter_tag}
 <h2>Discuss our Products</h2>
 
 <ul class="product-list">

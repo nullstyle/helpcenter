@@ -368,7 +368,20 @@ class Sprinkles {
   function get_product($url) {
     global $h;
     $result = $h->getByURL('hproduct', $url);
-    return $result[0];   # Assume just one product in the document.
+    $result = $result[0];   # Assume just one product in the document.
+
+# HACK: getting tags this way until hkit is fixed
+    $xml = simplexml_load_file($url . '/tags');
+    $root_nodes = $xml->xpath("//*[@class='tag']");
+    # $root_nodes = $xml->xpath("//@class=tag");
+    if ($root_nodes) {
+      $result['tags'] = array();
+      $tag_elems = $root_nodes[0]->xpath("//*[@class='name']");
+      foreach ($tag_elems as $tag_elem) {
+        array_push($result['tags'], implode($tag_elem->xpath('child::node()')));
+      }
+    }
+    return $result;
   }
 
   ## Return a list of the company's products

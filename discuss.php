@@ -36,6 +36,10 @@ foreach ($topics as &$topic) {
 
 $top_topic_tags = array('underwear');
 
+function discuss_tag_url($params, &$smarty) {
+  return('discuss.php?tag=' . $params['tag']);
+}
+
 $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign(array('filter_product' => $filter_product,
@@ -53,5 +57,7 @@ $smarty->assign('filter_tag_arg',
                        $filter_tag ?
                          '&' ."tag=" . $filter_tag :
                          '');
+
+$smarty->register_function('discuss_tag_url', 'discuss_tag_url');
 $smarty->display('discuss.t');
 ?>

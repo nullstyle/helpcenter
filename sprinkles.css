@@ -235,3 +235,5 @@ ul.straight { list-style-type: none; padding-left: 0pt; }
 
 .star_button { border: 1px solid black; padding: 3px;  }
 .flag_button { padding: 3px; }
+
+.tag-box { width: 200pt; }
