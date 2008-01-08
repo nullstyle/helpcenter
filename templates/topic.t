@@ -26,7 +26,7 @@ a problem{/if}
 {elseif $lead_item.topic_style == 'talk'} asked this question
 {elseif $lead_item.topic_style == 'problem'} reported this problem
 {/if}
-{$topic_updated_relative}
+{$lead_item.published_relative}
 </div>
 </td>
 
@@ -35,7 +35,7 @@ a problem{/if}
 
  <p>{ $lead_item.content }</p>
 
- <p><img src="images/{$topic.emotitag_face}.png" style="vertical-align:middle""
+ <p><img src="images/{$topic.emotitag_face}.png" style="vertical-align:middle;"
          alt="{$topic.emotitag_emotion}"> {$topic.emotitag_emotion} </p>
 
 </td>
@@ -49,14 +49,23 @@ a problem{/if}
 
 <div>
 In this topic<br />
-x people<br />
-x employees<br />
-x replies<br />
-x views<br />
+{$particip.people} people<br />
+{$particip.employees} employees<br />
+{$reply_count} replies<br />
 </div>
+{if $particip.official_reps}
 <p>
-x official rep is here <br />
-<img src="" style="width:24pt; height:24pt;" />
+{$particip.count_official_reps} official rep{if count($particip.official_reps) > 1}s{else}{/if} is here
+<ul class="straight">
+{foreach from=$particip.official_reps key=i item=rep}
+<li>
+<img src="{$rep.photo}" class="small-author-pic" />
+{$rep.fn}
+</li>
+{/foreach}
+</ul>
+</p>
+{/if}
 </td>
 </tr>
 </table>
@@ -69,7 +78,7 @@ x official rep is here <br />
   {include file="related-topics.t"}
 </div>
 
-<div>  <p>({$reply_count} total replies, {$toplevel_reply_count} to the topic)</p>
+<div>
   <h2><a href="user-login.php">Login to reply</a></h2>
 
   <table class="topic-replies">
@@ -80,7 +89,7 @@ x official rep is here <br />
       <img src="{$reply.author.photo}" class="reply-author-pic" />
       </div>
     </td><td class="reply-core" width="100%">
-      {$reply.author.name} (role xxx) replied {$reply.updated_relative}:
+      {$reply.author.name} {if $reply.author.role}({$reply.author.role}){/if} replied {$reply.updated_relative}:
         <p>{$reply.content}</p>
         <div class="float-right">
           {if $reply.in_reply_to == $lead_item.id} {* A top-level reply. *}
@@ -94,7 +103,7 @@ x official rep is here <br />
             This answered the question{elseif $lead_item.topic_style =='problem'}
             This solved the problem!
             {/if}
- {if $reply.star_count}({$reply.star_count}){/if}
+            {if $reply.star_count}({$reply.star_count}){/if}
             </button>
           </form>
           {/if}
@@ -105,7 +114,9 @@ x official rep is here <br />
        {if $reply.emotitag_face}
         <p><img src="images/{$reply.emotitag_face}.png" 
                 alt="{$reply.emotitag_emotion}"
-                class="emotitag_face"> I'm {$reply.emotitag_emotion} </p>
+                class="emotitag_face"> 
+            {if $reply.enotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
+        </p>
         {/if}
     </td>
   </tr>

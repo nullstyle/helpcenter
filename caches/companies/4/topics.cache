@@ -1,38 +1,353 @@
-<feed 
+  <feed 
    xmlns="http://www.w3.org/2005/Atom" 
    xmlns:sfn="http://api.getsatisfaction.com/schema/0.1" 
    xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
    xmlns:thr="http://purl.org/syndication/thread/1.0">
-    <id>http://api.getsatisfaction.com/companies/4/topics?page=1</id>
-    <title>Topics in Satisfaction Unlimited</title>
-    <updated>1970-01-01T00:00:00Z</updated>
+  <id></id>
+  <title></title>
+  <updated>1970-01-01T00:00:00Z</updated>
+  <link rel="self" href="http://api.getsatisfaction.com/topics?page=1" type="application/atom+xml"/>
+<link rel="first" href="http://api.getsatisfaction.com/topics?page=1" type="application/atom+xml"/>
+<link rel="next" href="http://api.getsatisfaction.com/topics?page=2" type="application/atom+xml"/>
+<link rel="last" href="http://api.getsatisfaction.com/topics?page=29" type="application/atom+xml"/>
+      
     
-    
-    
-    
-    
-
-    
+  <opensearch:totalResults>430</opensearch:totalResults>
+  
+    <sfn:question_count>99</sfn:question_count>
+    <sfn:idea_count>99</sfn:idea_count>
+    <sfn:problem_count>156</sfn:problem_count>
+    <sfn:talk_count>76</sfn:talk_count>
+  
+  
+  
 <entry>
-  <id>http://api.getsatisfaction.com/topics/48851</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/48851" type="application/atom+xml"/>
+  <id>http://api.getsatisfaction.com/topics/69581</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/69581" type="application/atom+xml"/>
   <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Product and Company Name Searches Should Be Done at the Same Time</title>
+  <updated>2008-01-03T00:15:11Z</updated>
+  <published>2008-01-03T00:04:30Z</published>
   
-  <updated>2007-11-27T18:03:45Z</updated>  
-  
-  <title type="html">there is no instant pop up or alerts appearing on the screen in twitter to inform the logged in followers about the updates</title>
-  <updated>2007-11-27T18:03:45Z</updated>
   <author>
-   <name>chikoos</name>
-   <uri>http://api.getsatisfaction.com/people/49531</uri>
+   <name>Lilyn</name>
+   <uri>http://api.getsatisfaction.com/people/82331</uri>
   </author>
   <content type="html">
-    usually in yahoo messenger an alert appears when a friend sends a message.&lt;br /&gt;
-the problem i face is this. i am logged in. my friend is too. when i'm updating in twitter. she doesnt notice it immediately cos she is working. the twitter browser is probably minimised. if she is immersed in work she obviously forgets to check it. later in the day she realises it.&lt;br /&gt;
-i think there's more joy in instantly being alerted about a message. it shouldnt happen in a roundabout way thru the mail.
+    This is about the useability of the site.&lt;br /&gt;
+I'd really like it if the product and company searches were done at the same time. Maybe just have one search box. Products and companies are really mixed today
   </content>
   
   <sfn:topic_style>idea</sfn:topic_style>
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>1</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+    <sfn:emotitag face="indifferent" severity="1" emotion="OK -p Just an idea" />
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/69431</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/69431" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">topic widget</title>
+  <updated>2008-01-02T22:51:32Z</updated>
+  <published>2008-01-02T20:24:11Z</published>
+  
+  <author>
+   <name>programmer #1</name>
+   <uri>http://api.getsatisfaction.com/people/8591</uri>
+  </author>
+  <content type="html">
+    attempting to create topic widget on &lt;a href=&quot;http://getsatisfaction.com/timbuk2/widgets/topics&quot; rel=&quot;nofollow&quot;&gt;http://getsatisfaction.com/timbuk2/wi...&lt;/a&gt;&lt;br /&gt;
+about: tag&lt;br /&gt;
+tag: backpacks&lt;br /&gt;
+include: all&lt;br /&gt;
+order by: active &lt;br /&gt;
+display: 10&lt;br /&gt;
+summary: 80&lt;br /&gt;&lt;br /&gt;
+causes it to Loading.. indefinitely.. looks like the data that is getting returned by that javascript call is not what is expected.....
+  </content>
+  
+  <sfn:topic_style>problem</sfn:topic_style>
+  <sfn:reply_count>4</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+    <sfn:emotitag face="indifferent" severity="1" emotion="sighing." />
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/68331</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/68331" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">I'm getting a server error when trying to edit my profile.</title>
+  <updated>2008-01-02T21:42:23Z</updated>
+  <published>2007-12-31T23:15:56Z</published>
+  
+  <author>
+   <name>Joel Watts</name>
+   <uri>http://api.getsatisfaction.com/people/76141</uri>
+  </author>
+  <content type="html">
+    I used the hCard import feature when signing up and have never been able to get to the edit page for my profile.  As you can probably see, my avatar wasn't imported properly either.
+  </content>
+  
+  <sfn:topic_style>problem</sfn:topic_style>
+  <sfn:reply_count>7</sfn:reply_count>
+  <sfn:follower_count>5</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+    <sfn:emotitag face="sad" severity="1" emotion="frustrated" />
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/50331</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/50331" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Suggest a Satisfaction question as solved</title>
+  <updated>2008-01-02T21:40:07Z</updated>
+  <published>2007-11-29T06:51:32Z</published>
+  
+  <author>
+   <name>Daniel</name>
+   <uri>http://api.getsatisfaction.com/people/52811</uri>
+  </author>
+  <content type="html">
+    Sometimes people's questions are answered, but they don't mark them as solved. This is annoying, because when you display many questions in a list you don't instantly see if they contain a solution that definitely works.
+  </content>
+  
+  <sfn:topic_style>idea</sfn:topic_style>
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>4</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/69021</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/69021" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Anonymous posts?</title>
+  <updated>2008-01-02T19:30:34Z</updated>
+  <published>2008-01-02T13:11:21Z</published>
+  
+  <author>
+   <name>Luc Levesque</name>
+   <uri>http://api.getsatisfaction.com/people/78241</uri>
+  </author>
+  <content type="html">
+    Is it possible to allow visitors to post questions anonymously... I hate the fact that I would have to ask our members to create another account just to post a support question... or perhaps just ask them their email address so that they can be notified of updates to the ticket.
+  </content>
+  
+  <sfn:topic_style>question</sfn:topic_style>
+  <sfn:reply_count>2</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/66931</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/66931" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Minor things and observations.</title>
+  <updated>2008-01-02T19:17:34Z</updated>
+  <published>2007-12-28T18:17:18Z</published>
+  
+  <author>
+   <name>serviceuntitled</name>
+   <uri>http://api.getsatisfaction.com/people/921</uri>
+  </author>
+  <content type="html">
+    I've been using Satisfaction in a different way since I now have my company (Service Untitled) listed on here.&lt;br /&gt;&lt;br /&gt;
+Here are some minor things and observations:&lt;br /&gt;&lt;br /&gt;
+- When I went to change my email address after I was associated with Service Untitled, it reset it. I had to claim it again with my new email address.&lt;br /&gt;&lt;br /&gt;
+- For the badges that you can post on your web site, it would probably be helpful to add a border=0 to the HTML code. &lt;br /&gt;&lt;br /&gt;
+- Also with the badges, the alternate code could probably be changed to something more useful. Maybe have it be Get help for ( company name ).&lt;br /&gt;&lt;br /&gt;
+- If you say &amp;lt; company name &gt; (without the spaces between the &amp;lt;&gt;), it replaces it with companyname=&quot;true&quot;.&lt;br /&gt;&lt;br /&gt;
+- If you're logged in, don't you think the homepage should be your dashboard? The differences between the home page and the dashboard (accessed from clicking &quot;You&quot;) is somewhat confusing.&lt;br /&gt;&lt;br /&gt;
+- On the search box in the top, if you put something in for &quot;Company Name&quot; and realize that it is a product and change the selection, it will clear it out. I think the proper &quot;UI etiquette&quot; is not to clear it out, but that is obviously very minor.&lt;br /&gt;&lt;br /&gt;
+I think that is it for now. I will add / edit more as I see them. &lt;br /&gt;&lt;br /&gt;
+Keep up the great work!&lt;br /&gt;&lt;br /&gt;
+Best regards,&lt;br /&gt;&lt;br /&gt;
+Douglas&lt;br /&gt;
+Service Untitled&lt;br /&gt;
+&lt;a href=&quot;http://www.serviceuntitled.com&quot; rel=&quot;nofollow&quot;&gt;http://www.serviceuntitled.com&lt;/a&gt;
+  </content>
+  
+  <sfn:topic_style>idea</sfn:topic_style>
+  <sfn:reply_count>2</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+    <sfn:emotitag face="happy" severity="1" emotion="quite confident that team Satisfaction will get all of these things taken care of." />
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/15721</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/15721" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">What would YOU do with a Satisfaction API?</title>
+  <updated>2008-01-01T19:58:15Z</updated>
+  <published>2007-09-18T19:59:31Z</published>
+  
+  <author>
+   <name>Amy Muller</name>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
+  </author>
+  <content type="html">
+    Ideas abound. We'd love hear &lt;i&gt;your&lt;/i&gt; ideas and thoughts.
+  </content>
+  
+  <sfn:topic_style>question</sfn:topic_style>
+  <sfn:reply_count>6</sfn:reply_count>
+  <sfn:follower_count>8</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+    <sfn:emotitag face="happy" severity="1" emotion="curious" />
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/476</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/476" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Can I change my profile and account information?</title>
+  <updated>2007-12-30T23:32:26Z</updated>
+  <published>2007-05-10T22:37:03Z</published>
+  
+  <author>
+   <name>Amy Muller</name>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
+  </author>
+  <content type="html">
+    Can I change things like my nickname, email address, password, tagline, etc?
+  </content>
+  
+  <sfn:topic_style>question</sfn:topic_style>
+  <sfn:reply_count>8</sfn:reply_count>
+  <sfn:follower_count>6</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/16541</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/16541" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Admin How To: Add FAQs to your Satisfaction site</title>
+  <updated>2007-12-30T19:35:14Z</updated>
+  <published>2007-09-19T19:41:06Z</published>
+  
+  <author>
+   <name>Amy Muller</name>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
+  </author>
+  <content type="html">
+    &lt;ul&gt;&lt;br /&gt;
+&lt;li&gt;We recommend: Set up a user account, separate from your own with the nickname &quot;[company name] FAQ&quot; (See the &lt;a href=&quot;http://getsatisfaction.com/timbuk2/tags/faq&quot; rel=&quot;nofollow&quot;&gt;Timbuk2 &lt;/a&gt; Satisfaction site for an example)&lt;/li&gt;&lt;br /&gt;
+&lt;li&gt; Add the question part of your FAQ as a Question from that FAQ user account&lt;/li&gt;&lt;br /&gt;
+&lt;li&gt;Reply to the question as yourself&lt;/li&gt;&lt;br /&gt;
+&lt;li&gt;Tag them with &quot;faq&quot; and &quot;help&quot;&lt;/li&gt;&lt;br /&gt;
+&lt;li&gt; If you're an Official Rep or Admin for your site you can set your replies as the &quot;Official Response&quot;.&lt;/li&gt;&lt;br /&gt;
+&lt;li&gt;If you have a large number of FAQs or knowledge base, talk to us about options for importing them into Satisfaction. (email info [at] getsatisfaction [dot] com)&lt;/li&gt;&lt;br /&gt;
+&lt;/ul&gt;&lt;br /&gt;&lt;br /&gt;
+*Coming soon: Automated FAQ importer!
+  </content>
+  
+  <sfn:topic_style>talk</sfn:topic_style>
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>4</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+    <sfn:emotitag face="happy" severity="1" emotion="trying to be helpful" />
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/67371</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/67371" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">what's your business model?</title>
+  <updated>2007-12-30T18:04:48Z</updated>
+  <published>2007-12-29T15:37:49Z</published>
+  
+  <author>
+   <name>Luc Levesque</name>
+   <uri>http://api.getsatisfaction.com/people/78241</uri>
+  </author>
+  <content type="html">
+    Before we dive in and go further on integrating GS into our site, can you tell us a little about your business model? Are we going to see adverts on our FAQs and Support pages?&lt;br /&gt;&lt;br /&gt;
+Cool site BTW&lt;br /&gt;
+Thanks,
+  </content>
+  
+  <sfn:topic_style>question</sfn:topic_style>
+  <sfn:reply_count>1</sfn:reply_count>
+  <sfn:follower_count>2</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/40801</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/40801" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Widget suggestions</title>
+  <updated>2007-12-29T22:19:17Z</updated>
+  <published>2007-11-14T23:52:42Z</published>
+  
+  <author>
+   <name>mkane</name>
+   <uri>http://api.getsatisfaction.com/people/40281</uri>
+  </author>
+  <content type="html">
+    I just added the widget to my site MyHomie.com, and I think it's great, but I'd prefer that links to Satisfaction's site be loaded in a new browser window so my users don't lose their spot on my site.&lt;br /&gt;&lt;br /&gt;
+Thanks!&lt;br /&gt;&lt;br /&gt;
+Michael
+  </content>
+  
+  <sfn:topic_style>idea</sfn:topic_style>
+  <sfn:reply_count>3</sfn:reply_count>
+  <sfn:follower_count>3</sfn:follower_count>
+  <sfn:flag_count>0</sfn:flag_count>
+  
+  
+</entry>
+<entry>
+  <id>http://api.getsatisfaction.com/topics/67311</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/67311" type="application/atom+xml"/>
+  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">what can I do, the spanish government does not allow me access to my e-mail</title>
+  <updated>2007-12-29T11:15:44Z</updated>
+  <published>2007-12-29T09:51:19Z</published>
+  
+  <author>
+   <name>hector</name>
+   <uri>http://api.getsatisfaction.com/people/78121</uri>
+  </author>
+  <content type="html">
+    
+  </content>
+  
+  <sfn:topic_style>problem</sfn:topic_style>
   <sfn:reply_count>2</sfn:reply_count>
   <sfn:follower_count>3</sfn:follower_count>
   <sfn:flag_count>0</sfn:flag_count>
@@ -42,43 +357,17 @@ i think there's more joy in instantly being alerted about a message. it shouldnt
   
 </entry>
 <entry>
-  <id>http://api.getsatisfaction.com/topics/2781</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/2781" type="application/atom+xml"/>
+  <id>http://api.getsatisfaction.com/topics/10001</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/10001" type="application/atom+xml"/>
   <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Can I close my account?</title>
+  <updated>2007-12-29T04:49:28Z</updated>
+  <published>2007-09-13T02:07:27Z</published>
   
-  <updated>2007-11-27T08:29:33Z</updated>  
-  
-  <title type="html">When will we get more integration of RSS, especially on user profiles?</title>
-  <updated>2007-11-27T08:29:33Z</updated>
   <author>
-   <name>elliottcable</name>
-   <uri>http://api.getsatisfaction.com/people/1341</uri>
-  </author>
-  <content type="html">
-    I follow everything via RSS, and I see there's already some RSS integration around the site, but not in some notable places, including on my profile and the pages under it...
-  </content>
-  
-  <sfn:topic_style>question</sfn:topic_style>
-  <sfn:reply_count>7</sfn:reply_count>
-  <sfn:follower_count>6</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="sad" severity="1" emotion="confused" />
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/48751</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/48751" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-27T06:47:29Z</updated>  
-  
-  <title type="html">Hi!  I'm a college student, writing a paper on Timbuk2 and I was wondering if I could get some information on the company?  For instance, How many employees work there?  What were the company sales for 2006?  Who do you view as your top 3 competitors? Thanks!</title>
-  <updated>2007-11-27T06:47:29Z</updated>
-  <author>
-   <name>Barnavkristus</name>
-   <uri>http://api.getsatisfaction.com/people/49341</uri>
+   <name>Amy Muller</name>
+   <uri>http://api.getsatisfaction.com/people/12</uri>
   </author>
   <content type="html">
     
@@ -86,166 +375,60 @@ i think there's more joy in instantly being alerted about a message. it shouldnt
   
   <sfn:topic_style>question</sfn:topic_style>
   <sfn:reply_count>3</sfn:reply_count>
-  <sfn:follower_count>2</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/48701</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/48701" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-27T05:54:01Z</updated>  
-  
-  <title type="html">Getting timeouts much more frequently</title>
-  <updated>2007-11-27T05:54:01Z</updated>
-  <author>
-   <name>J.O.D</name>
-   <uri>http://api.getsatisfaction.com/people/162</uri>
-  </author>
-  <content type="html">
-    6 or 7 today. &lt;br /&gt;&lt;br /&gt;
-&lt;img src=&quot;http://myskitch.com/johnoday/timeoutbug-20071126-193809.jpg&quot; alt=&quot;timeoutbug&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
-here's a fun illustration!
-  </content>
-  
-  <sfn:topic_style>problem</sfn:topic_style>
-  <sfn:reply_count>1</sfn:reply_count>
-  <sfn:follower_count>2</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="happy" severity="1" emotion="lovin' the bugs!" />
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/48571</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/48571" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-27T00:58:59Z</updated>  
-  
-  <title type="html">Typo in Registration</title>
-  <updated>2007-11-27T00:58:59Z</updated>
-  <author>
-   <name>andrewcrow</name>
-   <uri>http://api.getsatisfaction.com/people/49201</uri>
-  </author>
-  <content type="html">
-    I tried signing up and got an error about my email address. Regardless of the problem, the copy was odd. It read:&lt;br /&gt;&lt;br /&gt;
-Sorry!&lt;br /&gt;
-Emails is invalid&lt;br /&gt;&lt;br /&gt;
-I think it's supposed to be &quot;Email&quot; not &quot;Emails&quot;. Better yet, what about &quot;Your email address is invalid&quot;?
-  </content>
-  
-  <sfn:topic_style>problem</sfn:topic_style>
-  <sfn:reply_count>2</sfn:reply_count>
   <sfn:follower_count>3</sfn:follower_count>
   <sfn:flag_count>0</sfn:flag_count>
   
   
-    <sfn:emotitag face="indifferent" severity="1" emotion="not worried about a beta release bug." />
-  
 </entry>
 <entry>
-  <id>http://api.getsatisfaction.com/topics/45761</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/45761" type="application/atom+xml"/>
+  <id>http://api.getsatisfaction.com/topics/66221</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/66221" type="application/atom+xml"/>
   <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">resetting at start up</title>
+  <updated>2007-12-27T21:16:40Z</updated>
+  <published>2007-12-27T20:52:37Z</published>
   
-  <updated>2007-11-26T19:48:50Z</updated>  
-  
-  <title type="html">My company logo is all pixelated and ugly!</title>
-  <updated>2007-11-26T19:48:50Z</updated>
   <author>
-   <name>sfllaw</name>
-   <uri>http://api.getsatisfaction.com/people/2031</uri>
+   <name>Sandyin Philadelphia</name>
+   <uri>http://api.getsatisfaction.com/people/76751</uri>
   </author>
   <content type="html">
-    When I upload a logo in PNG or GIF form, it gets compressed way down as a JPEG.  This in turn makes everything look pretty ugly.&lt;br /&gt;&lt;br /&gt;
-Could you tweak that so it looks OK?  Or even better, leave the images as they are if they're already in PNG, GIF, or JPEG format?
+    Why to I have a blank screen and have to hit the reset button to get the unit to start?
   </content>
   
   <sfn:topic_style>problem</sfn:topic_style>
-  <sfn:reply_count>6</sfn:reply_count>
-  <sfn:follower_count>6</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="sad" severity="1" emotion="blocky" />
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/40681</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/40681" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-26T19:47:45Z</updated>  
-  
-  <title type="html">fresh: Check out the new dashboard!</title>
-  <updated>2007-11-26T19:47:45Z</updated>
-  <author>
-   <name>Ted Grubb</name>
-   <uri>http://api.getsatisfaction.com/people/15</uri>
-  </author>
-  <content type="html">
-    We're working hard to make your dashboard more useful for keeping track of your activity, following the products and companies you love (or hate), and just making easier for you to get at the information you want. &lt;br /&gt;&lt;br /&gt;
-We're rolling it out in a few phases. The first of which is available NOW! We call it &quot;Phase 1.&quot; &lt;br /&gt;&lt;br /&gt;
-So click on the &lt;strong&gt;Your Dashboard&lt;/strong&gt; link above to check it out! Please let us know what you think.
-  </content>
-  
-  <sfn:topic_style>talk</sfn:topic_style>
-  <sfn:reply_count>4</sfn:reply_count>
-  <sfn:follower_count>7</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="happy" severity="1" emotion="thankful for your feedback" />
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/48081</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/48081" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-26T19:39:49Z</updated>  
-  
-  <title type="html">Can I get a feed of all new companies added</title>
-  <updated>2007-11-26T19:39:49Z</updated>
-  <author>
-   <name>bryce</name>
-   <uri>http://api.getsatisfaction.com/people/231</uri>
-  </author>
-  <content type="html">
-    I like seeing all the new companies that get added. I see that you promote them, but I don't see a way to just get a feed of all the new companies as they get added. Any chance you can drop this into an RSS feed?
-  </content>
-  
-  <sfn:topic_style>idea</sfn:topic_style>
   <sfn:reply_count>1</sfn:reply_count>
   <sfn:follower_count>2</sfn:follower_count>
   <sfn:flag_count>0</sfn:flag_count>
   
   
-    <sfn:emotitag face="indifferent" severity="1" emotion="just askin'" />
-  
 </entry>
 <entry>
-  <id>http://api.getsatisfaction.com/topics/48191</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/48191" type="application/atom+xml"/>
+  <id>http://api.getsatisfaction.com/topics/66121</id>
+  <link rel="topic" href="http://api.getsatisfaction.com/topics/66121" type="application/atom+xml"/>
   <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
+    
+  <title type="html">Customer Service is the New Marketing Updates</title>
+  <updated>2007-12-27T20:14:33Z</updated>
+  <published>2007-12-27T20:14:33Z</published>
   
-  <updated>2007-11-26T19:36:49Z</updated>  
-  
-  <title type="html">Less is more</title>
-  <updated>2007-11-26T19:36:49Z</updated>
   <author>
-   <name>Amy Muller</name>
-   <uri>http://api.getsatisfaction.com/people/12</uri>
+   <name>serviceuntitled</name>
+   <uri>http://api.getsatisfaction.com/people/921</uri>
   </author>
   <content type="html">
-    When posting a reply in a particular company's Satisfaction site, please don't post the exact same reply to multiple topics. It just comes across as spam, and no one likes spam.&lt;br /&gt;&lt;br /&gt;
-If you do post a verbatim reply to more than one place we may delete it in all but one location at our discretion.&lt;br /&gt;&lt;br /&gt;
-Thanks for your cooperation! Let's try to keep Satisfaction useful and uncluttered.
+    Just some updates about Customer Service is the New Marketing. &lt;br /&gt;&lt;br /&gt;
+1. We have a full speaker line up, the entirety of which you can view at &lt;a href=&quot;http://csitnm.com/&quot; rel=&quot;nofollow&quot;&gt;http://csitnm.com/&lt;/a&gt;. &lt;br /&gt;&lt;br /&gt;
+2. On that same web site, we have a nice banner that you can use to tell others about CSITNM. If you own a large blog, etc., let us know and we can get you setup with a discount code for your readers.&lt;br /&gt;&lt;br /&gt;
+3. The early bird pricing (currently: $295 per ticket) ends on December 31. After that prices go up to $495 per ticket, so be sure to act early.&lt;br /&gt;&lt;br /&gt;
+4.  I've started posting interviews and information about the conference on the Demand Satisfaction! blog (&lt;a href=&quot;http://blog.getsatisfaction.com&quot; rel=&quot;nofollow&quot;&gt;http://blog.getsatisfaction.com&lt;/a&gt;). There is an interview up with Patti Roll from Timbuk2 as well as one with Alex Frankel, author of &quot;Punching In.&quot; More to come soon.&lt;br /&gt;&lt;br /&gt;
+The summit (to be held February 4, 2008 in San Francisco) is going to be exciting. You'll have a chance to meet all of the team from Get Satisfaction, all of these interesting speakers, myself, and 200 other people that are equally/more interesting.&lt;br /&gt;&lt;br /&gt;
+If anyone has any questions or suggestions for the summit, let us know! We want to make it a great one.&lt;br /&gt;&lt;br /&gt;
+At Your Service,&lt;br /&gt;&lt;br /&gt;
+Douglas&lt;br /&gt;
+Service Untitled&lt;br /&gt;
+&lt;a href=&quot;http://www.serviceuntitled.com&quot; rel=&quot;nofollow&quot;&gt;http://www.serviceuntitled.com&lt;/a&gt;
   </content>
   
   <sfn:topic_style>talk</sfn:topic_style>
@@ -254,169 +437,7 @@ Thanks for your cooperation! Let's try to keep Satisfaction useful and unclutter
   <sfn:flag_count>0</sfn:flag_count>
   
   
-    <sfn:emotitag face="happy" severity="1" emotion="serious but smiling" />
+    <sfn:emotitag face="happy" severity="1" emotion="excited for CSITNM." />
   
 </entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/47641</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/47641" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-25T21:21:49Z</updated>  
-  
-  <title type="html">Thank You GetSatisfaction For Helping Us Build Relationships With The Companies I Like!!</title>
-  <updated>2007-11-25T21:21:49Z</updated>
-  <author>
-   <name>mingyeow</name>
-   <uri>http://api.getsatisfaction.com/people/30511</uri>
-  </author>
-  <content type="html">
-    Hey Satisfaction folks, it is early days by far, but I have just personally experienced the power of what you guys are doing, both on a personal basis, as well as the possibilities for the future.&lt;br /&gt;&lt;br /&gt;
-It used to be such that I will send an email to &quot;contact us&quot; to companies, and get an official email. Even if the rep sincerely wanted to help, it was a feeling of helplessness on either side. A feeling that I was alone, and a feeling on his side that he has little sway over the product/consumer policy process. &lt;br /&gt;&lt;br /&gt;
-But thanks to the power of 1) a public forum, 2) the &quot;human&quot; atmosphere provided by the tone/feeling of the site, allowing for both the employee and users to discuss stuff in a fun and human way, (even for complains), 3) the power of aggregating the voices of the consumers in one place, it must be empowering for both users as well as consumer advocates in the companies.  &lt;br /&gt;&lt;br /&gt;
-So far, i have posted on 2 companies, getsatisfaction, and rescuetime, and i already feel that i have a relationship with both companies.&lt;br /&gt;&lt;br /&gt;
-If blogs are the new mainstream, getsatisfaction (and the trend that you guys are going to start) will be the new generation of conversational marketing! :)
-  </content>
-  
-  <sfn:topic_style>talk</sfn:topic_style>
-  <sfn:reply_count>1</sfn:reply_count>
-  <sfn:follower_count>2</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="happy" severity="1" emotion="thankful" />
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/47251</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/47251" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-25T07:22:13Z</updated>  
-  
-  <title type="html">Transparencies in a PNG are converted to black.</title>
-  <updated>2007-11-25T07:22:13Z</updated>
-  <author>
-   <name>J.O.D</name>
-   <uri>http://api.getsatisfaction.com/people/162</uri>
-  </author>
-  <content type="html">
-    New bug: transparent part of a PNG image gets converted to black after submitted. &lt;br /&gt;&lt;br /&gt;
-&lt;img src=&quot;http://myskitch.com/johnoday/transparentpngbug-20071124-224335.jpg&quot; alt=&quot;transparentpngbug&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
-on &lt;a href=&quot;http://getsatisfaction.com/nintendo/products/nintendo_nintendo_wi_fi_connection&quot; rel=&quot;nofollow&quot;&gt;this page&lt;/a&gt;.
-  </content>
-  
-  <sfn:topic_style>problem</sfn:topic_style>
-  <sfn:reply_count>2</sfn:reply_count>
-  <sfn:follower_count>3</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/46271</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/46271" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-23T19:42:26Z</updated>  
-  
-  <title type="html">An Idea for Satisfaction Unlimited</title>
-  <updated>2007-11-23T19:42:26Z</updated>
-  <author>
-   <name>WebGuy</name>
-   <uri>http://api.getsatisfaction.com/people/46241</uri>
-  </author>
-  <content type="html">
-    I love your products and website. I saw a company that might help new customers understand what Satisfaction are all about. Look at &lt;a href=&quot;http://www.eyeviewdigital.com&quot; rel=&quot;nofollow&quot;&gt;www.eyeviewdigital.com&lt;/a&gt; these guys prepare videos for online websites showing how to get things done on the website. Could really be helpful for new visitorsâ¦ Hope this helps!
-  </content>
-  
-  <sfn:topic_style>idea</sfn:topic_style>
-  <sfn:reply_count>3</sfn:reply_count>
-  <sfn:follower_count>2</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/5541</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/5541" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-23T16:40:47Z</updated>  
-  
-  <title type="html">Annoucing our first &quot;Customer Service is the New Marketing&quot; Summit.</title>
-  <updated>2007-11-23T16:40:47Z</updated>
-  <author>
-   <name>Lane Becker</name>
-   <uri>http://api.getsatisfaction.com/people/14</uri>
-  </author>
-  <content type="html">
-    Since Thor first presented on &quot;Customer Service is the New Marketing&quot; at SXSW and then followed up with a &lt;a href=&quot;http://blog.getsatisfaction.com/2007/03/19/why-customer-service-is-the-new-marketing/&quot;&gt;post about it&lt;/a&gt; on our blog, we've had a steady drumbeat of interest on the subject from people across a wide spectrum of industries, companies and job titles.&lt;br /&gt;&lt;br /&gt;
-Clearly, the topic has struck a nerve. We knew it was a subject we were obsessed with, but we had no idea so many people felt so passionately about what at a glance seems like it might make for pretty mundane subject matter. People from all sorts of industries have contacted us, wanting to share their stories about how to make customer service a better experience all around, or asking for tips and suggestions about how to get their own organizations to do customer service differently.&lt;br /&gt;&lt;br /&gt;
-And, hey, we're a customer service organization, right? Give the customers what they want, and what our community  wants is a chance to learn, organize, and share around some of these emerging ideas. And so we're announcing our first &quot;Customer Service is the New Marketing&quot; Summit, to be held in mid-November here in lovely San Francisco, California (exact date and location to be determined shortly.)&lt;br /&gt;&lt;br /&gt;
-We're currently hard at work putting together a full roster of speakers, pulling from a variety of industries (and not just the usual Web 2.0 crowd, though we'll have some of them, too), all of whom are finding ways to make customer service more meaningful for their organizations. We'll round out the day with some collaborative workshops, some probing interviews, some group discussion, plenty of food and of course the opportunity to mingle and network. More information on all this soon, we promise.&lt;br /&gt;&lt;br /&gt;
-But first, of course, we want to hear from you: Would this be something you would be interested in? Who would you like to see speak? What kinds of other attendees would you want to meet? What topics would you find the most valuable? Let us know!
-  </content>
-  
-  <sfn:topic_style>talk</sfn:topic_style>
-  <sfn:reply_count>23</sfn:reply_count>
-  <sfn:follower_count>16</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="happy" severity="1" emotion="excited" />
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/46181</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/46181" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-23T16:23:02Z</updated>  
-  
-  <title type="html">I am trying to add a company, but keep getting an internal error message</title>
-  <updated>2007-11-23T16:23:02Z</updated>
-  <author>
-   <name>JPersch</name>
-   <uri>http://api.getsatisfaction.com/people/46171</uri>
-  </author>
-  <content type="html">
-    I am using Firefox browser and XP OS. The company is Bass Pro Shops
-  </content>
-  
-  <sfn:topic_style>question</sfn:topic_style>
-  <sfn:reply_count>3</sfn:reply_count>
-  <sfn:follower_count>3</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-</entry>
-<entry>
-  <id>http://api.getsatisfaction.com/topics/45551</id>
-  <link rel="topic" href="http://api.getsatisfaction.com/topics/45551" type="application/atom+xml"/>
-  <link rel="company" href="http://api.getsatisfaction.com/companies/4" type="text/html"/>
-  
-  <updated>2007-11-23T11:25:19Z</updated>  
-  
-  <title type="html">you need a bookmarklet!  :)</title>
-  <updated>2007-11-23T11:25:19Z</updated>
-  <author>
-   <name>mingyeow</name>
-   <uri>http://api.getsatisfaction.com/people/30511</uri>
-  </author>
-  <content type="html">
-    since most of the companies are web companies, why not have a web marklet that pulls the url directly and show your beautiful ajax screen, saving the poor user much work?
-  </content>
-  
-  <sfn:topic_style>idea</sfn:topic_style>
-  <sfn:reply_count>5</sfn:reply_count>
-  <sfn:follower_count>4</sfn:follower_count>
-  <sfn:flag_count>0</sfn:flag_count>
-  
-  
-    <sfn:emotitag face="happy" severity="1" emotion="happy" />
-  
-</entry>
-    
-
 </feed>

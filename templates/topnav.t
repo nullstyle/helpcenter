@@ -3,5 +3,5 @@
 <li><a href="faq.php">FAQs</a></li>
 <li><a href="contactus.php">Contact Us</a></li>
 <li><a href="discuss.php">Discussions</a></li>
-<li><a href="minidashboard.php">View your dashboard</a></li>
+<li class="small"><a href="minidashboard.php">View your dashboard</a></li>
 </ul>

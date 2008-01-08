@@ -51,28 +51,30 @@ about the tag: {$filter_tag}
 <div class="sidebar">
 <h4>View discussions by:</h4>
 <ul class="straight">
-<li><a href="discuss.php">All Topics xxx</a></li>
-<li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions xxx</a></li>
-<li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas xxx</a></li>
-<li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems xxx</a></li>
-<li><a href="?style=talk{$filter_product_arg}{$filter_tag_arg}">Talk Topics xxx</a></li>
+<li><a href="discuss.php">All Topics xxxx{$all_count}</a></li>
+<li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions {$question_count}</a></li>
+<li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas {$idea_count}</a></li>
+<li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems {$problem_count}</a></li>
+<li><a href="?style=talk{$filter_product_arg}{$filter_tag_arg}">Talk Topics {$talk_count}</a></li>
 <li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered xxx</a></li>
 </ul>
 </div>
 {include file="related-topics.t"}
-<div class="sidebar blue">Go to your Satisfaction Dashboard</div>
+<div class="sidebar blue"><a href="minidashboard.php">Go to your Satisfaction Dashboard</a></div>
 </div>
 
 <table class="discuss-topic-list">
 {foreach from=$topics key=i item=topic}
-    <tr><td><img src="images/{$topic.topic_style}_med.png" alt="{$topic.topic_style}" /></td>
+    <tr><td><img src="images/{$topic.topic_style}_med.png"
+                 alt="{$topic.topic_style}" /></td>
     <td> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
 {if $topic.reply_count} Last reply
                  {else} Posted {/if} {$topic.updated_relative}.
 
    <p>{$topic.content}</p>
 
-   <p><img class="tiny-author-pic" style="vertical-align: middle;" src="{$topic.author.photo}" /> {$topic.author.name} 
+   <p><img class="tiny-author-pic" style="vertical-align: middle;"
+           src="{$topic.author.photo}" /> {$topic.author.name} 
    {if $topic.topic_style == 'question'} asked this question
    {elseif $topic.topic_style == 'idea'} shared this idea
    {elseif $topic.topic_style == 'talk'} asked this question

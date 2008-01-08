@@ -2,8 +2,8 @@
 <div class="question">
 <h2>How can we help you?</h2>
 
-<form style="width: 100%; position: relative;" action="dead">
-<input name="question" class="questionbox" />
+<form style="width: 100%; position: relative;" action="submit.php">
+<input name="subject" class="questionbox" />
 <button type="submit">Go</button>
 
 <a href="http://www.getsatisfaction.com/">

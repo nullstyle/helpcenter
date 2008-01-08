@@ -1,7 +1,5 @@
 {include file="header.t"}
 
-{include file="topnav.t"}
-
 <h1>Do any of these help?</h1>
 
 <ul class="topic-list">
@@ -28,23 +26,31 @@ everyone to see and answer OR reword your topic and redo the search
 If you re-word your topic you can also 
   <a href="dead-end.php">re-do the search</a>
 </div>
-<input name="question" class="questionbox" />
+<input name="subject" class="questionbox" value="{$subject}" />
 <button type="submit">Go</button>
 </div>
 
 <h4>Details</h4>
-<textarea rows="4" cols="50">
+<textarea name="details" rows="4" cols="50">
 </textarea>
 
 <h4>Tell everyone how this makes you feel </h4>
-O O O O
+<div onclick="event.target.style.border='1px solid black';
+    var emoticonElem = document.getElementById('emoticon');
+    emoticonElem.value=event.id">
+<input id="emoticon" type="hidden" name="emoticon" value="" />
+<img id="happy" src="images/happy.png">
+<img id="sad" src="images/sad.png">
+<img id="indifferent" src="images/indifferent.png">
+<img id="silly" src="images/silly.png">
+</div>
 
 <h4>Add tags</h4>
 
 <table>
 <tr>
 <td>
-<input style="width: 150pt" /> <br />
+<input name="tags" value="" style="width: 150pt" /> <br />
 
 <span class="small-note">Comma-separated. (e.g. hot dogs, cake, pie)</span>
 

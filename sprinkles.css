@@ -185,7 +185,7 @@ input.admin, textarea.admin { width: 160pt; }
   height: 32pt;
 }
 
-.subordinate .reply-author-pic {
+.small-author-pic, .subordinate .reply-author-pic {
   width: 24pt;
   height: 24pt;
 }
@@ -228,6 +228,8 @@ ul.product-list li {
 }
 
 .small-note { font-size: 8pt; color: #777; }
+
+.small { font-size: 10pt; color: #444; }
 
 ul.straight { list-style-type: none; padding-left: 0pt; }
 

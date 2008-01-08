@@ -27,9 +27,9 @@ if ($filter_tag) $options['tag'] = $filter_tag;
 $topics = $sprink->topics($options);
 assert(is_array($topics));
 $topic_count = count($topics);
-$topics = take($discuss_topic_page_limit, $topics); # FIXME needs pagination
+$topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
 
-foreach ($topics as &$topic) {
+foreach ($topics['topics'] as &$topic) {
   if (!($topic["reply_count"] > 0)) 
     $topic["reply_count"] = 0;
 }
@@ -47,7 +47,7 @@ $smarty->assign(array('filter_product' => $filter_product,
                       'filter_tag' => $filter_tag));
 $smarty->assign('products', $sprink->products());
 $smarty->assign('company_name', $company_name);
-$smarty->assign('topics', $topics);
+$smarty->assign('topics', $topics['topics']);
 $smarty->assign('topic_count', $topic_count);
 $smarty->assign('filter_product_arg',
                        $filter_product ?
@@ -57,6 +57,10 @@ $smarty->assign('filter_tag_arg',
                        $filter_tag ?
                          '&' ."tag=" . $filter_tag :
                          '');
+$smarty->assign(array('question_count' => $topics['totals']['question_count'],
+                      'talk_count' => $topics['totals']['talk_count'],
+                      'idea_count' => $topics['totals']['idea_count'],
+                      'problem_count' => $topics['totals']['problem_count']));
 
 $smarty->register_function('discuss_tag_url', 'discuss_tag_url');
 $smarty->display('discuss.t');

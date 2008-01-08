@@ -39,7 +39,7 @@
 {foreach from=$company_people key=i item=person}
 <td><img class="small-author-pic" style="float:left;" src="{$person.photo}" />
     <div style="padding: 3pt;"><strong>{$person.fn}</strong> <br /> 
-                               role xxx
+                               {$person.role}
     </div></td>
 {if $i % 2 == 1 && $i != count($company_people)-1}
 </tr>
