@@ -63,7 +63,7 @@ about the tag: {$filter_tag}
 <div class="sidebar blue"><a href="minidashboard.php">Go to your Satisfaction Dashboard</a></div>
 </div>
 
-<table class="discuss-topic-list">
+<table class="topic-list">
 {foreach from=$topics key=i item=topic}
     <tr><td><img src="images/{$topic.topic_style}_med.png"
                  alt="{$topic.topic_style}" /></td>
@@ -80,7 +80,8 @@ about the tag: {$filter_tag}
    {elseif $topic.topic_style == 'talk'} asked this question
    {elseif $topic.topic_style == 'problem'} reported this problem
    {/if}
- {$topic.updated_relative}. It's tagged xxx </p>
+ {$topic.updated_relative}.
+ It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if} <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach} </p>
    </td>
    <td> <span class="huge">{$topic.reply_count}</a></span> <br />replies </td>
    </tr>

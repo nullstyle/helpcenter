@@ -6,5 +6,5 @@
 </head>
 <body{if $body_css_id} id="{$body_css_id}"{/if}>
 
+<div id="container">
 <div id="content">
-<div id="backdrop">

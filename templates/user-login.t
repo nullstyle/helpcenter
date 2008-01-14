@@ -1,39 +1,32 @@
 {include file="header.t"}
 
-{include file="topnav.t"}
-
 <h1>Login OR Sign Up</h1>
 
 <table>
 <tr>
 <td>
+
 <div>
 <strong>Login</strong> with your Satisfaction account
+<form action="handle-user-login.php">
+<input type="hidden" name="return" value="{$return}" />
 <table>
 <tr>
-<td>
-Email Address
-</td>
-<td>
-<input name="user_email" />
-</td>
+  <td> Email Address </td>
+  <td> <input name="email" /> </td>
 </tr>
 <tr>
-<td>
-Password
-</td>
-<td>
-<input name="password" />
-</td>
+  <td> Password </td>
+  <td> <input name="password" type="password" /> </td>
 </tr>
 <tr>
-<td></td>
-<td>
-<input type="submit" value="Login" />
-<div><a href="dead-end.php">Password gone missing?</a></div>
-</td>
+  <td></td>
+  <td> <input type="submit" value="Login" />
+       <div><a href="TBD.php">Password gone missing?</a></div>
+  </td>
 </tr>
 </table>
+</form>
 </div>
 <hr />
 <div>
@@ -98,6 +91,7 @@ OR randomize your icon
 </tr>
 </table>
 </div>
+
 </td>
 <td>
 <div id="what-satisfaction">

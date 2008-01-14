@@ -13,57 +13,67 @@ a question{elseif $lead_item.topic_style == 'problem'}
 a problem{/if}
 </h3>
 
-<table width="100%">
+<table style="width: 100%; table-layout: fixed;">
 <tr>
-<td style="width:48pt;">
+<td class="topic-pic-column">
 <div><img src="{$lead_item.author.photo}" class="topic-author-pic" /></div>
-<div class="topic-author-caption">
-<span class="topic-byline">
-{ $lead_item.author.name }
-</span> 
-{if $lead_item.topic_style == 'question'} asked this question
-{elseif $lead_item.topic_style == 'idea'} shared this idea
-{elseif $lead_item.topic_style == 'talk'} asked this question
-{elseif $lead_item.topic_style == 'problem'} reported this problem
-{/if}
-{$lead_item.published_relative}
+<div class="topic-author-caption" style="margin-top: 3pt;">
+  <span class="topic-byline">
+  { $lead_item.author.name }
+  </span> 
+  {if $lead_item.topic_style == 'question'} asked this question
+  {elseif $lead_item.topic_style == 'idea'} shared this idea
+  {elseif $lead_item.topic_style == 'talk'} asked this question
+  {elseif $lead_item.topic_style == 'problem'} reported this problem
+  {/if}
+  {$lead_item.published_relative}
 </div>
 </td>
 
-<td style="top; margin: 1pc;">
+<td style="margin: 1pc; width: auto;">
 <h3><strong>{ $lead_item.title }</strong></h3>
 
  <p>{ $lead_item.content }</p>
 
- <p><img src="images/{$topic.emotitag_face}.png" style="vertical-align:middle;"
-         alt="{$topic.emotitag_emotion}"> {$topic.emotitag_emotion} </p>
+  <a href="dead-end.php" class="flag_button float-right" style="bottom: 0;">
+    Flag this topic
+  </a>
+  {if $topic.emotitag_face || $topic.emotitag_emotion}
+  <p> {if $topic.emotitag_face}
+        <img src="images/{$topic.emotitag_face}.png"
+             style="vertical-align:middle;"
+             alt="{$topic.emotitag_emotion}">{/if}
+      {$topic.emotitag_emotion}
+  </p>
+  {/if}
 
 </td>
 
-<td style="width: 120pt;">
+<td id="topic-summary">
 
 {if $username}
-<a href="share_topic?id={$topic_id}">Share</a> or follow this topic
+<a href="share_topic.php?id={$topic_id}">Share</a> or follow this topic
 <input style="width:120pt;" value="I have this question too!" />
 {/if}
 
-<div>
-In this topic<br />
-{$particip.people} people<br />
-{$particip.employees} employees<br />
-{$reply_count} replies<br />
-</div>
-{if $particip.official_reps}
+<h3>In this topic</h3>
 <p>
-{$particip.count_official_reps} official rep{if count($particip.official_reps) > 1}s{else}{/if} is here
-<ul class="straight">
+<strong>{$particip.people}</strong>
+   {if $particip.people != 1}people{else}person{/if}<br />
+<strong>{$particip.employees}</strong>
+   employee{if $particip.employees != 1}s{/if}<br />
+<strong>{$reply_count}</strong> {if $reply_count != 1}replies{else}{/if}<br />
+</p>
+{if $particip.count_official_reps}
+<p>
+<strong>{$particip.count_official_reps}</strong>
+{if count($particip.official_reps) != 1} 
+official reps {else}
+official rep {/if}
+<br />
 {foreach from=$particip.official_reps key=i item=rep}
-<li>
 <img src="{$rep.photo}" class="small-author-pic" />
-{$rep.fn}
-</li>
 {/foreach}
-</ul>
 </p>
 {/if}
 </td>
@@ -73,23 +83,31 @@ In this topic<br />
 </div>
 
 <div class="sidepane">
-  <img style="padding: 6pt; margin: 6pt;" src="poweredbysmallStack.png" alt="Powered by: Satisfaction" />
+  <img style="padding: 6pt; margin: 6pt;" src="poweredbysmallStack.png"
+       alt="Powered by: Satisfaction" />
 
   {include file="related-topics.t"}
 </div>
 
-<div>
-  <h2><a href="user-login.php">Login to reply</a></h2>
+<div style="padding: 0pt 8pt;">
 
-  <table class="topic-replies">
+{if !$username}
+  <h2><a href="user-login.php?return=topic.php%3fid={$lead_item.id}">
+    Login to reply</a>
+  </h2>
+{/if}
+
+  <table class="topic-replies" style="width: 342pt;">
   {foreach from=$replies key=i item=reply}
   <tr class="{if $reply.in_reply_to == $lead_item.id}toplevel{else}subordinate{/if}">
-    <td class="reply-author-column">
-      <div style="position:relative; width:34pt;">
+    <td class="topic-pic-column">
+      <div style="position:relative;">
       <img src="{$reply.author.photo}" class="reply-author-pic" />
       </div>
-    </td><td class="reply-core" width="100%">
-      {$reply.author.name} {if $reply.author.role}({$reply.author.role}){/if} replied {$reply.updated_relative}:
+    </td><td class="reply-core">
+      {$reply.author.name}
+      {if $reply.author.role}({$reply.author.role_name}){/if}
+      replied {$reply.updated_relative}:
         <p>{$reply.content}</p>
         <div class="float-right">
           {if $reply.in_reply_to == $lead_item.id} {* A top-level reply. *}
@@ -121,6 +139,19 @@ In this topic<br />
     </td>
   </tr>
   {/foreach}
+  {if $username}
+  <tr>
+  <td>xxx my own icon</td>
+  <td>
+  <form action="handle-reply.php" method="POST">
+  I say:
+  <input type="hidden" name="topic_id" value="{$topic_id}" />
+  <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
+  <button type="submit">Post reply</button>
+  </form>
+  </td>
+  </tr>
+  {/if}
   </table>
 
 {if $num_pages > 1}

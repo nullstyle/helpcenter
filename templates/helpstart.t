@@ -19,11 +19,11 @@
 </div>
 </div>
 
-<div class="topic-list">
+<div class="helpstart-topic-list">
 
 <h2>Get answers <span class="lighter">(check out these recently answered topics)</span></h2>
 
-<ul class="topic-list">
+<ul class="helpstart-topic-list">
 {foreach from=$entries key=i item=entry}
     <li><a href="topic.php?id={$entry.id}">{$entry.title}</a></li>
 {/foreach}
@@ -38,14 +38,11 @@
 <tr>
 {foreach from=$company_people key=i item=person}
 <td><img class="small-author-pic" style="float:left;" src="{$person.photo}" />
-    <div style="padding: 3pt;"><strong>{$person.fn}</strong> <br /> 
-                               {$person.role}
-    </div></td>
-{if $i % 2 == 1 && $i != count($company_people)-1}
-</tr>
-<tr>
-{/if}
-{/foreach}
+  <div style="padding: 3pt;"><strong>{$person.fn}</strong> <br /> 
+                             {$person.role_name}
+  </div></td>
+  {if $i % 2 == 1 && $i != count($company_people)-1}</tr><tr>{/if}
+  {/foreach}
 </tr>
 </table>
 </div>

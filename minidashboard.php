@@ -6,7 +6,9 @@ $sprink = new Sprinkles($company_id);
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
-$topics = array();
+$topics = $sprink->minidashboard('scott');  # FIXME scott is not the only person
+
+$topics = take(5, $topics);
 
 $smarty->assign('background_color', $sprink->site_background_color());
 

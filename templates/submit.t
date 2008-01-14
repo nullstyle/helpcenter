@@ -3,9 +3,18 @@
 <h1>Do any of these help?</h1>
 
 <ul class="topic-list">
-<li>topic xx</li>
-<li>topic xx</li>
-<li>topic xx</li>
+{foreach from=$suggested key=i item=topic}
+{* FIXME the img isn't really properly layed out *}
+<li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
+     {$topic.author.name}
+     {if $topic.author.role}({$topic.author.role}){/if} 
+     {if $topic.topic_style == 'question'}Asked:
+     {elseif $topic.topic_style == 'talk'}Said:
+     {elseif $topic.topic_style == 'problem'}Reported:
+     {elseif $topic.topic_style == 'idea'}Said:
+     {/if}
+     {$topic.title} </li>
+{/foreach}
 </ul>
 
 <h3 class="left-hed"> Nope? </h3>
@@ -14,7 +23,8 @@
 <img class="float-right" 
      alt="Powered by Satisfaction" src="poweredbysmallStack.png" />
 Well then, fill in the details below and submit your topic for
-everyone to see and answer OR reword your topic and redo the search
+everyone to see and answer <br />
+OR reword your topic and redo the search
 </p>
 
 <h3> Your Topic * </h3>
@@ -36,8 +46,8 @@ If you re-word your topic you can also
 
 <h4>Tell everyone how this makes you feel </h4>
 <div onclick="event.target.style.border='1px solid black';
-    var emoticonElem = document.getElementById('emoticon');
-    emoticonElem.value=event.id">
+              var emoticonElem = document.getElementById('emoticon');
+              emoticonElem.value=event.target.id">
 <input id="emoticon" type="hidden" name="emoticon" value="" />
 <img id="happy" src="images/happy.png">
 <img id="sad" src="images/sad.png">

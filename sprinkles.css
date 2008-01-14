@@ -12,13 +12,13 @@ a { text-decoration: none; }
 
 img { border: 0px }
 
-div#content {
+div#container {
   width: 550pt;
   margin-top: 12pt;
   margin: 0 auto;
 }
 
-div#backdrop {
+div#content {
   background-color : #fff;
   padding: 1pc;
 }
@@ -53,12 +53,12 @@ ul.topnav li {
   color: #444;
 }
 
-ul.topic-list { 
+ul.helpstart-topic-list { 
   list-style-type: none;
   padding: 0pt;
 }
 
-ul.topic-list li {
+ul.helpstart-topic-list li {
   margin: 3pt;
   padding: 2pt;
   font-size: 11pt;
@@ -93,6 +93,7 @@ div#what-satisfaction p {
 .right { text-align: right }
 
 .float-right { float: right; }
+.float-left { float: left; }
 
 .left-hed { float: left; margin: 3pt 3pt 0pt 0pt; }
 
@@ -101,14 +102,13 @@ div#what-satisfaction p {
   right: 0pt;
 }
 
-p {
- font-size: 12px;
+#topic-summary {
+  width: 160pt;
+  font-size: 14pt;
+  color: #666666;
 }
 
-.sidebar { 
-  background-color: #eee;
-  padding: 6pt; margin: 6pt;
-}
+p { font-size: 12px; }
 
 .blue {
   background-color: #a7efff;
@@ -116,11 +116,16 @@ p {
 
 .sidepane {
   float: right;
-  width: 120pt;
+  width: 160pt;
 }
 
 .sidepane h2 { color: #777; margin: 4pt 0pt 4pt 0pt; font-size: 14pt; }
 .sidepane h3 { color: #aaa; margin: 4pt 0pt 4pt 0pt; font-size: 14pt; }
+
+.sidebar { 
+  background-color: #eee;
+  padding: 6pt; margin: 6pt;
+}
 
 td.form-label { text-align: right; }
 
@@ -128,7 +133,7 @@ input.admin, textarea.admin { width: 160pt; }
 
 #contact-form input, #contact-form textarea { width: 260pt; }
 
-.topic-list { margin-right: 6pt; width: 330pt; }
+.helpstart-topic-list { margin-right: 6pt; width: 330pt; }
 
 .gutter { margin: 6pt; }
 
@@ -141,9 +146,14 @@ input.admin, textarea.admin { width: 160pt; }
   color: #000;
 }
 
-.topic-replies li, .discuss-topic-list li {
-  margin-top: 6pt;
-  padding-bottom: 6pt;
+ul.topic-replies, ul.topic-list {
+  margin: 3pt 0pt;
+  padding: 0pt;
+  list-style-type: none;
+}
+
+.topic-replies li, ul.topic-list li, .topic-replies tr {
+  padding: 3pt 0pt;
   border-bottom: 1px solid #ccc;
 }
 
@@ -156,7 +166,7 @@ input.admin, textarea.admin { width: 160pt; }
   background-color: #ccc;
 }
 
-.discuss-topic-list h3, .topic-head h3 {
+.topic-list h3, .topic-head h3 {
   font-size: 12pt;
   margin: 0pt;
   color: #888;
@@ -175,14 +185,16 @@ input.admin, textarea.admin { width: 160pt; }
   height: 48pt;
 }
 
+.wiggle { margin: 3pt; }
+
 .reply-author-pic {
   position:absolute;
   right: 0pt;
 }
 
-.small-author-pic, .toplevel .reply-author-pic {
-  width: 32pt;
-  height: 32pt;
+.toplevel .reply-author-pic {
+  width: 48pt;
+  height: 48pt;
 }
 
 .small-author-pic, .subordinate .reply-author-pic {
@@ -195,12 +207,14 @@ input.admin, textarea.admin { width: 160pt; }
   height: 16pt;
 }
 
-.reply-author-column {
-  width: 36pt;
+.topic-pic-column {
+  width: 48pt;
+  margin: 3pt;
 }
 
 .topic-replies {
   list-style-type: none;
+  table-layout: fixed;
 }
 
 ul.product-list li {
@@ -214,7 +228,7 @@ ul.product-list li {
 
 #contactus h3 { font-size: 14pt; font-weight: normal; margin: 6pt 0pt 0pt 0pt; }
 
-.discuss-topic-list tr { margin: 8pt; }
+.topic-list tr { margin: 8pt; }
 
 .error-box {
   color: #c03030; 

@@ -24,6 +24,8 @@ $topic['items'] = take_range($page_num * $page_limit, ($page_num + 1) * $page_li
                     $topic['items']);
 $topic['items'] = $sprink->flatten_threads($topic['items']);
 
+$user = $sprink->current_user();
+
 $smarty->assign(array('topic_updated' => $lead_item['updated'],
                       'topic_updated_relative' =>
                            ago($lead_item['updated'], time())));
@@ -34,15 +36,18 @@ $smarty->assign(array('topic_updated' => $lead_item['updated'],
 
 $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('company_name', $company_name);
-$smarty->assign('test', array('foo' => array('baz' => 'bonk')));
+
 $smarty->assign('lead_item', $lead_item);
 $smarty->assign('replies', $topic['items']);
 $smarty->assign('particip', $topic['particip']);
+$smarty->assign('tags', $topic['tags']);
 $smarty->assign(array('reply_count' => $reply_count,
                       'toplevel_reply_count' => $toplevel_reply_count));
 $smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
+$smarty->assign('username', $user ? 'TBD' : '');
+$smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 
 $smarty->display('topic.t');
 ?>

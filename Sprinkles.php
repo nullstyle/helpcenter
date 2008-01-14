@@ -88,7 +88,11 @@ function mysql_now() {
   $cols = mysql_fetch_array($result);
   return $cols[0];
 }
-  
+
+function cmp_by_updated($a, $b) {
+  return $b['updated'] - $a['updated'];
+}
+
 #require_once('hkit.class.php');
 global $h;
 $h = new hKit;
@@ -105,6 +109,11 @@ class Sprinkles {
 
   var $company_id;
   var $employees;  # Cache this in the object because it's used frequently.
+  var $people_cache = array();
+
+  var $role_names = array('company_admin' => 'Official Rep',
+                          'company_rep' => 'Official Rep',
+                          'employee' => 'Employee');
 
   function Sprinkles($company_id) {
      $this->company_id = $company_id;
@@ -128,10 +137,6 @@ class Sprinkles {
     return $card['fn'];
   }
 
-  function fix_atom_reply($entry) {
-    return $this->fix_atom_entry($entry, 'reply');
-  }
-
   function sfn_element($entry, $elem_name) {
     global $xml_sfn_ns;
     if ($elem = $entry->model->getElementsByTagNameNS($xml_sfn_ns, $elem_name)->item(0))
@@ -142,6 +147,10 @@ class Sprinkles {
     global $xml_sfn_ns;
     return !!$entry->model->getElementsByTagNameNS($xml_sfn_ns,
                                                    $elem_name)->item(0);
+  }
+
+  function fix_atom_reply($entry) {
+    return $this->fix_atom_entry($entry, 'reply');
   }
 
   # Argument $kind is one of topic, reply
@@ -155,8 +164,7 @@ class Sprinkles {
     $item['author']['name'] = $entry->author();
     $item['author']['uri'] = $entry->author(0, array('param' => 'uri'));
     $person = $this->get_person($item["author"]["uri"]);
-    $person = $person[0];                    # get_person returns a list; FIXME?
-    $person['role'] = $this->get_person_role($item["author"]["uri"]);
+    list($person['role'], $person['role_name']) = $this->get_person_role($item["author"]["uri"]);
     if ($person) {
       foreach ($person as $key => $value) {
         $item['author'][$key] = $value;
@@ -194,28 +202,31 @@ class Sprinkles {
     return $item;
   }
 
-  function get_tags($url) {
-    global $h;
-#    $tag_records = $h->getByURL('htag', $url);
-    $tag_records = array();
-    $result = array();
-    foreach($tag_records as $tag_record) {
-      array_push($result, $tag_record['name']);
-    }
-    return $result;
+  function minidashboard($person) {
+    $started = $this->topics(array('person' => $person));
+    $followed = $this->topics(array('followed' => $person));
+    $items = array_merge($started['topics'],
+                         $followed['topics']);
+    usort($items, cmp_by_updated);
+    return $items;
   }
 
   ## Topics for the company, filter by values in $options
   function topics($options) {
-    assert(!( $options['product'] && $options['tag'] ));
+    assert(!( $options['product'] && $options['tag'] && $options['query'] ));
     if ($options['product']) {
       $url_path = is_url($options['product']) ?
                       $options['product'] . "/topics" :
                       $url_path = 'products/' . $options['product'] . '/topics';
     } else if ($options['tag']) {
       $url_path = 'tags/' . $options['tag'] . '/topics';
+    } else if ($options['person']) {
+      $url_path = 'people/' . $options['person'] . '/topics';
+    } else if ($options['followed']) {
+      $url_path = 'people/' . $options['followed'] . '/followed/topics';
     } else {
       $url_path = 'companies/'.$this->company_id.'/topics';
+      if ($options['query']) $url_path .= '?query=' . urlencode($options['query']);
     }
     $url_path .= '?';
     if ($options['style']) {
@@ -234,8 +245,10 @@ class Sprinkles {
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
-        $topic_tags_url = $topic['id'] . '/tags';         # FIXME: is this safe?
-        $topic['tags'] = $this->get_tags($topic_tags_url);
+        if (!$options['notags']) {     # faster response
+          $topic_tags_url = $topic['id'] . '/tags';
+          $topic['tags'] = $this->tags($topic_tags_url);
+        }
         array_push($topics, $topic);
       }
 #      dump($topics);
@@ -320,6 +333,21 @@ class Sprinkles {
     return $result;
   }
 
+  function tags($url) {
+# HACK: getting tags this way until hkit is fixed
+    $tags = array();
+    $xml = simplexml_load_file($url);
+    $root_nodes = $xml->xpath("//*[@class='tag']");
+    if ($root_nodes) {
+      $result['tags'] = array();
+      $tag_elems = $root_nodes[0]->xpath("//*[@class='name']");
+      foreach ($tag_elems as $tag_elem) {
+        array_push($tags, implode($tag_elem->xpath('child::node()')));
+      }
+    }
+    return $tags;
+  }
+
   function topic($id) {
     global $quick_mode, $cache_dir;
     $url = $quick_mode ?
@@ -348,29 +376,30 @@ class Sprinkles {
     $official_reps = array();
     foreach ($items as $item) {
       $author_hash[$item['author']['url']]++;
-      $role = $this->get_person_role($item['author']['url']);
+      list($role, $role_name) = $this->get_person_role($item['author']['url']);
       if ($role)
         $employee_contribs++;
-      if ($role == 'company_rep')
-        array_push($official_reps, $item['author']);
+      if ($role == 'company_rep' || $role == 'company_admin')
+        $official_reps[$item['author']['url']] = $item['author'];
     }
     $particip = array('people' => count($author_hash),
                       'employees' => $employee_contribs,
                       'official_reps' => $official_reps,
-                      'count_official_reps' => count($oficial_reps));
+                      'count_official_reps' => count($official_reps));
       
     return array('items' => $items,
-                 'particip' => $particip);
+                 'particip' => $particip,
+                 'tags' => $tags);
   }
 
   ## Get list of people associated with the company
+  # TBD: un-factor this, inline it into employees.
   function employee_list() {
     $people_url = $this->api_url('companies/'.$this->company_id.'/employees');
     global $h, $quick_mode;
     if ($quick_mode) {
       $people_list = $h->getByString('hcard', file_get_contents($people_url));
     } else {
-#       $h = new hkit();
       $people_list = $h->getByURL('hcard', $people_url);
     }
     if (!$people_list) { die("no people list"); }
@@ -380,46 +409,41 @@ class Sprinkles {
   ## Fetch the people records of all the company's people 
   function employees() {
     if ($this->employees) return $this->employees;
-    $people_list = $this->employee_list();
+    $employee_list = $this->employee_list();
     $this->employees = array();
     global $h;
-    foreach ($people_list as $person) {
-      if ($quick_mode) {
-        $url = api_url("people/40451");
-        $person_record = $h->getByString('hcard', $url);
-      } else {
-#        $h = new hKit();
-        $person_record = $h->getByURL('hcard', $person["url"]);
+    foreach ($employee_list as $employee_record) {
+      $person_record = $this->get_person($employee_record["url"]);
+      # Superimpose fields from $person_record onto $employee_record 
+      # (incl. person's role).
+      foreach ($person_record as $key => $value) {
+        $employee_record[$key] = $value;
       }
-      foreach ($person_record[0] as $key => $value) {
-        $person[$key] = $value;
-      }
-      array_push($this->employees, $person);
+      # Resolve the role token into a human-readable role name.
+      $employee_record['role_name']= $this->role_names[$employee_record['role']];
+      array_push($this->employees, $employee_record);
     }
     return $this->employees;
   }
 
   function get_person_role($person_url) {
+# TBD: parametrize this for the company?
     $employees = $this->employees();
     foreach ($employees as $emp) {
       if ($emp['url'] == $person_url)
-        return $emp['role'];
+        return array($emp['role'], $this->role_names[$emp['role']]);
     }
     return null;
   }
     
   function get_person($url) {
-    # FIXME: this returns a (singleton) list of persons. Maybe it
-    # should return just a person?
+#    if ($people_cache[$url]) return $people_cache[$url];
     global $h;
-    if ($quick_mode) {
-      # FIXME
-      $person = $h->getByString('hcard',
-                          file_get_contents($cache_dir . "people-40451.html"));
-    } else {
-#      $h = new hKit();
-      $person = $h->getByURL('hcard', $url);
-    }
+    $person = $h->getByURL('hcard', $url);
+    assert(count($person) == 1);   # There should only be one person at this URL.
+    $person = $person[0];
+    $people_cache[$url] = $person;
+    assert($person);
     return $person;
   }
 
@@ -433,17 +457,17 @@ class Sprinkles {
     $result = $h->getByURL('hproduct', $url);
     $result = $result[0];   # Assume just one product in the document.
 
-# HACK: getting tags this way until hkit is fixed
-    $xml = simplexml_load_file($url . '/tags');
-    $root_nodes = $xml->xpath("//*[@class='tag']");
-    # $root_nodes = $xml->xpath("//@class=tag");
-    if ($root_nodes) {
-      $result['tags'] = array();
-      $tag_elems = $root_nodes[0]->xpath("//*[@class='name']");
-      foreach ($tag_elems as $tag_elem) {
-        array_push($result['tags'], implode($tag_elem->xpath('child::node()')));
-      }
-    }
+   $result['tags'] = $this->tags($url . '/tags');
+## HACK: getting tags this way until hkit is fixed
+#    $xml = simplexml_load_file($url . '/tags');
+#    $root_nodes = $xml->xpath("//*[@class='tag']");
+#    if ($root_nodes) {
+#      $result['tags'] = array();
+#      $tag_elems = $root_nodes[0]->xpath("//*[@class='name']");
+#      foreach ($tag_elems as $tag_elem) {
+#        array_push($result['tags'], implode($tag_elem->xpath('child::node()')));
+#      }
+#    }
     return $result;
   }
 
@@ -499,8 +523,21 @@ class Sprinkles {
       ($api_root . $path));
   }
   
+  function open_admin_session($username) {
+    $result = mysql_query("insert into admin_sessions (username) values ('" . 
+                          $username . "')");
+  
+    $session_id = mysql_insert_id();
+    setcookie('admin_session_id', $session_id);
+    return $session_id;
+  }
+  
+  function close_admin_session() {
+    setcookie('admin_session_id', '');
+  }
+  
   function open_session($username) {
-    $result = mysql_query("insert into sessions (username) values ('" . 
+    $result = mysql_query("insert into user_sessions (username) values ('" . 
                           $username . "')");
   
     $session_id = mysql_insert_id();
@@ -512,10 +549,21 @@ class Sprinkles {
     setcookie('session_id', '');
   }
   
+  function current_admin_user() {
+    $session_id = $_COOKIE["admin_session_id"];
+    if (!$session_id) return;
+    $sql = "select session_id, username from admin_sessions where session_id=" . 
+           $session_id;
+    $result = mysql_query($sql);
+    if (!$result) { die(mysql_error()); }
+    $cols = mysql_fetch_array($result);
+    return $cols[1];
+  }
+  
   function current_user() {
     $session_id = $_COOKIE["session_id"];
     if (!$session_id) return;
-    $sql = "select session_id, username from sessions where session_id = " . 
+    $sql = "select session_id, username from user_sessions where session_id = ". 
            $session_id;
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }

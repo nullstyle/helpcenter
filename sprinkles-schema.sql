@@ -1,7 +1,13 @@
 -- Sprinkles schema
 -- MySQL version
 
-create table sessions (
+create table admin_sessions (
+  session_id bigint primary key auto_increment,
+  creation_date timestamp,
+  username varchar(255)
+);
+
+create table user_sessions (
   session_id bigint primary key auto_increment,
   creation_date timestamp,
   username varchar(255)
