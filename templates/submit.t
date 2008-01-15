@@ -45,11 +45,16 @@ If you re-word your topic you can also
 </textarea>
 
 <h4>Tell everyone how this makes you feel </h4>
-<div onclick="event.target.style.border='1px solid black';
+<div onclick="for (var i in this.childNodes) {ldelim}
+//                alert(this.childNodes[i].tagName);
+                if (this.childNodes[i].tagName == 'IMG')
+                  this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
+              {rdelim}
+              event.target.src='images/' + event.target.id + '_on.png';
               var emoticonElem = document.getElementById('emoticon');
               emoticonElem.value=event.target.id">
 <input id="emoticon" type="hidden" name="emoticon" value="" />
-<img id="happy" src="images/happy.png">
+<img id="happy" src="images/happy.png" onsrc="images/happy_on.png">
 <img id="sad" src="images/sad.png">
 <img id="indifferent" src="images/indifferent.png">
 <img id="silly" src="images/silly.png">

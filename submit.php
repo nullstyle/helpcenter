@@ -9,6 +9,7 @@ $suggested = $sprink->topics(array('query' => $subject,
 
 $suggested = take(3, $suggested['topics']);
 
+$smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('subject', $subject);
 $smarty->assign('suggested', $suggested);
 
