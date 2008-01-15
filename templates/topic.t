@@ -62,7 +62,8 @@ a problem{/if}
    {if $particip.people != 1}people{else}person{/if}<br />
 <strong>{$particip.employees}</strong>
    employee{if $particip.employees != 1}s{/if}<br />
-<strong>{$reply_count}</strong> {if $reply_count != 1}replies{else}{/if}<br />
+<strong>{$reply_count}</strong>
+   {if $reply_count != 1}replies{else}reply{/if}<br />
 </p>
 {if $particip.count_official_reps}
 <p>

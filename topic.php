@@ -24,6 +24,11 @@ $topic['items'] = take_range($page_num * $page_limit, ($page_num + 1) * $page_li
                     $topic['items']);
 $topic['items'] = $sprink->flatten_threads($topic['items']);
 
+$related_topics = $sprink->topics(array('related' => $topic_id));
+$related_topics['topics'] = 
+                  take($related_topics_count, $related_topics['topics']);
+$sprink->resolve_companies($related_topics['topics']);
+
 $user = $sprink->current_user();
 
 $smarty->assign(array('topic_updated' => $lead_item['updated'],
@@ -39,6 +44,7 @@ $smarty->assign('company_name', $company_name);
 
 $smarty->assign('lead_item', $lead_item);
 $smarty->assign('replies', $topic['items']);
+$smarty->assign('related_topics', $related_topics['topics']);
 $smarty->assign('particip', $topic['particip']);
 $smarty->assign('tags', $topic['tags']);
 $smarty->assign(array('reply_count' => $reply_count,

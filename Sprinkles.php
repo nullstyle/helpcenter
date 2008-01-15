@@ -48,8 +48,9 @@ function ago($time, $now) {
   }
 }
 
-function is_url($str) {
+function is_http_url($str) {
   # Naive regex for detecting URLs in the http schemes.
+  # FIXME: need something more robust.
   return preg_match("|^https?://|", $str);
 }
 
@@ -120,20 +121,23 @@ class Sprinkles {
   }
 
   ## Get company info
-  function company_hcard() {
-    $company_url = $this->api_url('companies/' . $this->company_id);
+  function company_hcard($company_id = null) {
+    if ($company_id == null) $company_id = $this->company_id;
+    $company_url = is_http_url($company_id)
+                       ? $company_id
+                       : $this->api_url('companies/' . $this->company_id);
     global $h, $quick_mode;
     if ($quick_mode) {
       $company_hcards = $h->getByString('hcard', file_get_contents($company_url));
     } else {
-#      $h = new hKit();
       $company_hcards = $h->getByURL('hcard', $company_url);
     }
     return $company_hcards[0];
   }
 
-  function company_name() {
-    $card = $this->company_hcard();
+  function company_name($company_id = null) {
+    if ($company_id == null) $company_id = $this->company_id;
+    $card = $this->company_hcard($company_id);
     return $card['fn'];
   }
 
@@ -164,7 +168,8 @@ class Sprinkles {
     $item['author']['name'] = $entry->author();
     $item['author']['uri'] = $entry->author(0, array('param' => 'uri'));
     $person = $this->get_person($item["author"]["uri"]);
-    list($person['role'], $person['role_name']) = $this->get_person_role($item["author"]["uri"]);
+    list($person['role'], $person['role_name']) = 
+                                $this->get_person_role($item["author"]["uri"]);
     if ($person) {
       foreach ($person as $key => $value) {
         $item['author'][$key] = $value;
@@ -178,7 +183,14 @@ class Sprinkles {
     $item['published_relative'] = ago($entry->published, time());
     $item['published_formatted'] = strftime("%B %e, %y", $entry->published);
 
-    $in_reply_to_elem = $entry->model->getElementsByTagName('in-reply-to')->item(0);
+    $link_elems = $entry->model->getElementsByTagName('link');
+    foreach ($link_elems as $link_elem) {
+        if ($link_elem->getAttribute('rel') == 'company')
+	  $item['company_url'] = $link_elem->getAttribute('href');
+    }
+
+    $in_reply_to_elem = 
+                    $entry->model->getElementsByTagName('in-reply-to')->item(0);
     if ($in_reply_to_elem)
       $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
     global $xml_sfn_ns;
@@ -202,6 +214,15 @@ class Sprinkles {
     return $item;
   }
 
+# A new strategy for avoiding fetching extra resources.
+# TBD: Port this to other elements that require fetching external resources.
+  function resolve_companies(&$feed) {
+    foreach ($feed as &$item) {
+      if ($item['company_url'])
+        $item['company'] = $this->company_hcard($item['company_url']);
+    }
+  }
+
   function minidashboard($person) {
     $started = $this->topics(array('person' => $person));
     $followed = $this->topics(array('followed' => $person));
@@ -213,9 +234,11 @@ class Sprinkles {
 
   ## Topics for the company, filter by values in $options
   function topics($options) {
-    assert(!( $options['product'] && $options['tag'] && $options['query'] ));
+#    TBD: check input, that there's a unique option amongst these.
+#    list($options['product'], $options['tag'], $options['query'],
+#         $options['person'], $options['followed'], $options['related'];
     if ($options['product']) {
-      $url_path = is_url($options['product']) ?
+      $url_path = is_http_url($options['product']) ?
                       $options['product'] . "/topics" :
                       $url_path = 'products/' . $options['product'] . '/topics';
     } else if ($options['tag']) {
@@ -224,9 +247,12 @@ class Sprinkles {
       $url_path = 'people/' . $options['person'] . '/topics';
     } else if ($options['followed']) {
       $url_path = 'people/' . $options['followed'] . '/followed/topics';
+    } else if ($options['related_to']) {
+      $url_path = $options['related'] . '/related';
     } else {
       $url_path = 'companies/'.$this->company_id.'/topics';
-      if ($options['query']) $url_path .= '?query=' . urlencode($options['query']);
+      if ($options['query'])
+        $url_path .= '?query=' . urlencode($options['query']);
     }
     $url_path .= '?';
     if ($options['style']) {
@@ -253,7 +279,7 @@ class Sprinkles {
       }
 #      dump($topics);
 
-# FIXME: expand robust mode to cover "sort" option
+# FIXME: expand robust mode to cover more options
       global $robust_mode;
       if ($robust_mode && $options['style']) {
         # Filter the topics down to those of the given style
@@ -440,6 +466,7 @@ class Sprinkles {
 #    if ($people_cache[$url]) return $people_cache[$url];
     global $h;
     $person = $h->getByURL('hcard', $url);
+    if (count($person) == 0) throw new Exception("No person at $url");
     assert(count($person) == 1);   # There should only be one person at this URL.
     $person = $person[0];
     $people_cache[$url] = $person;
@@ -448,7 +475,7 @@ class Sprinkles {
   }
 
   function product_api_url($id) {
-    $path = is_url($id) ? $id : 'products/' . $id;
+    $path = is_http_url($id) ? $id : 'products/' . $id;
     return $this->api_url($path);
   }
 
@@ -494,7 +521,7 @@ class Sprinkles {
     global $h, $quick_mode, $cache_dir;
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
-      if (is_url($url))
+      if (is_http_url($url))
         $product = $h->getByURL('hproduct', $url);
       else  $product = $h->getByString('hproduct', file_get_contents($url));
       assert(is_array($product));
@@ -506,8 +533,8 @@ class Sprinkles {
   
   function api_url($path) {
     # print "Getting api_url for $path";
-    # if (is_url($path)) return $path;   # FIXME: Do we want to trust URLs?
-    if (is_url($path)) {
+    # if (is_http_url($path)) return $path;   # FIXME: Do we want to trust URLs?
+    if (is_http_url($path)) {
       $parts = parse_url($path);
       $path = $parts['path'] . ($parts['query'] ? '?'. $parts['query'] : '')
                 . ($parts['fragment'] ? '#' : $parts['fragment']);
