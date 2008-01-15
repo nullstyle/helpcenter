@@ -7,12 +7,12 @@ require_once 'hkit.class.php';
 
 # take: return a list of the first $n elements from $list
 function take($n, $list) {
-  assert(is_array($list));
+  if (!is_array($list)) throw new Exception("Non-array passed to 'take'");
   $result = array();
   $i = 0;
   foreach ($list as $item) {
-    if ($i++ > $n) { break; }
-    array_push($result, $item);
+    if (++$i > $n) { break; }
+      array_push($result, $item);
   }
   return $result;
 }

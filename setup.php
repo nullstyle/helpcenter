@@ -29,5 +29,6 @@ $company_id = 5;
 $helpstart_topic_count = 5; 
 $discuss_topic_page_limit = 3;
 $related_topics_count = 4;
+$submit_suggestions = 3;
 
 ?>
