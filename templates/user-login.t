@@ -8,7 +8,7 @@
 
 <div>
 <strong>Login</strong> with your Satisfaction account
-<form action="handle-user-login.php">
+<form action="handle-user-login.php" method="POST">
 <input type="hidden" name="return" value="{$return}" />
 <table>
 <tr>

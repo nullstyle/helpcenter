@@ -9,7 +9,7 @@
 </a>
 
 {if $username}
-<a href="handle-user-logout.php?return={$current_url}">Logout</a>
+<a href="handle-user-logout.php?return={$current_url|urlencode}">Logout</a>
 {/if}
 
 <div style="clear: right"> </div>
