@@ -2,7 +2,7 @@
 # $Id$
 
 require_once 'XML_Feed_Parser-1.0.2/Parser.php';
-require_once 'setup.php';
+require_once 'config.php';
 require_once 'hkit.class.php';
 
 # take: return a list of the first $n elements from $list
