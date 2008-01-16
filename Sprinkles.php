@@ -117,7 +117,7 @@ class Sprinkles {
                           'employee' => 'Employee');
 
   function Sprinkles($company_id) {
-     $this->company_id = $company_id;
+    $this->company_id = $company_id;
   }
 
   ## Get company info
@@ -361,7 +361,9 @@ class Sprinkles {
 
   function tags($url) {
 # HACK: getting tags this way until hkit is fixed
+    if ($this->tags_cache[$url]) return $this->tags_cache[$url];
     $tags = array();
+#    print "Getting tags from $url<br />";
     $xml = simplexml_load_file($url);
     $root_nodes = $xml->xpath("//*[@class='tag']");
     if ($root_nodes) {
@@ -371,6 +373,7 @@ class Sprinkles {
         array_push($tags, implode($tag_elem->xpath('child::node()')));
       }
     }
+    $this->tags_cache[$url] = $tags;
     return $tags;
   }
 
@@ -382,7 +385,7 @@ class Sprinkles {
 # TBD: add check that $url is rooted at a sanctioned base URL
     assert(!!$url);
 
-#    print "Getting $url";
+#    print "Getting topic from $url";
 
     $topic_feed = new XML_Feed_Parser(file_get_contents($url));
 
@@ -463,13 +466,14 @@ class Sprinkles {
   }
     
   function get_person($url) {
-#    if ($people_cache[$url]) return $people_cache[$url];
+    if ($this->people_cache[$url]) return $this->people_cache[$url];
     global $h;
+#    print "Getting person from $url<br />";
     $person = $h->getByURL('hcard', $url);
     if (count($person) == 0) throw new Exception("No person at $url");
     assert(count($person) == 1);   # There should only be one person at this URL.
     $person = $person[0];
-    $people_cache[$url] = $person;
+    $this->people_cache[$url] = $person;
     assert($person);
     return $person;
   }
@@ -479,22 +483,17 @@ class Sprinkles {
     return $this->api_url($path);
   }
 
+  var $product_cache = array();
+
   function get_product($url) {
+    if ($this->product_cache[$url]) return ($this->product_cache[$url]);
     global $h;
+#    print "Getting product from $url<br />";
     $result = $h->getByURL('hproduct', $url);
     $result = $result[0];   # Assume just one product in the document.
 
-   $result['tags'] = $this->tags($url . '/tags');
-## HACK: getting tags this way until hkit is fixed
-#    $xml = simplexml_load_file($url . '/tags');
-#    $root_nodes = $xml->xpath("//*[@class='tag']");
-#    if ($root_nodes) {
-#      $result['tags'] = array();
-#      $tag_elems = $root_nodes[0]->xpath("//*[@class='name']");
-#      foreach ($tag_elems as $tag_elem) {
-#        array_push($result['tags'], implode($tag_elem->xpath('child::node()')));
-#      }
-#    }
+    $result['tags'] = $this->tags($url . '/tags');
+    $this->product_cache[$url] = $result;
     return $result;
   }
 
@@ -521,8 +520,10 @@ class Sprinkles {
     global $h, $quick_mode, $cache_dir;
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
-      if (is_http_url($url))
+      if (is_http_url($url)) {
+#        print "Getting product list from $url<br />";
         $product = $h->getByURL('hproduct', $url);
+      }
       else  $product = $h->getByString('hproduct', file_get_contents($url));
       assert(is_array($product));
       array_push($products, $product[0]);
