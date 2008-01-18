@@ -33,19 +33,27 @@ function take_range($lo, $hi, $list) {
 
 function ago($time, $now) {
   $diff = $now - $time;
+  
   if ($diff < 60) {
-    return $diff . " seconds ago";
+    $result = $diff;
+    $result .= $result == 1 ? " second" : " seconds";
   } else if ($diff < 3600) {
-    return (ceil($diff/60)) . " minutes ago";
+    $result = (ceil($diff/60));
+    $result .= $result == 1 ? " minute" : " minutes";
   } else if ($diff < 24 * 3600) {
-    return (ceil($diff/3600)) . " hours ago";
+    $result = (ceil($diff/3600));
+    $result .= $result == 1 ? " hour" : " hours";
   } else if ($diff < 7 * 24 * 3600) {
-    return (ceil($diff/(24*3600))) . " days ago";
+    $result = (ceil($diff/(24*3600)));
+    $result .= $result == 1 ? " day" : " days";
   } else if ($diff < 365 * 24 * 3600) {
-    return (ceil($diff/(30*24*3600))) . " months ago";
+    $result = (ceil($diff/(30*24*3600)));
+    $result .= $result == 1 ? " month" : " months";
   } else {
-    return (ceil($diff/(365.24*24*3600))) . " years ago";
+    $result = (ceil($diff/(365.24*24*3600)));
+    $result .= $result == 1 ? " year" : " years";
   }
+  return ($result . " ago");
 }
 
 function is_http_url($str) {
@@ -223,7 +231,7 @@ class Sprinkles {
     }
   }
 
-  function minidashboard($person) {
+  function dashboard_topics($person) {
     $started = $this->topics(array('person' => $person));
     $followed = $this->topics(array('followed' => $person));
     $items = array_merge($started['topics'],
@@ -247,7 +255,7 @@ class Sprinkles {
       $url_path = 'people/' . $options['person'] . '/topics';
     } else if ($options['followed']) {
       $url_path = 'people/' . $options['followed'] . '/followed/topics';
-    } else if ($options['related_to']) {
+    } else if ($options['related']) {
       $url_path = $options['related'] . '/related';
     } else {
       $url_path = 'companies/'.$this->company_id.'/topics';
@@ -271,7 +279,9 @@ class Sprinkles {
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
-        if (!$options['notags']) {     # faster response
+        # use 'notags' for a faster response;
+        # TBD use the 'resolve' method
+        if (!$options['notags']) {
           $topic_tags_url = $topic['id'] . '/tags';
           $topic['tags'] = $this->tags($topic_tags_url);
         }
@@ -313,6 +323,7 @@ class Sprinkles {
     $result['talk_count'] = $this->sfn_element($feed, 'talk_count');
     $result['problem_count'] = $this->sfn_element($feed, 'problem_count');
     $result['question_count'] = $this->sfn_element($feed, 'question_count');
+    $result['unanswered_count'] = $this->sfn_element($feed, 'unanswered_count');
     return $result;     
   }
 
@@ -360,10 +371,10 @@ class Sprinkles {
   }
 
   function tags($url) {
-# HACK: getting tags this way until hkit is fixed
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
     $tags = array();
-#    print "Getting tags from $url<br />";
+#    print "Getting $url<br />";
+# FIXME: getting tags this way until hkit is fixed
     $xml = simplexml_load_file($url);
     $root_nodes = $xml->xpath("//*[@class='tag']");
     if ($root_nodes) {
@@ -385,7 +396,7 @@ class Sprinkles {
 # TBD: add check that $url is rooted at a sanctioned base URL
     assert(!!$url);
 
-#    print "Getting topic from $url";
+#    print "Getting $url<br />";
 
     $topic_feed = new XML_Feed_Parser(file_get_contents($url));
 
@@ -416,7 +427,7 @@ class Sprinkles {
                       'official_reps' => $official_reps,
                       'count_official_reps' => count($official_reps));
       
-    return array('items' => $items,
+    return array('replies' => $items,
                  'particip' => $particip,
                  'tags' => $tags);
   }
@@ -531,6 +542,17 @@ class Sprinkles {
     assert(is_array($products));
     return $products;
   }
+
+  function company_filter($topics) {
+    $result = array();
+    $company_url = $this->api_url('/companies/' . $this->company_id);
+    foreach ($topics as $topic) {
+      if ($topic['company_url'] == $company_url) {
+        array_push($result, $topic);
+      }
+    }
+    return $result;
+  }
   
   function api_url($path) {
     # print "Getting api_url for $path";
@@ -564,7 +586,7 @@ class Sprinkles {
     setcookie('admin_session_id', '');
   }
   
-  function open_session($username) {
+  function open_session($token) {
     $result = mysql_query("insert into user_sessions (username) values ('" . 
                           $username . "')");
   
@@ -599,6 +621,10 @@ class Sprinkles {
     return $cols[1];
   }
   
+  function current_username() {
+    return $this->current_user() ? 'NAME TBD' : '';
+  }
+
   function get_users() {
     mysql_connect();
     mysql_select_db('sprinkles');

@@ -1,5 +1,6 @@
 body {
   font-family: helvetica, sans-serif;
+  font-size: 12px;
 #  background-color: #a7efff;
   color: #333;
 }
@@ -14,7 +15,7 @@ img { border: 0px }
 
 div#container {
   width: 550pt;
-  margin-top: 12pt;
+  margin-top: 12px;
   margin: 0 auto;
 }
 
@@ -23,11 +24,13 @@ div#content {
   padding: 1pc;
 }
 
-h1 { color: #999999; font-size: 14pt; }
-h2 { color: #444; font-size: 14pt; font-weight: bold; margin: 10pt 0pt 0pt 0pt; }
+h1 { color: #999999; font-size: 16px; }
+h2 { color: #444; font-size: 16px; font-weight: bold; margin: 10pt 0pt 0pt 0pt; }
 h2 .lighter { font-weight: normal; }
-h3 { color: #aaa; font-size: 12pt; font-weight: bold; margin: 0pt; }
+h3 { color: #aaa; font-size: 12px; font-weight: bold; margin: 0pt; }
 h4 { margin: 10pt 0pt 0pt 0pt; font-weight: normal; }
+h5 { margin: 10pt 0pt 0pt; 0pt;
+     font-weight: normal; font-size: 14px; color: #000; }
 
 td { vertical-align: top; }
 
@@ -48,7 +51,7 @@ img.header-logo {
 ul.topnav { float: right; }
 ul.topnav li {
   display: inline;
-  font-size: 11pt; 
+  font-size: 11pt;
   padding-right: 1pc;
   color: #444;
 }
@@ -115,11 +118,13 @@ div#what-satisfaction p {
 
 #topic-summary {
   width: 160pt;
-  font-size: 14pt;
+  font-size: 14px;
   color: #666666;
 }
 
 p { font-size: 12px; }
+
+p.tight { margin: 0pt; padding 0pt; }
 
 .blue {
   background-color: #a7efff;
@@ -130,8 +135,8 @@ p { font-size: 12px; }
   width: 160pt;
 }
 
-.sidepane h2 { color: #777; margin: 4pt 0pt 4pt 0pt; font-size: 14pt; }
-.sidepane h3 { color: #aaa; margin: 4pt 0pt 4pt 0pt; font-size: 14pt; }
+.sidepane h2 { color: #777; margin: 4pt 0pt 4pt 0pt; font-size: 14px; }
+.sidepane h3 { color: #aaa; margin: 4pt 0pt 4pt 0pt; font-size: 14px; }
 
 .sidebar { 
   background-color: #eee;
@@ -178,7 +183,7 @@ ul.topic-replies, ul.topic-list {
 }
 
 .topic-list h3, .topic-head h3 {
-  font-size: 12pt;
+  font-size: 12px;
   margin: 0pt;
   color: #888;
 }
@@ -237,9 +242,13 @@ ul.product-list li {
 
 .huge { font-size: 24pt; }
 
-#contactus h3 { font-size: 14pt; font-weight: normal; margin: 6pt 0pt 0pt 0pt; }
+#contactus h3 { font-size: 14px; font-weight: normal; margin: 6pt 0pt 0pt 0pt; }
 
-.topic-list tr { margin: 8pt; }
+.topic-list tr { border-bottom: 1pt solid light-blue}
+
+.reply-count-col { text-align: center; }
+
+.content-col { padding: 3pt 0pt; }
 
 .error-box {
   color: #c03030; 

@@ -49,42 +49,47 @@ about the tag: {$filter_tag}
 
 <div class="sidepane">
 <div class="sidebar">
-<h4>View discussions by:</h4>
+<h3>View discussions by:</h3>
 <ul class="straight">
 <li><a href="discuss.php">All Topics xxxx{$all_count}</a></li>
 <li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions {$question_count}</a></li>
 <li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas {$idea_count}</a></li>
 <li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems {$problem_count}</a></li>
 <li><a href="?style=talk{$filter_product_arg}{$filter_tag_arg}">Talk Topics {$talk_count}</a></li>
-<li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered xxx</a></li>
+<li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered {$unanswered_count}</a></li>
 </ul>
 </div>
 {include file="related-topics.t"}
-<div class="sidebar blue"><a href="minidashboard.php">Go to your Satisfaction Dashboard</a></div>
+<div class="sidebar blue"><a href="minidashboard.php">Log in to your Satisfaction Dashboard</a></div>
 </div>
 
 <table class="topic-list">
 {foreach from=$topics key=i item=topic}
-    <tr><td><img src="images/{$topic.topic_style}_med.png"
+  <tr>
+    <td><img src="images/{$topic.topic_style}_med.png"
                  alt="{$topic.topic_style}" /></td>
-    <td> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
+    <td class="content-col">
+    <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
 {if $topic.reply_count} Last reply
                  {else} Posted {/if} {$topic.updated_relative}.
 
-   <p>{$topic.content}</p>
+    <p>{$topic.content}</p>
 
-   <p><img class="tiny-author-pic" style="vertical-align: middle;"
-           src="{$topic.author.photo}" /> {$topic.author.name} 
-   {if $topic.topic_style == 'question'} asked this question
-   {elseif $topic.topic_style == 'idea'} shared this idea
-   {elseif $topic.topic_style == 'talk'} asked this question
-   {elseif $topic.topic_style == 'problem'} reported this problem
-   {/if}
- {$topic.updated_relative}.
- It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if} <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach} </p>
-   </td>
-   <td> <span class="huge">{$topic.reply_count}</a></span> <br />replies </td>
-   </tr>
+    <p><img class="tiny-author-pic" style="vertical-align: middle;"
+            src="{$topic.author.photo}" /> {$topic.author.name} 
+    {if $topic.topic_style == 'question'} asked this question
+    {elseif $topic.topic_style == 'idea'} shared this idea
+    {elseif $topic.topic_style == 'talk'} asked this question
+    {elseif $topic.topic_style == 'problem'} reported this problem
+    {/if}
+    {$topic.updated_relative}.
+    It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if}
+    <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach} </p>
+    </td>
+    <td class="reply-count-col">
+      <span class="huge">{$topic.reply_count}</a></span> <br />
+        {if $topic.reply_count == 1} reply {else} replies {/if} </td>
+  </tr>
 {/foreach}
 </table>
 

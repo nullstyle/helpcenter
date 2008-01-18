@@ -11,9 +11,13 @@ $company_name = $company_hcard["fn"];
 $entries = $sprink->topics(array());
 $entries = take($helpstart_topic_count, $entries);
 
+# Standard stash items
 $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('company_name', $company_name);
 $smarty->assign('body_css_id', 'contactus');
+$smarty->assign('current_url', 'contactus.php');
+$smarty->assign('username', $sprink->current_username());
+
 $smarty->display('contactus.t');
 
 ?>

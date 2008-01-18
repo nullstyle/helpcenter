@@ -8,9 +8,5 @@
 <img class="header-logo" src="logo.php" alt="{ $company_name } Powered by: Satisfaction" />
 </a>
 
-{if $username}
-<a href="handle-user-logout.php?return={$current_url|urlencode}">Logout</a>
-{/if}
-
 <div style="clear: right"> </div>
 </div>

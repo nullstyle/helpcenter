@@ -6,6 +6,6 @@ $sprink = new Sprinkles($company_id);
 
 $sprink->close_session();
 
-redirect('logged-out.php');
+redirect(request_param('return'));
 
 ?>

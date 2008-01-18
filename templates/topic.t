@@ -79,6 +79,13 @@ official rep {/if}
 {/if}
 </td>
 </tr>
+{if $best_solution}
+<tr>
+<td colspan="2">
+Best solution from the company
+</td>
+</tr>
+{/if}
 </table>
 
 </div>

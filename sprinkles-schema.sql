@@ -113,3 +113,12 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2008-01-15  0:51:57
+
+
+create table oauth_tokens (   -- TBD: double-check these column widths
+  token varchar(32),
+  token_secret varchar(128),
+  modified_on timestamp,
+  created_on datetime,        -- FIXME: get this to default
+  username varchar(255)       -- 64 byes is sufficient.
+)

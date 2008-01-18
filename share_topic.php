@@ -13,10 +13,14 @@ $items = $sprink->topic($topic_id);
 
 $lead_item = array_shift($items);
 
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_name', $company_name);
 $smarty->assign('topic_lead', $lead_item);
 $smarty->assign('topic_id', $topic_id);
+
+# Standard stash items
+$smarty->assign('background_color', $sprink->site_background_color());
+$smarty->assign('company_name', $company_name);
+$smarty->assign('username', $sprink->current_username());
+$smarty->assign('current_url', 'share_topic.php');
 
 $smarty->display('share_topic.t');
 

@@ -32,6 +32,8 @@ $smarty->assign('errors', $_GET['errors']);
 $smarty->assign('settings', $settings);
 $smarty->assign('username', $username);
 $smarty->assign('company_name', $company_name);
+$smarty->assign('current_url', 'admin.php');
+
 $smarty->display('admin.t');
 
 ?>

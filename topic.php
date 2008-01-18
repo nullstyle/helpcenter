@@ -16,15 +16,22 @@ $topic_id = request_param('id');
 if (!$topic_id) die("Internal error: expected id parameter.");
 
 $topic = $sprink->topic($topic_id);
-$lead_item = array_shift($topic['items']);
-$reply_count = count($topic['items']);
-$topic['items'] = $sprink->thread_items($topic['items'], $lead_item['id']);
-$toplevel_reply_count = count($topic['items']);
-$topic['items'] = take_range($page_num * $page_limit, ($page_num + 1) * $page_limit,
-                    $topic['items']);
-$topic['items'] = $sprink->flatten_threads($topic['items']);
+$lead_item = array_shift($topic['replies']);
+$reply_count = count($topic['replies']);
+$topic['replies'] = $sprink->thread_items($topic['replies'], $lead_item['id']);
+$toplevel_reply_count = count($topic['replies']);
 
-$related_topics = $sprink->topics(array('related' => $topic_id));
+#foreach ($topic['replies'] as $replies) {
+#  if ()
+#}
+
+$topic['replies'] = take_range($page_num * $page_limit, ($page_num + 1) * $page_limit,
+                    $topic['replies']);
+$topic['replies'] = $sprink->flatten_threads($topic['replies']);
+
+$related_topics = $sprink->topics(array('related' => $topic_id,
+                                        'notags' => true));
+if (!(count($related_topics['topics']) > 0)) die("no related topics");
 $related_topics['topics'] = 
                   take($related_topics_count, $related_topics['topics']);
 $sprink->resolve_companies($related_topics['topics']);
@@ -43,7 +50,7 @@ $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('company_name', $company_name);
 
 $smarty->assign('lead_item', $lead_item);
-$smarty->assign('replies', $topic['items']);
+$smarty->assign('replies', $topic['replies']);
 $smarty->assign('related_topics', $related_topics['topics']);
 $smarty->assign('particip', $topic['particip']);
 $smarty->assign('tags', $topic['tags']);
@@ -52,7 +59,7 @@ $smarty->assign(array('reply_count' => $reply_count,
 $smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
-$smarty->assign('username', $user ? 'TBD' : '');
+$smarty->assign('username', $sprink->current_username());
 $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 
 $smarty->display('topic.t');

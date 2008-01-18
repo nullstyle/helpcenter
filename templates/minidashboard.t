@@ -10,14 +10,14 @@
 <tr>
 <td>
 <table class="topic-list" >
-{foreach from=$topics key=i item=topic}
+{foreach from=$company_topics key=i item=topic}
     <tr><td><img src="images/{$topic.topic_style}_med.png"
                  alt="{$topic.topic_style}"
                  style="width: 16pt;" /></td>
-    <td style="width:200pt;"> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
+    <td class="content-col"> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
     {$topic.content}
     </td>
-    <td style="width:50pt;"> last update {$topic.updated_relative} </td>
+    <td> last update {$topic.updated_relative} </td>
     </tr>
 {/foreach}
 </table>
@@ -31,8 +31,12 @@
 </div>
 
 <div class="sidebar">
-Recent Topics from your Satisfaction Dashboard:
-xxx
+<h3>Recent Topics from your Satisfaction Dashboard:</h3>
+<ul>
+{foreach from=$all_topics key=i item=topic}
+<li>{$topic.title} in <strong>{$topic.company.fn}</strong></li>
+{/foreach}
+</ul>
 </div>
 </div>
 

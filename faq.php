@@ -1,5 +1,5 @@
 <?
-require_once("setup.php");
+require_once("config.php");
 require_once("Sprinkles.php");
 
 $sprink = new Sprinkles($company_id);
@@ -10,14 +10,15 @@ $company_name = $company_hcard["fn"];
 $faqs = $sprink->topics(array('frequently_asked' => 1,
                               'style' => 'question'));
 
-dump($faqs);
-
 $smarty->assign('entries', $entries);
+$smarty->assign('faqs', $faqs['topics']);
 
+# Standard stash items
 $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('company_name', $company_name);
 
-$smarty->assign('faqs', $faqs['topics']);
+$smarty->assign('current_url', 'faq.php');
+$smarty->assign('username', $sprink->current_username());
 
 $smarty->display('faq.t');
 

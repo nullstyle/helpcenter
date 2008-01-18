@@ -3,5 +3,14 @@
 <li><a href="faq.php">FAQs</a></li>
 <li><a href="contactus.php">Contact Us</a></li>
 <li><a href="discuss.php">Discussions</a></li>
-<li class="small"><a href="minidashboard.php">View your dashboard</a></li>
+<li class="small">
+{if $username}
+Hi {$username} (<a href="minidashboard.php">Your dashboard</a>) |
+<a href="handle-user-logout.php?return={$current_url|urlencode}">Log-out</a>
+{else}
+  {if !$login_page}
+  <a href="user-login.php?return={$current_url|urlencode}">Log in to view your dashboard</a>
+  {/if}
+{/if}
+</li>
 </ul>

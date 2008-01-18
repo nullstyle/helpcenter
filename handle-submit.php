@@ -20,6 +20,8 @@ $req->addPostFields(array('topic[company_domain]' => 'sprinklestestcompany',
 ));
 $resp = $req->send();
 
+# TBD: On a 401, expire the token.
+
 #print "<pre>";
 #print $resp->getBody();
 #print "</pre>";

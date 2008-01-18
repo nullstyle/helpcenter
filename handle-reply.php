@@ -1,6 +1,6 @@
 <?
 
-require_once('setup.php');
+require_once('config.php');
 require_once('Sprinkles.php');
 
 $content = request_param('content');
@@ -18,19 +18,11 @@ $req = new HttpRequest($POST_URL,
 $req->addPostFields(array('reply[content]' => $content));
 $resp = $req->send();
 
-print "<pre>";
-print $resp->getBody();
-print "</pre>";
+# FIXME: check for errors
+#print "<pre>";
+#print $resp->getBody();
+#print "</pre>";
 
-# $feed = new XML_Feed_Parser($resp->getBody());
-$xml = simplexml_load_string($resp->getBody());
-$id_node = $xml->xpath("//*id");
-$id = $id_node->nodeValue();
-
-if ($id) {     # FIXME: better error checking here.
-  redirect('topic.php?id=' . $id);
-} else {
-  print "An error occured";
-}
+redirect('topic.php?id=' . $topic_id);
 
 ?>
