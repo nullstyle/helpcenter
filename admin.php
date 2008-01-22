@@ -1,13 +1,13 @@
 <?
 require_once("config.php");
 require_once("Sprinkles.php");
-require_once('admin-page.php');
+require_once('admin-fields.php');
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
-$username = $sprink->current_user();
+$username = $sprink->current_username();
 if (!$username)
-  header('Location: admin_login.php', true, 302);
+  redirect('admin_login.php');
 
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
@@ -30,7 +30,8 @@ $smarty->assign('site_dirty', true);       # FIXME: make it false at first setup
 $smarty->assign('invalid', $_GET['invalid']);
 $smarty->assign('errors', $_GET['errors']);
 $smarty->assign('settings', $settings);
-$smarty->assign('username', $username);
+$smarty->assign('current_user', $sprink->current_user());
+$smarty->assign('user_name', $username);
 $smarty->assign('company_name', $company_name);
 $smarty->assign('current_url', 'admin.php');
 

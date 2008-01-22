@@ -15,12 +15,10 @@ assert(is_array($company_people));
 
 $smarty->assign('entries', $entries['topics']);
 $smarty->assign('contact_info', $sprink->site_contact_info());
+$smarty->assign('company_people', $company_people);
 
 # Standard stash items
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_people', $company_people);
-$smarty->assign('company_name', $company_name);
-$smarty->assign('username', $sprink->current_username());
+$sprink->add_std_hash_elems($smarty);
 $smarty->assign('current_url', 'helpstart.php');
 
 $smarty->display('helpstart.t');

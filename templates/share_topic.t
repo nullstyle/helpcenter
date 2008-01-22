@@ -50,7 +50,7 @@ Twitter password
 <h2>OR Email this topic to a friend</h2>
 
 <div style="border: 1px solid black; padding: 4pt; ">
-{$username} thinks you might be interested in this discussion from Satisfaction:
+{$user_name} thinks you might be interested in this discussion from Satisfaction:
 &ldquo;{$topic_lead.title}
 
 <p>

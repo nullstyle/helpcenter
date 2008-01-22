@@ -1,0 +1,5 @@
+DEPENDENCIES
+
+ - hKit
+ - pecl_http
+ - HTTP_Request

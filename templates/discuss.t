@@ -60,7 +60,7 @@ about the tag: {$filter_tag}
 </ul>
 </div>
 {include file="related-topics.t"}
-<div class="sidebar blue"><a href="minidashboard.php">Log in to your Satisfaction Dashboard</a></div>
+<div class="sidebar blue"><a href="http://getsatisfaction.com/me">Go to your Satisfaction Dashboard</a></div>
 </div>
 
 <table class="topic-list">

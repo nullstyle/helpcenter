@@ -17,7 +17,8 @@ $smarty->assign('login_page', true);
 $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('company_name', $company_name);
 $smarty->assign('current_url', 'user-login.php');
-$smarty->assign('username', $sprink->current_user() ? 'TBD' : '');
+$smarty->assign('user_name', $sprink->current_username());
+$smarty->assign('current_user', $sprink->current_user());
 
 $smarty->display('user-login.t');
 

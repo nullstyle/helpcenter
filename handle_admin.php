@@ -1,6 +1,6 @@
 <?
 require_once('Sprinkles.php');
-require_once('admin-page.php');
+require_once('admin-fields.php');
 
 $hexcolor_regex = "/^\s*#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$\s*/";
 
@@ -59,7 +59,8 @@ if ($ok) {
          'contact_email = \'' . mysql_real_escape_string($contact_email). '\', ' .
          'contact_address = \'' . mysql_real_escape_string($contact_address). '\', ' .
          'map_url = \'' . mysql_real_escape_string($map_url). '\', ' .
-         'contact_phone = \'' . mysql_real_escape_string($contact_phone). '\' ' .
+         'contact_phone = \'' . mysql_real_escape_string($contact_phone).'\', ' .
+         'configured = \'Y\' ' .
          ($logo_data ?
            ', logo_data = \'' . mysql_real_escape_string($logo_data) . '\'' : '')
  ;

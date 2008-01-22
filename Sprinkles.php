@@ -88,6 +88,35 @@ function request_param($name) {
     return unbollocks($result);
 }
 
+$http_cache_timeout = 600; # seconds
+
+$cache_hits = 0;
+$cache_misses = 0;
+
+function get_url($url) {
+  global $http_cache_timeout;
+  mysql_query('delete from http_cache where fetched_on < now() - ' .
+              $http_cache_timeout);
+  $sql = 'select content from http_cache where url = \'' . $url . 
+         '\' and fetched_on >= now() - ' . $http_cache_timeout;
+  $q = mysql_query($sql);
+  if (!$q) die(mysql_error());
+  if ($row = mysql_fetch_row($q)) {
+    global $cache_hits;
+    $cache_hits++;
+    return $row[0];
+  } else {
+    global $cache_misses;
+    $cache_misses++;
+    $content = file_get_contents($url);
+    if (!mysql_query('insert into http_cache (url, content) values (\'' . 
+                mysql_real_escape_string($url) . '\', \'' . 
+                mysql_real_escape_string($content) . '\')'))
+      die(mysql_error());
+    return $content;
+  }
+}
+
 function mysql_now() {
   # for testing DB connection
   mysql_connect();
@@ -124,8 +153,12 @@ class Sprinkles {
                           'company_rep' => 'Official Rep',
                           'employee' => 'Employee');
 
-  function Sprinkles($company_id) {
-    $this->company_id = $company_id;
+  function Sprinkles() {
+    $result = mysql_query('select company_id from site_settings');
+    if ($result) {
+      $row = mysql_fetch_array($result);
+      $this->company_id = $row[0];
+    }
   }
 
   ## Get company info
@@ -138,12 +171,26 @@ class Sprinkles {
     if ($quick_mode) {
       $company_hcards = $h->getByString('hcard', file_get_contents($company_url));
     } else {
-      $company_hcards = $h->getByURL('hcard', $company_url);
+#      $company_hcards = $h->getByURL('hcard', $company_url);
+      $company_hcards = $h->getByString('hcard', get_url($company_url));
     }
     return $company_hcards[0];
   }
 
-  function company_name($company_id = null) {
+  function set_company($company) {
+    $sql = 'update site_settings set ' . 
+           'company_id = \'' . $company . '\'';
+    #print $sql;
+    return mysql_query($sql);
+  }
+
+  function add_admin_users($admins) {
+    foreach ($admins as $admin) {
+      mysql_query('insert into users (username) values (\'' . $admin . '\')');
+    }
+  }
+
+  function company_name() {
     if ($company_id == null) $company_id = $this->company_id;
     $card = $this->company_hcard($company_id);
     return $card['fn'];
@@ -440,7 +487,8 @@ class Sprinkles {
     if ($quick_mode) {
       $people_list = $h->getByString('hcard', file_get_contents($people_url));
     } else {
-      $people_list = $h->getByURL('hcard', $people_url);
+#      $people_list = $h->getByURL('hcard', $people_url);
+      $people_list = $h->getByString('hcard', get_url($people_url));
     }
     if (!$people_list) { die("no people list"); }
     return $people_list;
@@ -476,11 +524,24 @@ class Sprinkles {
     return null;
   }
     
+  function get_person_from_doc($doc) {
+    # TBD: refactor this together with the get_person function.
+    global $h;
+    $people = $h->getByString('hcard', $doc);
+    if (count($people) == 0) {
+      return null;
+    }
+    assert(count($people) == 1);   # There should only be one person at this URL.
+    $person = $people[0];
+    $this->people_cache[$url] = $person;
+    return $person;
+  }
+
   function get_person($url) {
     if ($this->people_cache[$url]) return $this->people_cache[$url];
     global $h;
 #    print "Getting person from $url<br />";
-    $person = $h->getByURL('hcard', $url);
+    $person = $h->getByString('hcard', get_url($url));
     if (count($person) == 0) throw new Exception("No person at $url");
     assert(count($person) == 1);   # There should only be one person at this URL.
     $person = $person[0];
@@ -500,7 +561,8 @@ class Sprinkles {
     if ($this->product_cache[$url]) return ($this->product_cache[$url]);
     global $h;
 #    print "Getting product from $url<br />";
-    $result = $h->getByURL('hproduct', $url);
+#    $result = $h->getByURL('hproduct', $url);
+    $result = $h->getByString('hproduct', get_url($url));
     $result = $result[0];   # Assume just one product in the document.
 
     $result['tags'] = $this->tags($url . '/tags');
@@ -519,6 +581,7 @@ class Sprinkles {
                                        file_get_contents($products_url));
     } else {
       $products_list = $h->getByURL('hproduct', $products_url);
+      $products_list = $h->getByString('hproduct', get_url($products_url));
     }
     return $products_list;
   }
@@ -527,13 +590,14 @@ class Sprinkles {
   function products() {
     $products = array();
     $products_list = $this->product_list();
-    if (!$products_list) { die("Couldn't get product list"); }
+
     global $h, $quick_mode, $cache_dir;
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
       if (is_http_url($url)) {
-#        print "Getting product list from $url<br />";
+#        print "Getting product data from $url<br />";
         $product = $h->getByURL('hproduct', $url);
+        $product = $h->getByString('hproduct', get_url($url));
       }
       else  $product = $h->getByString('hproduct', file_get_contents($url));
       assert(is_array($product));
@@ -543,15 +607,18 @@ class Sprinkles {
     return $products;
   }
 
-  function company_filter($topics) {
-    $result = array();
+  function company_partition($topics) {
+    $company_topics = array();
+    $noncompany_topics = array();
     $company_url = $this->api_url('/companies/' . $this->company_id);
     foreach ($topics as $topic) {
       if ($topic['company_url'] == $company_url) {
-        array_push($result, $topic);
+        array_push($company_topics, $topic);
+      } else {
+        array_push($noncompany_topics, $topic);
       }
     }
-    return $result;
+    return array($company_topics, $noncompany_topics);
   }
   
   function api_url($path) {
@@ -573,56 +640,72 @@ class Sprinkles {
       ($api_root . $path));
   }
   
-  function open_admin_session($username) {
-    $result = mysql_query("insert into admin_sessions (username) values ('" . 
-                          $username . "')");
-  
-    $session_id = mysql_insert_id();
-    setcookie('admin_session_id', $session_id);
-    return $session_id;
-  }
-  
-  function close_admin_session() {
-    setcookie('admin_session_id', '');
-  }
   
   function open_session($token) {
-    $result = mysql_query("insert into user_sessions (username) values ('" . 
-                          $username . "')");
+#    $result = mysql_query("insert into user_sessions (username) values ('" . 
+#                          $username . "')");
   
-    $session_id = mysql_insert_id();
-    setcookie('session_id', $session_id);
+#    $session_id = mysql_insert_id();
+    setcookie('session_id', $token);
     return $session_id;
   }
   
   function close_session() {
     setcookie('session_id', '');
   }
-  
-  function current_admin_user() {
-    $session_id = $_COOKIE["admin_session_id"];
-    if (!$session_id) return;
-    $sql = "select session_id, username from admin_sessions where session_id=" . 
-           $session_id;
-    $result = mysql_query($sql);
-    if (!$result) { die(mysql_error()); }
-    $cols = mysql_fetch_array($result);
-    return $cols[1];
+ 
+#FIXME: how do we signal error?
+  function get_me_resource($creds) {
+    require_once('HTTP_Request_OAuth.php');
+    $me_url = 'http://api.getsatisfaction.com/me';
+    $req = new HTTP_Request_OAuth($me_url,
+                   array('consumer_key' => 'lmwjv4kzwi27',
+                         'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
+                         'token' => $creds['token'],
+                         'token_secret' => $creds['token_secret'],
+                         'signature_method' => 'HMAC-SHA1',
+                         'method' => 'GET'));
+    $resp = $req->sendRequest(true, true);
+    if (!$resp) die("Request to $me_url failed. ");
+    if ($req->getResponseCode() == 401)
+       die("Request for /me failed to authorize.");
+
+    return $this->get_person_from_doc($req->getResponseBody());
   }
   
   function current_user() {
     $session_id = $_COOKIE["session_id"];
+#die ($session_id);
     if (!$session_id) return;
-    $sql = "select session_id, username from user_sessions where session_id = ". 
-           $session_id;
+    $sql = "select username, token, token_secret from oauth_tokens where token = '". 
+           $session_id . "'";
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
-    return $cols[1];
+    if (!$cols) return NULL;
+    list($username, $token, $token_secret) = $cols;
+#    if (!$username) {
+# TBD: store the whole /me resource in the database.
+      $me_person = $this->get_me_resource(array('token' => $token,
+                                                'token_secret'=> $token_secret));
+      if (!$me_person) return null;
+      $username = $me_person['canonical_name'];
+      $result = mysql_query("update oauth_tokens set username = '" . 
+                  $username
+                  . "' where token = '" . $session_id . "'");
+      if (!$result) die("Failed to store current user's name in database.");
+
+      $query = mysql_query("select * from users where username = '" .
+                           $me_person['canonical_name'] . "'");
+      if ($row = mysql_fetch_array($query))
+        $me_person['sprinkles_admin'] = true;
+#    }
+    return $me_person;
   }
   
   function current_username() {
-    return $this->current_user() ? 'NAME TBD' : '';
+    $me = $this->current_user();
+    return $me['fn'];
   }
 
   function get_users() {
@@ -631,7 +714,7 @@ class Sprinkles {
     $query = mysql_query("select username from users");
     $users = array();
     while ($cols = mysql_fetch_array($query)) {
-      array_push($users, array(name => $cols[0]));
+      array_push($users, array(username => $cols[0]));
     }
     return $users;
   }
@@ -641,6 +724,12 @@ class Sprinkles {
     $result = mysql_query($sql);
     list($background_color) = mysql_fetch_array($result);
     return $background_color;
+  }
+
+  function site_configured() {
+    $sql = 'select configured from site_settings';
+    $row = mysql_fetch_array(mysql_query($sql));
+    return ($row[0] == 'Y');
   }
 
   function site_contact_info() {
@@ -662,6 +751,14 @@ class Sprinkles {
     return $logo_data;
   }
 
+  function add_std_hash_elems($smarty) {
+    $current_user = $this->current_user();
+    # Standard stash items
+    $smarty->assign(array('background_color' => $this->site_background_color(),
+                          'company_name' => $this->company_name(),
+                          'current_user' => $current_user,
+                          'user_name' => $current_user['fn']));
+  }
 }
 
 function redirect($url) {

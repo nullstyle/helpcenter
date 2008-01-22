@@ -6,7 +6,7 @@
 {include file="header.t"}
 {/if}
 
-<div class="right">Hello <strong>{$username}</strong> from {$company_name}.
+<div class="right">Hello <strong>{$user_name}</strong> from {$company_name}.
   Are you someone else?
   <a href="admin_login.php">Sign in as you</a>.
   <a href="sign_out.php">Sign out</a>.
@@ -26,11 +26,9 @@ Your settings could not be saved. Please correct the errors below.
 
 Sprinkles is...
 
-<div>
-API information
-</div>
+<h4>API information</h4>
 
-Helpful topics from Satisfaction
+<h4>Helpful topics from Satisfaction</h4>
 <ul class="straight">
 <li>xxx</li>
 </ul>
@@ -80,38 +78,6 @@ Contact email must be a valid email address.
 <tr>
 <td class="form-label"> Add another link </td>
 <td> xxx </td>
-</tr>
-<tr>
-<td class="form-label">
-Set up your FAQ section
-</td>
-<td>
-
-  <table>
-  <tr>
-  <td><input id="faq_type_auto" name="faq_type" type="radio" value="auto"> </input></td>
-  <td><label for="faq_type_auto">Auto-generate FAQs using Satisfaction</label></td>
-  </tr><tr>
-   <td></td>
-   <td>  Use the most frequented questions from Satisfaction
-   </td>
-  </tr><tr>
-   <td>
-    <input id="faq_type_manual" name="faq_type" type="radio" value="manual"> </input>
-   </td>
-   <td>
-    <label for="faq_type_manual"> Manually enter FAQs </label>
-   </td>
-  </tr><tr>
-   <td></td>
-    <td>
-     Add my own FAQs on Satisfaction and show them here (we'll tell you
-     how in an extra step)
-    </td>
-  </tr>
-  </table>
-
-</td>
 </tr>
 <tr>
 <td>

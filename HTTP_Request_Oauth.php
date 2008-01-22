@@ -1,4 +1,4 @@
- <?php
+<?php
 
     require_once 'HTTP/Request.php';
 
@@ -177,7 +177,7 @@
         
         function _sha1($s, $consumer_secret, $token_secret) {
           $key = $consumer_secret . '&' . $token_secret;
-          print("HMAC-SHA1ing " . $s . " with " . $key . "<br />");
+#          print("HMAC-SHA1ing " . $s . " with " . $key . "<br />");
           $digest_b64 = base64_encode(hash_hmac("sha1", $s, $key, TRUE));
           return $digest_b64;
         }
@@ -228,7 +228,7 @@
             foreach($oauth_parameters as $key => $value)
                 if($key != 'oauth_signature')
                     if($key != 'oauth_token' || $value) {
-print "$key => $value<br />";
+#print "$key => $value<br />";
                         if(!$authHeader)
                             call_user_func($parameter_adder, $key, $value);
 
@@ -260,7 +260,7 @@ print "$key => $value<br />";
                                                          $this->_token_secret) :
                         die('unknown signature method');
 
-print "signature: " . $oauth_parameters['oauth_signature'] . "<br />";;
+#print "signature: " . $oauth_parameters['oauth_signature'] . "<br />";;
 
             if($authHeader) {
                 // oauth_* params go into the Authorization request header
@@ -281,7 +281,7 @@ print "signature: " . $oauth_parameters['oauth_signature'] . "<br />";;
                     $authorization_header .= "{$key}=\"{$value}\"";
                   }
                 }
-                print ($authorization_header . "<br />");
+#                print ($authorization_header . "<br />");
     
                 $this->addHeader('Authorization', $authorization_header);
                 
@@ -314,4 +314,4 @@ print "signature: " . $oauth_parameters['oauth_signature'] . "<br />";;
         }
     }
 
-?> 
+?>

@@ -51,7 +51,7 @@ a problem{/if}
 
 <td id="topic-summary">
 
-{if $username}
+{if $user_name}
 <a href="share_topic.php?id={$topic_id}">Share</a> or follow this topic
 <input style="width:120pt;" value="I have this question too!" />
 {/if}
@@ -99,7 +99,7 @@ Best solution from the company
 
 <div style="padding: 0pt 8pt;">
 
-{if !$username}
+{if !$user_name}
   <h2><a href="user-login.php?return=topic.php%3fid={$lead_item.id}">
     Login to reply</a>
   </h2>
@@ -147,9 +147,9 @@ Best solution from the company
     </td>
   </tr>
   {/foreach}
-  {if $username}
+  {if $user_name}
   <tr>
-  <td>xxx my own icon</td>
+  <td><img src="{$current_user.photo}" /></td>
   <td>
   <form action="handle-reply.php" method="POST">
   I say:

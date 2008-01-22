@@ -13,7 +13,8 @@
         'org', array('organization-name', 'organization-unit'),
         'tel', array('type', 'value'),
         'geo', array('latitude', 'longitude'),
-        'tz', 'uid', 'url', 'rev', 'role', 'sort-string', 'sound', 'title'
+        'tz', 'uid', 'url', 'rev', 'role', 'sort-string', 'sound', 'title',
+        'canonical_name'
     );
     
     // classes that must only appear once per card

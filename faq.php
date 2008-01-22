@@ -18,7 +18,8 @@ $smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('company_name', $company_name);
 
 $smarty->assign('current_url', 'faq.php');
-$smarty->assign('username', $sprink->current_username());
+$smarty->assign('user_name', $sprink->current_username());
+$smarty->assign('current_user', $sprink->current_user());
 
 $smarty->display('faq.t');
 

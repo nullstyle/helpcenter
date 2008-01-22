@@ -36,19 +36,6 @@ $related_topics['topics'] =
                   take($related_topics_count, $related_topics['topics']);
 $sprink->resolve_companies($related_topics['topics']);
 
-$user = $sprink->current_user();
-
-$smarty->assign(array('topic_updated' => $lead_item['updated'],
-                      'topic_updated_relative' =>
-                           ago($lead_item['updated'], time())));
-
-# $smarty->assign(array('topic_published' => $lead_item['published'],
-#                      'topic_published_relative' =>
-#                           ago($lead_item['published'], time())));
-
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_name', $company_name);
-
 $smarty->assign('lead_item', $lead_item);
 $smarty->assign('replies', $topic['replies']);
 $smarty->assign('related_topics', $related_topics['topics']);
@@ -59,7 +46,11 @@ $smarty->assign(array('reply_count' => $reply_count,
 $smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
-$smarty->assign('username', $sprink->current_username());
+
+$smarty->assign('background_color', $sprink->site_background_color());
+$smarty->assign('company_name', $company_name);
+$smarty->assign('current_user', $sprink->current_user());
+$smarty->assign('user_name', $sprink->current_username());
 $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 
 $smarty->display('topic.t');

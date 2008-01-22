@@ -2,10 +2,13 @@
 
 <h1>Login OR Sign Up</h1>
 
-<table>
+<table width="100%">
 <tr>
 <td>
 
+<a href="handle-user-login.php?return={$return|urlencode}">Log in at getsatisfaction.com</a>.
+
+<!--
 <div>
 <strong>Login</strong> with your Satisfaction account
 <form action="handle-user-login.php" method="POST">
@@ -91,10 +94,11 @@ OR randomize your icon
 </tr>
 </table>
 </div>
+-->
 
 </td>
 <td>
-<div id="what-satisfaction">
+<div id="what-satisfaction" style="width: 250pt;">
 <h5>What is Satisfaction anywho?</h5>
 
 <p>Satisfaction is an open discussion-based system providing better

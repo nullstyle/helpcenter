@@ -37,8 +37,8 @@
 <table>
 <tr>
 {foreach from=$company_people key=i item=person}
-<td><img class="small-author-pic" style="float:left;" src="{$person.photo}" />
-  <div style="padding: 3pt;"><strong>{$person.fn}</strong> <br /> 
+<td><img class="small-author-pic" style="float:left; padding-right: 3pt; padding-bottom: 3pt;" src="{$person.photo}" />
+  <div style="padding-bottom: 3pt;"><strong>{$person.fn}</strong> <br /> 
                              {$person.role_name}
   </div></td>
   {if $i % 2 == 1 && $i != count($company_people)-1}</tr><tr>{/if}

@@ -4,8 +4,8 @@
 <li><a href="contactus.php">Contact Us</a></li>
 <li><a href="discuss.php">Discussions</a></li>
 <li class="small">
-{if $username}
-Hi {$username} (<a href="minidashboard.php">Your dashboard</a>) |
+{if $user_name}
+Hi {$user_name} (<a href="minidashboard.php">Your dashboard</a>) |
 <a href="handle-user-logout.php?return={$current_url|urlencode}">Log-out</a>
 {else}
   {if !$login_page}
