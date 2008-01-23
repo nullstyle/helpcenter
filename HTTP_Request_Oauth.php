@@ -157,11 +157,8 @@
                 // ?? ^ WTF? "Probably"?
                 if($key != 'oauth_signature')
                     if($key != 'oauth_token' || $value) {
-#                        $normalized_keyvalues[] = urlencode($key).'='.$value;
-$value = preg_replace('/\+/', ' ', $value);
-                        $normalized_keyvalues[] = $key.'='.urlencode($value);
-                    
-                }
+                        $normalized_keyvalues[] = urlencode($key).'='.$value;
+                    }
             }
             
             return join('&', $normalized_keyvalues);
