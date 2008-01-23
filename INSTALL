@@ -1,5 +1,120 @@
 DEPENDENCIES
 
- - hKit
- - pecl_http
- - HTTP_Request
+Sprinkles depends on the following packages or libraries:
+
+  - PHP v5 or later
+  - MySQL
+  - hKit (Included.)
+  - pecl_http
+  - HTTP_Request
+
+INSTALLATION INSTRUCTIONS
+
+  1. Install PHP.
+
+     Instructions at http://www.php.net/docs.php
+
+  2. Install MySQL.
+
+     See http://dev.mysql.com/downloads/mysql/5.0.html.
+
+  3. Install PHP library dependencies.
+
+     a) pecl_http
+
+	Using pecl, the PHP Extension Community Library, install the
+        pecl_http package:
+
+          % sudo pecl install pecl_http
+          Starting to download pecl_http-1.6.0.tar (Unknown size)
+          ........
+
+        You will be asked several questions; answer as you see fit.
+
+        Add the following line to your php.ini file to enable the
+        package (there should be a php.ini section labelled "DYNAMIC
+        EXTENSIONS"; but it doesn't matter where this line goes):
+
+          extension=http.so
+
+        You can test the installation by running php on the command line:
+
+          % echo '<?new HttpRequest();?>' | php
+
+        If this doesn't give you an error, pecl_http has been
+        installed successfully.
+
+        Sprinkles has been tested with pecl_http version 1.6.0.
+
+     b) HTTP_Request
+
+        The HTTP_Request library can be installed at the command line
+        using pear:
+
+          % sudo pear install Http_Request
+
+        Sprinkles has been tested with HTTP_Request version 1.4.2.
+
+  4. Install Sprinkles into your web directory.
+
+     Find out where your web server expects to find PHP files. For
+     example, on some systems it would be /usr/local/www/html.
+
+     Now make a directory for sprinkles and copy the installation
+     there. Assuming you are in the Sprinkles download directory and
+     your web directory is /usr/local/www/html execute the following
+     commands:
+
+       % mkdir /usr/local/www/html/sprinkles
+       % cp -r . /usr/local/www/html/sprinkles
+
+  5. Create a MySQL database.
+
+       % mysql
+       mysql> create database sprinkles;
+       mysql> ^D
+       Bye
+       % mysql sprinkles < sprinkles-schema.sql
+
+     [TBD: add notes about configuring permissions for mysql users?]
+
+  6. Configure the installation.
+
+     Navigate a browser to <your-URL>/sprinkles. You should see a page
+     that asks, "What is the address of your company's Satisfaction
+     site?" Enter just the part of your company's URL that follows
+     http://getsatisfaction.com/.
+
+     Log in to Satisfaction using an existing Satisfaction account.
+     Use an account that you will be use to administer the Sprinkles
+     installation; this account does not need to be an admin of the
+     company's existing Satisfaction presence. (If you don't have a
+     Satisfaction account ... [TBD].)
+
+     You will be asked whether you authorize the Sprinkles
+     installation to act on your behalf; verify that you do.
+
+     Next you should see the Sprinkles administration page, with a
+     message such as "Your Sprinkles site is now hooked into..." with
+     your URL.
+
+     You can now configure several aspects of the Sprinkles
+     installation, such as the site background color, header logo
+     image, and contact details. You may also wish to name several
+     more Satisfaction users as administrators. You can do this by
+     entering their unique usernames in the field "Add additional
+     admin." You should enter all the usernames that you want to be
+     able to access the admin page--not just the new ones. (Note that
+     a user's unique username can be found in the user's URL and are
+     *not* always the same as the displayed name on the site.)
+
+  7. Start using Sprinkles.
+
+     You can use the navigation links in the header of the admin page
+     to explore your Sprinkles site.
+
+     Once you've saved the settings on the admin page, the URL
+     <your-url>/sprinkles will take users to the "Help Start" page,
+     which offers a list of topics about your company and other
+     helpful information.
+

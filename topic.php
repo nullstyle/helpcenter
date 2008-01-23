@@ -21,24 +21,23 @@ $reply_count = count($topic['replies']);
 $topic['replies'] = $sprink->thread_items($topic['replies'], $lead_item['id']);
 $toplevel_reply_count = count($topic['replies']);
 
-#foreach ($topic['replies'] as $replies) {
-#  if ()
-#}
-
-$topic['replies'] = take_range($page_num * $page_limit, ($page_num + 1) * $page_limit,
+$topic['replies'] = take_range($page_num * $page_limit,
+                    ($page_num + 1) * $page_limit,
                     $topic['replies']);
 $topic['replies'] = $sprink->flatten_threads($topic['replies']);
 
 $related_topics = $sprink->topics(array('related' => $topic_id,
-                                        'notags' => true));
-if (!(count($related_topics['topics']) > 0)) die("no related topics");
-$related_topics['topics'] = 
-                  take($related_topics_count, $related_topics['topics']);
-$sprink->resolve_companies($related_topics['topics']);
+                                        'notags' => true # speeds things up
+                                        ));
+list($company_related_topics, $noncompany_related_topics) = 
+   $sprink->company_partition($related_topics['topics']);
+$noncompany_related_topics = 
+                  take($related_topics_count, $noncompany_related_topics);
+$sprink->resolve_companies($noncompany_related_topics);
 
 $smarty->assign('lead_item', $lead_item);
 $smarty->assign('replies', $topic['replies']);
-$smarty->assign('related_topics', $related_topics['topics']);
+$smarty->assign('related_topics', $noncompany_related_topics);
 $smarty->assign('particip', $topic['particip']);
 $smarty->assign('tags', $topic['tags']);
 $smarty->assign(array('reply_count' => $reply_count,
@@ -47,11 +46,9 @@ $smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
 
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_name', $company_name);
-$smarty->assign('current_user', $sprink->current_user());
-$smarty->assign('user_name', $sprink->current_username());
 $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
+
+$sprink->add_std_hash_elems($smarty);
 
 $smarty->display('topic.t');
 ?>

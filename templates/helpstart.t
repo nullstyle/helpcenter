@@ -4,20 +4,29 @@
 
 {include file="question-box.t"}
 
+{if $contact_info.contact_phone || $contact_info.contact_email
+ || $contact_info.contact_address || $contact_info.map_url}
 <div class="sidepane">
 <div class="sidebar">
   <h2>Our Contact info</h2>
+{if $contact_info.contact_phone}
 <h3>Phone</h3>
   {$contact_info.contact_phone}
+{/if}
 
+{if $contact_info.contact_email}
 <h3>Email</h3>
   {$contact_info.contact_email}
+{/if}
 
+{if $contact_info.contact_address || $contact_info.map_url}
 <h3>Physical</h3>
   {$contact_info.contact_address}
   {$contact_info.map_url}
+{/if}
 </div>
 </div>
+{/if}
 
 <div class="helpstart-topic-list">
 

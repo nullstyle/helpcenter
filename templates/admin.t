@@ -20,6 +20,24 @@ Your settings could not be saved. Please correct the errors below.
 </div>
 {/if}
 
+{if $hooked_msg}
+<div class="message-box">
+<strong>Got it!</strong> <br />
+Your Sprinkles site is now hooked into: {$company_url}.
+</div>
+{/if}
+
+{if $admins_changed}
+<div class="message-box">
+<strong>Done!</strong>
+{foreach from=$admin_users key=i item=user}
+{if $i==count($admin_users)-1 && $i > 0} and {/if}
+{$user.username}{if $i<count($admin_users)-2}, {/if} {/foreach} 
+may now come to [TBD: this url]
+and sign in as an admin and authenticate their account. Go let them know!
+</div>
+{/if}
+
 <div class="sidepane">
 <div class="sidebar ">
 <h3>Need help?</h3>
@@ -80,11 +98,24 @@ Contact email must be a valid email address.
 <td> xxx </td>
 </tr>
 <tr>
+<td class="form-label"> Add additional admin </td>
+<td>
+  <textarea name="admin_users_str" class="admin" rows="2">
+{if $settings.admin_users_str}{$settings.admin_users_str}
+{else}{foreach from=$admin_users key=i item=user}{$user.username}
+{/foreach}
+{/if}</textarea>
+<p>
+Comma or space separated. Example: If the person's GS URL is http://getsatisfaction.com/people/scott then just enter <strong>scott</strong> above.
+</p>
+</td>
+</tr>
+<tr>
 <td>
 </td>
 <td>
-<button type="submit" name="save">
-{if $site_dirty}
+<button name="save" type="submit" style="margin-top: 6pt;">
+{if $site_configured}
 Save changes
 {else}
 OK, Start up Sprinkles!

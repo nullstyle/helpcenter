@@ -149,7 +149,7 @@ Best solution from the company
   {/foreach}
   {if $user_name}
   <tr>
-  <td><img src="{$current_user.photo}" /></td>
+  <td class="topic-pic-column"><img src="{$current_user.photo}" /></td>
   <td>
   <form action="handle-reply.php" method="POST">
   I say:

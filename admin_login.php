@@ -20,12 +20,10 @@ $message = $_GET['wrong_password']
     : '';
 
 $smarty->assign('site_configured', $sprink->site_configured());
-
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_name', $company_name);
-$smarty->assign('current_user', $sprink->current_user());
 $smarty->assign('accts', $accts);
 $smarty->assign('message', $message);
+
+$sprink->add_std_hash_elems($smarty);
 
 $smarty->display('admin_login.t');
 

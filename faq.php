@@ -13,13 +13,9 @@ $faqs = $sprink->topics(array('frequently_asked' => 1,
 $smarty->assign('entries', $entries);
 $smarty->assign('faqs', $faqs['topics']);
 
-# Standard stash items
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_name', $company_name);
-
 $smarty->assign('current_url', 'faq.php');
-$smarty->assign('user_name', $sprink->current_username());
-$smarty->assign('current_user', $sprink->current_user());
+
+$sprink->add_std_hash_elems($smarty);
 
 $smarty->display('faq.t');
 

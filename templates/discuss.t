@@ -75,16 +75,27 @@ about the tag: {$filter_tag}
 
     <p>{$topic.content}</p>
 
-    <p><img class="tiny-author-pic" style="vertical-align: middle;"
-            src="{$topic.author.photo}" /> {$topic.author.name} 
+    <table class="p-margin">
+    <tr>
+    <td>
+    <img class="tiny-author-pic" style="vertical-align: middle;"
+            src="{$topic.author.photo}" />
+    </td>
+    <td>
+   {$topic.author.name} 
     {if $topic.topic_style == 'question'} asked this question
     {elseif $topic.topic_style == 'idea'} shared this idea
     {elseif $topic.topic_style == 'talk'} asked this question
     {elseif $topic.topic_style == 'problem'} reported this problem
     {/if}
     {$topic.updated_relative}.
+{if $topic.tags}
     It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if}
-    <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach} </p>
+    <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach}
+{/if}
+    </td>
+    </tr>
+    </table>
     </td>
     <td class="reply-count-col">
       <span class="huge">{$topic.reply_count}</a></span> <br />

@@ -90,11 +90,12 @@ function request_param($name) {
 
 $http_cache_timeout = 600; # seconds
 
-$cache_hits = 0;
+$cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
 $cache_misses = 0;
 
 function get_url($url) {
   global $http_cache_timeout;
+  if (!$http_cache_timeout) die("\$http_cache_timeout not set");
   mysql_query('delete from http_cache where fetched_on < now() - ' .
               $http_cache_timeout);
   $sql = 'select content from http_cache where url = \'' . $url . 
@@ -108,6 +109,7 @@ function get_url($url) {
   } else {
     global $cache_misses;
     $cache_misses++;
+    error_log("Cache miss; fetching $url");
     $content = file_get_contents($url);
     if (!mysql_query('insert into http_cache (url, content) values (\'' . 
                 mysql_real_escape_string($url) . '\', \'' . 
@@ -120,7 +122,6 @@ function get_url($url) {
 function mysql_now() {
   # for testing DB connection
   mysql_connect();
-  mysql_select_db('sprinkles');
   $result = mysql_query("select now()");
   if (!$result) return '';
   $cols = mysql_fetch_array($result);
@@ -184,7 +185,25 @@ class Sprinkles {
     return mysql_query($sql);
   }
 
+  function set_site_settings($settings) {
+    $sql = 'update site_settings set ';
+    $i = 0;
+    foreach ($settings as $name => $value) {
+      if ($i++ > 0) $sql .= ', ';
+      $sql .= $name . '=\'' . mysql_real_escape_string($value) . '\'';
+    }
+    error_log("Updating site settings: $sql");
+    return mysql_query($sql);
+  }
+
   function add_admin_users($admins) {
+    foreach ($admins as $admin) {
+      mysql_query('insert into users (username) values (\'' . $admin . '\')');
+    }
+  }
+
+  function set_admin_users($admins) {
+    if (!mysql_query('delete from users')) die(mysql_error());
     foreach ($admins as $admin) {
       mysql_query('insert into users (username) values (\'' . $admin . '\')');
     }
@@ -362,8 +381,6 @@ class Sprinkles {
     if ($total_results_elem = $feed->model->getElementsByTagNameNS(
                                           $xml_opensearch_ns,
                                           'totalresults')) {
-#      dump($total_results_elem);
-#      print "Count of all nodes: " . $total_results_elem->nodeValue;
       $result['all_count'] = $total_results_elem->nodeValue;
     }
     $result['idea_count'] = $this->sfn_element($feed, 'idea_count');
@@ -456,21 +473,23 @@ class Sprinkles {
       array_push($items, $item);
     }
 
-    $employees = $this->employees();
-
-    $employee_contribs = 0;
-    $author_hash = array();
-    $official_reps = array();
+    $authors = array();
+    $employees = array();
     foreach ($items as $item) {
-      $author_hash[$item['author']['url']]++;
+      $authors[$item['author']['url']]++;
       list($role, $role_name) = $this->get_person_role($item['author']['url']);
-      if ($role)
-        $employee_contribs++;
-      if ($role == 'company_rep' || $role == 'company_admin')
-        $official_reps[$item['author']['url']] = $item['author'];
+      if ($role) {
+        $employees[$item['author']['url']] = $item['author'];
+        $employees[$item['author']['url']]['role'] = $role;
+      }
     }
-    $particip = array('people' => count($author_hash),
-                      'employees' => $employee_contribs,
+    $official_reps = array();
+    foreach ($employees as $emp) {
+      if ($emp['role'] == 'company_rep' || $emp['role'] == 'company_admin')
+        array_push($official_reps, $emp);
+    }
+    $particip = array('people' => count($authors),
+                      'employees' => count($employees),
                       'official_reps' => $official_reps,
                       'count_official_reps' => count($official_reps));
       
@@ -540,7 +559,7 @@ class Sprinkles {
   function get_person($url) {
     if ($this->people_cache[$url]) return $this->people_cache[$url];
     global $h;
-#    print "Getting person from $url<br />";
+    error_log("Getting person from $url");
     $person = $h->getByString('hcard', get_url($url));
     if (count($person) == 0) throw new Exception("No person at $url");
     assert(count($person) == 1);   # There should only be one person at this URL.
@@ -610,9 +629,11 @@ class Sprinkles {
   function company_partition($topics) {
     $company_topics = array();
     $noncompany_topics = array();
-    $company_url = $this->api_url('/companies/' . $this->company_id);
+    $company_hcard = $this->company_hcard();
+    $company_id = $company_hcard['url'];
     foreach ($topics as $topic) {
-      if ($topic['company_url'] == $company_url) {
+      # BUG: company_urls are not normalized.
+      if ($topic['company_url'] == $company_id) {
         array_push($company_topics, $topic);
       } else {
         array_push($noncompany_topics, $topic);
@@ -653,11 +674,35 @@ class Sprinkles {
   function close_session() {
     setcookie('session_id', '');
   }
+
+  function oauthed_request($method, $url, $creds, $params, $qParams) {
+    require_once('HTTP_Request_OAuth.php');
+    $params['method'] = $method;
+    $params['token'] = $creds['token'];
+    $params['token_secret'] = $creds['token_secret'];
+    $params['consumer_key'] = 'lmwjv4kzwi27';
+    $params['consumer_secret'] = 'fiei6iv61jnoukaq1aylwd8vcmnkafrs';
+    $params['signature_method'] = 'HMAC-SHA1';
+    $req = new HTTP_Request_OAuth($url, $params);
+    foreach ($qParams as $name => $val) {
+#      $req->addQueryString($name, $val);
+      $req->addParam($name, $val);
+    }
+    $resp = $req->sendRequest(true, true);
+    if (!$resp) die("$method request to $url failed. ");
+    if ($req->getResponseCode() == 401) {
+      error_log($req->getResponseBody());
+      die("$method request for $url failed to authorize.");
+    }
+    return $req;    
+  }
  
 #FIXME: how do we signal error?
   function get_me_resource($creds) {
     require_once('HTTP_Request_OAuth.php');
     $me_url = 'http://api.getsatisfaction.com/me';
+    error_log("Getting /me with OAuth. Token: " . $creds['token'] . " " . 
+                $creds['token_secret']);
     $req = new HTTP_Request_OAuth($me_url,
                    array('consumer_key' => 'lmwjv4kzwi27',
                          'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
@@ -672,18 +717,25 @@ class Sprinkles {
 
     return $this->get_person_from_doc($req->getResponseBody());
   }
-  
-  function current_user() {
+
+  function current_user_creds() {
     $session_id = $_COOKIE["session_id"];
-#die ($session_id);
     if (!$session_id) return;
-    $sql = "select username, token, token_secret from oauth_tokens where token = '". 
+    error_log("looking up creds for token $session_id");
+    $sql = "select username,token,token_secret from oauth_tokens where token='". 
            $session_id . "'";
+    # error_log($sql);
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
+    error_log("got " . $cols[1] . " " . $cols[2]);
     if (!$cols) return NULL;
-    list($username, $token, $token_secret) = $cols;
+    return $cols;
+  }
+  
+  function current_user() {
+    list($username, $token, $token_secret) = $this->current_user_creds();
+    if (!$token || !$token_secret) return null;
 #    if (!$username) {
 # TBD: store the whole /me resource in the database.
       $me_person = $this->get_me_resource(array('token' => $token,
@@ -710,7 +762,6 @@ class Sprinkles {
 
   function get_users() {
     mysql_connect();
-    mysql_select_db('sprinkles');
     $query = mysql_query("select username from users");
     $users = array();
     while ($cols = mysql_fetch_array($query)) {
@@ -736,7 +787,8 @@ class Sprinkles {
     $sql = 'select contact_email, contact_phone, contact_address, map_url '.
            'from site_settings';
     $result = mysql_query($sql);
-    list($contact_email, $contact_phone, $contact_address, $map_url) = mysql_fetch_array($result);
+    list($contact_email, $contact_phone, $contact_address, $map_url) = 
+                                                mysql_fetch_array($result);
     return array('contact_email' => $contact_email,
                  'contact_phone' => $contact_phone,
                  'contact_address' => $contact_address, 
@@ -757,7 +809,8 @@ class Sprinkles {
     $smarty->assign(array('background_color' => $this->site_background_color(),
                           'company_name' => $this->company_name(),
                           'current_user' => $current_user,
-                          'user_name' => $current_user['fn']));
+                          'user_name' => $current_user['fn'],
+                          'site_configured' => $this->site_configured()));
   }
 }
 
@@ -768,6 +821,6 @@ function redirect($url) {
 $mysql = mysql_connect();
 if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
 
-mysql_select_db('sprinkles');
+mysql_select_db('sprinkles_test');
 
 ?>

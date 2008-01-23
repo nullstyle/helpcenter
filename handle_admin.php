@@ -50,6 +50,23 @@ if ($_FILES['logo']['tmp_name']) {
   file_put_contents('logo.png', $logo_data);
 }
 
+# TBD: additional links
+
+$sprink = new Sprinkles();  # TBD: this is expensive; cheapen!
+
+$existing_admin_users = $sprink->get_users();
+sort($existing_admin_users);
+$admin_users_str = request_param('admin_users_str');
+$admin_users = preg_split('/,\s*|\s+/', $admin_users_str);
+$admin_users = array_filter($admin_users);
+sort($admin_users);
+# TBD: refactor this routine, "contains"
+$admins_changed = false;
+foreach ($admin_users as $u) {
+  if ($existing_admin_users[0]['username'] != $u) { $admins_changed = true; break; }
+  else { array_shift($existing_admin_users); }
+}
+
 if ($ok) {
   ## Save the settings
   # FIXME: not finished
@@ -64,10 +81,13 @@ if ($ok) {
          ($logo_data ?
            ', logo_data = \'' . mysql_real_escape_string($logo_data) . '\'' : '')
  ;
-#  print $sql;
+  # print $sql;
   $result = mysql_query($sql);
   if (!$result) { print mysql_error(); return; }
-  redirect('admin.php?settings_saved=true');
+  $sprink->set_admin_users($admin_users);
+  $flags = '';
+  $flags .= ($admins_changed) ? '&admins_changed=true' : '';
+  redirect('admin.php?settings_saved=true' . $flags);
 } else {
   foreach ($bad_fields as $field) {
     $params .= '&invalid[' . $field . ']=true';
@@ -75,6 +95,7 @@ if ($ok) {
   foreach ($fields as $field) {
     $params .= '&' . $field . '=' . urlencode(request_param($field));
   }
+  $params .= '&admin_users=' . urlencode($admin_users_str);
   redirect('admin.php?errors=true' . $params);
 }
 ?>

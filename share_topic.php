@@ -16,12 +16,9 @@ $lead_item = array_shift($items);
 $smarty->assign('topic_lead', $lead_item);
 $smarty->assign('topic_id', $topic_id);
 
-# Standard stash items
-$smarty->assign('background_color', $sprink->site_background_color());
-$smarty->assign('company_name', $company_name);
-$smarty->assign('user_name', $sprink->current_username());
 $smarty->assign('current_url', 'share_topic.php');
-$smarty->assign('current_user', $sprink->current_user());
+
+$sprink->add_std_hash_elems($smarty);
 
 $smarty->display('share_topic.t');
 

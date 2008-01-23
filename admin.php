@@ -18,22 +18,29 @@ $result = mysql_query($sql);
 
 $settings = mysql_fetch_assoc($result);
 
+$admin_users = $sprink->get_users(); # TBD: rename this to ->admins()
+$smarty->assign('admin_users', $admin_users);
+
 foreach ($fields as $i => $field) {
   if (request_param($field)) {
     $settings[$field] = request_param($field);
   }
 }
 
-$smarty->assign('background_color', $sprink->site_background_color());
+if (request_param('admin_users'))
+  $settings['admin_users_str'] = request_param('admin_users');
 
-$smarty->assign('site_dirty', true);       # FIXME: make it false at first setup
-$smarty->assign('invalid', $_GET['invalid']);
-$smarty->assign('errors', $_GET['errors']);
+$company_hcard = $sprink->company_hcard();
+$smarty->assign('company_url', $company_hcard['url']);
+
+$smarty->assign('invalid', request_param('invalid'));
+$smarty->assign('errors', request_param('errors'));
+$smarty->assign('hooked_msg', request_param('hooked'));
+$smarty->assign('admins_changed', request_param('admins_changed'));
 $smarty->assign('settings', $settings);
-$smarty->assign('current_user', $sprink->current_user());
-$smarty->assign('user_name', $username);
-$smarty->assign('company_name', $company_name);
 $smarty->assign('current_url', 'admin.php');
+
+$sprink->add_std_hash_elems($smarty);
 
 $smarty->display('admin.t');
 

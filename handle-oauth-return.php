@@ -28,7 +28,8 @@ $resp = $oauth_req->sendRequest(true, true);
 
 #dump($oauth_req->getResponseBody());
 list($token, $token_secret) = $oauth_req->getResponseTokenSecret();
-#dump(array($token, $secret));
+
+error_log("got permanent user token: $token, $secret");
 
 $result = mysql_query("update oauth_tokens set token = '" . $token . 
                       "', token_secret = '" . $token_secret . 

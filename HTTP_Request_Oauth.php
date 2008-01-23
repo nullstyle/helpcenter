@@ -154,9 +154,14 @@
                 $value = $param_values[$i];
             
                 // don't urlencode the values - they are probably already urlencoded
+                // ?? ^ WTF? "Probably"?
                 if($key != 'oauth_signature')
-                    if($key != 'oauth_token' || $value)
-                        $normalized_keyvalues[] = urlencode($key).'='.$value;
+                    if($key != 'oauth_token' || $value) {
+#                        $normalized_keyvalues[] = urlencode($key).'='.$value;
+$value = preg_replace('/\+/', ' ', $value);
+                        $normalized_keyvalues[] = $key.'='.urlencode($value);
+                    
+                }
             }
             
             return join('&', $normalized_keyvalues);
@@ -177,7 +182,7 @@
         
         function _sha1($s, $consumer_secret, $token_secret) {
           $key = $consumer_secret . '&' . $token_secret;
-#          print("HMAC-SHA1ing " . $s . " with " . $key . "<br />");
+          error_log("HMAC-SHA1ing " . $s . " with " . $key);
           $digest_b64 = base64_encode(hash_hmac("sha1", $s, $key, TRUE));
           return $digest_b64;
         }
@@ -196,6 +201,14 @@
                 $bin .= chr(hexdec($md5{$i+1}) + hexdec($md5{$i}) * 16);
             
             return base64_encode($bin);
+        }
+
+        function addParam($key, $val, $preencoded = false) {
+          if ($this->_method == 'GET') {
+            $this->addQueryString($key, $val, $preencoded);
+          } else {
+            $this->addPostData($key, $val, $preencoded);
+          }
         }
 
        /**
@@ -228,7 +241,6 @@
             foreach($oauth_parameters as $key => $value)
                 if($key != 'oauth_signature')
                     if($key != 'oauth_token' || $value) {
-#print "$key => $value<br />";
                         if(!$authHeader)
                             call_user_func($parameter_adder, $key, $value);
 
@@ -240,6 +252,8 @@
             $parameters_to_normalize = array_merge($this->_url->querystring,
                                                    $this->_postData,
                                                    $parameters_to_normalize);
+#dump($this->_postData);
+#dump($parameters_to_normalize);
             
             $normalized_params_string = $this->oauth_parametersToString($parameters_to_normalize);
             
@@ -248,6 +262,8 @@
                                      $normalized_params_string);
 
             $signed_string = join('&', array_map('urlencode', $signature_parts));
+
+#            error_log("Signing $signed_string");
             
             $oauth_parameters['oauth_signature'] = 
                 	$this->signature_method == 'md5' ?
@@ -260,7 +276,7 @@
                                                          $this->_token_secret) :
                         die('unknown signature method');
 
-#print "signature: " . $oauth_parameters['oauth_signature'] . "<br />";;
+            error_log("signature: " . $oauth_parameters['oauth_signature']);
 
             if($authHeader) {
                 // oauth_* params go into the Authorization request header
@@ -281,7 +297,6 @@
                     $authorization_header .= "{$key}=\"{$value}\"";
                   }
                 }
-#                print ($authorization_header . "<br />");
     
                 $this->addHeader('Authorization', $authorization_header);
                 

@@ -29,7 +29,7 @@ if ($filter_tag) $topic_filters['tag'] = $filter_tag;
 $filter_tag_arg = $filter_tag ? '&' ."tag=" . $filter_tag : '';
 
 $topics = $sprink->topics($topic_filters);
-$topic_count = count($topics);
+$topic_count = count($topics['topics']);
 $topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
 
 foreach ($topics['topics'] as &$topic) {
@@ -43,13 +43,11 @@ function discuss_tag_url($params, &$smarty) {
   return('discuss.php?tag=' . $params['tag']);
 }
 
-$smarty->assign('background_color', $sprink->site_background_color());
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign(array('filter_product' => $filter_product,
                       'filter_style' => $filter_style,
                       'filter_tag' => $filter_tag));
 $smarty->assign('products', $sprink->products());
-$smarty->assign('company_name', $sprink->company_name());
 $smarty->assign('topics', $topics['topics']);
 $smarty->assign('topic_count', $topic_count);
 $smarty->assign('filter_product_arg', $filter_product_arg);
@@ -66,10 +64,8 @@ $smarty->register_function('discuss_tag_url', 'discuss_tag_url');
 $smarty->assign('current_url', 'discuss.php?' . $filter_tag_arg
                                               . $filter_product_arg
                                               . $filter_style_arg);
-$current_user = $sprink->current_user();
-$smarty->assign('current_user', $current_user);
-$smarty->assign('user_name', $current_user['fn']);
-# FIXME: factor this stuff out.
+
+$sprink->add_std_hash_elems($smarty);
 
 $smarty->display('discuss.t');
 ?>

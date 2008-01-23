@@ -9,16 +9,19 @@
 <table width="100%">
 <tr>
 <td>
-<table class="topic-list" >
+<table class="topic-list" style="width: 100%;">
 {foreach from=$company_topics key=i item=topic}
-    <tr><td><img src="images/{$topic.topic_style}_med.png"
+  <tr>
+    <td><img src="images/{$topic.topic_style}_med.png"
                  alt="{$topic.topic_style}"
                  style="width: 16pt;" /></td>
     <td class="content-col"> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
     {$topic.content}
     </td>
-    <td> last update {$topic.updated_relative} </td>
-    </tr>
+    <td style="width: 75pt;"> last update {$topic.updated_relative} </td>
+  </tr>
+{foreachelse}
+  <tr><td></td><td class="content-col">You haven't participated in any {$company_name} discussions so far.</td><td></td></tr>
 {/foreach}
 </table>
 
