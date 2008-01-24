@@ -157,6 +157,7 @@
                 // ?? ^ WTF? "Probably"?
                 if($key != 'oauth_signature')
                     if($key != 'oauth_token' || $value) {
+                        $value = rawurlencode(urldecode($value));
                         $normalized_keyvalues[] = urlencode($key).'='.$value;
                     }
             }
@@ -260,7 +261,7 @@
 
             $signed_string = join('&', array_map('urlencode', $signature_parts));
 
-#            error_log("Signing $signed_string");
+            # error_log("Signing $signed_string");
             
             $oauth_parameters['oauth_signature'] = 
                 	$this->signature_method == 'md5' ?
@@ -285,12 +286,12 @@
                   $i++;
                 }
                 
-
                 foreach($oauth_parameters as $key => $value) {
 # BLAH just want to join a list with ", "
                   if($key != 'oauth_token' || $value) {
                     if ($i++ > 0)
                       $authorization_header .= ", ";
+                    $value = urlencode($value);
                     $authorization_header .= "{$key}=\"{$value}\"";
                   }
                 }
