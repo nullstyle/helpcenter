@@ -1,6 +1,6 @@
 <?
 
-require_once('setup.php');
+require_once('config.php');
 require_once('Sprinkles.php');
 
 $subject = request_param('subject');
