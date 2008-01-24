@@ -20,15 +20,15 @@ What is the address of your company's Satisfaction site?
 <table style="padding: 0pt 8pt;">
 <tr>
   <td class="form-label oneliner">http://getsatisfaction.com/</td>
-  <td><input name="site" /></td>
+  <td><input name="site" class="admin" /></td>
 </tr>
 <tr>
   <td class="form-label oneliner">OAuth Consumer Key:</td>
-  <td><input name="oauth_consumer_key" /></td>
+  <td><input name="oauth_consumer_key" class="admin" /></td>
 </tr>
 <tr>
   <td class="form-label oneliner">OAuth Consumer Secret:</td>
-  <td><input name="oauth_consumer_secret" /></td>
+  <td><input name="oauth_consumer_secret" class="admin" /></td>
 </tr>
 <tr>
 <td></td>

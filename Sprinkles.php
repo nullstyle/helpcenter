@@ -821,6 +821,6 @@ function redirect($url) {
 $mysql = mysql_connect();
 if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
 
-mysql_select_db('sprinkles_test');
+mysql_select_db('sprinkles');
 
 ?>
