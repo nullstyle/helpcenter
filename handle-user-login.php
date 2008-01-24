@@ -15,8 +15,8 @@ $resp = $oauth_req->sendRequest(true, true);
 list($token, $secret) = $oauth_req->getResponseTokenSecret();
 error_log("request token: $token, $secret");
 
-if (!$token || !$token_secret)
-  die("Failed to fetch OAuth request token from getsatisfaction.com.");
+if (!$token || !$secret)
+  die("Failed to fetch OAuth request token from getsatisfaction.com. (Token: '$token'; Token secret: '$token_secret')");
 
 $result = mysql_query('insert into oauth_tokens (token, token_secret) values (\''
                       . $token . '\', \'' . $secret . '\')');

@@ -65,10 +65,19 @@ INSTALLATION INSTRUCTIONS
      your web directory is /usr/local/www/html execute the following
      commands:
 
-       % mkdir /usr/local/www/html/sprinkles
        % cp -r . /usr/local/www/html/sprinkles
 
-  5. Create a MySQL database.
+  5. Create a template cache directory.
+  
+     Create a directory called "templates_c" within the sprinkles
+     installation directory. Make sure this directory is writable by the
+     webserver.
+     
+       % cd /usr/local/www/html/sprinkles
+       % mkdir templates_c
+       % sudo chown www templates_c
+     
+  6. Create a MySQL database.
 
        % mysql
        mysql> create database sprinkles;
@@ -78,7 +87,7 @@ INSTALLATION INSTRUCTIONS
 
      [TBD: add notes about configuring permissions for mysql users?]
 
-  6. Configure the installation.
+  7. Configure the installation.
 
      Navigate a browser to <your-URL>/sprinkles. You should see a page
      that asks, "What is the address of your company's Satisfaction
@@ -108,7 +117,7 @@ INSTALLATION INSTRUCTIONS
      a user's unique username can be found in the user's URL and are
      *not* always the same as the displayed name on the site.)
 
-  7. Start using Sprinkles.
+  8. Start using Sprinkles.
 
      You can use the navigation links in the header of the admin page
      to explore your Sprinkles site.
