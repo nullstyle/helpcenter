@@ -38,7 +38,10 @@ $smarty->assign('errors', request_param('errors'));
 $smarty->assign('hooked_msg', request_param('hooked'));
 $smarty->assign('admins_changed', request_param('admins_changed'));
 $smarty->assign('settings', $settings);
-$smarty->assign('current_url', 'admin.php');
+$smarty->assign('current_url', 'admin.php');   # FIXME: this leads to odd behavior on 
+                                               # logout: user goes straight to sign-in
+                                               # page; consider taking the logout link
+                                               # to some other page.
 
 $sprink->add_std_hash_elems($smarty);
 

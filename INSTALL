@@ -3,6 +3,7 @@ DEPENDENCIES
 Sprinkles depends on the following packages or libraries:
 
   - PHP v5 or later
+  - Smarty
   - MySQL
   - hKit (Included.)
   - pecl_http
@@ -54,6 +55,17 @@ INSTALLATION INSTRUCTIONS
           % sudo pear install Http_Request
 
         Sprinkles has been tested with HTTP_Request version 1.4.2.
+
+     c) Smarty
+     
+        Download the latest version of the Smarty templating engine from
+        
+          http://www.smarty.net/download.php
+        
+        Once downloaded, follow the directions in the INSTALL file in
+        the package. You should just need to copy the files in the libs/
+        directory into your PHP library location (for example, into
+        /usr/local/lib/php/Smarty/)
 
   4. Install Sprinkles into your web directory.
 

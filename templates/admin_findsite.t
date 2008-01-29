@@ -31,6 +31,10 @@ What is the address of your company's Satisfaction site?
   <td><input name="oauth_consumer_secret" class="admin" /></td>
 </tr>
 <tr>
+  <td class="form-label oneliner">Sprinkles URL (this page):</td>
+  <td><input name="sprinkles_root_url" class="admin" /></td>
+</tr>
+<tr>
 <td></td>
 <td>
   <button type="submit">Find site</button>

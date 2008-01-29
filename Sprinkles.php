@@ -1,7 +1,7 @@
 <?php
 # $Id$
 
-require_once 'XML_Feed_Parser-1.0.2/Parser.php';
+require_once 'XML/Feed/Parser.php';
 require_once 'config.php';
 require_once 'hkit.class.php';
 
@@ -119,14 +119,6 @@ function get_url($url) {
   }
 }
 
-function mysql_now() {
-  # for testing DB connection
-  mysql_connect();
-  $result = mysql_query("select now()");
-  if (!$result) return '';
-  $cols = mysql_fetch_array($result);
-  return $cols[0];
-}
 
 function cmp_by_updated($a, $b) {
   return $b['updated'] - $a['updated'];
@@ -761,7 +753,7 @@ class Sprinkles {
   }
 
   function get_users() {
-    mysql_connect();
+#    mysql_connect();
     $query = mysql_query("select username from users");
     $users = array();
     while ($cols = mysql_fetch_array($query)) {
@@ -818,8 +810,17 @@ function redirect($url) {
   header('Location: ' . $url, true, 302);
 }
 
-$mysql = mysql_connect();
+# FIXME: connect params don't have any effect.
+
+$mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);
 if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
+
+function sprinkles_root_url() {
+  $q = mysql_query('select sprinkles_root_url from site_settings');
+  if (!$q) die("Database error getting Sprinkles root URL: " . mysql_error());
+  $row = mysql_fetch_row($q);
+  return $row[0];
+}
 
 mysql_select_db('sprinkles');
 

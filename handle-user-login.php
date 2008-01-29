@@ -23,11 +23,9 @@ $result = mysql_query('insert into oauth_tokens (token, token_secret) values (\'
 
 if (!$result) die("Error inserting OAuth tokens into database.");
 
-$sprinkles_root_url = 'http://localhost/sprinkles/';
-
 $return = request_param('return');
-$callback_url = $sprinkles_root_url . 'handle-oauth-return.php?return=' . 
-                urlencode($return);
+$callback_url = sprinkles_root_url() . 'handle-oauth-return.php?return=' . 
+                  urlencode($return);
 
 # FIXME: hardcoded API URL
 $url = 'http://getsatisfaction.com/api/authorize?oauth_token='

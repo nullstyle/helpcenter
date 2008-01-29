@@ -76,6 +76,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `site_settings`;
 CREATE TABLE `site_settings` (
+  `sprinkles_root_url` varchar(1024) default NULL,
   `background_color` varchar(255) default NULL,
   `contact_email` varchar(255) default NULL,
   `contact_phone` varchar(255) default NULL,
