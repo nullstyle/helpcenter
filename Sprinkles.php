@@ -272,7 +272,7 @@ class Sprinkles {
     if ($emotitag_elem) {
       $item['emotitag_face'] = $emotitag_elem->getAttribute('face');
       $item['emotitag_severity'] = $emotitag_elem->getAttribute('severity');
-      $item['emotitag_emotion'] = $emotitag_elem->nodeValue;
+      $item['emotitag_emotion'] = trim($emotitag_elem->nodeValue);
     }
 
     $item['star_promoted'] = $this->sfn_element_present($entry, 'star_promoted');
