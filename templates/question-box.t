@@ -1,5 +1,5 @@
 
-<div class="question">
+<div class="question-pane">
 <h2>How can we help you?</h2>
 
 <form style="width: 100%; position: relative;" action="submit.php">

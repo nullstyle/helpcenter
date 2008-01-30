@@ -2,7 +2,7 @@
 
 {include file="header.t"}
 
-<div class="topic-head">
+<div class="topic-head {$lead_item.topic_style}">
 Hey { $company_name }!
 <h3>
 <strong> { $lead_item.author.name }</strong> has
@@ -79,10 +79,34 @@ official rep {/if}
 {/if}
 </td>
 </tr>
-{if $best_solution}
+{if $company_promoted_replies}
+<tr>
+<td colspan="3">
+<h2>Best solution from the company</h2>
+{foreach from=$company_promoted_replies key=i item=reply}
+<div class="box">
+  <p>{$reply.content}</p>
+
+  <div class="p">
+  <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
+  <strong><em>{$reply.author.name}</em> {if $reply.author.role}({$reply.author.role_name}){/if}</strong>
+  {$reply.updated_relative}
+  {if $reply.emotitag_face}
+  <img src="images/{$reply.emotitag_face}.png" 
+                alt="{$reply.emotitag_emotion}"
+                class="emotitag_face">
+            {if $reply.emotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
+  {/if}
+  </div>
+</div>
+{/foreach}
+</td>
+</tr>
+{/if}
+{if $star_promoted_replies}
 <tr>
 <td colspan="2">
-Best solution from the company
+Best solution from people: xxx
 </td>
 </tr>
 {/if}
@@ -105,7 +129,7 @@ Best solution from the company
   </h2>
 {/if}
 
-  <table class="topic-replies" style="width: 342pt;">
+  <table class="topic-replies">
   {foreach from=$replies key=i item=reply}
   <tr class="{if $reply.in_reply_to == $lead_item.id}toplevel{else}subordinate{/if}">
     <td class="topic-pic-column">
@@ -138,12 +162,14 @@ Best solution from the company
           </a>
         </div>
        {if $reply.emotitag_face}
+       <div>
         <p><img src="images/{$reply.emotitag_face}.png" 
                 alt="{$reply.emotitag_emotion}"
-                class="emotitag_face"> 
-            {if $reply.enotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
+                class="emotitag_face">
+            {if $reply.emotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
         </p>
-        {/if}
+       </div>
+       {/if}
     </td>
   </tr>
   {/foreach}

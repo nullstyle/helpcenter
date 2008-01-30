@@ -21,6 +21,7 @@ $reply_count = count($topic['replies']);
 $topic['replies'] = $sprink->thread_items($topic['replies'], $lead_item['id']);
 $toplevel_reply_count = count($topic['replies']);
 
+
 $topic['replies'] = take_range($page_num * $page_limit,
                     ($page_num + 1) * $page_limit,
                     $topic['replies']);
@@ -35,6 +36,8 @@ $noncompany_related_topics =
                   take($related_topics_count, $noncompany_related_topics);
 $sprink->resolve_companies($noncompany_related_topics);
 
+list($company_promoted, $star_promoted) = $sprink->filter_promoted($topic['replies']);
+
 $smarty->assign('lead_item', $lead_item);
 $smarty->assign('replies', $topic['replies']);
 $smarty->assign('related_topics', $noncompany_related_topics);
@@ -45,6 +48,8 @@ $smarty->assign(array('reply_count' => $reply_count,
 $smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
+$smarty->assign(array('company_promoted_replies' => $company_promoted,
+                      'star_promoted_replies' => $star_promoted));
 
 $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 

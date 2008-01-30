@@ -272,7 +272,7 @@ class Sprinkles {
     if ($emotitag_elem) {
       $item['emotitag_face'] = $emotitag_elem->getAttribute('face');
       $item['emotitag_severity'] = $emotitag_elem->getAttribute('severity');
-      $item['emotitag_emotion'] = $emotitag_elem->getAttribute('emotion');
+      $item['emotitag_emotion'] = $emotitag_elem->nodeValue;
     }
 
     $item['star_promoted'] = $this->sfn_element_present($entry, 'star_promoted');
@@ -617,6 +617,16 @@ class Sprinkles {
     assert(is_array($products));
     return $products;
   }
+
+   function filter_promoted($replies) {
+     $company_promoted = array();
+     $star_promoted = array();
+     foreach ($replies as $reply) {
+       if ($reply['company_promoted']) array_push($company_promoted, $reply);
+       if ($reply['star_promoted']) array_push($star_promoted, $reply);
+     }
+     return array($company_promoted, $star_promoted);
+   }
 
   function company_partition($topics) {
     $company_topics = array();

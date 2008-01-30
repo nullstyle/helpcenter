@@ -14,7 +14,7 @@ a { text-decoration: none; }
 img { border: 0px }
 
 div#container {
-  width: 550pt;
+  width: 600pt;
   margin-top: 12px;
   margin: 0 auto;
 }
@@ -34,7 +34,7 @@ h5 { margin: 10pt 0pt 0pt; 0pt;
 
 td { vertical-align: top; }
 
-.question { margin: 1pc 1pc 1pc 2pc; }
+.question-pane { margin: 1pc 1pc 1pc 2pc; }
 
 .questionbox {
   padding: 0pt; margin: 0pt; 
@@ -122,10 +122,6 @@ div#what-satisfaction p {
   color: #666666;
 }
 
-p { font-size: 12px; }
-
-p.tight { margin: 0pt; padding 0pt; }
-
 .blue {
   background-color: #a7efff;
 }
@@ -155,7 +151,6 @@ input.admin, textarea.admin { width: 180pt; }
 .gutter { margin: 6pt; }
 
 .topic-head {
-  background-color: #bbb;
   padding: 4pt 8pt 4pt 8pt;
 }
 
@@ -167,6 +162,7 @@ ul.topic-replies, ul.topic-list {
   margin: 3pt 0pt;
   padding: 0pt;
   list-style-type: none;
+  width: 390pt;
 }
 
 .topic-replies li, ul.topic-list li, .topic-replies tr {
@@ -214,7 +210,9 @@ ul.topic-replies, ul.topic-list {
   height: 48pt;
 }
 
-.small-author-pic, .subordinate .reply-author-pic {
+.small-author-pic,
+.subordinate .reply-author-pic,
+.emotitag_face {
   width: 24pt;
   height: 24pt;
 }
@@ -239,6 +237,10 @@ ul.product-list li {
   font-size: 11pt; 
   padding-right: 1pc;
   color: #444;
+}
+
+ul.product-list li img {
+  vertical-align: middle;
 }
 
 .huge { font-size: 24pt; }
@@ -283,3 +285,21 @@ ul.straight { list-style-type: none; padding-left: 0pt; }
 .tag-box { width: 200pt; }
 
 p .p-margin { margin-top: 6pt; }
+
+.light { color: #999; }
+
+em { color: black; font-style: normal; }
+
+p .p { font-size: 12px; }
+
+p.tight { margin: 0pt; padding 0pt; }
+
+.box {
+  border: 1px solid #444;
+  padding: 3pt 6pt;
+}
+
+.talk { background-color: #e6ffeb; }
+.question { background-color: #ddf5ff; }
+.problem { background-color: #f5d2cf; }
+.idea { background-color: #f8facd; }
