@@ -21,33 +21,7 @@ INSTALLATION INSTRUCTIONS
 
   3. Install PHP library dependencies.
 
-     a) pecl_http
-
-	Using pecl, the PHP Extension Community Library, install the
-        pecl_http package:
-
-          % sudo pecl install pecl_http
-          Starting to download pecl_http-1.6.0.tar (Unknown size)
-          ........
-
-        You will be asked several questions; answer as you see fit.
-
-        Add the following line to your php.ini file to enable the
-        package (there should be a php.ini section labelled "DYNAMIC
-        EXTENSIONS"; but it doesn't matter where this line goes):
-
-          extension=http.so
-
-        You can test the installation by running php on the command line:
-
-          % echo '<?new HttpRequest();?>' | php
-
-        If this doesn't give you an error, pecl_http has been
-        installed successfully.
-
-        Sprinkles has been tested with pecl_http version 1.6.0.
-
-     b) HTTP_Request
+     a) HTTP_Request
 
         The HTTP_Request library can be installed at the command line
         using pear:
@@ -56,7 +30,7 @@ INSTALLATION INSTRUCTIONS
 
         Sprinkles has been tested with HTTP_Request version 1.4.2.
 
-     c) Smarty
+     b) Smarty
      
         Download the latest version of the Smarty templating engine from
         

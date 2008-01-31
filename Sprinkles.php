@@ -678,14 +678,14 @@ class Sprinkles {
   }
 
   function oauthed_request($method, $url, $creds, $params, $qParams) {
-    require_once('HTTP_Request_OAuth.php');
+    require_once('HTTP_Request_Oauth.php');
     $params['method'] = $method;
     $params['token'] = $creds['token'];
     $params['token_secret'] = $creds['token_secret'];
     $params['consumer_key'] = 'lmwjv4kzwi27';
     $params['consumer_secret'] = 'fiei6iv61jnoukaq1aylwd8vcmnkafrs';
     $params['signature_method'] = 'HMAC-SHA1';
-    $req = new HTTP_Request_OAuth($url, $params);
+    $req = new HTTP_Request_Oauth($url, $params);
     foreach ($qParams as $name => $val) {
 #      $req->addQueryString($name, $val);
       $req->addParam($name, $val);
@@ -701,11 +701,11 @@ class Sprinkles {
  
 #FIXME: how do we signal error?
   function get_me_resource($creds) {
-    require_once('HTTP_Request_OAuth.php');
+    require_once('HTTP_Request_Oauth.php');
     $me_url = 'http://api.getsatisfaction.com/me';
     error_log("Getting /me with OAuth. Token: " . $creds['token'] . " " . 
                 $creds['token_secret']);
-    $req = new HTTP_Request_OAuth($me_url,
+    $req = new HTTP_Request_Oauth($me_url,
                    array('consumer_key' => 'lmwjv4kzwi27',
                          'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
                          'token' => $creds['token'],
