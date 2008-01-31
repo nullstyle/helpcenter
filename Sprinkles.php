@@ -124,7 +124,6 @@ function cmp_by_updated($a, $b) {
   return $b['updated'] - $a['updated'];
 }
 
-#require_once('hkit.class.php');
 global $h;
 $h = new hKit;
     
@@ -429,7 +428,7 @@ class Sprinkles {
   function tags($url) {
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
     $tags = array();
-#    print "Getting $url<br />";
+#    error_log "Getting $url";
 # FIXME: getting tags this way until hkit is fixed
     $xml = simplexml_load_file($url);
     $root_nodes = $xml->xpath("//*[@class='tag']");
@@ -452,7 +451,7 @@ class Sprinkles {
 # TBD: add check that $url is rooted at a sanctioned base URL
     assert(!!$url);
 
-#    print "Getting $url<br />";
+#    error_log "Getting $url";
 
     $topic_feed = new XML_Feed_Parser(file_get_contents($url));
 
@@ -762,14 +761,23 @@ class Sprinkles {
     return $me['fn'];
   }
 
-  function get_users() {
-#    mysql_connect();
+  function get_users() { # TBD: rename this to admins()
     $query = mysql_query("select username from users");
     $users = array();
     while ($cols = mysql_fetch_array($query)) {
       array_push($users, array(username => $cols[0]));
     }
     return $users;
+  }
+  
+  function user_is_admin() {
+    # TBD: optimize
+    $query = mysql_query("select username from users");
+    $username = $this->current_username();
+    while ($cols = mysql_fetch_array($query)) {
+      if ($cols[0] == $username) return true;
+    }
+    return false;
   }
 
   function site_background_color() {

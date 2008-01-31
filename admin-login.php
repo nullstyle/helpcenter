@@ -22,9 +22,10 @@ $message = $_GET['wrong_password']
 $smarty->assign('site_configured', $sprink->site_configured());
 $smarty->assign('accts', $accts);
 $smarty->assign('message', $message);
+$smarty->assign('current_url', 'admin.php');
 
 $sprink->add_std_hash_elems($smarty);
 
-$smarty->display('admin_login.t');
+$smarty->display('admin-login.t');
 
 ?>

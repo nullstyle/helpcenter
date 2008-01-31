@@ -8,7 +8,7 @@
 
 <div class="right">Hello <strong>{$user_name}</strong> from {$company_name}.
   Are you someone else?
-  <a href="admin_login.php">Sign in as you</a>.
+  <a href="admin-login.php">Sign in as you</a>.
   <a href="sign_out.php">Sign out</a>.
 </div>
 
@@ -18,7 +18,8 @@
 <div class="error-box">
 Your settings could not be saved. Please correct the errors below.
 </div>
-{/if}
+
+{else}
 
 {if $hooked_msg}
 <div class="message-box">
@@ -27,15 +28,16 @@ Your Sprinkles site is now hooked into: {$company_url}.
 </div>
 {/if}
 
-{if $admins_changed}
+{if $new_admins}
 <div class="message-box">
 <strong>Done!</strong>
-{foreach from=$admin_users key=i item=user}
-{if $i==count($admin_users)-1 && $i > 0} and {/if}
-{$user.username}{if $i<count($admin_users)-2}, {/if} {/foreach} 
-may now come to [TBD: this url]
+{foreach from=$new_admins key=i item=name}
+{if $i==count($new_admins)-1 && $i > 0} and {/if}
+{$name}{if $i<(count($new_admins)-2)}, {/if} {/foreach} 
+may now come to {$sprinkles_root_url}
 and sign in as an admin and authenticate their account. Go let them know!
 </div>
+{/if}
 {/if}
 
 <div class="sidepane">
@@ -100,14 +102,19 @@ Contact email must be a valid email address.
 <tr>
 <td class="form-label"> Add additional admin </td>
 <td>
+{if $invalid.admin_users_str}
+<div class="error-message">
+You may not remove yourself as an admin!
+</div>
+{/if}
   <textarea name="admin_users_str" class="admin" rows="2">
 {if $settings.admin_users_str}{$settings.admin_users_str}
 {else}{foreach from=$admin_users key=i item=user}{$user.username}
 {/foreach}
 {/if}</textarea>
-<p>
-Comma or space separated. Example: If the person's GS URL is http://getsatisfaction.com/people/scott then just enter <strong>scott</strong> above.
-</p>
+  <p>
+  Comma or space separated. Example: If the person's GS URL is http://getsatisfaction.com/people/scott then just enter <strong>scott</strong> above.
+  </p>
 </td>
 </tr>
 <tr>

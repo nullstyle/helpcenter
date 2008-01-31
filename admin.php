@@ -7,7 +7,14 @@ $sprink = new Sprinkles();
 
 $username = $sprink->current_username();
 if (!$username)
-  redirect('admin_login.php');
+  redirect('admin-login.php');
+$admin_users = $sprink->get_users();
+if (!$sprink->user_is_admin())
+  redirect('dead-end.php');
+#dump($username);
+#dump($admin_users);
+#if (!array_search($username, $admin_users))
+#  redirect('admin-login.php');
 
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
@@ -18,7 +25,6 @@ $result = mysql_query($sql);
 
 $settings = mysql_fetch_assoc($result);
 
-$admin_users = $sprink->get_users(); # TBD: rename this to ->admins()
 $smarty->assign('admin_users', $admin_users);
 
 foreach ($fields as $i => $field) {
@@ -36,8 +42,9 @@ $smarty->assign('company_url', $company_hcard['url']);
 $smarty->assign('invalid', request_param('invalid'));
 $smarty->assign('errors', request_param('errors'));
 $smarty->assign('hooked_msg', request_param('hooked'));
-$smarty->assign('admins_changed', request_param('admins_changed'));
+$smarty->assign('new_admins', split(',', request_param('new_admins')));
 $smarty->assign('settings', $settings);
+$smarty->assign('sprinkles_root_url', sprinkles_root_url());
 $smarty->assign('current_url', 'admin.php');   # FIXME: this leads to odd behavior on 
                                                # logout: user goes straight to sign-in
                                                # page; consider taking the logout link
