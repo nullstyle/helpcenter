@@ -149,8 +149,10 @@ Best solution from people: xxx
             {if $lead_item.topic_style == 'question'}
             This answered the question
             {elseif $lead_item.topic_style == 'idea'}
-            Good point!{elseif $lead_item.topic_style == 'talk'}
-            This answered the question{elseif $lead_item.topic_style =='problem'}
+            Good point!
+            {elseif $lead_item.topic_style == 'talk'}
+            This answered the question
+            {elseif $lead_item.topic_style =='problem'}
             This solved the problem!
             {/if}
             {if $reply.star_count}({$reply.star_count}){/if}

@@ -7,7 +7,8 @@ $request_token = request_param('oauth_token');
 
 if (!$request_token) die("An error occurred handling the information sent back from Satisfaction.");
 
-# TBD: refactor this, expire old entries (two weeks)
+# TBD: refactor this
+# TBD: expire old entries (two weeks)
 $sql = "select token_secret from oauth_tokens where token='" . 
         $request_token . "'";
 $result = mysql_query($sql);
@@ -17,10 +18,10 @@ $request_token_secret = $cols[0];
 
 $oauth_req = new HTTP_Request_OAuth(
                    'http://getsatisfaction.com/api/access_token',
-                   array('consumer_key' => 'lmwjv4kzwi27',
+                   array('consumer_key' => 'lmwjv4kzwi27',        # FIXME: use users own key/secret
+                         'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
                          'token' => $request_token,
                          'token_secret' => $request_token_secret,
-                         'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
                          'signature_method' => 'HMAC-SHA1',
                          'method' => 'GET'));
 

@@ -5,6 +5,9 @@ require_once 'XML/Feed/Parser.php';
 require_once 'config.php';
 require_once 'hkit.class.php';
 
+global $h;
+$h = new hKit;
+
 # take: return a list of the first $n elements from $list
 function take($n, $list) {
   if (!is_array($list)) throw new Exception("Non-array passed to 'take'");
@@ -31,6 +34,8 @@ function take_range($lo, $hi, $list) {
   return $result;
 }
 
+# Given two times $time and $now, return a string describing roughly how long 
+# ago $time was from $now--for example, "37 minutes ago."
 function ago($time, $now) {
   $diff = $now - $time;
   
@@ -46,6 +51,9 @@ function ago($time, $now) {
   } else if ($diff < 7 * 24 * 3600) {
     $result = (ceil($diff/(24*3600)));
     $result .= $result == 1 ? " day" : " days";
+  } else if ($diff < 30 * 24 * 3600) {
+    $result = (ceil($diff/(7*24*3600)));
+    $result .= $result == 1 ? " week" : " weeks";
   } else if ($diff < 365 * 24 * 3600) {
     $result = (ceil($diff/(30*24*3600)));
     $result .= $result == 1 ? " month" : " months";
@@ -62,6 +70,7 @@ function is_http_url($str) {
   return preg_match("|^https?://|", $str);
 }
 
+# dump: for debugging.
 function dump($obj) {
   print("<pre>");
   var_dump($obj);
@@ -75,17 +84,29 @@ function unbollocks($str) {  ## CURSE CURSE CURSE
                       $str);
 }
 
+function php_major_version() {
+  $v = phpversion();
+  $version = array();
+  list($major) = explode('.', $v);
+  return $major;
+}
+
+$needs_unbollocks = php_major_version() < 6;
+
+# request_param returns the HTTP request parameter, whether it lies in the 
+# query string or the POST data.
 function request_param($name) {
   if ($_GET[$name]) {
     $result = $_GET[$name];
   } else if ($_POST[$name]) {
     $result = $_POST[$name];
   }
-  $php_version_six = false; # FIXME: get the real version
-  if ($php_version_six)
-    return $result;
-  else
+  # Versions before 6 do an unwarranted backslashing of request parameters;
+  # Here we reverse that so we get the real data.
+  if ($needs_unbollocks)
     return unbollocks($result);
+  else
+    return $result;
 }
 
 $http_cache_timeout = 600; # seconds
@@ -119,14 +140,12 @@ function get_url($url) {
   }
 }
 
-
+# compare two objects by their 'updated' fields, returning a value either 
+# negative, zero, or positive, for use with sorting functions.
 function cmp_by_updated($a, $b) {
   return $b['updated'] - $a['updated'];
 }
 
-global $h;
-$h = new hKit;
-    
 global $robust_mode;   # Causes Sprinkles to filter a feed even if it 
                        # is supposed to be filtered already.
 # $robust_mode = true;
@@ -138,8 +157,10 @@ $xml_opensearch_ns = 'http://a9.com/-/spec/opensearch/1.1/';
 class Sprinkles {
 
   var $company_id;
-  var $employees;  # Cache this in the object because it's used frequently.
+  # Cache a few things here in case they're needed more than once in a request.
+  var $employees_cache;
   var $people_cache = array();
+  var $products_cache = array();
 
   var $role_names = array('company_admin' => 'Official Rep',
                           'company_rep' => 'Official Rep',
@@ -163,7 +184,6 @@ class Sprinkles {
     if ($quick_mode) {
       $company_hcards = $h->getByString('hcard', file_get_contents($company_url));
     } else {
-#      $company_hcards = $h->getByURL('hcard', $company_url);
       $company_hcards = $h->getByString('hcard', get_url($company_url));
     }
     return $company_hcards[0];
@@ -278,23 +298,21 @@ class Sprinkles {
     $item['company_promoted'] = $this->sfn_element_present($entry, 'company_promoted');
     return $item;
   }
-
-# A new strategy for avoiding fetching extra resources.
-# TBD: Port this to other elements that require fetching external resources.
-  function resolve_companies(&$feed) {
-    foreach ($feed as &$item) {
-      if ($item['company_url'])
-        $item['company'] = $this->company_hcard($item['company_url']);
+  
+  function topic_totals($feed) {
+    $result = array();
+    global $xml_opensearch_ns;
+    if ($total_results_elem = $feed->model->getElementsByTagNameNS(
+                                          $xml_opensearch_ns,
+                                          'totalresults')) {
+      $result['all_count'] = $total_results_elem->nodeValue;
     }
-  }
-
-  function dashboard_topics($person) {
-    $started = $this->topics(array('person' => $person));
-    $followed = $this->topics(array('followed' => $person));
-    $items = array_merge($started['topics'],
-                         $followed['topics']);
-    usort($items, cmp_by_updated);
-    return $items;
+    $result['idea_count'] = $this->sfn_element($feed, 'idea_count');
+    $result['talk_count'] = $this->sfn_element($feed, 'talk_count');
+    $result['problem_count'] = $this->sfn_element($feed, 'problem_count');
+    $result['question_count'] = $this->sfn_element($feed, 'question_count');
+    $result['unanswered_count'] = $this->sfn_element($feed, 'unanswered_count');
+    return $result;     
   }
 
   ## Topics for the company, filter by values in $options
@@ -366,22 +384,21 @@ class Sprinkles {
     }
   }
 
-  function topic_totals($feed) {
-    $result = array();
-    global $xml_opensearch_ns;
-    if ($total_results_elem = $feed->model->getElementsByTagNameNS(
-                                          $xml_opensearch_ns,
-                                          'totalresults')) {
-      $result['all_count'] = $total_results_elem->nodeValue;
-    }
-    $result['idea_count'] = $this->sfn_element($feed, 'idea_count');
-    $result['talk_count'] = $this->sfn_element($feed, 'talk_count');
-    $result['problem_count'] = $this->sfn_element($feed, 'problem_count');
-    $result['question_count'] = $this->sfn_element($feed, 'question_count');
-    $result['unanswered_count'] = $this->sfn_element($feed, 'unanswered_count');
-    return $result;     
+  # A user's dashboard collects a variety of kinds of topics; dashboard_topics
+  # fetchs them all and merges the results into one chronological feed.
+  function dashboard_topics($person) {
+    $started = $this->topics(array('person' => $person));
+    $followed = $this->topics(array('followed' => $person));
+    $items = array_merge($started['topics'],
+                         $followed['topics']);
+    usort($items, cmp_by_updated);
+    return $items;
   }
 
+  # thread_items takes a feed and a root item (given by ID); it returns the 
+  # feed in a forest structure where each item's 'replies' property contains 
+  # the list of its replies. The trees in the forest are the immediate 
+  # children of the root.
   function thread_items($feed, $root) {
     # First, index them all by ID
     $items = array();
@@ -389,7 +406,7 @@ class Sprinkles {
       $items[$item['id']] = $item;
     }
 
-    # Next, point to each sub-reply from its parent
+    # Next, create a pointer from each reply from its parent
     foreach ($items as $item) {
       if ($item['in_reply_to'])
         if ($items[$item['in_reply_to']]) {
@@ -402,7 +419,6 @@ class Sprinkles {
         }
     }
 
-
     # Then, remove each sub-reply from the toplevel stream
     foreach ($items as $item) {
       if ($item['in_reply_to'])
@@ -413,6 +429,9 @@ class Sprinkles {
     return $items;
   }
 
+  # flatten_threads takes a forest as returned by thread_items and hoists
+  # all 2nd-level nodes to the top level. These nodes are still also 
+  # listed in the 'replies' property of each root node.
   function flatten_threads($items) {
     $result = array();
     foreach ($items as $item) {
@@ -425,13 +444,25 @@ class Sprinkles {
     return $result;
   }
 
+  # resolve_companies adds company data to each item in a feed; it expects to
+  # find a company_url and it populated the item with the vCard data found at 
+  # that URL.
+# TBD: Port this to other elements that require fetching external resources.
+  function resolve_companies(&$feed) {
+    foreach ($feed as &$item) {
+      if ($item['company_url'])
+        $item['company'] = $this->company_hcard($item['company_url']);
+    }
+  }
+
+  # tags returns a list of tags as found at the given URL.
   function tags($url) {
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
-    $tags = array();
-#    error_log "Getting $url";
+    # error_log "Getting $url";
 # FIXME: getting tags this way until hkit is fixed
     $xml = simplexml_load_file($url);
     $root_nodes = $xml->xpath("//*[@class='tag']");
+    $tags = array();
     if ($root_nodes) {
       $result['tags'] = array();
       $tag_elems = $root_nodes[0]->xpath("//*[@class='name']");
@@ -451,19 +482,20 @@ class Sprinkles {
 # TBD: add check that $url is rooted at a sanctioned base URL
     assert(!!$url);
 
-#    error_log "Getting $url";
+    # error_log "Getting $url";
 
     $topic_feed = new XML_Feed_Parser(file_get_contents($url));
 
     if (!$topic_feed) die("Couldn't get topic feed from $url");
 
-# FIXME: needs to return metadata on the topic, not just the entries
+    # Add stuff to the raw feed data using fix_atom_entry
     $items = array();
     foreach ($topic_feed as $entry) {
       $item = $this->fix_atom_entry($entry, 'reply');
       array_push($items, $item);
     }
 
+    # Collect information about the participants in this topic
     $authors = array();
     $employees = array();
     foreach ($items as $item) {
@@ -490,14 +522,12 @@ class Sprinkles {
   }
 
   ## Get list of people associated with the company
-  # TBD: un-factor this, inline it into employees.
   function employee_list() {
     $people_url = $this->api_url('companies/'.$this->company_id.'/employees');
     global $h, $quick_mode;
     if ($quick_mode) {
       $people_list = $h->getByString('hcard', file_get_contents($people_url));
     } else {
-#      $people_list = $h->getByURL('hcard', $people_url);
       $people_list = $h->getByString('hcard', get_url($people_url));
     }
     if (!$people_list) { die("no people list"); }
@@ -506,9 +536,9 @@ class Sprinkles {
 
   ## Fetch the people records of all the company's people 
   function employees() {
-    if ($this->employees) return $this->employees;
+    if ($this->employees_cache) return $this->employees_cache;
     $employee_list = $this->employee_list();
-    $this->employees = array();
+    $this->employees_cache = array();
     global $h;
     foreach ($employee_list as $employee_record) {
       $person_record = $this->get_person($employee_record["url"]);
@@ -519,13 +549,16 @@ class Sprinkles {
       }
       # Resolve the role token into a human-readable role name.
       $employee_record['role_name']= $this->role_names[$employee_record['role']];
-      array_push($this->employees, $employee_record);
+      array_push($this->employees_cache, $employee_record);
     }
-    return $this->employees;
+    return $this->employees_cache;
   }
 
+  # Given a person URL, find their role at the Sprinkles company and return a
+  # a pair of the technical role identifier (e.g. company_rep) and the human-
+  # readable name of the role (e.g. "Official Rep"). Returns null if the given
+  # person has no role at the current company.
   function get_person_role($person_url) {
-# TBD: parametrize this for the company?
     $employees = $this->employees();
     foreach ($employees as $emp) {
       if ($emp['url'] == $person_url)
@@ -533,11 +566,11 @@ class Sprinkles {
     }
     return null;
   }
-    
-  function get_person_from_doc($doc) {
-    # TBD: refactor this together with the get_person function.
+  
+  function get_person_from_string($str) {
+# TBD: refactor this together with the get_person function.
     global $h;
-    $people = $h->getByString('hcard', $doc);
+    $people = $h->getByString('hcard', $str);
     if (count($people) == 0) {
       return null;
     }
@@ -550,13 +583,9 @@ class Sprinkles {
   function get_person($url) {
     if ($this->people_cache[$url]) return $this->people_cache[$url];
     global $h;
-    error_log("Getting person from $url");
-    $person = $h->getByString('hcard', get_url($url));
-    if (count($person) == 0) throw new Exception("No person at $url");
-    assert(count($person) == 1);   # There should only be one person at this URL.
-    $person = $person[0];
+    # error_log("Getting person from $url");
+    $person = $this->get_person_from_string(get_url($url));
     $this->people_cache[$url] = $person;
-    assert($person);
     return $person;
   }
 
@@ -565,22 +594,22 @@ class Sprinkles {
     return $this->api_url($path);
   }
 
-  var $product_cache = array();
-
+  # Given a product URL or number, returns a structure describing the product.
   function get_product($url) {
-    if ($this->product_cache[$url]) return ($this->product_cache[$url]);
+    if ($this->products_cache[$url]) return ($this->products_cache[$url]);
     global $h;
-#    print "Getting product from $url<br />";
-#    $result = $h->getByURL('hproduct', $url);
+    # error_log("Getting product from $url");
     $result = $h->getByString('hproduct', get_url($url));
     $result = $result[0];   # Assume just one product in the document.
 
     $result['tags'] = $this->tags($url . '/tags');
-    $this->product_cache[$url] = $result;
+    $this->products_cache[$url] = $result;
     return $result;
   }
 
-  ## Return a list of the company's products
+  # product_list returns a list of the current company's products; the list 
+  # generally contains only URLs. Use the method "products" to get a list of 
+  # products including everything we know about them.
   function product_list() {
     $products_url = $this->api_url('companies/'. $this->company_id .'/products');
 
@@ -590,13 +619,13 @@ class Sprinkles {
       $products_list = $h->getByString('hproduct',
                                        file_get_contents($products_url));
     } else {
-      $products_list = $h->getByURL('hproduct', $products_url);
       $products_list = $h->getByString('hproduct', get_url($products_url));
     }
     return $products_list;
   }
 
-  ## Fetch the product records
+  # products returns full product information for each product connected with the
+  # current company.
   function products() {
     $products = array();
     $products_list = $this->product_list();
@@ -605,7 +634,7 @@ class Sprinkles {
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
       if (is_http_url($url)) {
-#        print "Getting product data from $url<br />";
+        # error_log("Getting product data from $url");
         $product = $h->getByURL('hproduct', $url);
         $product = $h->getByString('hproduct', get_url($url));
       }
@@ -617,6 +646,8 @@ class Sprinkles {
     return $products;
   }
 
+   # Given a list of topic replies, return a pair of (a) just those that are 
+   # company-promoted and (b) just those that are people-promoted (star-promoted).
    function filter_promoted($replies) {
      $company_promoted = array();
      $star_promoted = array();
@@ -627,6 +658,8 @@ class Sprinkles {
      return array($company_promoted, $star_promoted);
    }
 
+  # Given a list of topics, partition it into the ones that are associated
+  # on the current company and those that aren't.
   function company_partition($topics) {
     $company_topics = array();
     $noncompany_topics = array();
@@ -644,7 +677,6 @@ class Sprinkles {
   }
   
   function api_url($path) {
-    # print "Getting api_url for $path";
     # if (is_http_url($path)) return $path;   # FIXME: Do we want to trust URLs?
     if (is_http_url($path)) {
       $parts = parse_url($path);
@@ -664,10 +696,7 @@ class Sprinkles {
   
   
   function open_session($token) {
-#    $result = mysql_query("insert into user_sessions (username) values ('" . 
-#                          $username . "')");
-  
-#    $session_id = mysql_insert_id();
+# TBD: fetch /me resource and stash its info in the session table.
     setcookie('session_id', $token);
     return $session_id;
   }
@@ -676,17 +705,24 @@ class Sprinkles {
     setcookie('session_id', '');
   }
 
-  function oauthed_request($method, $url, $creds, $params, $qParams) {
+  # oauthed_request($method, $url, $creds, $req_params, $query_params) makes
+  # a request using HTTP method $method to the url $url, supplying oauth
+  # credentials from $cred and using the optional request parameters
+  # $req_params (as expected by the Http_Request class) and HTTP query 
+  # parameters $query_params. The Oauth credentials should be an associative 
+  # array having keys 'token' and 'token_secret', containing the corresponding
+  # Oauth values. The Oauth consumer_key and consumer_secret are those given
+  # when Sprinkles was installed.
+  function oauthed_request($method, $url, $creds, $req_params, $query_params) {
     require_once('HTTP_Request_Oauth.php');
-    $params['method'] = $method;
-    $params['token'] = $creds['token'];
-    $params['token_secret'] = $creds['token_secret'];
-    $params['consumer_key'] = 'lmwjv4kzwi27';
-    $params['consumer_secret'] = 'fiei6iv61jnoukaq1aylwd8vcmnkafrs';
-    $params['signature_method'] = 'HMAC-SHA1';
-    $req = new HTTP_Request_Oauth($url, $params);
-    foreach ($qParams as $name => $val) {
-#      $req->addQueryString($name, $val);
+    $req_params['method'] = $method;
+    $req_params['token'] = $creds['token'];
+    $req_params['token_secret'] = $creds['token_secret'];
+    $req_params['consumer_key'] = 'lmwjv4kzwi27';
+    $req_params['consumer_secret'] = 'fiei6iv61jnoukaq1aylwd8vcmnkafrs';
+    $req_params['signature_method'] = 'HMAC-SHA1';
+    $req = new HTTP_Request_Oauth($url, $req_params);
+    foreach ($query_params as $name => $val) {
       $req->addParam($name, $val);
     }
     $resp = $req->sendRequest(true, true);
@@ -698,6 +734,9 @@ class Sprinkles {
     return $req;    
   }
  
+   # get_me_resource fetches the path /me from the API, using the given Oauth
+   # credentials, and that resource contains a vCard for the user with those
+   # credentials.
 #FIXME: how do we signal error?
   function get_me_resource($creds) {
     require_once('HTTP_Request_Oauth.php');
@@ -716,35 +755,36 @@ class Sprinkles {
     if ($req->getResponseCode() == 401)
        die("Request for /me failed to authorize.");
 
-    return $this->get_person_from_doc($req->getResponseBody());
+    return $this->get_person_from_string($req->getResponseBody());
   }
 
   function current_user_creds() {
     $session_id = $_COOKIE["session_id"];
     if (!$session_id) return;
-    error_log("looking up creds for token $session_id");
+    # error_log("looking up creds for token $session_id");
     $sql = "select username,token,token_secret from oauth_tokens where token='". 
            $session_id . "'";
-    # error_log($sql);
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
-    error_log("got " . $cols[1] . " " . $cols[2]);
-    if (!$cols) return NULL;
+    # error_log("got " . $cols[1] . " " . $cols[2]);
+    if (!$cols) return null;
     return $cols;
   }
   
+  # current_user returns the vCard of the currently logged-in user. If it needs to
+  # fetch the user's vCard, it will store it in the database.
+  # The returned vCard also contains a boolean field 'sprinkles_admin' indicating
+  # whether this user has the privilege to administer this Sprinkles installation.
   function current_user() {
     list($username, $token, $token_secret) = $this->current_user_creds();
     if (!$token || !$token_secret) return null;
 #    if (!$username) {
-# TBD: store the whole /me resource in the database.
       $me_person = $this->get_me_resource(array('token' => $token,
                                                 'token_secret'=> $token_secret));
       if (!$me_person) return null;
       $username = $me_person['canonical_name'];
-      $result = mysql_query("update oauth_tokens set username = '" . 
-                  $username
+      $result = mysql_query("update oauth_tokens set username = '" . $username
                   . "' where token = '" . $session_id . "'");
       if (!$result) die("Failed to store current user's name in database.");
 
@@ -752,6 +792,7 @@ class Sprinkles {
                            $me_person['canonical_name'] . "'");
       if ($row = mysql_fetch_array($query))
         $me_person['sprinkles_admin'] = true;
+# TBD: store the whole /me resource in the database.
 #    }
     return $me_person;
   }
