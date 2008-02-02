@@ -23,8 +23,8 @@ $toplevel_reply_count = count($topic['replies']);
 
 
 $topic['replies'] = take_range($page_num * $page_limit,
-                    ($page_num + 1) * $page_limit,
-                    $topic['replies']);
+                               ($page_num + 1) * $page_limit,
+                               $topic['replies']);
 $topic['replies'] = $sprink->flatten_threads($topic['replies']);
 
 $related_topics = $sprink->topics(array('related' => $topic_id,

@@ -238,14 +238,15 @@ class Sprinkles {
                                                    $elem_name)->item(0);
   }
 
-  function fix_atom_reply($entry) {
-    return $this->fix_atom_entry($entry, 'reply');
-  }
-
-  # Argument $kind is one of topic, reply
+  # Given an entry of a feed, either a topic or a reply, fix_atom_entry returns
+  # a structure that contatins all the data we care about, in a form usable by
+  # Smarty templates. This can include fetching additional resources.
+  # Argument $kind is either 'topic' or 'reply'; a few fields are reuired for 
+  # one and not the other.
   function fix_atom_entry($entry, $kind) {
     $item = array();
     $item['id'] = $entry->id;
+    $item['id'] = preg_replace('/\?.*$/', '', $item['id']); # FIXME: id is not canonical
     if (!$item['id']) die('no id');
     $item['title'] = $entry->title;
     $item['content'] = $entry->content;
@@ -282,7 +283,7 @@ class Sprinkles {
     if (!$xml_sfn_ns) die("no satisfaction namespace!");
     $item['topic_style'] = $this->sfn_element($entry, 'topic_style');
     if ($kind == 'topic' && !$item['topic_style'])
-      die("SFN feed problem: no sfn:topic_style");
+      die("SFN feed problem: no sfn:topic_style on $kind " . $item['id']);
     $item['reply_count'] = $this->sfn_element($entry, 'reply_count');
     $item['star_count'] = $this->sfn_element($entry, 'star_count');
     $item['flag_count'] = $this->sfn_element($entry, 'flag_count');
@@ -299,6 +300,10 @@ class Sprinkles {
     return $item;
   }
   
+  function fix_atom_reply($entry) {
+    return $this->fix_atom_entry($entry, 'reply');
+  }
+
   function topic_totals($feed) {
     $result = array();
     global $xml_opensearch_ns;
@@ -331,7 +336,10 @@ class Sprinkles {
     } else if ($options['followed']) {
       $url_path = 'people/' . $options['followed'] . '/followed/topics';
     } else if ($options['related']) {
-      $url_path = $options['related'] . '/related';
+      # HACK: until @rel="related" link is exposed, hack the URL
+      $related_to_id = $options['related'];
+      $related_to_id = preg_replace('/\?.*/', '', $related_to_id); # remove pesky query string 
+      $url_path = $related_to_id . '/related';
     } else {
       $url_path = 'companies/'.$this->company_id.'/topics';
       if ($options['query'])
@@ -352,6 +360,7 @@ class Sprinkles {
     try {
       $feed = new XML_Feed_Parser(file_get_contents($topics_feed_url));
       $topics = array();
+      error_log("fixing topic entries found at $topics_feed_url");
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
         # use 'notags' for a faster response;
@@ -476,11 +485,10 @@ class Sprinkles {
 
   function topic($id) {
     global $quick_mode, $cache_dir;
-    $url = $quick_mode ?
-         $cache_dir . 'topics/299.cache' : 
-         $id;
-# TBD: add check that $url is rooted at a sanctioned base URL
+    $url = $id;
+# FIXME: ID not necessarily same as URL
     assert(!!$url);
+# TBD: add check that $url is rooted at a sanctioned base URL
 
     # error_log "Getting $url";
 
