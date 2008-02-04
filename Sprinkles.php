@@ -445,10 +445,11 @@ class Sprinkles {
     $result = array();
     foreach ($items as $item) {
       array_push($result, $item);
-      if ($item['replies']) 
-        foreach ($item['replies'] as $reply) {
+      if ($item['replies']) {
+        foreach ($item['replies'] as $reply)
           array_push($result, $reply);
-        }
+        $result[count($result)-1]['thread_end'] = true;
+      }
     }
     return $result;
   }

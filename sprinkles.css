@@ -288,6 +288,8 @@ p .p-margin { margin-top: 6pt; }
 
 .light { color: #999; }
 
+.light strong { font-weight: bold; }
+
 em { color: black; font-style: normal; }
 
 p .p { font-size: 12px; }

@@ -26,7 +26,7 @@ INSTALLATION INSTRUCTIONS
         The HTTP_Request library can be installed at the command line
         using pear:
 
-          % sudo pear install Http_Request
+          % pear install Http_Request
 
         Sprinkles has been tested with HTTP_Request version 1.4.2.
 
@@ -43,15 +43,18 @@ INSTALLATION INSTRUCTIONS
 
   4. Install Sprinkles into your web directory.
 
-     Find out where your web server expects to find PHP files. For
-     example, on some systems it would be /usr/local/www/html.
+	1. Install Sprinkles into your web directory.
 
-     Now make a directory for sprinkles and copy the installation
-     there. Assuming you are in the Sprinkles download directory and
-     your web directory is /usr/local/www/html execute the following
-     commands:
-
-       % cp -r . /usr/local/www/html/sprinkles
+       The next step is to install Sprinkles into a web-accessible
+       directory. This can be installed either as a subdirectory or in
+       the document root itself. The latter location would be preferable
+       if you intend to have Sprinkles serve the main index of your
+       domain or subdomain. If you are in the Sprinkles download archive
+       directory, your web root is /var/www/html and you want to serve
+       the Sprinkles application from http://example.com/help, you can
+       execute the following command:
+       
+         % cp -R . /var/www/html/help
 
   5. Create a template cache directory.
   
@@ -61,7 +64,7 @@ INSTALLATION INSTRUCTIONS
      
        % cd /usr/local/www/html/sprinkles
        % mkdir templates_c
-       % sudo chown www templates_c
+       % chown www templates_c
      
   6. Create a MySQL database.
 
@@ -73,7 +76,18 @@ INSTALLATION INSTRUCTIONS
 
      [TBD: add notes about configuring permissions for mysql users?]
 
-  7. Configure the installation.
+  7. Set database settings.
+     
+     Open the file config.php in the Sprinkles distribution and edit 
+     the lines:
+     
+       $mysql_username = '';
+       $mysql_password = '';
+     
+     Set the first two lines to your MySQL username and password, 
+     respectively.
+  
+  8. Configure the installation.
 
      Navigate a browser to <your-URL>/sprinkles. You should see a page
      that asks, "What is the address of your company's Satisfaction

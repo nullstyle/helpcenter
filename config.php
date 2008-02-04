@@ -13,11 +13,15 @@ $cache_dir = $sprinkles_dir . "caches/";
 # API root URL and caching directory
 $api_root = 'http://api.getsatisfaction.com/';
 
-$mysql_connect_params = 'localhost:3306';  # FIXME: this doesn't apparently do anything
-$mysql_username = null;
-$mysql_password = null;
+$mysql_username = '';
+$mysql_password = '';
 
-# smarty configuration
+# Configure this if you need to talk to a MySQL database on another machine
+# or use a nonstandard port. The default should normally work. 
+# (FIXME: this doesn't apparently do anything.)
+$mysql_connect_params = 'localhost:3306';
+
+# Smarty configuration
 require_once('Smarty/Smarty.class.php');
 $smarty = new Smarty();
 $smarty->template_dir = $sprinkles_dir . '/templates/';

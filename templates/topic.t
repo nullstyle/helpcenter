@@ -2,38 +2,38 @@
 
 {include file="header.t"}
 
-<div class="topic-head {$lead_item.topic_style}">
+<div class="topic-head {$topic_head.topic_style}">
 Hey { $company_name }!
 <h3>
-<strong> { $lead_item.author.name }</strong> has
-{if $lead_item.topic_style == 'question'}
-a question{elseif $lead_item.topic_style == 'idea'}
-an idea{elseif $lead_item.topic_style == 'talk'}
-a question{elseif $lead_item.topic_style == 'problem'}
+<strong> { $topic_head.author.name }</strong> has
+{if $topic_head.topic_style == 'question'}
+a question{elseif $topic_head.topic_style == 'idea'}
+an idea{elseif $topic_head.topic_style == 'talk'}
+a question{elseif $topic_head.topic_style == 'problem'}
 a problem{/if}
 </h3>
 
 <table style="width: 100%; table-layout: fixed;">
 <tr>
 <td class="topic-pic-column">
-<div><img src="{$lead_item.author.photo}" class="topic-author-pic" /></div>
+<div><img src="{$topic_head.author.photo}" class="topic-author-pic" /></div>
 <div class="topic-author-caption" style="margin-top: 3pt;">
   <span class="topic-byline">
-  { $lead_item.author.name }
+  { $topic_head.author.name }
   </span> 
-  {if $lead_item.topic_style == 'question'} asked this question
-  {elseif $lead_item.topic_style == 'idea'} shared this idea
-  {elseif $lead_item.topic_style == 'talk'} asked this question
-  {elseif $lead_item.topic_style == 'problem'} reported this problem
+  {if $topic_head.topic_style == 'question'} asked this question
+  {elseif $topic_head.topic_style == 'idea'} shared this idea
+  {elseif $topic_head.topic_style == 'talk'} asked this question
+  {elseif $topic_head.topic_style == 'problem'} reported this problem
   {/if}
-  {$lead_item.published_relative}
+  {$topic_head.published_relative}
 </div>
 </td>
 
 <td style="margin: 1pc; width: auto;">
-<h3><strong>{ $lead_item.title }</strong></h3>
+<h3><strong>{ $topic_head.title }</strong></h3>
 
- <p>{ $lead_item.content }</p>
+ <p>{ $topic_head.content }</p>
 
   <a href="dead-end.php" class="flag_button float-right" style="bottom: 0;">
     Flag this topic
@@ -87,9 +87,10 @@ official rep {/if}
 <div class="box">
   <p>{$reply.content}</p>
 
-  <div class="p">
+  <div class="light p">
   <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
-  <strong><em>{$reply.author.name}</em> {if $reply.author.role}({$reply.author.role_name}){/if}</strong>
+  <strong><em>{$reply.author.name}</em>
+  {if $reply.author.role}({$reply.author.role_name}){/if}</strong>
   {$reply.updated_relative}
   {if $reply.emotitag_face}
   <img src="images/{$reply.emotitag_face}.png" 
@@ -124,42 +125,46 @@ Best solution from people: xxx
 <div style="padding: 0pt 8pt;">
 
 {if !$user_name}
-  <h2><a href="user-login.php?return=topic.php%3fid={$lead_item.id}">
+  <h2><a href="user-login.php?return=topic.php%3fid={$topic_head.id}">
     Login to reply</a>
   </h2>
 {/if}
 
-  <table class="topic-replies">
+<table class="topic-replies">
   {foreach from=$replies key=i item=reply}
-  <tr class="{if $reply.in_reply_to == $lead_item.id}toplevel{else}subordinate{/if}">
+  <tr class="{if $reply.in_reply_to == $topic_head.id}toplevel{else}subordinate{/if}">
     <td class="topic-pic-column">
       <div style="position:relative;">
       <img src="{$reply.author.photo}" class="reply-author-pic" />
       </div>
-    </td><td class="reply-core">
-      {$reply.author.name}
-      {if $reply.author.role}({$reply.author.role_name}){/if}
-      replied {$reply.updated_relative}:
+    </td><td>
+    <div class="reply-core">
+      <span class="light"><strong><em>{$reply.author.name}</em>
+        {if $reply.author.role}({$reply.author.role_name}){/if}
+        </strong>
+        replied {$reply.updated_relative}:</span>
+      
         <p>{$reply.content}</p>
+
         <div class="float-right">
-          {if $reply.in_reply_to == $lead_item.id} {* A top-level reply. *}
+          {if $reply.in_reply_to == $topic_head.id} {* A top-level reply. *}
           <form action="star-it.php" style="display: inline; vertical-align: middle;">
-            <input type="hidden" name="topic_id" value="{$lead_item.id}"></input>
+            <input type="hidden" name="topic_id" value="{$topic_head.id}"></input>
             <button href="dead-end.php">
-            {if $lead_item.topic_style == 'question'}
+            {if $topic_head.topic_style == 'question'}
             This answered the question
-            {elseif $lead_item.topic_style == 'idea'}
+            {elseif $topic_head.topic_style == 'idea'}
             Good point!
-            {elseif $lead_item.topic_style == 'talk'}
+            {elseif $topic_head.topic_style == 'talk'}
             This answered the question
-            {elseif $lead_item.topic_style =='problem'}
+            {elseif $topic_head.topic_style =='problem'}
             This solved the problem!
             {/if}
             {if $reply.star_count}({$reply.star_count}){/if}
             </button>
           </form>
           {/if}
-          <a href="dead-end.php" class="flag_button">
+          <a href="xxx-tbd" class="flag_button">
           Flag
           </a>
         </div>
@@ -172,6 +177,24 @@ Best solution from people: xxx
         </p>
        </div>
        {/if}
+       <div style="clear:both;"></div>
+    </div>
+    {if $reply.thread_end}
+      {if !$user_name}
+        <div style="clear:both; margin-top:4pt; font-weight:bold;">
+        <a href="user-login.php?return=topic.php%3fid={$topic_head.id}">
+         Login to comment
+        </a></div>
+      {else}
+        <form action="handle-reply.php" method="POST">
+        I say:
+        <input type="hidden" name="topic_id" value="{$topic_id}" />
+        <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
+        <button type="submit">Post reply</button>
+        </form>
+      {/if}
+    <hr />
+    {/if}
     </td>
   </tr>
   {/foreach}
@@ -179,16 +202,16 @@ Best solution from people: xxx
   <tr>
   <td class="topic-pic-column"><img src="{$current_user.photo}" /></td>
   <td>
-  <form action="handle-reply.php" method="POST">
-  I say:
-  <input type="hidden" name="topic_id" value="{$topic_id}" />
-  <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
-  <button type="submit">Post reply</button>
-  </form>
+   <form action="handle-reply.php" method="POST">
+   I say:
+   <input type="hidden" name="topic_id" value="{$topic_id}" />
+   <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
+   <button type="submit">Post reply</button>
+   </form>
   </td>
   </tr>
   {/if}
-  </table>
+</table>
 
 {if $num_pages > 1}
 {if ($page_num > 0)}
