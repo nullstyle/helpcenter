@@ -2,8 +2,18 @@
 # $Id$
 
 require_once 'XML/Feed/Parser.php';
-require_once 'config.php';
 require_once 'hkit.class.php';
+
+require_once 'config.php';
+
+# Smarty configuration
+require_once('smarty/Smarty.class.php');
+$smarty = new Smarty();
+$smarty->template_dir = $sprinkles_dir . '/templates/';
+$smarty->compile_dir  = $sprinkles_dir . '/templates_c/';
+$smarty->config_dir   = $sprinkles_dir . '/configs/';
+$smarty->cache_dir    = $sprinkles_dir . '/cache/';
+
 
 global $h;
 $h = new hKit;
@@ -180,12 +190,8 @@ class Sprinkles {
     $company_url = is_http_url($company_id)
                        ? $company_id
                        : $this->api_url('companies/' . $this->company_id);
-    global $h, $quick_mode;
-    if ($quick_mode) {
-      $company_hcards = $h->getByString('hcard', file_get_contents($company_url));
-    } else {
-      $company_hcards = $h->getByString('hcard', get_url($company_url));
-    }
+    global $h;
+    $company_hcards = $h->getByString('hcard', get_url($company_url));
     return $company_hcards[0];
   }
 
@@ -485,7 +491,7 @@ class Sprinkles {
   }
 
   function topic($id) {
-    global $quick_mode, $cache_dir;
+    global $cache_dir;
     $url = $id;
 # FIXME: ID not necessarily same as URL
     assert(!!$url);
@@ -533,12 +539,8 @@ class Sprinkles {
   ## Get list of people associated with the company
   function employee_list() {
     $people_url = $this->api_url('companies/'.$this->company_id.'/employees');
-    global $h, $quick_mode;
-    if ($quick_mode) {
-      $people_list = $h->getByString('hcard', file_get_contents($people_url));
-    } else {
-      $people_list = $h->getByString('hcard', get_url($people_url));
-    }
+    global $h;
+    $people_list = $h->getByString('hcard', get_url($people_url));
     if (!$people_list) { die("no people list"); }
     return $people_list;
   }
@@ -622,14 +624,9 @@ class Sprinkles {
   function product_list() {
     $products_url = $this->api_url('companies/'. $this->company_id .'/products');
 
-    global $h, $quick_mode;
+    global $h;
     $products_list = array();
-    if ($quick_mode) {
-      $products_list = $h->getByString('hproduct',
-                                       file_get_contents($products_url));
-    } else {
-      $products_list = $h->getByString('hproduct', get_url($products_url));
-    }
+    $products_list = $h->getByString('hproduct', get_url($products_url));
     return $products_list;
   }
 
@@ -639,7 +636,7 @@ class Sprinkles {
     $products = array();
     $products_list = $this->product_list();
 
-    global $h, $quick_mode, $cache_dir;
+    global $h, $cache_dir;
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
       if (is_http_url($url)) {
@@ -694,13 +691,10 @@ class Sprinkles {
     }
     global $cache_dir;
     global $api_root;
-    global $quick_mode;
     preg_match('|^/*(.*)|', $path, &$temp);
     $path = $temp[1];
     # print " as $path";
-    return ($quick_mode ?
-      ($cache_dir . $path . ".cache") :
-      ($api_root . $path));
+    return ($api_root . $path);
   }
   
   
