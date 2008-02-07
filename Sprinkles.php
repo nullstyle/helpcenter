@@ -380,11 +380,9 @@ class Sprinkles {
       $url_path .= '&sort=most_me_toos';
     };
     $topics_feed_url = $this->api_url($url_path);
-#    print "getting topics feed $topics_feed_url.";
     try {
       $feed = new XML_Feed_Parser(file_get_contents($topics_feed_url));
       $topics = array();
-      error_log("fixing topic entries found at $topics_feed_url");
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
         # use 'notags' for a faster response;
@@ -395,9 +393,11 @@ class Sprinkles {
         }
         array_push($topics, $topic);
       }
-#      dump($topics);
 
-# FIXME: expand robust mode to cover more options
+      # Robust mode filters the entries in a feed according to the criteria 
+      # that we requested with. The feed should already be filtered that way, 
+      # so this is just a safeguard.
+      # FIXME: expand robust mode to cover more options.
       global $robust_mode;
       if ($robust_mode && $options['style']) {
         # Filter the topics down to those of the given style
@@ -509,7 +509,6 @@ class Sprinkles {
   }
 
   function topic($id) {
-    global $cache_dir;
     $url = $id;
 # FIXME: ID not necessarily same as URL
     assert(!!$url);
@@ -618,7 +617,7 @@ class Sprinkles {
     return $person;
   }
 
-  function product_api_url($id) {
+  function product_api_url($id) {    # FIXME: Why product_api_url but none for other objects?
     $path = is_http_url($id) ? $id : 'products/' . $id;
     return $this->api_url($path);
   }
@@ -654,7 +653,7 @@ class Sprinkles {
     $products = array();
     $products_list = $this->product_list();
 
-    global $h, $cache_dir;
+    global $h;
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
       if (is_http_url($url)) {
@@ -700,22 +699,19 @@ class Sprinkles {
     return array($company_topics, $noncompany_topics);
   }
   
-  function api_url($path) {
-    # if (is_http_url($path)) return $path;   # FIXME: Do we want to trust URLs?
+  function api_url($path) {    # FIXME: demote to non-class-method
     if (is_http_url($path)) {
       $parts = parse_url($path);
       $path = $parts['path'] . ($parts['query'] ? '?'. $parts['query'] : '')
                 . ($parts['fragment'] ? '#' : $parts['fragment']);
     }
-    global $cache_dir;
-    global $api_root;
-    preg_match('|^/*(.*)|', $path, &$temp);
+    preg_match('|^/*(.*)|', $path, &$temp); # ignore any leading slashes
     $path = $temp[1];
-    # print " as $path";
+    global $api_root;
     return ($api_root . $path);
   }
   
-  var $nascent_session_id;
+  var $nascent_session_id;   # the session ID, when we've just set it and have not yet received a cookie
   
   function open_session($token) {
     if (!$token) die("Call to open_session with blank token: '$token'");

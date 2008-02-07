@@ -30,12 +30,12 @@ a problem{/if}
 </div>
 </td>
 
-<td style="margin: 1pc; width: auto;">
+<td style="margin: 1pc; width: auto; height: 100%;">
 <h3><strong>{ $topic_head.title }</strong></h3>
 
  <p>{ $topic_head.content }</p>
 
-  <a href="dead-end.php" class="flag_button float-right" style="bottom: 0;">
+  <a href="handle-flag.php?type=topic&id={$topic_head.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}" class="flag_button float-right">
     Flag this topic
   </a>
   {if $topic.emotitag_face || $topic.emotitag_emotion}
@@ -166,7 +166,7 @@ official rep {/if}
 
         <div class="float-right">
           {if $reply.in_reply_to == $topic_head.id} {* A top-level reply. *}
-          <form action="star-it.php" style="display: inline; vertical-align: middle;">
+          <form action="handle-star.php" style="display: inline; vertical-align: middle;">
             <input type="hidden" name="topic_id" value="{$topic_head.id}"></input>
             <button href="dead-end.php">
             {if $topic_head.topic_style == 'question'}
@@ -182,7 +182,7 @@ official rep {/if}
             </button>
           </form>
           {/if}
-          <a href="xxx-tbd" class="flag_button">
+          <a href="handle-flag.php?type=reply&id={$reply.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}" class="flag_button">
           Flag
           </a>
         </div>
