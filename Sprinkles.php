@@ -302,7 +302,7 @@ class Sprinkles {
     if ($in_reply_to_elem)
       $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
     global $xml_sfn_ns;
-    if (!$xml_sfn_ns) die("no satisfaction namespace!");
+    $item['sfn_id'] = $this->sfn_element($entry, 'id');
     $item['topic_style'] = $this->sfn_element($entry, 'topic_style');
     if ($kind == 'topic' && !$item['topic_style'])
       die("SFN feed problem: no sfn:topic_style on $kind " . $item['id']);
