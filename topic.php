@@ -1,4 +1,4 @@
-<? 
+<?php
 require_once("config.php");
 require_once("Sprinkles.php");
 
@@ -31,7 +31,7 @@ $related_topics = $sprink->topics(array('related' => $topic_id,
                                         'notags' => true # speeds things up
                                         ));
 list($company_related_topics, $noncompany_related_topics) = 
-   $sprink->company_partition($related_topics['topics']);
+       $sprink->company_partition($related_topics['topics']);
 $noncompany_related_topics = 
                   take($related_topics_count, $noncompany_related_topics);
 $sprink->resolve_companies($noncompany_related_topics);

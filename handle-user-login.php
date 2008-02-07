@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once('Sprinkles.php');
 require_once('HTTP_Request_Oauth.php');
@@ -13,23 +13,28 @@ $oauth_req = new HTTP_Request_OAuth(
 $resp = $oauth_req->sendRequest(true, true);
 #dump($oauth_req->getResponseBody());
 list($token, $secret) = $oauth_req->getResponseTokenSecret();
-error_log("request token: $token, $secret");
 
-if (!$token || !$secret)
-  die("Failed to fetch OAuth request token from getsatisfaction.com. (Token: '$token'; Token secret: '$token_secret')");
+if (!$token || !$secret) {
+  die("Failed to fetch OAuth request token from getsatisfaction.com.");
+  error_log("Failed to fetch OAuth request token " . 
+            "(Result token: '$token'; Token secret: '$token_secret')");
+}
 
 $result = mysql_query('insert into oauth_tokens (token, token_secret) values (\''
                       . $token . '\', \'' . $secret . '\')');
 
 if (!$result) die("Error inserting OAuth tokens into database.");
 
+$first_login = request_param('first_login');
+
 $return = request_param('return');
-$callback_url = sprinkles_root_url() . 'handle-oauth-return.php?return=' . 
-                  urlencode($return);
+$callback_url = sprinkles_root_url() . 'handle-oauth-return.php?' . 
+                  ($first_login ? 'first_login=true&': '') .
+                  'return=' . urlencode($return);
 
 # FIXME: hardcoded API URL
-$url = 'http://getsatisfaction.com/api/authorize?oauth_token='
-        . $token . '&oauth_callback=' . $callback_url;
+$url = 'http://getsatisfaction.com/api/authorize?oauth_token='. $token
+         . '&oauth_callback=' . urlencode($callback_url);
 
 redirect($url);
 

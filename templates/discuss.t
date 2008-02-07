@@ -90,7 +90,7 @@ about the tag: {$filter_tag}
     {elseif $topic.topic_style == 'talk'} asked this question
     {elseif $topic.topic_style == 'problem'} reported this problem
     {/if}
-    {$topic.updated_relative}.
+    {$topic.published_relative}.
 {if $topic.tags}
     It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if}
     <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach}

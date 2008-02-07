@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once('config.php');
 require_once('Sprinkles.php');
@@ -12,11 +12,10 @@ $sprink = new Sprinkles();
 
 $POST_URL = 'http://api.getsatisfaction.com/topics';
 
-list($username, $token, $token_secret) = $sprink->current_user_creds();
-$creds = array('token' => $token, 'token_secret' => $token_secret);
+$creds = $sprink->current_user_creds();
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
-                    array('topic[company_domain]' => 'sprinklestestcompany',
+                    array('topic[company_domain]' => 'sprinklestestcompany', # safeguard for now; FIXME when we go live
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
                           'topic[keywords]' => $tags

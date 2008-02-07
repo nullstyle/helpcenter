@@ -106,8 +106,26 @@ official rep {/if}
 {/if}
 {if $star_promoted_replies}
 <tr>
-<td colspan="2">
-Best solution from people: xxx
+<td colspan="3">
+<h2>Best solution from people</h2>
+{foreach from=$star_promoted_replies key=i item=reply}
+<div class="box">
+  <p>{$reply.content}</p>
+
+  <div class="light p">
+  <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
+  <strong><em>{$reply.author.name}</em>
+  {if $reply.author.role}({$reply.author.role_name}){/if}</strong>
+  {$reply.updated_relative}
+  {if $reply.emotitag_face}
+  <img src="images/{$reply.emotitag_face}.png" 
+                alt="{$reply.emotitag_emotion}"
+                class="emotitag_face">
+            {if $reply.emotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
+  {/if}
+  </div>
+</div>
+{/foreach}
 </td>
 </tr>
 {/if}
@@ -188,7 +206,7 @@ Best solution from people: xxx
       {else}
         <form action="handle-reply.php" method="POST">
         I say:
-        <input type="hidden" name="topic_id" value="{$topic_id}" />
+        <input type="hidden" name="topic_id" value="{$reply.id}" />
         <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
         <button type="submit">Post reply</button>
         </form>

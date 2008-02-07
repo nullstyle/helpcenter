@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("config.php");
 require_once("Sprinkles.php");
 require_once('admin-fields.php');
@@ -42,7 +42,9 @@ $smarty->assign('company_url', $company_hcard['url']);
 $smarty->assign('invalid', request_param('invalid'));
 $smarty->assign('errors', request_param('errors'));
 $smarty->assign('hooked_msg', request_param('hooked'));
-$smarty->assign('new_admins', split(',', request_param('new_admins')));
+$new_admins = request_param('new_admins');
+if ($new_admins)
+  $smarty->assign('new_admins', split(',', $new_admins));
 $smarty->assign('settings', $settings);
 $smarty->assign('sprinkles_root_url', sprinkles_root_url());
 $smarty->assign('current_url', 'admin.php');   # FIXME: this leads to odd behavior on 

@@ -4,7 +4,7 @@
 
 <h1>Contact Us</h1>
 
-<p>Can't find the ansewr in our <a href="discuss.php">Discussions</a> or 
+<p>Can't find the answer in our <a href="discuss.php">Discussions</a> or 
   <a href="faq.php">FAQ</a>? Contact us:
 </p>
 

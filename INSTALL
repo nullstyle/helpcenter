@@ -1,12 +1,11 @@
 DEPENDENCIES
 
-Sprinkles depends on the following packages or libraries:
+To install Sprinkles, you will need the following packages or libraries:
 
   - PHP v5 or later
   - Smarty
   - MySQL
   - hKit (Included.)
-  - pecl_http
   - HTTP_Request
 
 INSTALLATION INSTRUCTIONS
@@ -117,7 +116,7 @@ INSTALLATION INSTRUCTIONS
      a user's unique username can be found in the user's URL and are
      *not* always the same as the displayed name on the site.)
 
-  8. Start using Sprinkles.
+  9. Start using Sprinkles.
 
      You can use the navigation links in the header of the admin page
      to explore your Sprinkles site.

@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("Sprinkles.php");
 
 $sprink = new Sprinkles($company_id);
@@ -37,7 +37,7 @@ foreach ($topics['topics'] as &$topic) {
     $topic["reply_count"] = 0;
 }
 
-$top_topic_tags = array('underwear');
+$top_topic_tags = array('underwear');   # FIXME
 
 function discuss_tag_url($params, &$smarty) {
   return('discuss.php?tag=' . $params['tag']);

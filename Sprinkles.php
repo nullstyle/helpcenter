@@ -44,7 +44,12 @@ function take_range($lo, $hi, $list) {
   return $result;
 }
 
-# Given two times $time and $now, return a string describing roughly how long 
+# unique($array) is true if there is no more than one non-null item in $array
+function unique($array) {
+  return count(array_filter($array)) <= 1;
+}
+
+# ago: Given two times $time and $now, return a string describing roughly how long 
 # ago $time was from $now--for example, "37 minutes ago."
 function ago($time, $now) {
   $diff = $now - $time;
@@ -119,7 +124,11 @@ function request_param($name) {
     return $result;
 }
 
-$http_cache_timeout = 600; # seconds
+function feedTagNS($feed, $ns, $tagName) {  # FIXME: use this.
+  return $feed->model->getElementsByTagNameNS($ns, $tagName);
+}
+
+$http_cache_timeout = 600; # seconds   # FIXME: up this substantially.
 
 $cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
 $cache_misses = 0;
@@ -213,12 +222,19 @@ class Sprinkles {
     return mysql_query($sql);
   }
 
+  # add_admin_users adds the given list of usernames to the list of users that
+  # have admin rights on this installation, leaving any current admins 
+  # undisturbed. Does not signal any failure. Duplicate admin records may be 
+  # created.
   function add_admin_users($admins) {
     foreach ($admins as $admin) {
       mysql_query('insert into users (username) values (\'' . $admin . '\')');
     }
   }
 
+  # set_admin_users sets the list of users that have admin rights on this
+  # Sprinkles installation to the given list of usernames, clearing out any 
+  # that alread have admin rights. Does not signal any failure.
   function set_admin_users($admins) {
     if (!mysql_query('delete from users')) die(mysql_error());
     foreach ($admins as $admin) {
@@ -328,9 +344,11 @@ class Sprinkles {
 
   ## Topics for the company, filter by values in $options
   function topics($options) {
-#    TBD: check input, that there's a unique option amongst these.
-#    list($options['product'], $options['tag'], $options['query'],
-#         $options['person'], $options['followed'], $options['related'];
+    if (!unique(array($options['product'], $options['tag'], $options['query'],
+                      $options['person'], $options['followed'], $options['related']))) {
+        die('Sprinkles::topics($options) got more than one of these options: '
+            .'product, tag, query, person, followed, or related.');
+    }
     if ($options['product']) {
       $url_path = is_http_url($options['product']) ?
                       $options['product'] . "/topics" :
@@ -454,8 +472,8 @@ class Sprinkles {
       if ($item['replies']) {
         foreach ($item['replies'] as $reply)
           array_push($result, $reply);
-        $result[count($result)-1]['thread_end'] = true;
       }
+      $result[count($result)-1]['thread_end'] = true;
     }
     return $result;
   }
@@ -697,11 +715,15 @@ class Sprinkles {
     return ($api_root . $path);
   }
   
+  var $nascent_session_id;
   
   function open_session($token) {
+    if (!$token) die("Call to open_session with blank token: '$token'");
 # TBD: fetch /me resource and stash its info in the session table.
     setcookie('session_id', $token);
-    return $session_id;
+    error_log("Setting nascent session ID to $token");
+    $this->nascent_session_id = $token;
+    return $token;
   }
   
   function close_session() {
@@ -763,7 +785,10 @@ class Sprinkles {
 
   function current_user_creds() {
     $session_id = $_COOKIE["session_id"];
-    if (!$session_id) return;
+    error_log("session ID from cookie is $session_id");
+    if (!$session_id) $session_id = $this->nascent_session_id;
+    error_log("session ID after checking nascent is $session_id");
+    if (!$session_id) return null;
     # error_log("looking up creds for token $session_id");
     $sql = "select username,token,token_secret from oauth_tokens where token='". 
            $session_id . "'";
@@ -772,7 +797,9 @@ class Sprinkles {
     $cols = mysql_fetch_array($result);
     # error_log("got " . $cols[1] . " " . $cols[2]);
     if (!$cols) return null;
-    return $cols;
+    return array('username' => $cols[0],
+                 'token' => $cols[1],
+                 'token_secret' => $cols[2]);
   }
   
   # current_user returns the vCard of the currently logged-in user. If it needs to
@@ -780,23 +807,24 @@ class Sprinkles {
   # The returned vCard also contains a boolean field 'sprinkles_admin' indicating
   # whether this user has the privilege to administer this Sprinkles installation.
   function current_user() {
-    list($username, $token, $token_secret) = $this->current_user_creds();
-    if (!$token || !$token_secret) return null;
-#    if (!$username) {
-      $me_person = $this->get_me_resource(array('token' => $token,
-                                                'token_secret'=> $token_secret));
-      if (!$me_person) return null;
-      $username = $me_person['canonical_name'];
-      $result = mysql_query("update oauth_tokens set username = '" . $username
-                  . "' where token = '" . $session_id . "'");
-      if (!$result) die("Failed to store current user's name in database.");
-
-      $query = mysql_query("select * from users where username = '" .
+    $creds = $this->current_user_creds();
+    if (!$creds || !$creds['token'] || !$creds['token_secret']) return null;
+    $username = $creds['username'];
+    if (!$username) {
+	$me_person = $this->get_me_resource($creds);
+	  if (!$me_person) return null;
+	  $username = $me_person['canonical_name'];
+	  if (!$username) die("Current user had no canonical_name");
+	  $result = mysql_query("update oauth_tokens set username = '" . $username
+	  					  . "' where token = '" . $session_id . "'");
+	  if (!$result) die("Failed to store current user's name in database.");
+	
+	  $query = mysql_query("select * from users where username = '" .
                            $me_person['canonical_name'] . "'");
       if ($row = mysql_fetch_array($query))
         $me_person['sprinkles_admin'] = true;
+    }
 # TBD: store the whole /me resource in the database.
-#    }
     return $me_person;
   }
   
@@ -857,6 +885,8 @@ class Sprinkles {
     return $logo_data;
   }
 
+  # add_std_hash_elems takes a Smarty object and sets some common variables 
+  # that are used on every page.
   function add_std_hash_elems($smarty) {
     $current_user = $this->current_user();
     # Standard stash items

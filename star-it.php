@@ -1,4 +1,4 @@
-<?
+<?php
 
 $id = request_param('id');
 

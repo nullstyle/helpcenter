@@ -1,4 +1,4 @@
-<?
+<?php
 
 # Directory where the Sprinkles code, and the caches, reside.
 $sprinkles_dir = dirname(__FILE__);

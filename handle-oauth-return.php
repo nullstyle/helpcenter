@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once('Sprinkles.php');
 require_once('HTTP_Request_Oauth.php');
@@ -28,9 +28,10 @@ $oauth_req = new HTTP_Request_OAuth(
 $resp = $oauth_req->sendRequest(true, true);
 
 #dump($oauth_req->getResponseBody());
+
 list($token, $token_secret) = $oauth_req->getResponseTokenSecret();
 
-error_log("got permanent user token: $token, $secret");
+# error_log("got permanent user token: $token, $secret");
 
 $result = mysql_query("update oauth_tokens set token = '" . $token . 
                       "', token_secret = '" . $token_secret . 
@@ -40,6 +41,12 @@ if (!$result) die("Failed to store auth tokens on oauth response");
 $sprink = new Sprinkles($company_id);
 
 $sprink->open_session($token);
+
+if (!$sprink->configured() && request_param('first_login')) {
+  $user = $sprink->current_user();
+  if (!$user) die("No current user just after opening session.");
+  $sprink->set_admin_users(array($user['canonical_name']));
+}
 
 $return = request_param('return');
 

@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('Sprinkles.php');
 require_once('admin-fields.php');
 
