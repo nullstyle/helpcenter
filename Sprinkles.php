@@ -128,7 +128,7 @@ function feedTagNS($feed, $ns, $tagName) {  # FIXME: use this.
   return $feed->model->getElementsByTagNameNS($ns, $tagName);
 }
 
-$http_cache_timeout = 600; # seconds   # FIXME: up this substantially.
+$http_cache_timeout = 600; # seconds   # TBD: up this substantially.
 
 $cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
 $cache_misses = 0;
@@ -175,7 +175,7 @@ $xml_opensearch_ns = 'http://a9.com/-/spec/opensearch/1.1/';
 
 class Sprinkles {
 
-  var $company_id;
+  var $company_sfnid;
   # Cache a few things here in case they're needed more than once in a request.
   var $employees_cache;
   var $people_cache = array();
@@ -189,16 +189,16 @@ class Sprinkles {
     $result = mysql_query('select company_id from site_settings');
     if ($result) {
       $row = mysql_fetch_array($result);
-      $this->company_id = $row[0];
+      $this->company_sfnid = $row[0];
     }
   }
 
   ## Get company info
-  function company_hcard($company_id = null) {
-    if ($company_id == null) $company_id = $this->company_id;
-    $company_url = is_http_url($company_id)
-                       ? $company_id
-                       : $this->api_url('companies/' . $this->company_id);
+  function company_hcard($company = null) {
+    if ($company == null) $company = $this->company_sfnid;
+    $company_url = is_http_url($company)                          # if it's a fetchable URL,
+                       ? $company                                 # use it, otherwise
+                       : $this->api_url('companies/' . $company); # it's a sfn:id, so make its URL.
     global $h;
     $company_hcards = $h->getByString('hcard', get_url($company_url));
     return $company_hcards[0];
@@ -243,8 +243,7 @@ class Sprinkles {
   }
 
   function company_name() {
-    if ($company_id == null) $company_id = $this->company_id;
-    $card = $this->company_hcard($company_id);
+    $card = $this->company_hcard($this->company_sfnid);
     return $card['fn'];
   }
 
@@ -268,7 +267,7 @@ class Sprinkles {
   function fix_atom_entry($entry, $kind) {
     $item = array();
     $item['id'] = $entry->id;
-    $item['id'] = preg_replace('/\?.*$/', '', $item['id']); # FIXME: id is not canonical
+    $item['id'] = preg_replace('/\?.*$/', '', $item['id']); # FIXME: this b/c id is not canonical
     if (!$item['id']) die('no id');
     $item['title'] = $entry->title;
     $item['content'] = $entry->content;
@@ -296,6 +295,17 @@ class Sprinkles {
         if ($link_elem->getAttribute('rel') == 'company')
 	  $item['company_url'] = $link_elem->getAttribute('href');
     }
+
+# TBD: Get link/@rel=replies content.
+#
+# http://uk3.php.net/manual/en/function.xpath-eval-expression.php
+#
+#foreach ($link_elems as $elem) {
+#  foreach ($elem->attributes as $attr)
+#    if ($attr->name == 'rel' && $attr->value == 'replies') {
+#      die ($elem->content);
+#    }
+#}
 
     $in_reply_to_elem = 
                     $entry->model->getElementsByTagName('in-reply-to')->item(0);
@@ -365,7 +375,7 @@ class Sprinkles {
       $related_to_id = preg_replace('/\?.*/', '', $related_to_id); # remove pesky query string 
       $url_path = $related_to_id . '/related';
     } else {
-      $url_path = 'companies/'.$this->company_id.'/topics';
+      $url_path = 'companies/'.$this->company_sfnid.'/topics';
       if ($options['query'])
         $url_path .= '?query=' . urlencode($options['query']);
     }
@@ -493,7 +503,7 @@ class Sprinkles {
   function tags($url) {
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
     # error_log "Getting $url";
-# FIXME: getting tags this way until hkit is fixed
+
     $xml = simplexml_load_file($url);
     $root_nodes = $xml->xpath("//*[@class='tag']");
     $tags = array();
@@ -510,7 +520,7 @@ class Sprinkles {
 
   function topic($id) {
     $url = $id;
-# FIXME: ID not necessarily same as URL
+
     assert(!!$url);
 # TBD: add check that $url is rooted at a sanctioned base URL
 
@@ -555,7 +565,7 @@ class Sprinkles {
 
   ## Get list of people associated with the company
   function employee_list() {
-    $people_url = $this->api_url('companies/'.$this->company_id.'/employees');
+    $people_url = $this->api_url('companies/'.$this->company_sfnid.'/employees');
     global $h;
     $people_list = $h->getByString('hcard', get_url($people_url));
     if (!$people_list) { die("no people list"); }
@@ -617,7 +627,9 @@ class Sprinkles {
     return $person;
   }
 
-  function product_api_url($id) {    # FIXME: Why product_api_url but none for other objects?
+  # product_api_url gives the URL for a product based on either of its
+  # sfn:id or its id.
+  function product_api_url($id) {
     $path = is_http_url($id) ? $id : 'products/' . $id;
     return $this->api_url($path);
   }
@@ -639,7 +651,7 @@ class Sprinkles {
   # generally contains only URLs. Use the method "products" to get a list of 
   # products including everything we know about them.
   function product_list() {
-    $products_url = $this->api_url('companies/'. $this->company_id .'/products');
+    $products_url = $this->api_url('companies/'. $this->company_sfnid .'/products');
 
     global $h;
     $products_list = array();
@@ -687,10 +699,10 @@ class Sprinkles {
     $company_topics = array();
     $noncompany_topics = array();
     $company_hcard = $this->company_hcard();
-    $company_id = $company_hcard['url'];
+    $company_sfnid = $company_hcard['url'];
     foreach ($topics as $topic) {
       # BUG: company_urls are not normalized.
-      if ($topic['company_url'] == $company_id) {
+      if ($topic['company_url'] == $company_sfnid) {
         array_push($company_topics, $topic);
       } else {
         array_push($noncompany_topics, $topic);
@@ -735,12 +747,15 @@ class Sprinkles {
   # Oauth values. The Oauth consumer_key and consumer_secret are those given
   # when Sprinkles was installed.
   function oauthed_request($method, $url, $creds, $req_params, $query_params) {
+    if (!$method) die("Sprinkles method oauthed_request requires method parameter");
+    if (!$url) die("Sprinkles method oauthed_request requires URL parameter");
     require_once('HTTP_Request_Oauth.php');
+    $consumer_data = $this->oauth_consumer_data();
     $req_params['method'] = $method;
     $req_params['token'] = $creds['token'];
     $req_params['token_secret'] = $creds['token_secret'];
-    $req_params['consumer_key'] = 'lmwjv4kzwi27';
-    $req_params['consumer_secret'] = 'fiei6iv61jnoukaq1aylwd8vcmnkafrs';
+    $req_params['consumer_key'] = $consumer_data['key'];
+    $req_params['consumer_secret'] = $consumer_data['secret'];
     $req_params['signature_method'] = 'HMAC-SHA1';
     $req = new HTTP_Request_Oauth($url, $req_params);
     foreach ($query_params as $name => $val) {
@@ -764,9 +779,10 @@ class Sprinkles {
     $me_url = 'http://api.getsatisfaction.com/me';
     error_log("Getting /me with OAuth. Token: " . $creds['token'] . " " . 
                 $creds['token_secret']);
+    $consumer_data = $this->oauth_consumer_data();
     $req = new HTTP_Request_Oauth($me_url,
-                   array('consumer_key' => 'lmwjv4kzwi27',
-                         'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
+                   array('consumer_key' => $consumer_data['key'],
+                         'consumer_secret' => $consumer_data['secret'],
                          'token' => $creds['token'],
                          'token_secret' => $creds['token_secret'],
                          'signature_method' => 'HMAC-SHA1',
@@ -873,6 +889,19 @@ class Sprinkles {
                  'map_url' => $map_url);
   }
 
+  var $oauth_consumer_data;
+   
+  function oauth_consumer_data() {
+    if (!$this->oauth_consumer_data) {
+      $sql = 'select oauth_consumer_key, oauth_consumer_secret '.
+             'from site_settings';
+      $result = mysql_query($sql);
+      list($key, $secret) = mysql_fetch_array($result);
+      $this->oauth_consumer_data = array('key' => $key, 'secret' => $secret);
+    }
+    return $this->oauth_consumer_data;
+  }
+  
   function site_logo() {
     $sql = 'select logo_data '.
            'from site_settings';

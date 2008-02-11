@@ -1,7 +1,7 @@
 <?php
 require_once("Sprinkles.php");
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
 $topic_filters = array();
 

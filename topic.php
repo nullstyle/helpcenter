@@ -2,7 +2,7 @@
 require_once("config.php");
 require_once("Sprinkles.php");
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
@@ -48,6 +48,7 @@ $smarty->assign(array('reply_count' => $reply_count,
 $smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
+$smarty->assign('reply_url', $reply_url);
 $smarty->assign(array('company_promoted_replies' => $company_promoted,
                       'star_promoted_replies' => $star_promoted));
 

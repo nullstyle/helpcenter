@@ -222,8 +222,9 @@ official rep {/if}
   <td class="topic-pic-column"><img src="{$current_user.photo}" /></td>
   <td>
    <form action="handle-reply.php" method="POST">
-   I say:
    <input type="hidden" name="topic_id" value="{$topic_id}" />
+   <input type="hidden" name="reply_url" value="{$reply_url}" />
+   I say:
    <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
    <button type="submit">Post reply</button>
    </form>

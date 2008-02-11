@@ -2,7 +2,7 @@
 
 require_once('Sprinkles.php');
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
 $sprink->close_admin_session();
 

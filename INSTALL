@@ -38,7 +38,7 @@ INSTALLATION INSTRUCTIONS
         Once downloaded, follow the directions in the INSTALL file in
         the package. You should just need to copy the files in the libs/
         directory into your PHP library location (for example, into
-        /usr/local/lib/php/Smarty/)
+        /usr/local/lib/php/smarty/)
 
   4. Install Sprinkles into your web directory.
 

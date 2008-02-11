@@ -3,10 +3,13 @@
 require_once('Sprinkles.php');
 require_once('HTTP_Request_Oauth.php');
 
+$sprink = new Sprinkles();
+$consumer_data = $sprink->oauth_consumer_data();
+
 $oauth_req = new HTTP_Request_OAuth(
                    'http://getsatisfaction.com/api/request_token',
-                   array('consumer_key' => 'lmwjv4kzwi27',
-                         'consumer_secret' => 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
+                   array('consumer_key' => $consumer_data['key'], #'lmwjv4kzwi27',
+                         'consumer_secret' => $consumer_data['secret'], # 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
                          'signature_method' => 'HMAC-SHA1',
                          'method' => 'GET'));
 

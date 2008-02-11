@@ -15,7 +15,7 @@ Then it's only two more simple steps and you're good to go.</h2>
 
 <p>
 What is the address of your company's Satisfaction site?
-<form action="handle_admin_findsite.php" method="POST">
+<form action="handle-admin-findsite.php" method="POST">
 
 <table style="padding: 0pt 8pt;">
 <tr>

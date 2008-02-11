@@ -8,7 +8,7 @@
   <a href="faq.php">FAQ</a>? Contact us:
 </p>
 
-<form action="handle_contactus.php" method="POST">
+<form action="handle-contactus.php" method="POST">
 
 <div style="width:270pt;">
 <table width="100%">

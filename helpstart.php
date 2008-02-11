@@ -2,7 +2,7 @@
 require_once("config.php");
 require_once("Sprinkles.php");
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];

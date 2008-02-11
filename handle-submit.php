@@ -15,7 +15,8 @@ $POST_URL = 'http://api.getsatisfaction.com/topics';
 $creds = $sprink->current_user_creds();
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
-                    array('topic[company_domain]' => 'sprinklestestcompany', # safeguard for now; FIXME when we go live
+                    array('topic[company_domain]' => 'sprinklestestcompany',
+                              # safeguard for now; FIXME when we go live
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
                           'topic[keywords]' => $tags

@@ -7,7 +7,7 @@ $sprink = new Sprinkles();
 if ($sprink->site_configured()) {
   redirect('helpstart.php');
 } else {
-  redirect('admin_findsite.php');
+  redirect('admin-findsite.php');
 }
 
 ?>

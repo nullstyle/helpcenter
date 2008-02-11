@@ -1,7 +1,7 @@
 <?php
 require_once('Sprinkles.php');
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
 $subject = request_param('subject');
 $suggested = $sprink->topics(array('query' => $subject,

@@ -6,7 +6,7 @@
 <li class="small">
 {if $user_name}
 Hi {$user_name} (<a href="minidashboard.php">Your dashboard</a>) |
-<a href="handle-user-logout.php?return={$current_url|urlencode}">Log-out</a>
+<a href="handle-user-logout.php?return={$current_url|urlencode}">Log out</a>
 {else}
   {if !$login_page}
   <a href="user-login.php?return={$current_url|urlencode}">Log in to view your dashboard</a>

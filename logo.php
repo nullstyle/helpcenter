@@ -4,7 +4,7 @@ header('Content-type: image/png');
 
 require_once('Sprinkles.php');
 
-$sprink = new Sprinkles($company_id);
+$sprink = new Sprinkles();
 
 print $sprink->site_logo();
 
