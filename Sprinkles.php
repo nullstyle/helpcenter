@@ -827,9 +827,9 @@ class Sprinkles {
   }
 
   function current_user_creds() {
-    $session_id = $_COOKIE["session_id"];
+    $session_id = $this->nascent_session_id;
+    if (!$session_id) $session_id = $_COOKIE["session_id"];
     error_log("session ID from cookie is $session_id");
-    if (!$session_id) $session_id = $this->nascent_session_id;
     error_log("session ID after checking nascent is $session_id");
     if (!$session_id) return null;
     # error_log("looking up creds for token $session_id");
@@ -841,7 +841,7 @@ class Sprinkles {
     if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
     # error_log("got " . $cols[1] . " " . $cols[2]);
-    if (!$cols) return null;
+    if (!$cols) { setcookie('session_id', ''); return null; } # Cookie session was not in DB; clear it
     return array('username' => $cols[0],
                  'token' => $cols[1],
                  'token_secret' => $cols[2]);
@@ -869,6 +869,7 @@ class Sprinkles {
       if ($row = mysql_fetch_array($query))
         $me_person['sprinkles_admin'] = true;
     }
+#    dump($me_person);
 # TBD: store the whole /me resource in the database.
     return $me_person;
   }

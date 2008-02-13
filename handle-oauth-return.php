@@ -48,7 +48,7 @@ $sprink->open_session($token);
 
 if (!$sprink->site_configured() && request_param('first_login')) {
   $user = $sprink->current_user();
-  if (!$user) die("No current user just after opening session.");
+  if (!$user) die("Internal error: No current user just after opening session.");
   $sprink->set_admin_users(array($user['canonical_name']));
 }
 
