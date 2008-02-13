@@ -168,7 +168,8 @@ official rep {/if}
           {if $reply.in_reply_to == $topic_head.id} {* A top-level reply. *}
           <form action="handle-star.php" style="display: inline; vertical-align: middle;">
             <input type="hidden" name="topic_id" value="{$topic_head.id}"></input>
-            <button href="dead-end.php">
+            <input type="hidden" name="reply_id" value="{$reply.id}"></input>
+            <button type="submit">
             {if $topic_head.topic_style == 'question'}
             This answered the question
             {elseif $topic_head.topic_style == 'idea'}

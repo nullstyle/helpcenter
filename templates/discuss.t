@@ -27,7 +27,8 @@
 
 <ul class="product-list">
 {foreach from=$products key=i item=product}
-<li><a href="discuss.php?product={$product.uri}{if $filter_style}&style={$filter_style}{/if}"> <img src="{$product.image}" />{$product.name}</a> </li>
+<li><a href="discuss.php?product={$product.uri}{if $filter_style}&style={$filter_style}{/if}">
+    <img src="{$product.image}" />{$product.name}</a> </li>
 {/foreach}
 </ul>
 {/if}
@@ -53,12 +54,12 @@ about the tag: {$filter_tag}
 <div class="sidebar">
 <h3>View discussions by:</h3>
 <ul class="straight">
-<li><a href="discuss.php">All Topics xxxx{$all_count}</a></li>
-<li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions {$question_count}</a></li>
-<li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas {$idea_count}</a></li>
-<li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems {$problem_count}</a></li>
-<li><a href="?style=talk{$filter_product_arg}{$filter_tag_arg}">Talk Topics {$talk_count}</a></li>
-<li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered {$unanswered_count}</a></li>
+<li><a href="discuss.php">All Topics xxxx{$totals.all}</a></li>
+<li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions {$totals.questions}</a></li>
+<li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas {$totals.ideas}</a></li>
+<li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems {$totals.problems}</a></li>
+<li><a href="?style=talk{$filter_product_arg}{$filter_tag_arg}">Talk Topics {$totals.talk}</a></li>
+<li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered {$totals.unanswered}</a></li>
 </ul>
 </div>
 {include file="related-topics.t"}

@@ -49,6 +49,13 @@ function unique($array) {
   return count(array_filter($array)) <= 1;
 }
 
+# PHP's array_search is useless, as it may return 0 when the element
+# is first in the list, and 0 is indistinguishable from false.
+function member($x, $list) {
+  foreach ($list as $y) if ($x==$y) return true;
+  return false;
+}
+
 # ago: Given two times $time and $now, return a string describing roughly how long 
 # ago $time was from $now--for example, "37 minutes ago."
 function ago($time, $now) {
@@ -128,7 +135,7 @@ function feedTagNS($feed, $ns, $tagName) {  # FIXME: use this.
   return $feed->model->getElementsByTagNameNS($ns, $tagName);
 }
 
-$http_cache_timeout = 600; # seconds   # TBD: up this substantially.
+$http_cache_timeout = 600; # seconds
 
 $cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
 $cache_misses = 0;
@@ -157,6 +164,26 @@ function get_url($url) {
       die(mysql_error());
     return $content;
   }
+}
+
+function parse_hproduct($str) {
+  $xml = simplexml_load_string($str);
+#  dump($xml);
+  $root_nodes = $xml->xpath("//*[@class='hproduct']");
+  $result = array();
+  if ($root_nodes) {
+    foreach ($root_nodes as $node) {
+     $item = array();
+      $elt = $node->xpath(".//*[contains(concat(' ',normalize-space(@class),' '),' name ')]");
+      $item['name'] = (string)$elt[0];
+      $elt = $node->xpath(".//*[contains(concat(' ',normalize-space(@class),' '),' uri ')]/@href");
+      $item['uri'] = (string)$elt[0]['href'][0];
+      $elt = $node->xpath(".//*[contains(concat(' ',normalize-space(@class),' '),' image ')]/@src");
+      $item['image'] = (string)$elt[0]['src'][0];
+      array_push($result, $item);
+    }
+  }
+  return $result;
 }
 
 # compare two objects by their 'updated' fields, returning a value either 
@@ -228,7 +255,7 @@ class Sprinkles {
   # created.
   function add_admin_users($admins) {
     foreach ($admins as $admin) {
-      mysql_query('insert into users (username) values (\'' . $admin . '\')');
+      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
     }
   }
 
@@ -236,9 +263,9 @@ class Sprinkles {
   # Sprinkles installation to the given list of usernames, clearing out any 
   # that alread have admin rights. Does not signal any failure.
   function set_admin_users($admins) {
-    if (!mysql_query('delete from users')) die(mysql_error());
+    if (!mysql_query('delete from admins')) die(mysql_error());
     foreach ($admins as $admin) {
-      mysql_query('insert into users (username) values (\'' . $admin . '\')');
+      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
     }
   }
 
@@ -316,9 +343,13 @@ class Sprinkles {
     $item['topic_style'] = $this->sfn_element($entry, 'topic_style');
     if ($kind == 'topic' && !$item['topic_style'])
       die("SFN feed problem: no sfn:topic_style on $kind " . $item['id']);
-    $item['reply_count'] = $this->sfn_element($entry, 'reply_count');
+    if ($kind == 'topic') {
+      $item['reply_count'] = $this->sfn_element($entry, 'reply_count');
+      if (!($item['reply_count'] > 0)) $item['reply_count'] = 0;
+    }
     $item['star_count'] = $this->sfn_element($entry, 'star_count');
     $item['flag_count'] = $this->sfn_element($entry, 'flag_count');
+
     $emotitag_elem = $entry->model->getElementsByTagNameNS(
                                         $xml_sfn_ns, 'emotitag')->item(0);
     if ($emotitag_elem) {
@@ -342,13 +373,13 @@ class Sprinkles {
     if ($total_results_elem = $feed->model->getElementsByTagNameNS(
                                           $xml_opensearch_ns,
                                           'totalresults')) {
-      $result['all_count'] = $total_results_elem->nodeValue;
+      $result['all'] = $total_results_elem->nodeValue;
     }
-    $result['idea_count'] = $this->sfn_element($feed, 'idea_count');
-    $result['talk_count'] = $this->sfn_element($feed, 'talk_count');
-    $result['problem_count'] = $this->sfn_element($feed, 'problem_count');
-    $result['question_count'] = $this->sfn_element($feed, 'question_count');
-    $result['unanswered_count'] = $this->sfn_element($feed, 'unanswered_count');
+    $result['ideas'] = $this->sfn_element($feed, 'idea_count');
+    $result['talk'] = $this->sfn_element($feed, 'talk_count');
+    $result['problems'] = $this->sfn_element($feed, 'problem_count');
+    $result['questions'] = $this->sfn_element($feed, 'question_count');
+    $result['unanswered'] = $this->sfn_element($feed, 'unanswered_count');
     return $result;     
   }
 
@@ -606,22 +637,18 @@ class Sprinkles {
   }
   
   function get_person_from_string($str) {
-# TBD: refactor this together with the get_person function.
     global $h;
     $people = $h->getByString('hcard', $str);
     if (count($people) == 0) {
       return null;
     }
-    assert(count($people) == 1);   # There should only be one person at this URL.
     $person = $people[0];
-    $this->people_cache[$url] = $person;
     return $person;
   }
 
   function get_person($url) {
     if ($this->people_cache[$url]) return $this->people_cache[$url];
     global $h;
-    # error_log("Getting person from $url");
     $person = $this->get_person_from_string(get_url($url));
     $this->people_cache[$url] = $person;
     return $person;
@@ -634,12 +661,12 @@ class Sprinkles {
     return $this->api_url($path);
   }
 
-  # Given a product URL or number, returns a structure describing the product.
+  # Given a product URL or sfn:id, returns a structure describing the product.
   function get_product($url) {
     if ($this->products_cache[$url]) return ($this->products_cache[$url]);
     global $h;
     # error_log("Getting product from $url");
-    $result = $h->getByString('hproduct', get_url($url));
+    $result = parse_hproduct(get_url($url));
     $result = $result[0];   # Assume just one product in the document.
 
     $result['tags'] = $this->tags($url . '/tags');
@@ -655,7 +682,7 @@ class Sprinkles {
 
     global $h;
     $products_list = array();
-    $products_list = $h->getByString('hproduct', get_url($products_url));
+    $products_list = parse_hproduct(get_url($products_url));
     return $products_list;
   }
 
@@ -670,10 +697,9 @@ class Sprinkles {
       $url = $this->api_url($product["uri"]);
       if (is_http_url($url)) {
         # error_log("Getting product data from $url");
-        $product = $h->getByURL('hproduct', $url);
-        $product = $h->getByString('hproduct', get_url($url));
+        $product = parse_hproduct(get_url($url));
       }
-      else  $product = $h->getByString('hproduct', file_get_contents($url));
+      else die("strange uri in product: $url");
       assert(is_array($product));
       array_push($products, $product[0]);
     }
@@ -734,7 +760,10 @@ class Sprinkles {
     return $token;
   }
   
-  function close_session() {
+  function close_session($session_id=null) {
+    if (!$session_id) $session_id = $_COOKIE['session_id'];
+    if (!$session_id) $session_id = $this->nascent_session_id;
+    mysql_query("delete from oauthed_tokens where token = " .  $session_id);
     setcookie('session_id', '');
   }
 
@@ -764,8 +793,10 @@ class Sprinkles {
     $resp = $req->sendRequest(true, true);
     if (!$resp) die("$method request to $url failed. ");
     if ($req->getResponseCode() == 401) {
-      error_log($req->getResponseBody());
-      die("$method request for $url failed to authorize.");
+      error_log("Got response from API: " . $req->getResponseBody());
+      # The session was no good; close it so the user can create a new one on next login
+      close_session($creds['token']);
+      die("$method request for $url failed to authorize."); # FIXME: give the user an error page
     }
     return $req;    
   }
@@ -776,9 +807,10 @@ class Sprinkles {
 #FIXME: how do we signal error?
   function get_me_resource($creds) {
     require_once('HTTP_Request_Oauth.php');
-    $me_url = 'http://api.getsatisfaction.com/me';
-    error_log("Getting /me with OAuth. Token: " . $creds['token'] . " " . 
-                $creds['token_secret']);
+    $me_url = $this->api_url('me');
+#     error_log("Getting /me with OAuth. Token: " . 
+#                 $creds['token'] . " " . 
+#                 $creds['token_secret']);
     $consumer_data = $this->oauth_consumer_data();
     $req = new HTTP_Request_Oauth($me_url,
                    array('consumer_key' => $consumer_data['key'],
@@ -791,7 +823,6 @@ class Sprinkles {
     if (!$resp) die("Request to $me_url failed. ");
     if ($req->getResponseCode() == 401)
        die("Request for /me failed to authorize.");
-
     return $this->get_person_from_string($req->getResponseBody());
   }
 
@@ -802,7 +833,9 @@ class Sprinkles {
     error_log("session ID after checking nascent is $session_id");
     if (!$session_id) return null;
     # error_log("looking up creds for token $session_id");
-    $sql = "select username,token,token_secret from oauth_tokens where token='". 
+#print "Going to session table.";
+#    dump($session_id);
+    $sql = "select username,token,token_secret from sessions where token='". 
            $session_id . "'";
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }
@@ -823,15 +856,15 @@ class Sprinkles {
     if (!$creds || !$creds['token'] || !$creds['token_secret']) return null;
     $username = $creds['username'];
     if (!$username) {
-	$me_person = $this->get_me_resource($creds);
+      $me_person = $this->get_me_resource($creds);
 	  if (!$me_person) return null;
 	  $username = $me_person['canonical_name'];
 	  if (!$username) die("Current user had no canonical_name");
-	  $result = mysql_query("update oauth_tokens set username = '" . $username
+	  $result = mysql_query("update sessions set username = '" . $username
 	  					  . "' where token = '" . $session_id . "'");
 	  if (!$result) die("Failed to store current user's name in database.");
 	
-	  $query = mysql_query("select * from users where username = '" .
+	  $query = mysql_query("select * from admins where username = '" .
                            $me_person['canonical_name'] . "'");
       if ($row = mysql_fetch_array($query))
         $me_person['sprinkles_admin'] = true;
@@ -846,7 +879,7 @@ class Sprinkles {
   }
 
   function get_users() { # TBD: rename this to admins()
-    $query = mysql_query("select username from users");
+    $query = mysql_query("select username from admins");
     $users = array();
     while ($cols = mysql_fetch_array($query)) {
       array_push($users, array(username => $cols[0]));
@@ -856,7 +889,7 @@ class Sprinkles {
   
   function user_is_admin() {
     # TBD: optimize
-    $query = mysql_query("select username from users");
+    $query = mysql_query("select username from admins");
     $username = $this->current_username();
     while ($cols = mysql_fetch_array($query)) {
       if ($cols[0] == $username) return true;

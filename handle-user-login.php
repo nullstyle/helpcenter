@@ -23,7 +23,7 @@ if (!$token || !$secret) {
             "(Result token: '$token'; Token secret: '$token_secret')");
 }
 
-$result = mysql_query('insert into oauth_tokens (token, token_secret) values (\''
+$result = mysql_query('insert into sessions (token, token_secret) values (\''
                       . $token . '\', \'' . $secret . '\')');
 
 if (!$result) die("Error inserting OAuth tokens into database.");

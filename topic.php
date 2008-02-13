@@ -28,7 +28,7 @@ $topic['replies'] = take_range($page_num * $page_limit,
 $topic['replies'] = $sprink->flatten_threads($topic['replies']);
 
 $related_topics = $sprink->topics(array('related' => $topic_id,
-                                        'notags' => true # speeds things up
+                                        'notags' => true # (speeds things up)
                                         ));
 list($company_related_topics, $noncompany_related_topics) = 
        $sprink->company_partition($related_topics['topics']);

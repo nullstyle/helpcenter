@@ -10,7 +10,7 @@ if (!$request_token)
 
 # TBD: refactor this
 # TBD: expire old entries (two weeks)
-$sql = "select token_secret from oauth_tokens where token='" . 
+$sql = "select token_secret from sessions where token='" . 
         $request_token . "'";
 $result = mysql_query($sql);
 if (!$result) { die(mysql_error()); }
@@ -37,7 +37,7 @@ list($token, $token_secret) = $oauth_req->getResponseTokenSecret();
 
 # error_log("got permanent user token: $token, $secret");
 
-$result = mysql_query("update oauth_tokens set token = '" . $token . 
+$result = mysql_query("update sessions set token = '" . $token . 
                       "', token_secret = '" . $token_secret . 
                       "' where token = '" . $request_token . "'");
 if (!$result) die("Failed to store auth tokens on oauth response");

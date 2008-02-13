@@ -7,7 +7,7 @@
 {* FIXME the img isn't really properly layed out *}
 <li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
      {$topic.author.name}
-     {if $topic.author.role}({$topic.author.role}){/if} 
+     {if $topic.author.role}({$topic.author.role_name}){/if} 
      {if $topic.topic_style == 'question'}Asked:
      {elseif $topic.topic_style == 'talk'}Said:
      {elseif $topic.topic_style == 'problem'}Reported:

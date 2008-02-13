@@ -10,11 +10,7 @@ if (!$username)
   redirect('admin-login.php');
 $admin_users = $sprink->get_users();
 if (!$sprink->user_is_admin())
-  redirect('dead-end.php');
-#dump($username);
-#dump($admin_users);
-#if (!array_search($username, $admin_users))
-#  redirect('admin-login.php');
+  redirect('dead-end.php');   # FIXME: find a more gracious out for user
 
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];

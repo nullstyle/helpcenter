@@ -32,11 +32,6 @@ $topics = $sprink->topics($topic_filters);
 $topic_count = count($topics['topics']);
 $topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
 
-foreach ($topics['topics'] as &$topic) {
-  if (!($topic["reply_count"] > 0)) 
-    $topic["reply_count"] = 0;
-}
-
 $top_topic_tags = array('underwear');   # FIXME
 
 function discuss_tag_url($params, &$smarty) {
@@ -53,12 +48,7 @@ $smarty->assign('topic_count', $topic_count);
 $smarty->assign('filter_product_arg', $filter_product_arg);
 $smarty->assign('filter_tag_arg', $filter_tag_arg);
 
-$smarty->assign(array('all_count' => $topics['totals']['all_count'],
-                      'question_count' => $topics['totals']['question_count'],
-                      'talk_count' => $topics['totals']['talk_count'],
-                      'idea_count' => $topics['totals']['idea_count'],
-                      'problem_count' => $topics['totals']['problem_count'],
-                      'unanswered_count' => $topics['totals']['unanswered_count']));
+$smarty->assign('totals', $topics['totals']);
 
 $smarty->register_function('discuss_tag_url', 'discuss_tag_url');
 $smarty->assign('current_url', 'discuss.php?' . $filter_tag_arg

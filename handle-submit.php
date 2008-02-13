@@ -10,22 +10,28 @@ $face = request_param('emoticon');
 
 $sprink = new Sprinkles();
 
-$POST_URL = 'http://api.getsatisfaction.com/topics';
+$POST_URL = 'http://api.getsatisfaction.com/topics';   # FIXME: hard-coded API URL
 
 $creds = $sprink->current_user_creds();
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
-                    array('topic[company_domain]' => 'sprinklestestcompany',
+                    array('topic[company_domain]' => $sprink->company_sfnid,
                               # safeguard for now; FIXME when we go live
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
                           'topic[keywords]' => $tags
-                          #, 'topic[emoticon][face]' => $face
+                          , 'topic[emotitag][face]' => $face   # presently broken
 ));
 
-# TBD: On a 401, expire the token.
+$response_body = $req->getResponseBody();
 
-$topic_feed = new XML_Feed_Parser($req->getResponseBody());
+try {
+  $topic_feed = new XML_Feed_Parser($response_body);
+} catch (Exception $e) {
+  error_log("Failed to post new topic; response was: " . $req->getResponseCode() . 
+            ", body: " . $response_body);
+  throw($e);
+}
 
 if ($topic_feed->id()) {     # FIXME: better error checking here.
   redirect('topic.php?id=' . $topic_feed->id());

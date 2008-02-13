@@ -29,11 +29,11 @@ CREATE TABLE `http_cache` (
 
 
 --
--- Table structure for table `oauth_tokens`
+-- Table structure for table `sessions`
 --
 
-DROP TABLE IF EXISTS `oauth_tokens`;
-CREATE TABLE `oauth_tokens` (
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
   `token` varchar(32) default NULL,
   `token_secret` varchar(128) default NULL,
   `username` varchar(255) default NULL,
@@ -80,45 +80,16 @@ INSERT INTO `site_settings` VALUES ('#86fff6','foo@bar.com','555-1212','1 Fabulo
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_sessions`
+-- Table structure for table `admins`
 --
 
-DROP TABLE IF EXISTS `user_sessions`;
-CREATE TABLE `user_sessions` (
-  `session_id` bigint(20) NOT NULL auto_increment,
-  `creation_date` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+DROP TABLE IF EXISTS `admins`;
+CREATE TABLE `admins` (
   `username` varchar(255) default NULL,
-  PRIMARY KEY  (`session_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
-
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `username` varchar(255) default NULL,
-  `password` varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `admins`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('ezrakilty','');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2008-01-30  0:43:08

@@ -61,8 +61,8 @@ class hKit
 {
     
     public $tidy_mode    = 'proxy'; // 'proxy', 'exec', 'php' or 'none'
-    public $tidy_proxy    = 'http://cgi.w3.org/cgi-bin/tidy?forceXML=on&docAddr='; // required only for tidy_mode=proxy
-    public $tmp_dir        = '/path/to/writable/dir/'; // required only for tidy_mode=exec
+    public $tidy_proxy   = 'http://cgi.w3.org/cgi-bin/tidy?forceXML=on&docAddr='; // required only for tidy_mode=proxy
+    public $tmp_dir      = '/path/to/writable/dir/'; // required only for tidy_mode=exec
     
     private $root_class  = '';
     private $classes     = '';
@@ -79,14 +79,14 @@ class hKit
     public function hKit()
     {
         // pre-flight checks
-        $pass         = true; 
-        $required    = array('dom_import_simplexml', 'file_get_contents', 'simplexml_load_string');
+        $pass       = true; 
+        $required   = array('dom_import_simplexml', 'file_get_contents', 'simplexml_load_string');
         $missing    = array();
         
         foreach ($required as $f){
             if (!function_exists($f)){
                 $pass        = false;
-                $missing[]     = $f . '()';
+                $missing[]   = $f . '()';
             }
         }
         
@@ -146,7 +146,8 @@ class hKit
                 
                 if (!is_array($classes[$i])){
 
-                    $xpath            = ".//*[contains(concat(' ',normalize-space(@class),' '),' " . $classes[$i] . " ')]";
+                    $xpath          = ".//*[contains(concat(' ',normalize-space(@class),' '),' " .
+                                      $classes[$i] . " ')]";
                     $results        = $item->xpath($xpath);
                     
                     if ($results){
@@ -252,22 +253,22 @@ class hKit
         if (array_key_exists($className, $this->att_map)){
             foreach ($this->att_map[$className] as $map){                    
                 if (preg_match("/$tag_name\|/", $map)){
-                    $s    = ''.$node[array_pop($foo = explode('|', $map))];
+                    $s = ''.$node[array_pop($foo = explode('|', $map))];
                 }
             }
         }
         
         // if nothing and OBJ, try data.
-        if (!$s && $tag_name=='OBJECT' && $node['data'])    $s    = ''.$node['data'];
+        if (!$s && $tag_name=='OBJECT' && $node['data']) $s = ''.$node['data'];
         
         // if nothing and IMG, try alt.
-        if (!$s && $tag_name=='IMG' && $node['alt'])    $s    = ''.$node['alt'];
+        if (!$s && $tag_name=='IMG' && $node['alt']) $s = ''.$node['alt'];
         
         // if nothing and AREA, try alt.
-        if (!$s && $tag_name=='AREA' && $node['alt'])    $s    = ''.$node['alt'];
+        if (!$s && $tag_name=='AREA' && $node['alt']) $s = ''.$node['alt'];
         
         //if nothing and not A, try title.
-        if (!$s && $tag_name!='A' && $node['title'])    $s    = ''.$node['title'];
+        if (!$s && $tag_name!='A' && $node['title']) $s = ''.$node['title'];
             
         
         // if nothing found, go with node text
@@ -326,7 +327,6 @@ class hKit
     private function loadDoc($input_xml, $fragment=false)
     {
         $xml         = simplexml_load_string($input_xml);
-        
         $this->doc    = $xml;
         
         if ($fragment){
@@ -341,8 +341,9 @@ class hKit
         // xml:base attribute - PITA with SimpleXML
         preg_match('/xml:base="(.*)"/', $xml->asXML(), $matches);
         if (is_array($matches) && sizeof($matches)>1) $this->base = $matches[1];
-                            
-        return     $xml->xpath("//*[contains(concat(' ',normalize-space(@class),' '),' $this->root_class ')]");
+
+        $result = $xml->xpath("//*[contains(concat(' ',normalize-space(@class),' '),' $this->root_class ')]");
+        return $result;
         
     }
     

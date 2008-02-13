@@ -54,9 +54,6 @@ if (!$active_username) {
 }
 
 $existing_admin_users = $sprink->get_users();
-#dump($active_username);
-#dump($existing_admin_users);
-#dump(array_search($active_username, $existing_admin_users));
 if (!$sprink->user_is_admin()) {
   redirect('dead-end.php'); exit(0);
 }
@@ -64,12 +61,13 @@ if (!$sprink->user_is_admin()) {
 sort($existing_admin_users);
 $admin_users_str = request_param('admin_users_str');
 $admin_users = preg_split('/,\s*|\s+/', $admin_users_str);
-if (!array_search($active_username, $admin_users)) array_push($bad_fields, 'admin_users_str');
+if (!member($active_username, $admin_users))
+  array_push($bad_fields, 'admin_users_str');
 else {
   $admin_users = array_filter($admin_users);
   $existing_admin_usernames = array();
-  foreach ($existing_admin_users as $x)
-    array_push($existing_admin_usernames, $x['username']);
+  foreach ($existing_admin_users as $u)
+    array_push($existing_admin_usernames, $u['username']);
   $new_admins = array_diff($admin_users, $existing_admin_usernames);
 }
 
