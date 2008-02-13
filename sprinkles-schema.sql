@@ -85,7 +85,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `admins`;
 CREATE TABLE `admins` (
-  `username` varchar(255) default NULL,
+  `username` varchar(255) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
