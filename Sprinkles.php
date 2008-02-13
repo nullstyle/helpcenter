@@ -875,7 +875,7 @@ class Sprinkles {
   
   function current_username() {
     $me = $this->current_user();
-    return $me['fn'];
+    return $me['canonical_name'];
   }
 
   function get_users() { # TBD: rename this to admins()
