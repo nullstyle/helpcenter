@@ -9,7 +9,7 @@
 <div class="right">Hello <strong>{$user_name}</strong> from {$company_name}.
   Are you someone else?
   <a href="admin-login.php">Sign in as you</a>.
-  <a href="sign_out.php">Sign out</a>.
+  <a href="handle-user-logout.php">Sign out</a>.
 </div>
 
 <h1>Admin Page</h1>
@@ -57,7 +57,7 @@ Sprinkles is...
 
 <h2>Edit your current settings</h2>
 
-<form action="handle_admin.php" method="POST" enctype="multipart/form-data">
+<form action="handle-admin.php" method="POST" enctype="multipart/form-data">
 <table>
 <tr>
 <td class="form-label"> Background color </td>

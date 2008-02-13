@@ -19,7 +19,12 @@ if (!$creds) die("not logged in");      # FIXME
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, $params);
 
-if (201 != ($responseCode = $req->getResponseCode())) {
+if (400 == ($responseCode = $req->getResponseCode())) { # TBD: refine this to read HTTP reason
+  redirect('topic.php?no_self_star=1&id=' . request_param('topic_id'));
+  exit(0);
+}
+
+if (201 != $responseCode) {
   error_log("Failed starring with POST to $POST_URL: " . $req->getResponseBody());
   die("API Error $responseCode starring reply $id.");
 }

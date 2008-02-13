@@ -2,6 +2,21 @@
 
 {include file="header.t"}
 
+{if $self_star_error}
+<div class="error-box" style="margin:8pt 6pt;">
+Note: You cannot mark your own reply as
+{if $topic_head.topic_style == 'question'}
+"answering the question."
+{elseif $topic_head.topic_style == 'idea'}
+"a good point."
+{elseif $topic_head.topic_style == 'talk'}
+"answering the question."
+{elseif $topic_head.topic_style =='problem'}
+"solving the problem."
+{/if}
+</div>
+{/if}
+
 <div class="topic-head {$topic_head.topic_style}">
 Hey { $company_name }!
 <h3>
@@ -52,7 +67,7 @@ a problem{/if}
 <td id="topic-summary">
 
 {if $user_name}
-<a href="share_topic.php?id={$topic_id}">Share</a> or follow this topic
+<a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
 <input style="width:120pt;" value="I have this question too!" />
 {/if}
 

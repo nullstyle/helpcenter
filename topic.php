@@ -21,7 +21,6 @@ $reply_count = count($topic['replies']);
 $topic['replies'] = $sprink->thread_items($topic['replies'], $topic_head['id']);
 $toplevel_reply_count = count($topic['replies']);
 
-
 $topic['replies'] = take_range($page_num * $page_limit,
                                ($page_num + 1) * $page_limit,
                                $topic['replies']);
@@ -51,6 +50,8 @@ $smarty->assign('topic_id', $topic_id);
 $smarty->assign('reply_url', $reply_url);
 $smarty->assign(array('company_promoted_replies' => $company_promoted,
                       'star_promoted_replies' => $star_promoted));
+if (request_param('no_self_star'))
+  $smarty->assign('self_star_error', true);
 
 $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 

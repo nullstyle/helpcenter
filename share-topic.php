@@ -19,8 +19,8 @@ $sprink->add_std_hash_elems($smarty);
 $smarty->assign('topic_head', $topic_head);
 $smarty->assign('topic_id', $topic_id);
 
-$smarty->assign('current_url', 'share_topic.php');
+$smarty->assign('current_url', 'share-topic.php');
 
-$smarty->display('share_topic.t');
+$smarty->display('share-topic.t');
 
 ?>

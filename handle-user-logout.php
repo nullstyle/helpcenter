@@ -6,6 +6,9 @@ $sprink = new Sprinkles();
 
 $sprink->close_session();
 
-redirect(request_param('return'));
+$return = request_param('return');
+if (!$return) $return = 'helpstart.php';
+
+redirect($return);
 
 ?>
