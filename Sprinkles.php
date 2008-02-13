@@ -828,9 +828,9 @@ class Sprinkles {
 
   function current_user_creds() {
     $session_id = $this->nascent_session_id;
+    error_log("session ID after checking nascent is $session_id");
     if (!$session_id) $session_id = $_COOKIE["session_id"];
     error_log("session ID from cookie is $session_id");
-    error_log("session ID after checking nascent is $session_id");
     if (!$session_id) return null;
     # error_log("looking up creds for token $session_id");
 #print "Going to session table.";
@@ -855,22 +855,21 @@ class Sprinkles {
     $creds = $this->current_user_creds();
     if (!$creds || !$creds['token'] || !$creds['token_secret']) return null;
     $username = $creds['username'];
-    if (!$username) {
+#    if (!$username) {  # FIXME: store the whole /me resource in the database, use it here.
       $me_person = $this->get_me_resource($creds);
 	  if (!$me_person) return null;
 	  $username = $me_person['canonical_name'];
 	  if (!$username) die("Current user had no canonical_name");
 	  $result = mysql_query("update sessions set username = '" . $username
-	  					  . "' where token = '" . $session_id . "'");
+	  					  . "' where token = '" . $creds['token'] . "'");
 	  if (!$result) die("Failed to store current user's name in database.");
 	
 	  $query = mysql_query("select * from admins where username = '" .
                            $me_person['canonical_name'] . "'");
       if ($row = mysql_fetch_array($query))
         $me_person['sprinkles_admin'] = true;
-    }
+#    }
 #    dump($me_person);
-# TBD: store the whole /me resource in the database.
     return $me_person;
   }
   
