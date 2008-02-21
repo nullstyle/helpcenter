@@ -18,6 +18,18 @@
 {/foreach}
 </ul>
 
+<script type="text/javascript">
+<!--
+function redoSearch() {ldelim}
+  var redoField = document.getElementById('invisible-redo-field');
+  var subjectField = document.getElementById('submit-subject');
+  redoField.value = subjectField.value;
+  var redoForm = document.getElementById('invisible-redo-form');
+  redoForm.submit();
+{rdelim}
+-->
+</script>
+
 <table style="width:100%;">
 <tr><td class="left-hed"> Nope? </td>
 <td>
@@ -25,15 +37,10 @@
          alt="Powered by Satisfaction" src="poweredbysmallStack.png" />
   Well then, fill in the details below and submit your topic for
   everyone to see and answer <br />
-  OR reword your topic and redo the search <br />
+  OR reword your topic and
+  <a href="#" onclick="redoSearch(); return false;">re-do the search</a> <br />
   If you re-word your topic you can also 
-  <a href="#" onclick="
-    var redoField = document.getElementById('invisible-redo-field');
-    var subjectField = document.getElementById('submit-subject');
-    redoField.value = subjectField.value;
-    var redoForm = getElementById('invisible-redo-form');
-    redoForm.submit();
-  ">re-do the search</a>
+  <a href="#" onclick="redoSearch(); return false;">re-do the search</a>
 </td>
 </tr>
 </table>
