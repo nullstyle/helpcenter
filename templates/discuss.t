@@ -22,7 +22,7 @@
 
 {include file="question-box.t"}
 
-{if !$filter_product && !$filter_tag}
+{if $products && !$filter_product && !$filter_tag}
 <h2>Discuss our Products</h2>
 
 <ul class="product-list">
@@ -33,22 +33,28 @@
 </ul>
 {/if}
 
-{if !$filter_tag && !filter_product}
+{if !$filter_product && !$filter_tag}
 <h4 style="display:inline;">Top Topic Tags</h4>
   {foreach from=$top_topic_tags key=i item=tag}
-  <a href="discuss.php?tag={$tag}">{$tag}</a>
+  <a href="discuss.php?tag={$tag}">{$tag}</a>{if $i != count($top_topic_tags)-1},{/if}
   {/foreach}
-xxx
 {/if}
 
 <h2>Recent Discussions</h2>
-<h3>All topics
+<h3>All {if !$filter_style}topics
+        {elseif $filter_style == 'question'}questions
+        {elseif $filter_style == 'talk'}talk topics
+        {elseif $filter_style == 'idea'}ideas
+        {elseif $filter_style == 'problem'}problems
+        {elseif $filter_style == 'unanswered'}unanswered topics
+        {/if}
 {if $filter_product}
 about the product: {$filter_product.name}
 {elseif $filter_tag}
 about the tag: {$filter_tag}
 {/if}
- ({$topic_count})</h3>
+ ({$topic_count})
+</h3>
 
 <div class="sidepane">
 <div class="sidebar">
@@ -62,8 +68,7 @@ about the tag: {$filter_tag}
 <li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered {$totals.unanswered}</a></li>
 </ul>
 </div>
-{include file="related-topics.t"}
-<div class="sidebar blue"><a href="http://getsatisfaction.com/me">Go to your Satisfaction Dashboard</a></div>
+<div class="sidebar blue"><a href="http://getsatisfaction.com/me">Go to your dashboard on Get Satisfaction</a></div>
 </div>
 
 <table class="topic-list">
@@ -73,8 +78,8 @@ about the tag: {$filter_tag}
                  alt="{$topic.topic_style}" /></td>
     <td class="content-col">
     <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
-{if $topic.reply_count} Last reply
-                 {else} Posted {/if} {$topic.updated_relative}.
+    <p>{if $topic.reply_count} Last reply
+                 {else} Posted {/if} {$topic.updated_relative}.</p>
 
     <p>{$topic.content}</p>
 

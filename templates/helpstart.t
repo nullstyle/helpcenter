@@ -46,12 +46,14 @@
 <table>
 <tr>
 {foreach from=$company_people key=i item=person}
-<td><img class="small-author-pic" style="float:left; padding-right: 3pt; padding-bottom: 3pt;" src="{$person.photo}" />
+<td><img class="small-author-pic"
+         style="float:left; padding-right: 3pt; padding-bottom: 3pt;"
+         src="{$person.photo}" />
   <div style="padding-bottom: 3pt;"><strong>{$person.fn}</strong> <br /> 
                              {$person.role_name}
   </div></td>
   {if $i % 2 == 1 && $i != count($company_people)-1}</tr><tr>{/if}
-  {/foreach}
+{/foreach}
 </tr>
 </table>
 </div>
@@ -61,14 +63,12 @@
 <div id="what-satisfaction">
 <h4>Welcome to {$company_name}'s customer services Satisfaction site.</h4>
 
-<h5>What is Satisfaction anywho?</h5>
+<h5>Where am I?</h5>
 
-<p>Satisfaction is an open discussion-based system providing better
-customer service, with or without company involvement. Right now
-you're using an extension of the Satisfaction parent site. This is
-just one tiny branch off a whole forest of customer service <a
-href="http://www.getsatisfaction.com/">Satisfaction</a>.
-</p>
+<p> Welcome to Twitter's instant on help center. This service is powered by 
+Get Satisfaction (a community that helps people to get the most from the 
+products they use, and where companies are encouraged to get real with their 
+customers). </p>
 </div>
 
 {include file="footer.t"}

@@ -2,6 +2,12 @@
 
 {include file="header.t"}
 
+{if $blank_reply_error}
+<div class="error-box" style="margin:8pt 6pt;">
+Enter some text to reply and click the 'Post Reply' button directly below that text.
+</div>
+{/if}
+
 {if $self_star_error}
 <div class="error-box" style="margin:8pt 6pt;">
 Note: You cannot mark your own reply as
@@ -158,7 +164,7 @@ official rep {/if}
 <div style="padding: 0pt 8pt;">
 
 {if !$user_name}
-  <h2><a href="user-login.php?return=topic.php%3fid={$topic_head.id}">
+  <h2><a href="handle-user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">
     Login to reply</a>
   </h2>
 {/if}
@@ -216,7 +222,7 @@ official rep {/if}
     {if $reply.thread_end}
       {if !$user_name}
         <div style="clear:both; margin-top:4pt; font-weight:bold;">
-        <a href="user-login.php?return=topic.php%3fid={$topic_head.id}">
+        <a href="handle-user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">
          Login to comment
         </a></div>
       {else}

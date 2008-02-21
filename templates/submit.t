@@ -13,35 +13,43 @@
      {elseif $topic.topic_style == 'problem'}Reported:
      {elseif $topic.topic_style == 'idea'}Said:
      {/if}
-     {$topic.title} </li>
+     <a href="topic.php?id={$topic.id|urlencode}">
+     {$topic.title}</a> </li>
 {/foreach}
 </ul>
 
-<h3 class="left-hed"> Nope? </h3>
+<table style="width:100%;">
+<tr><td class="left-hed"> Nope? </td>
+<td>
+<p> <img class="float-right" 
+         alt="Powered by Satisfaction" src="poweredbysmallStack.png" />
+  Well then, fill in the details below and submit your topic for
+  everyone to see and answer <br />
+  OR reword your topic and redo the search <br />
+  If you re-word your topic you can also 
+  <a href="#" onclick="
+    var redoField = document.getElementById('invisible-redo-field');
+    var subjectField = document.getElementById('submit-subject');
+    redoField.value = subjectField.value;
+    var redoForm = getElementById('invisible-redo-form');
+    redoForm.submit();
+  ">re-do the search</a>
+</td>
+</tr>
+</table>
 
-<p>
-<img class="float-right" 
-     alt="Powered by Satisfaction" src="poweredbysmallStack.png" />
-Well then, fill in the details below and submit your topic for
-everyone to see and answer <br />
-OR reword your topic and redo the search
-</p>
+<form id="invisible-redo-form" style="display: none; width: 100%; position: relative;" action="submit.php">
+<input id="invisible-redo-field" name="subject" />
+</form>
 
-<h3> Your Topic * </h3>
+<h4> Your Topic <img src="images/required.png" alt="*" /> </h4>
 
 <form style="width: 100%; position: relative;" action="handle-submit.php">
 
-<div>
-<div class="float-right" style="width: 180pt;">
-If you re-word your topic you can also 
-  <a href="dead-end.php">re-do the search</a>
-</div>
-<input name="subject" class="questionbox" value="{$subject}" />
-<button type="submit">Go</button>
-</div>
+<input id="submit-subject" name="subject" style="width:350pt;" value="{$subject}" />
 
 <h4>Details</h4>
-<textarea name="details" rows="4" cols="50">
+<textarea name="details" rows="4" cols="50" style="width:350pt;">
 </textarea>
 
 <h4>Tell everyone how this makes you feel </h4>
@@ -69,14 +77,6 @@ If you re-word your topic you can also
 
 <span class="small-note">Comma-separated. (e.g. hot dogs, cake, pie)</span>
 
-<h4>Or choose from popular tags:</h4>
-xxx
-
-<p>
-<input name="tag-search" style="width: 120pt;" /> <button>+</button><br />
-<span class="small-note">Start typing and we'll make suggestions</span>
-</p>
-
 </td>
 <td>
 <h4>What are tags?</h4>
@@ -85,6 +85,14 @@ You can give your photos a "tag", which is like a keyword. Tags help you find ph
 </td>
 </tr>
 </table>
+
+Done?
+
+(xxx) Submit your topic as one of these four types:
+Ask as a Question
+Share as an Idea
+Report as a Problem
+Just Talk
 
 </form>
 

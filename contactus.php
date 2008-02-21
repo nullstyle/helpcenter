@@ -5,11 +5,8 @@ $h = new hkit;
 
 $sprink = new Sprinkles();
 
-$company_hcard = $sprink->company_hcard();
-$company_name = $company_hcard["fn"];
-
-$entries = $sprink->topics(array());
-$entries = take($helpstart_topic_count, $entries);
+#$company_hcard = $sprink->company_hcard();
+#$company_name = $company_hcard["fn"];
 
 $smarty->assign('body_css_id', 'contactus');
 $smarty->assign('current_url', 'contactus.php');

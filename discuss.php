@@ -32,7 +32,10 @@ $topics = $sprink->topics($topic_filters);
 $topic_count = count($topics['topics']);
 $topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
 
-$top_topic_tags = array('underwear');   # FIXME
+$top_topic_tags = take($max_top_topic_tags, 
+                       $sprink->tags('http://api.getsatisfaction.com/companies/' . 
+                       $sprink->company_sfnid . 
+                       '/tags?on=topics&sort=usage&limit=5'));
 
 function discuss_tag_url($params, &$smarty) {
   return('discuss.php?tag=' . $params['tag']);

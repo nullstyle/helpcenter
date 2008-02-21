@@ -1,13 +1,13 @@
 body {
   font-family: helvetica, sans-serif;
   font-size: 12px;
-#  background-color: #a7efff;
   color: #333;
 }
 
 textarea, input { border: 1px solid gray; }
 
 hr { border: 0px; border-bottom: 1px solid #999999; height: 0px; }
+hr.light { border: 0px; border-bottom: 1px solid #bbbbbb; height: 0px; }
 
 a { text-decoration: none; }
 
@@ -29,10 +29,23 @@ h2 { color: #444; font-size: 16px; font-weight: bold; margin: 10pt 0pt 0pt 0pt; 
 h2 .lighter { font-weight: normal; }
 h3 { color: #aaa; font-size: 12px; font-weight: bold; margin: 0pt; }
 h4 { margin: 10pt 0pt 0pt 0pt; font-weight: normal; }
-h5 { margin: 10pt 0pt 0pt; 0pt;
+h5 { margin: 10pt 0pt 0pt 0pt;
      font-weight: normal; font-size: 14px; color: #000; }
 
 td { vertical-align: top; }
+
+p, .p-margin { margin-bottom: 6pt; margin-top: 0pt; }
+
+.light { color: #999; }
+
+.light strong { font-weight: bold; }
+
+em { color: black; font-style: normal; }
+
+li, p, div, .p { font-size: 12px; }
+
+p.tight { margin: 0pt; padding 0pt; }
+
 
 .question-pane { margin: 1pc 1pc 1pc 2pc; }
 
@@ -56,7 +69,7 @@ ul.topnav li {
   color: #444;
 }
 
-ul.helpstart-topic-list { 
+ul.helpstart-topic-list {
   list-style-type: none;
   padding: 0pt;
 }
@@ -66,8 +79,9 @@ ul.helpstart-topic-list li {
   padding: 2pt;
   font-size: 11pt;
   font-weight: bold;
-  border-bottom: 1px solid #999999;
 }
+
+.underlined, ul.helpstart-topic-list li a { text-decoration: underline; }
 
 ul {
   list-style-type: none;
@@ -180,7 +194,6 @@ ul.topic-replies, ul.topic-list {
 }
 
 .topic-list h3, .topic-head h3 {
-  font-size: 12px;
   margin: 0pt;
   color: #888;
 }
@@ -283,18 +296,6 @@ ul.straight { list-style-type: none; padding-left: 0pt; }
 .flag_button { padding: 3px; }
 
 .tag-box { width: 200pt; }
-
-p .p-margin { margin-top: 6pt; }
-
-.light { color: #999; }
-
-.light strong { font-weight: bold; }
-
-em { color: black; font-style: normal; }
-
-p .p { font-size: 12px; }
-
-p.tight { margin: 0pt; padding 0pt; }
 
 .box {
   border: 1px solid #444;

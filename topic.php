@@ -52,6 +52,8 @@ $smarty->assign(array('company_promoted_replies' => $company_promoted,
                       'star_promoted_replies' => $star_promoted));
 if (request_param('no_self_star'))
   $smarty->assign('self_star_error', true);
+if (request_param('blank_reply'))
+  $smarty->assign('blank_reply_error', true);
 
 $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 

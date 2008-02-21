@@ -16,7 +16,9 @@ $mysql_connect_params = 'localhost:3306';
 
 # page limits
 
+$submit_suggestions = 3;
 $helpstart_topic_count = 5; 
 $discuss_topic_page_limit = 3;
 $related_topics_count = 4;
+$max_top_topic_tags = 5;
 ?>

@@ -11,7 +11,10 @@ $reply_url = request_param('reply_url');
 # error_log("reply on $topic_id going to $reply_url");
 $reply_url = $topic_id . '/replies'; # FIXME: use reply_url from feed data.
 
-$params = array('reply[content]' => request_param('content'));
+if (!($content = request_param('content')))
+  redirect('topic.php?blank_reply=1&id=' . urlencode($topic_id));
+
+$params = array('reply[content]' => $content);
 if ($parent_id = request_param('parent_id'))
   $params['reply[parent_id]'] = $parent_id;
 
@@ -23,6 +26,6 @@ if (201 != ($responseCode = $req->getResponseCode())) {
   die("API Error $responseCode replying to $topic_id.");
 }
 
-redirect('topic.php?id=' . $topic_id);
+redirect('topic.php?id=' . urlencode($topic_id));
 
 ?>

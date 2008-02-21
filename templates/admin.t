@@ -6,7 +6,7 @@
 {include file="header.t"}
 {/if}
 
-<div class="right">Hello <strong>{$user_name}</strong> from {$company_name}.
+<div class="right" style="margin-top: 3pt; ">Hello <strong>{$user_name}</strong> from {$company_name}.
   Are you someone else?
   <a href="admin-login.php">Sign in as you</a>.
   <a href="handle-user-logout.php">Sign out</a>.
@@ -42,16 +42,30 @@ and sign in as an admin and authenticate their account. Go let them know!
 
 <div class="sidepane">
 <div class="sidebar ">
-<h3>Need help?</h3>
+<h3>What is this?</h3>
 
-Sprinkles is...
+<p>
+The Instant on Help Center (code named Sprinkles) is the first application 
+built on top of the Get Satisfaction API. Now any company can Get Satisfaction 
+on their site, under their terms while continuing to benefit from the network 
+of companies and products on Get Satisfaction.
+</p>
 
-<h4>API information</h4>
+<h4>Need help? Want to hack it?</h4>
+<p>
+Visit the <a href="http://code.google.com/p/getsatisfaction/">API Project Home Page</a>
+Talk about it on the <a href="http://code.google.com/p/getsatisfaction/w/list">Wiki</a>
+</p>
 
-<h4>Helpful topics from Satisfaction</h4>
-<ul class="straight">
-<li>xxx</li>
+<h4>Get help on
+<a href="http://getsatisfaction.com/satisfaction/products/satisfaction_satisfaction_api">
+Get Satisfaction</a></h4>
+<ul>
+{foreach from=$sprinkles_tagged_topics key=i item=topic}
+<li> <a href="topic.php?id={$topic.id|urlencode}">{$topic.title}</a> </li>
+{/foreach}
 </ul>
+
 </div>
 </div>
 

@@ -18,8 +18,8 @@
 <h3>Excellent, you chose the Satisfaction {$company_name} site.</h3>
 {/if}
 
-<p>Next, <a href="handle-user-login.php?return=admin.php">Login to your
-  {$company_name} Satisfaction account</a>.</p>
+<p>Next, <a href="handle-user-login.php?return=admin.php">Login on Get 
+  Satisfaction</a> to access your admin account here.</p>
 
 <!--
 {if $message}

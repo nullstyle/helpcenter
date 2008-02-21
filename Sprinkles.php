@@ -1,6 +1,17 @@
 <?php
 # $Id$
 
+####### Sprinkles.php ######
+##
+##  This file defines the core logic for interacting with the 
+##  getsatisfaction.com web API, logic shared throughout the Sprinkles 
+##  application, and general utility functions.
+##
+##  See individual methods and functions for detailed documentation.
+##
+##  NOTE: You can expect the interface to this file to change.
+##
+########
 require_once 'XML/Feed/Parser.php';
 require_once 'hkit.class.php';
 
@@ -13,7 +24,6 @@ $smarty->template_dir = $sprinkles_dir . '/templates/';
 $smarty->compile_dir  = $sprinkles_dir . '/templates_c/';
 $smarty->config_dir   = $sprinkles_dir . '/configs/';
 $smarty->cache_dir    = $sprinkles_dir . '/cache/';
-
 
 global $h;
 $h = new hKit;
@@ -44,9 +54,21 @@ function take_range($lo, $hi, $list) {
   return $result;
 }
 
-# unique($array) is true if there is no more than one non-null item in $array
-function unique($array) {
+# singleton($array) is true if there is no more than one non-null item in $array
+function singleton($array) {
   return count(array_filter($array)) <= 1;
+}
+
+# uniq($array) is a copy of $array with consecutive duplicates removed.
+function uniq($array) {
+  $deck = null;
+  $result = array();
+  foreach ($array as $item) {
+    if ($item != $deck)
+      array_push($result, $item);
+    $deck = $item;
+  }
+  return $result;
 }
 
 # PHP's array_search is useless, as it may return 0 when the element
@@ -60,6 +82,8 @@ function member($x, $list) {
 # ago $time was from $now--for example, "37 minutes ago."
 function ago($time, $now) {
   $diff = $now - $time;
+  
+  if ($diff < 90) return "about a minute ago"; # short circuit the otherwise-good logic below
   
   if ($diff < 60) {
     $result = $diff;
@@ -135,7 +159,7 @@ function feedTagNS($feed, $ns, $tagName) {  # FIXME: use this.
   return $feed->model->getElementsByTagNameNS($ns, $tagName);
 }
 
-$http_cache_timeout = 600; # seconds
+$http_cache_timeout = 3600; # seconds
 
 $cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
 $cache_misses = 0;
@@ -167,8 +191,8 @@ function get_url($url) {
 }
 
 function parse_hproduct($str) {
+#  $str = preg_replace('/&(?!amp;)/', '&amp;', $str); # stopgap needed when $str is broken
   $xml = simplexml_load_string($str);
-#  dump($xml);
   $root_nodes = $xml->xpath("//*[@class='hproduct']");
   $result = array();
   if ($root_nodes) {
@@ -383,9 +407,11 @@ class Sprinkles {
     return $result;     
   }
 
-  ## Topics for the company, filter by values in $options
+  ## Topics for the company, filtered by properites specified in $options.
+  # Presently, you can only filter on one of the axes: product, tag, query, person,
+  # followed, or related.
   function topics($options) {
-    if (!unique(array($options['product'], $options['tag'], $options['query'],
+    if (!singleton(array($options['product'], $options['tag'], $options['query'],
                       $options['person'], $options['followed'], $options['related']))) {
         die('Sprinkles::topics($options) got more than one of these options: '
             .'product, tag, query, person, followed, or related.');
@@ -401,9 +427,8 @@ class Sprinkles {
     } else if ($options['followed']) {
       $url_path = 'people/' . $options['followed'] . '/followed/topics';
     } else if ($options['related']) {
-      # HACK: until @rel="related" link is exposed, hack the URL
       $related_to_id = $options['related'];
-      $related_to_id = preg_replace('/\?.*/', '', $related_to_id); # remove pesky query string 
+      $related_to_id = preg_replace('/\?.*/', '', $related_to_id); # FIXME
       $url_path = $related_to_id . '/related';
     } else {
       $url_path = 'companies/'.$this->company_sfnid.'/topics';
@@ -466,6 +491,7 @@ class Sprinkles {
     $items = array_merge($started['topics'],
                          $followed['topics']);
     usort($items, cmp_by_updated);
+    $items = uniq($items);
     return $items;
   }
 
@@ -599,7 +625,6 @@ class Sprinkles {
     $people_url = $this->api_url('companies/'.$this->company_sfnid.'/employees');
     global $h;
     $people_list = $h->getByString('hcard', get_url($people_url));
-    if (!$people_list) { die("no people list"); }
     return $people_list;
   }
 
@@ -665,7 +690,7 @@ class Sprinkles {
   function get_product($url) {
     if ($this->products_cache[$url]) return ($this->products_cache[$url]);
     global $h;
-    # error_log("Getting product from $url");
+    error_log("Getting product from $url");
     $result = parse_hproduct(get_url($url));
     $result = $result[0];   # Assume just one product in the document.
 
