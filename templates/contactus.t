@@ -15,6 +15,9 @@
 <h2>Do any of these help?</h2>
 <ul id="suggestions">
 </ul>
+<div class="float-right">
+{include file="powered-by.t"}
+</div>
 </div>
 
 <div style="width:270pt;">
