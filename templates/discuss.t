@@ -90,7 +90,9 @@ about the tag: {$filter_tag}
             src="{$topic.author.photo}" />
     </td>
     <td>
+   <a href="minidashboard.php?user_url={$topic.author.url}">
    {$topic.author.name} 
+   </a>
     {if $topic.topic_style == 'question'} asked this question
     {elseif $topic.topic_style == 'idea'} shared this idea
     {elseif $topic.topic_style == 'talk'} asked this question

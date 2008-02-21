@@ -4,7 +4,7 @@
 
 {include file="question-box.t"}
 
-<h2>Your Recent {$company_name} Discussions</h2>
+<h2>{$user_possessive} Recent {$company_name} Discussions</h2>
 
 <table width="100%">
 <tr>
@@ -18,7 +18,7 @@
     <td class="content-col"> <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
     {$topic.content}
     </td>
-    <td style="width: 75pt;"> last update {$topic.updated_relative} </td>
+    <td style="width: 75pt;"> last update <br /> {$topic.updated_relative} </td>
   </tr>
 {foreachelse}
   <tr><td></td><td class="content-col">You haven't participated in any {$company_name} discussions so far.</td><td></td></tr>

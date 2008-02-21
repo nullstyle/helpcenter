@@ -131,9 +131,8 @@ function unbollocks($str) {  ## CURSE CURSE CURSE
 }
 
 function php_major_version() {
-  $v = phpversion();
-  $version = array();
-  list($major) = explode('.', $v);
+  $version_str = phpversion();
+  list($major) = explode('.', $version_str);
   return $major;
 }
 

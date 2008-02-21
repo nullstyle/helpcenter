@@ -40,7 +40,9 @@ a problem{/if}
 <div><img src="{$topic_head.author.photo}" class="topic-author-pic" /></div>
 <div class="topic-author-caption" style="margin-top: 3pt;">
   <span class="topic-byline">
+  <a href="minidashboard.php?user_url={$topic_head.author.url}">
   { $topic_head.author.name }
+  </a>
   </span> 
   {if $topic_head.topic_style == 'question'} asked this question
   {elseif $topic_head.topic_style == 'idea'} shared this idea
@@ -110,7 +112,7 @@ official rep {/if}
 
   <div class="light p">
   <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
-  <strong><em>{$reply.author.name}</em>
+  <strong><em><a href="minidashboard.php?user_url={$reply.author.url}">{$reply.author.name}</a></em>
   {if $reply.author.role}({$reply.author.role_name}){/if}</strong>
   {$reply.updated_relative}
   {if $reply.emotitag_face}
@@ -135,7 +137,7 @@ official rep {/if}
 
   <div class="light p">
   <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
-  <strong><em>{$reply.author.name}</em>
+  <strong><em><a href="minidashboard.php?user_url={$reply.author.url}">{$reply.author.name}</a></em>
   {if $reply.author.role}({$reply.author.role_name}){/if}</strong>
   {$reply.updated_relative}
   {if $reply.emotitag_face}
@@ -178,7 +180,9 @@ official rep {/if}
       </div>
     </td><td>
     <div class="reply-core">
-      <span class="light"><strong><em>{$reply.author.name}</em>
+      <span class="light"><strong><em>
+        <a href="minidashboard.php?user_url={$reply.author.url}">{$reply.author.name}</a>
+        </em>
         {if $reply.author.role}({$reply.author.role_name}){/if}
         </strong>
         replied {$reply.updated_relative}:</span>

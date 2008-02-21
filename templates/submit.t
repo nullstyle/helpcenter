@@ -6,7 +6,9 @@
 {foreach from=$suggested key=i item=topic}
 {* FIXME the img isn't really properly layed out *}
 <li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
-     {$topic.author.name}
+  <a href="minidashboard.php?user_url={$topic.author.url}">
+  {$topic.author.name}
+  </a>
      {if $topic.author.role}({$topic.author.role_name}){/if} 
      {if $topic.topic_style == 'question'}Asked:
      {elseif $topic.topic_style == 'talk'}Said:
