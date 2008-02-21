@@ -230,7 +230,10 @@ official rep {/if}
          Login to comment
         </a></div>
       {else}
-        <form action="handle-reply.php" method="POST">
+        <a href="#"
+          onclick="document.getElementById('comment-form-{$reply.sfn_id}').style.display='block';this.style.display='none'">
+          Comment</a>
+        <form id="comment-form-{$reply.sfn_id}" action="handle-reply.php" method="POST" style="display:none;">
         I say:
         <input type="hidden" name="topic_id" value="{$topic_head.id}" />
         <input type="hidden" name="parent_id" value="{$reply.sfn_id}" />
@@ -252,7 +255,7 @@ official rep {/if}
    <input type="hidden" name="reply_url" value="{$reply_url}" />
    I say:
    <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
-   <button type="submit">Post reply</button>
+   <button type="submit">Reply</button>
    </form>
   </td>
   </tr>

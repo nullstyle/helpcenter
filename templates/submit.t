@@ -40,8 +40,6 @@ function redoSearch() {ldelim}
   Well then, fill in the details below and submit your topic for
   everyone to see and answer <br />
   OR reword your topic and
-  <a href="#" onclick="redoSearch(); return false;">re-do the search</a> <br />
-  If you re-word your topic you can also 
   <a href="#" onclick="redoSearch(); return false;">re-do the search</a>
 </td>
 </tr>
