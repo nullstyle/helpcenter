@@ -59,12 +59,12 @@ a problem{/if}
   <a href="handle-flag.php?type=topic&id={$topic_head.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}" class="flag_button float-right">
     Flag this topic
   </a>
-  {if $topic.emotitag_face || $topic.emotitag_emotion}
-  <p> {if $topic.emotitag_face}
-        <img src="images/{$topic.emotitag_face}.png"
+  {if $topic_head.emotitag_face || $topic_head.emotitag_emotion}
+  <p> {if $topic_head.emotitag_face}
+        <img src="images/{$topic_head.emotitag_face}.png"
              style="vertical-align:middle;"
-             alt="{$topic.emotitag_emotion}">{/if}
-      {$topic.emotitag_emotion}
+             alt="{$topic_head.emotitag_emotion}">{/if}
+      I'm {$topic_head.emotitag_emotion}
   </p>
   {/if}
 
@@ -155,7 +155,7 @@ official rep {/if}
 </div>
 
 <div class="sidepane">
-  <img style="padding: 6pt; margin: 6pt;" src="poweredbysmallStack.png"
+  <img style="padding: 6pt; margin: 6pt;" src="images/poweredbysmall.png"
        alt="Powered by: Satisfaction" />
 
   {include file="related-topics.t"}

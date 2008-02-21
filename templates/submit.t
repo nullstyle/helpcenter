@@ -34,7 +34,7 @@ function redoSearch() {ldelim}
 <tr><td class="left-hed"> Nope? </td>
 <td>
 <p> <img class="float-right" 
-         alt="Powered by Satisfaction" src="poweredbysmallStack.png" />
+         alt="Powered by Satisfaction" src="iamges/poweredbysmall.png" />
   Well then, fill in the details below and submit your topic for
   everyone to see and answer <br />
   OR reword your topic and
@@ -61,7 +61,6 @@ function redoSearch() {ldelim}
 
 <h4>Tell everyone how this makes you feel </h4>
 <div onclick="for (var i in this.childNodes) {ldelim}
-//                alert(this.childNodes[i].tagName);
                 if (this.childNodes[i].tagName == 'IMG')
                   this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
               {rdelim}
@@ -69,10 +68,11 @@ function redoSearch() {ldelim}
               var emoticonElem = document.getElementById('emoticon');
               emoticonElem.value=event.target.id">
 <input id="emoticon" type="hidden" name="emoticon" value="" />
-<img id="happy" src="images/happy.png" onsrc="images/happy_on.png">
-<img id="sad" src="images/sad.png">
-<img id="indifferent" src="images/indifferent.png">
-<img id="silly" src="images/silly.png">
+<img id="happy" src="images/happy.png" onsrc="images/happy_on.png" style="vertical-align:middle;" />
+<img id="sad" src="images/sad.png" style="vertical-align:middle;" />
+<img id="indifferent" src="images/indifferent.png" style="vertical-align:middle;" />
+<img id="silly" src="images/silly.png" style="vertical-align:middle;" />
+<span>I'm: <input name="emotion" /></span>
 </div>
 
 <h4>Add tags</h4>
@@ -95,11 +95,11 @@ You can give your photos a "tag", which is like a keyword. Tags help you find ph
 
 Done?
 
-(xxx) Submit your topic as one of these four types:
-Ask as a Question
-Share as an Idea
-Report as a Problem
-Just Talk
+(xxx) Submit your topic as one of these four types: <br />
+<button type="submit">Ask as a Question</button>
+<button type="submit">Share as an Idea</button>
+<button type="submit">Report as a Problem</button>
+<button type="submit">Just Talk</button>
 
 </form>
 

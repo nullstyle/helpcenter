@@ -7,6 +7,7 @@ $subject = request_param('subject');
 $details = request_param('details');
 $tags = request_param('tags');
 $face = request_param('emoticon');
+$emotion = request_param('emotion');
 
 $sprink = new Sprinkles();
 
@@ -19,8 +20,9 @@ $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null,
                               # safeguard for now; FIXME when we go live
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
-                          'topic[keywords]' => $tags
-                          , 'topic[emotitag][face]' => $face   # presently broken
+                          'topic[keywords]' => $tags,
+                          'topic[emotitag][face]' => $face,
+                          'topic[emotitag][emotion]' => $emotion
 ));
 
 $response_body = $req->getResponseBody();

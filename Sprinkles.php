@@ -224,6 +224,24 @@ $robust_mode = false;
 $xml_sfn_ns = 'http://api.getsatisfaction.com/schema/0.1';
 $xml_opensearch_ns = 'http://a9.com/-/spec/opensearch/1.1/';
 
+function sfn_element($entry, $elem_name) {
+  global $xml_sfn_ns;
+  return $entry->model->getElementsByTagNameNS($xml_sfn_ns, $elem_name)->item(0);
+}
+
+function sfn_element_value($entry, $elem_name) {
+  global $xml_sfn_ns;
+  if ($elem = $entry->model->getElementsByTagNameNS($xml_sfn_ns, $elem_name)->item(0))
+    return $elem->nodeValue;
+}
+
+function sfn_element_present($entry, $elem_name) {
+  global $xml_sfn_ns;
+  return !!$entry->model->getElementsByTagNameNS($xml_sfn_ns,
+	                                             $elem_name)->item(0);
+}
+
+
 class Sprinkles {
 
   var $company_sfnid;
@@ -298,18 +316,6 @@ class Sprinkles {
     return $card['fn'];
   }
 
-  function sfn_element($entry, $elem_name) {
-    global $xml_sfn_ns;
-    if ($elem = $entry->model->getElementsByTagNameNS($xml_sfn_ns, $elem_name)->item(0))
-      return $elem->nodeValue;
-  }
-
-  function sfn_element_present($entry, $elem_name) {
-    global $xml_sfn_ns;
-    return !!$entry->model->getElementsByTagNameNS($xml_sfn_ns,
-                                                   $elem_name)->item(0);
-  }
-
   # Given an entry of a feed, either a topic or a reply, fix_atom_entry returns
   # a structure that contatins all the data we care about, in a form usable by
   # Smarty templates. This can include fetching additional resources.
@@ -343,8 +349,8 @@ class Sprinkles {
 
     $link_elems = $entry->model->getElementsByTagName('link');
     foreach ($link_elems as $link_elem) {
-        if ($link_elem->getAttribute('rel') == 'company')
-	  $item['company_url'] = $link_elem->getAttribute('href');
+      if ($link_elem->getAttribute('rel') == 'company')
+	    $item['company_url'] = $link_elem->getAttribute('href');
     }
 
 # TBD: Get link/@rel=replies content.
@@ -363,27 +369,27 @@ class Sprinkles {
     if ($in_reply_to_elem)
       $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
     global $xml_sfn_ns;
-    $item['sfn_id'] = $this->sfn_element($entry, 'id');
-    $item['topic_style'] = $this->sfn_element($entry, 'topic_style');
+    $item['sfn_id'] = sfn_element_value($entry, 'id');
+    $item['topic_style'] = sfn_element_value($entry, 'topic_style');
     if ($kind == 'topic' && !$item['topic_style'])
       die("SFN feed problem: no sfn:topic_style on $kind " . $item['id']);
     if ($kind == 'topic') {
-      $item['reply_count'] = $this->sfn_element($entry, 'reply_count');
+      $item['reply_count'] = sfn_element_value($entry, 'reply_count');
       if (!($item['reply_count'] > 0)) $item['reply_count'] = 0;
     }
-    $item['star_count'] = $this->sfn_element($entry, 'star_count');
-    $item['flag_count'] = $this->sfn_element($entry, 'flag_count');
+    $item['star_count'] = sfn_element_value($entry, 'star_count');
+    $item['flag_count'] = sfn_element_value($entry, 'flag_count');
 
-    $emotitag_elem = $entry->model->getElementsByTagNameNS(
-                                        $xml_sfn_ns, 'emotitag')->item(0);
+    $emotitag_elem = sfn_element($entry, 'emotitag');
+	#dump($emotitag_elem->nodeValue);
     if ($emotitag_elem) {
       $item['emotitag_face'] = $emotitag_elem->getAttribute('face');
       $item['emotitag_severity'] = $emotitag_elem->getAttribute('severity');
       $item['emotitag_emotion'] = trim($emotitag_elem->nodeValue);
     }
 
-    $item['star_promoted'] = $this->sfn_element_present($entry, 'star_promoted');
-    $item['company_promoted'] = $this->sfn_element_present($entry, 'company_promoted');
+    $item['star_promoted'] = sfn_element_present($entry, 'star_promoted');
+    $item['company_promoted'] = sfn_element_present($entry, 'company_promoted');
     return $item;
   }
   
@@ -399,11 +405,11 @@ class Sprinkles {
                                           'totalresults')) {
       $result['all'] = $total_results_elem->nodeValue;
     }
-    $result['ideas'] = $this->sfn_element($feed, 'idea_count');
-    $result['talk'] = $this->sfn_element($feed, 'talk_count');
-    $result['problems'] = $this->sfn_element($feed, 'problem_count');
-    $result['questions'] = $this->sfn_element($feed, 'question_count');
-    $result['unanswered'] = $this->sfn_element($feed, 'unanswered_count');
+    $result['ideas'] = sfn_element_value($feed, 'idea_count');
+    $result['talk'] = sfn_element_value($feed, 'talk_count');
+    $result['problems'] = sfn_element_value($feed, 'problem_count');
+    $result['questions'] = sfn_element_value($feed, 'question_count');
+    $result['unanswered'] = sfn_element_value($feed, 'unanswered_count');
     return $result;     
   }
 
