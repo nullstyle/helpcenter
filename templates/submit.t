@@ -87,7 +87,8 @@ function redoSearch() {ldelim}
 </td>
 <td>
 <h4>What are tags?</h4>
-You can give your photos a "tag", which is like a keyword. Tags help you find photos which have something in common. You can assign up to 75 tags to each photo.
+You can give your topic a "tag". This is a keyword that will 
+help people find your topic and get you good responses.
 
 </td>
 </tr>
