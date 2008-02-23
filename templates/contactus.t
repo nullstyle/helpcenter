@@ -36,7 +36,7 @@
 </table>
 
 <script type="text/javascript">
-<!--
+<!-- // FIXME: credit this snippet
 var AJAX = function() {ldelim}
   // (IE) XMLHttpRequest is an ActiveXObject in IE
   return {ldelim}
@@ -70,11 +70,27 @@ var AJAX = function() {ldelim}
 function getHTMLAJAX(url) {ldelim}
 // TBD: async
   var req = AJAX.newRequest();
-  req.open('GET', url);
+  req.open('GET', url, true);
   var result;
   req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   req.send();
   return req.responseText;
+{rdelim}
+
+var LOADED = 4;
+
+function getHTMLAJAXAsync(url, kappa) {ldelim}
+// TBD: async
+  var req = AJAX.newRequest();
+  req.open('GET', url, true);
+  var result;
+  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  req.onreadystatechange = function() {ldelim}
+    if (req.readyState == LOADED) {ldelim}
+      kappa(req.responseText);
+    {rdelim}
+  {rdelim}
+  req.send();
 {rdelim}
 
 function trim(str) {ldelim}
@@ -86,14 +102,15 @@ function trim(str) {ldelim}
 function updateSuggestions(queryText) {ldelim}
   var suggestElem = document.getElementById('suggestions');
   var url = 'proxy.php?query=' + queryText; // FIXME: url-encode
-  var suggestions = getHTMLAJAX(url);
-  var daothPane = document.getElementById('daothPane');
-  if (trim(suggestions)) {ldelim}
-    suggestElem.innerHTML = suggestions;
-    daothPane.style.display = 'block';
-  {rdelim} else {ldelim}
-    daothPane.style.display = 'none';  
-  {rdelim}
+  getHTMLAJAXAsync(url, function (suggestions) {ldelim}
+    var daothPane = document.getElementById('daothPane');
+    if (trim(suggestions)) {ldelim}
+      suggestElem.innerHTML = suggestions;
+      daothPane.style.display = 'block';
+    {rdelim} else {ldelim}
+      daothPane.style.display = 'none';  
+    {rdelim}
+  {rdelim});
 {rdelim}
 -->
 </script>
