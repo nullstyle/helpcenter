@@ -11,6 +11,13 @@ $suggested = take($submit_suggestions, $suggested['topics']);
 
 $smarty->assign('subject', $subject);
 $smarty->assign('suggested', $suggested);
+$products = $sprink->products();
+foreach ($products as &$product) {
+  $matches = array();
+  preg_match('!/(\d+)!', $product['uri'], &$matches);
+  $product['sfn_id'] = $matches[1];
+}
+$smarty->assign('products', $products);
 
 $smarty->assign('current_url', 'submit.php');
 
