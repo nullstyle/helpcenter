@@ -1,10 +1,7 @@
 <?php
 
-require_once('config.php');
-require_once('Sprinkles.php');
-
-$sprink = new Sprinkles();
-
+# Scott Fleckenstein explains flagging:
+#
 # There are a set of resources underneath /flagged:
 # 
 # http://api.getsatisfaction.com/flagged/topics
@@ -18,6 +15,11 @@ $sprink = new Sprinkles();
 # topic_id  		REQUIRED	#=> more specificially, the singular id form of the item to be flagged:  reply_id, product_id, person_id, etc.
 # flag[name]		OPTIONAL	#=> This is the radio button field "Inappropriate", "Spam", etc.
 # flag[description]	OPTIONAL	#=> Free form text the user enters
+
+require_once('config.php');
+require_once('Sprinkles.php');
+
+$sprink = new Sprinkles();
 
 $type = request_param('type');
 if ($type != 'topic' && $type != 'reply')
@@ -44,6 +46,9 @@ if (201 != ($responseCode = $req->getResponseCode())) {
   die("API Error $responseCode flagging item $type $id.");
 }
 
-redirect('topic.php?id=' . request_param('topic_id'));
+redirect('topic.php?id=' . request_param('topic_id') . 
+           ($type == 'topic' ? '&flagged_topic=' : 
+           ($type == 'reply' ? '&flagged_reply=' :
+           '')) . $id);
 
 ?>

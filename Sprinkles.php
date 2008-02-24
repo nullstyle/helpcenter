@@ -180,11 +180,13 @@ function get_url($url) {
     global $cache_misses;
     $cache_misses++;
     error_log("Cache miss; fetching $url");
-    $content = file_get_contents($url);
-    if (!mysql_query('insert into http_cache (url, content) values (\'' . 
-                mysql_real_escape_string($url) . '\', \'' . 
-                mysql_real_escape_string($content) . '\')'))
-      die(mysql_error());
+    $content = file_get_contents($url);  # TBD: recognize errors here
+    if ($content) {
+      if (!mysql_query('insert into http_cache (url, content) values (\'' . 
+                  mysql_real_escape_string($url) . '\', \'' . 
+                  mysql_real_escape_string($content) . '\')'))
+        die(mysql_error());
+    }
     return $content;
   }
 }
@@ -192,6 +194,7 @@ function get_url($url) {
 function parse_hproduct($str) {
 #  $str = preg_replace('/&(?!amp;)/', '&amp;', $str); # stopgap needed when $str is broken
   $xml = simplexml_load_string($str);
+  if (!$xml) return null;
   $root_nodes = $xml->xpath("//*[@class='hproduct']");
   $result = array();
   if ($root_nodes) {
@@ -695,7 +698,6 @@ class Sprinkles {
   function get_product($url) {
     if ($this->products_cache[$url]) return ($this->products_cache[$url]);
     global $h;
-    error_log("Getting product from $url");
     $result = parse_hproduct(get_url($url));
     $result = $result[0];   # Assume just one product in the document.
 
@@ -726,7 +728,6 @@ class Sprinkles {
     foreach ($products_list as $product) {
       $url = $this->api_url($product["uri"]);
       if (is_http_url($url)) {
-        # error_log("Getting product data from $url");
         $product = parse_hproduct(get_url($url));
       }
       else die("strange uri in product: $url");

@@ -58,9 +58,16 @@ a problem{/if}
 
  <p>{ $topic_head.content }</p>
 
-  <a href="handle-flag.php?type=topic&id={$topic_head.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}" class="flag_button float-right">
-    Flag this topic
+{if $flagged_topic == $topic_head.sfn_id}
+  <span class="disabled flag-button float-right">
+    This is spam
+  </span>
+{else}
+  <a href="handle-flag.php?type=topic&id={$topic_head.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}"
+     class="flag-button float-right">
+    This is spam
   </a>
+{/if}
   {if $topic_head.emotitag_face || $topic_head.emotitag_emotion}
   <p> {if $topic_head.emotitag_face}
         <img src="images/{$topic_head.emotitag_face}.png"
@@ -208,9 +215,14 @@ official rep {/if}
             </button>
           </form>
           {/if}
-          <a href="handle-flag.php?type=reply&id={$reply.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}" class="flag_button">
-          Flag
-          </a>
+          {if $flagged_reply == $reply.sfn_id}
+            <span class="disabled flag-button float-right">Spam</span>
+          {else}
+            <a href="handle-flag.php?type=reply&id={$reply.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}"
+               class="flag-button float-right">
+            Spam
+            </a>
+          {/if}
         </div>
        {if $reply.emotitag_face}
        <div>

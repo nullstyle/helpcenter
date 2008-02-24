@@ -21,7 +21,11 @@
     <td style="width: 75pt;"> last update <br /> {$topic.updated_relative} </td>
   </tr>
 {foreachelse}
-  <tr><td></td><td class="content-col">You haven't participated in any {$company_name} discussions so far.</td><td></td></tr>
+  <tr><td></td>
+    <td class="content-col">
+      You haven't participated in any {$company_name} discussions so far.
+    </td><td></td>
+  </tr>
 {/foreach}
 </table>
 

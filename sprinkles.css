@@ -94,6 +94,11 @@ li {
   margin: 0pt;
 }
 
+ul.tight li {
+  padding: 0pt; margin: 0pt;
+}
+
+
 div#what-satisfaction {
   padding: 1pc;
 }
@@ -138,6 +143,10 @@ div#what-satisfaction p {
 
 .blue {
   background-color: #a7efff;
+}
+
+.disabled {
+  color: #999999;
 }
 
 .sidepane {
