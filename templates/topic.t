@@ -4,7 +4,7 @@
 
 {if $blank_reply_error}
 <div class="error-box" style="margin:8pt 6pt;">
-Enter some text to reply and click the 'Post Reply' button directly below that text.
+Enter some text to reply and click the 'Comment' or 'Reply' button directly below that text.
 </div>
 {/if}
 
@@ -73,7 +73,7 @@ a problem{/if}
         <img src="images/{$topic_head.emotitag_face}.png"
              style="vertical-align:middle;"
              alt="{$topic_head.emotitag_emotion}">{/if}
-      I'm {$topic_head.emotitag_emotion}
+      {if $topic_head.emotitag_emotion}I'm {$topic_head.emotitag_emotion}{/if}
   </p>
   {/if}
 
@@ -224,12 +224,14 @@ official rep {/if}
             </a>
           {/if}
         </div>
-       {if $reply.emotitag_face}
+       {if $reply.emotitag_face || $reply.emotitag_emotion}
        <div>
-        <p><img src="images/{$reply.emotitag_face}.png" 
+        <p>{if $reply.emotitag_face}
+           <img src="images/{$reply.emotitag_face}.png" 
                 alt="{$reply.emotitag_emotion}"
-                class="emotitag_face">
-            {if $reply.emotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
+                class="emotitag_face" />
+           {/if}
+           {if $reply.emotitag_emotion}I'm {$reply.emotitag_emotion}{/if}
         </p>
        </div>
        {/if}
@@ -250,7 +252,7 @@ official rep {/if}
         <input type="hidden" name="topic_id" value="{$topic_head.id}" />
         <input type="hidden" name="parent_id" value="{$reply.sfn_id}" />
         <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
-        <button type="submit">Post reply</button>
+        <button type="submit">Comment</button>
         </form>
       {/if}
     <hr />
