@@ -26,6 +26,10 @@ Your settings could not be saved. Please correct the errors below.
 <strong>Got it!</strong> <br />
 Your Sprinkles site is now hooked into: {$company_url}.
 </div>
+{elseif $settings_saved}
+<div class="message-box">
+Done! Your settings have been saved.
+</div>
 {/if}
 
 {if $new_admins}
@@ -88,6 +92,11 @@ Background color should indicate a color in RGB hex format: #xxx or #XxXxXx
 <td> <input class="admin" name="logo" type="file" /> </td>
 </tr>
 <tr>
+<td class="form-label"> Logo link </td>
+<td> <input class="admin" name="logo_link" value="{$settings.logo_link}" /> </td>
+<td> (By default, the logo will link to the "Help Start" page within Sprinkles.)
+</tr>
+<tr>
 <td class="form-label"> <strong>*Company contact email</strong> </td>
 <td> <input class="admin" name="contact_email" value="{$settings.contact_email}" />
 {if $invalid.contact_email}
@@ -127,7 +136,9 @@ You may not remove yourself as an admin!
 {/foreach}
 {/if}</textarea>
   <p>
-  Comma or space separated. Example: If the person's GS URL is http://getsatisfaction.com/people/scott then just enter <strong>scott</strong> above.
+  Comma or space separated. Example: If the person's GS URL is 
+  http://getsatisfaction.com/people/scott then just enter 
+  <strong>scott</strong> above.
   </p>
 </td>
 </tr>

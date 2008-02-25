@@ -43,6 +43,8 @@ if ($_FILES['logo']['tmp_name']) {
   file_put_contents('logo.png', $logo_data);
 }
 
+$logo_link = request_param('logo_link');  #TBD: validate as URL?
+
 # TBD: additional links
 
 $sprink = new Sprinkles();  # TBD: this is expensive; cheapen!
@@ -81,7 +83,8 @@ if (!$bad_fields) {
          'contact_address = \'' . mysql_real_escape_string($contact_address). '\', ' .
          'map_url = \'' . mysql_real_escape_string($map_url). '\', ' .
          'contact_phone = \'' . mysql_real_escape_string($contact_phone).'\', ' .
-         'configured = \'Y\' ' .
+         'configured = \'Y\', ' .
+         'logo_link = \'' . mysql_real_escape_string($logo_link) . '\' ' .
          ($logo_data ?
            ', logo_data = \'' . mysql_real_escape_string($logo_data) . '\'' : '')
     ;

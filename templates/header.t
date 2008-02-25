@@ -4,7 +4,7 @@
 
 {include file="topnav.t"}
 
-<a href="helpstart.php">
+<a href="{$logo_link}">
 <img class="header-logo" src="logo.php" alt="{ $company_name } Powered by: Satisfaction" />
 </a>
 

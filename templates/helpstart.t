@@ -63,7 +63,7 @@
 <div id="what-satisfaction">
 <h4>Where am I?</h4>
 
-<p> Welcome to Twitter's instant on help center. This service is powered by 
+<p> Welcome to Twitter's Instant-on Help Center. This service is powered by 
 Get Satisfaction (a community that helps people to get the most from the 
 products they use, and where companies are encouraged to get real with their 
 customers). </p>

@@ -584,7 +584,7 @@ class Sprinkles {
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
     # error_log "Getting $url";
 
-    $xml = simplexml_load_file($url);
+    $xml = simplexml_load_file($url);  # FIXME: caching.
     $root_nodes = $xml->xpath("//*[@class='tag']");
     $tags = array();
     if ($root_nodes) {
@@ -988,19 +988,27 @@ class Sprinkles {
   }
   
   function site_logo() {
-    $sql = 'select logo_data '.
-           'from site_settings';
+    $sql = 'select logo_data from site_settings';
     $result = mysql_query($sql);
     list($logo_data) = mysql_fetch_array($result);
     return $logo_data;
+  }
+
+  function site_logo_link() {
+    $sql = 'select logo_link from site_settings';
+    $result = mysql_query($sql);
+    list($logo_link) = mysql_fetch_array($result);
+    return $logo_link;
   }
 
   # add_std_hash_elems takes a Smarty object and sets some common variables 
   # that are used on every page.
   function add_std_hash_elems($smarty) {
     $current_user = $this->current_user();
-    # Standard stash items
-    $smarty->assign(array('background_color' => $this->site_background_color(),
+    $logo_link = $this->site_logo_link();
+    if (!$logo_link) $logo_link = 'helpstart.php';
+    $smarty->assign(array('logo_link' => $logo_link,
+                          'background_color' => $this->site_background_color(),
                           'company_name' => $this->company_name(),
                           'current_user' => $current_user,
                           'user_name' => $current_user['fn'],

@@ -22,7 +22,7 @@ $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
 $sql = "select background_color, contact_email, contact_phone, " . 
-       "contact_address, map_url, faq_type from site_settings";
+       "contact_address, logo_link, map_url, faq_type from site_settings";
 $result = mysql_query($sql);
 
 $settings = mysql_fetch_assoc($result);
@@ -46,6 +46,7 @@ $sprinkles_tagged_topics = take(3, $sprinkles_tagged_topics['topics']);
 
 $smarty->assign('invalid', request_param('invalid'));
 $smarty->assign('errors', request_param('errors'));
+$smarty->assign('settings_saved', request_param('settings_saved'));
 $smarty->assign('hooked_msg', request_param('hooked'));
 $new_admins = request_param('new_admins');
 if ($new_admins)
