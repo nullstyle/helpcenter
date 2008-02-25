@@ -9,13 +9,17 @@ $company_name = $company_hcard["fn"];
 $username = request_param('username');
 if ($username) {
   $user_possessive = $username . "'s";  # FIXME: should use 'fn'
+  $is_self = false;
 } else if ($user_url = request_param('user_url')) {
   $user = $sprink->get_person($user_url);
   $user_possessive = $user['fn'] . "'s";
+  $username = $user['canonical_name'];
+  $is_self = false;
 } else {
   $user = $sprink->current_user();
   $user_possessive = 'your';
   $username = $user['canonical_name'];
+  $is_self = true;
 }
 
 # die($user['canonical_name']);
@@ -39,6 +43,7 @@ $smarty->assign('noncompany_topics', $noncompany_topics);
 $smarty->assign('current_url', 'minidashboard.php');
 $smarty->assign('entries', $entries['topics']);
 $smarty->assign('user_possessive', $user_possessive);
+$smarty->assign('user_is_self', $is_self);
 
 $sprink->add_std_hash_elems($smarty);
 

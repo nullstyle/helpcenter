@@ -81,10 +81,8 @@ a problem{/if}
 
 <td id="topic-summary">
 
-{if $user_name}
 <a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
 <input style="width:120pt;" value="I have this question too!" />
-{/if}
 
 <h3>In this topic</h3>
 <p>

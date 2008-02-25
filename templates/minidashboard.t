@@ -1,6 +1,10 @@
 {include file="header.t"}
 
-<h1>{$user_possessive|capitalize} Recent {$company_name} Discussions</h1>
+<h1>{$user_possessive|capitalize} (Mini) Dashboard
+{if $user_is_self}
+<a href="http://getsatisfaction.com/me">See your full dashboard on Get Satisfaction</a>
+{/if}
+</h1>
 
 {include file="question-box.t"}
 
