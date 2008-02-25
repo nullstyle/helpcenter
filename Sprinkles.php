@@ -158,10 +158,16 @@ function feedTagNS($feed, $ns, $tagName) {  # FIXME: use this.
   return $feed->model->getElementsByTagNameNS($ns, $tagName);
 }
 
+# get_url returns the contents of the given URL, using a DB-backed cache as necessary
+# This function blindly caches everything, regardless of headers and such, so use it
+# only when you don't expect the underlying resource to change during the timeout period.
+# Configure the timeout period in seconds using the $http_cache_timeout global.
 $http_cache_timeout = 3600; # seconds
 
 $cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
 $cache_misses = 0;
+
+$request_timer = 0;
 
 function get_url($url) {
   global $http_cache_timeout;
@@ -180,7 +186,11 @@ function get_url($url) {
     global $cache_misses;
     $cache_misses++;
     error_log("Cache miss; fetching $url");
+	global $request_timer;
+    $request_timer -= microtime(true);
     $content = file_get_contents($url);  # TBD: recognize errors here
+    $request_timer += microtime(true);
+    error_log("Running request timer: " . $request_timer . "s");
     if ($content) {
       if (!mysql_query('insert into http_cache (url, content) values (\'' . 
                   mysql_real_escape_string($url) . '\', \'' . 
@@ -455,7 +465,12 @@ class Sprinkles {
     };
     $topics_feed_url = $this->api_url($url_path);
     try {
-      $feed = new XML_Feed_Parser(file_get_contents($topics_feed_url));
+      global $request_timer;
+      $request_timer -= microtime(true);
+      $feed_raw = file_get_contents($topics_feed_url);
+      $request_timer += microtime(true);
+      error_log("Running request timer: " . $request_timer . "s");
+      $feed = new XML_Feed_Parser($feed_raw);
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
@@ -591,7 +606,12 @@ class Sprinkles {
 
     # error_log "Getting $url";
 
-    $topic_feed = new XML_Feed_Parser(file_get_contents($url));
+	global $request_timer;
+	$request_timer -= microtime(true);
+	$feed_raw = file_get_contents($url);
+	$request_timer += microtime(true);
+	error_log("Running request timer is " . $request_timer . "s");
+    $topic_feed = new XML_Feed_Parser($feed_raw);
 
     if (!$topic_feed) die("Couldn't get topic feed from $url");
 
@@ -786,7 +806,6 @@ class Sprinkles {
     if (!$token) die("Call to open_session with blank token: '$token'");
 # TBD: fetch /me resource and stash its info in the session table.
     setcookie('session_id', $token);
-    error_log("Setting nascent session ID to $token");
     $this->nascent_session_id = $token;
     return $token;
   }
@@ -850,7 +869,11 @@ class Sprinkles {
                          'token_secret' => $creds['token_secret'],
                          'signature_method' => 'HMAC-SHA1',
                          'method' => 'GET'));
+    global $request_timer;
+    $request_timer -= microtime(true);
     $resp = $req->sendRequest(true, true);
+    $request_timer += microtime(true);
+    error_log("Running request timer: " . $request_timer . "s");
     if (!$resp) die("Request to $me_url failed. ");
     if ($req->getResponseCode() == 401)
        die("Request for /me failed to authorize.");
@@ -859,9 +882,7 @@ class Sprinkles {
 
   function current_user_creds() {
     $session_id = $this->nascent_session_id;
-    error_log("session ID after checking nascent is $session_id");
     if (!$session_id) $session_id = $_COOKIE["session_id"];
-    error_log("session ID from cookie is $session_id");
     if (!$session_id) return null;
     # error_log("looking up creds for token $session_id");
 #print "Going to session table.";

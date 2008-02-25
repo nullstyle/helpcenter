@@ -53,6 +53,7 @@ p.tight { margin: 0pt; padding 0pt; }
   padding: 0pt; margin: 0pt; 
   width: 280pt; height:20pt; 
   border: 1px solid gray
+  vertical-align: middle;
 }
 
 div.header { border-bottom: 1px solid gray; }

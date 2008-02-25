@@ -8,6 +8,9 @@ $details = request_param('details');
 $tags = request_param('tags');
 $face = request_param('emoticon');
 $emotion = request_param('emotion');
+$products = request_param('product');
+if (!$products) $products = array();
+$products_commasep = join(',', $products);
 
 $sprink = new Sprinkles();
 
@@ -21,6 +24,7 @@ $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null,
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
                           'topic[keywords]' => $tags,
+#                          'topic[products]' => $products_commasep,  # FIXME: broken.
                           'topic[emotitag][face]' => $face,
                           'topic[emotitag][emotion]' => $emotion
 ));
@@ -32,7 +36,7 @@ try {
 } catch (Exception $e) {
   error_log("Failed to post new topic; response was: " . $req->getResponseCode() . 
             ", body: " . $response_body);
-  throw($e);
+  die("Posting the topic failed.");
 }
 
 if ($topic_feed->id()) {     # FIXME: better error checking here.

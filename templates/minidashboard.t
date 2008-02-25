@@ -1,10 +1,10 @@
 {include file="header.t"}
 
-<h1>Discuss with us</h1>
+<h1>{$user_possessive|capitalize} Recent {$company_name} Discussions</h1>
 
 {include file="question-box.t"}
 
-<h2>{$user_possessive} Recent {$company_name} Discussions</h2>
+<h2>{$user_possessive|capitalize} Recent {$company_name} Discussions</h2>
 
 <table width="100%">
 <tr>

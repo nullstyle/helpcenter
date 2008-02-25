@@ -1,0 +1,1 @@
+Thanks, {$complainant_name}. Your comments have been sent to {$company_name}.
