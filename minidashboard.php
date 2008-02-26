@@ -6,25 +6,26 @@ $sprink = new Sprinkles();
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
-$username = request_param('username');
-if ($username) {
-  $user_possessive = $username . "'s";  # FIXME: should use 'fn'
+$username_canonical = request_param('username');
+if ($username_canonical) {
+  $user = $sprink->get_person($sprink->api_url("people/$username_canonical"));
+  $user_possessive = $user['fn'] . "'s";
   $is_self = false;
 } else if ($user_url = request_param('user_url')) {
   $user = $sprink->get_person($user_url);
   $user_possessive = $user['fn'] . "'s";
-  $username = $user['canonical_name'];
+  $username_canonical = $user['canonical_name'];
   $is_self = false;
 } else {
   $user = $sprink->current_user();
   $user_possessive = 'your';
-  $username = $user['canonical_name'];
+  $username_canonical = $user['canonical_name'];
   $is_self = true;
 }
 
 # die($user['canonical_name']);
 
-$all_topics = $sprink->dashboard_topics($username);
+$all_topics = $sprink->dashboard_topics($username_canonical);
 
 assert($all_topics);
 assert(count($all_topics) > 0);
@@ -42,6 +43,8 @@ $smarty->assign('noncompany_topics', $noncompany_topics);
 
 $smarty->assign('current_url', 'minidashboard.php');
 $smarty->assign('entries', $entries['topics']);
+$smarty->assign('user', $user);
+$smarty->assign('username_canonical', $username_canonical);
 $smarty->assign('user_possessive', $user_possessive);
 $smarty->assign('user_is_self', $is_self);
 

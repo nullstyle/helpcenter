@@ -3,6 +3,8 @@
 <h1>{$user_possessive|capitalize} (Mini) Dashboard
 {if $user_is_self}
 <a href="http://getsatisfaction.com/me">See your full dashboard on Get Satisfaction</a>
+{else}
+<a href="http://getsatisfaction.com/people/{$username_canonical}">See their full dashboard on Get Satisfaction</a>
 {/if}
 </h1>
 
