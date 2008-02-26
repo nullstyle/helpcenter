@@ -4,23 +4,23 @@ require_once('Sprinkles.php');
 require_once('HTTP_Request_Oauth.php');
 
 $sprink = new Sprinkles();
-$consumer_data = $sprink->oauth_consumer_data();
 
+$consumer_data = $sprink->oauth_consumer_data();
 $oauth_req = new HTTP_Request_OAuth(
                    'http://getsatisfaction.com/api/request_token',
-                   array('consumer_key' => $consumer_data['key'], #'lmwjv4kzwi27',
-                         'consumer_secret' => $consumer_data['secret'], # 'fiei6iv61jnoukaq1aylwd8vcmnkafrs',
+                   array('consumer_key' => $consumer_data['key'],
+                         'consumer_secret' => $consumer_data['secret'],
                          'signature_method' => 'HMAC-SHA1',
                          'method' => 'GET'));
 
 $resp = $oauth_req->sendRequest(true, true);
-#dump($oauth_req->getResponseBody());
+
 list($token, $secret) = $oauth_req->getResponseTokenSecret();
 
 if (!$token || !$secret) {
-  die("Failed to fetch OAuth request token from getsatisfaction.com.");
   error_log("Failed to fetch OAuth request token " . 
             "(Result token: '$token'; Token secret: '$token_secret')");
+  die("Failed to fetch OAuth request token from getsatisfaction.com.");
 }
 
 $result = mysql_query('insert into sessions (token, token_secret) values (\''

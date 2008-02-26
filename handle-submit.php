@@ -24,7 +24,7 @@ $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null,
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
                           'topic[keywords]' => $tags,
-#                          'topic[products]' => $products_commasep,  # FIXME: broken.
+                          'topic[products]' => $products_commasep,
                           'topic[emotitag][face]' => $face,
                           'topic[emotitag][emotion]' => $emotion
 ));

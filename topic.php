@@ -13,6 +13,10 @@ $page_num = request_param('page');
 if (!$page_num) { $page_num = 0; }
 
 $topic_id = request_param('id');
+if (!$topic_id) {
+  $sfn_id = request_param('sfn_id');
+  $topic_id = $sprink->api_url("topics/" . $sfn_id);
+}
 if (!$topic_id) die("Internal error: expected id parameter.");
 
 $topic = $sprink->topic($topic_id);
@@ -53,6 +57,10 @@ $smarty->assign(array('company_promoted_replies' => $company_promoted,
                       'star_promoted_replies' => $star_promoted));
 $smarty->assign('flagged_topic', request_param('flagged_topic'));
 $smarty->assign('flagged_reply', request_param('flagged_reply'));
+if (request_param('me_tood_topic'))
+  $smarty->assign('me_tood_topic_msg', true);
+if (request_param('me_too_failed'))
+  $smarty->assign('me_too_failed_error', true);
 if (request_param('no_self_star'))
   $smarty->assign('self_star_error', true);
 if (request_param('blank_reply'))

@@ -8,18 +8,49 @@ Enter some text to reply and click the 'Comment' or 'Reply' button directly belo
 </div>
 {/if}
 
+{if $blank_reply_error}
+<div class="error-box" style="margin:8pt 6pt;">
+We already know that you have this 
+  {if $topic_head.topic_style == 'question'}
+    question!
+  {elseif $topic_head.topic_style == 'idea'}
+    idea!
+  {elseif $topic_head.topic_style == 'talk'}
+    question!
+  {elseif $topic_head.topic_style =='problem'}
+    problem!
+  {/if}
+</div>
+{/if}
+
+{if $me_tood_topic_msg}
+<div class="error-box" style="margin:8pt 6pt;">
+You have this
+  {if $topic_head.topic_style == 'question'}
+    question
+  {elseif $topic_head.topic_style == 'idea'}
+    idea
+  {elseif $topic_head.topic_style == 'talk'}
+    question
+  {elseif $topic_head.topic_style =='problem'}
+    problem
+  {/if}
+too&mdash;got it!
+</div>
+{/if}
+
 {if $self_star_error}
 <div class="error-box" style="margin:8pt 6pt;">
 Note: You cannot mark your own reply as
-{if $topic_head.topic_style == 'question'}
-"answering the question."
-{elseif $topic_head.topic_style == 'idea'}
-"a good point."
-{elseif $topic_head.topic_style == 'talk'}
-"answering the question."
-{elseif $topic_head.topic_style =='problem'}
-"solving the problem."
-{/if}
+  {if $topic_head.topic_style == 'question'}
+    "answering the question."
+  {elseif $topic_head.topic_style == 'idea'}
+    "a good point."
+  {elseif $topic_head.topic_style == 'talk'}
+    "answering the question."
+  {elseif $topic_head.topic_style =='problem'}
+    "solving the problem."
+  {/if}
 </div>
 {/if}
 
@@ -27,11 +58,15 @@ Note: You cannot mark your own reply as
 Hey { $company_name }!
 <h3>
 <strong> { $topic_head.author.name }</strong> has
-{if $topic_head.topic_style == 'question'}
-a question{elseif $topic_head.topic_style == 'idea'}
-an idea{elseif $topic_head.topic_style == 'talk'}
-a question{elseif $topic_head.topic_style == 'problem'}
-a problem{/if}
+  {if $topic_head.topic_style == 'question'}
+    a question
+  {elseif $topic_head.topic_style == 'idea'}
+    an idea
+  {elseif $topic_head.topic_style == 'talk'}
+    a question
+  {elseif $topic_head.topic_style == 'problem'}
+    a problem
+  {/if}
 </h3>
 
 <table style="width: 100%; table-layout: fixed;">
@@ -53,21 +88,23 @@ a problem{/if}
 </div>
 </td>
 
-<td style="margin: 1pc; width: auto; height: 100%;">
+<td style="width: auto;">
+<div style="margin: 3pt;">
 <h3><strong>{ $topic_head.title }</strong></h3>
 
- <p>{ $topic_head.content }</p>
+  <p>{ $topic_head.content }</p>
 
-{if $flagged_topic == $topic_head.sfn_id}
+  {if $flagged_topic == $topic_head.sfn_id}
   <span class="disabled flag-button float-right">
     This is spam
   </span>
-{else}
+  {else}
   <a href="handle-flag.php?type=topic&id={$topic_head.sfn_id|urlencode}&topic_id={$topic_head.id|urlencode}"
      class="flag-button float-right">
     This is spam
   </a>
-{/if}
+  {/if}
+
   {if $topic_head.emotitag_face || $topic_head.emotitag_emotion}
   <p> {if $topic_head.emotitag_face}
         <img src="images/{$topic_head.emotitag_face}.png"
@@ -77,12 +114,15 @@ a problem{/if}
   </p>
   {/if}
 
+</div>
 </td>
 
 <td id="topic-summary">
 
 <a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
-<input style="width:120pt;" value="I have this question too!" />
+<form action="handle-me-too.php">
+<button name="sfn_id" value="{$topic_head.sfn_id}">I have this question too!</button>
+</form>
 
 <h3>In this topic</h3>
 <p>

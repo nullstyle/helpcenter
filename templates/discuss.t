@@ -7,13 +7,17 @@
 <a href="discuss.php">Return to all Discussions about all products &amp; services</a>
 <table width="100%">
 <tr>
-<td><img style="vertical-align: top; float: left;" src="{$filter_product.image}" /> {$filter_product.description}</td>
+<td><img style="vertical-align: top; float: left;" src="{$filter_product.image}" />
+  {$filter_product.description}
+</td>
+{if $filter_product.tags}
 <td>Product Tags</td>
 <td class="tag-box">
     {foreach from=$filter_product.tags item=tag}
     <a href="{discuss_tag_url tag=$tag}">{$tag}</a>{if !$smarty.foreach.tag.last},{/if}
     {/foreach}
 </td>
+{/if}
 </tr>
 </table>
 {else}

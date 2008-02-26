@@ -79,7 +79,7 @@ OR fill in the details below and submit your topic
               var emoticonElem = document.getElementById('emoticon');
               emoticonElem.value=event.target.id">
 <input id="emoticon" type="hidden" name="emoticon" value="" />
-<img id="happy" src="images/happy.png" onsrc="images/happy_on.png" style="vertical-align:middle;" />
+<img id="happy" src="images/happy.png" style="vertical-align:middle;" />
 <img id="sad" src="images/sad.png" style="vertical-align:middle;" />
 <img id="indifferent" src="images/indifferent.png" style="vertical-align:middle;" />
 <img id="silly" src="images/silly.png" style="vertical-align:middle;" />
@@ -111,7 +111,7 @@ help people find your topic and get you good responses.
 <h4>Associate products & services</h4>
 <ul class="tight">
 {foreach from=$products key=i item=product}
-<li><label><input type="checkbox" name="product[]" value="{$product.sfn_id}" /> {$product.name}</label></li>
+<li><label><input type="checkbox" name="product[]" value="{$product.name}" /> {$product.name}</label></li>
 {/foreach}
 </ul>
 </div>

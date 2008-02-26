@@ -609,6 +609,7 @@ class Sprinkles {
 	global $request_timer;
 	$request_timer -= microtime(true);
 	$feed_raw = file_get_contents($url);
+	if (!$feed_raw) die("Failed to load topic at $url.");
 	$request_timer += microtime(true);
 	error_log("Running request timer is " . $request_timer . "s");
     $topic_feed = new XML_Feed_Parser($feed_raw);

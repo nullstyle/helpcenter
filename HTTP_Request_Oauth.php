@@ -263,6 +263,7 @@
 
             # error_log("Signing $signed_string");
             
+#dump($this);
             $oauth_parameters['oauth_signature'] = 
                 	$this->signature_method == 'md5' ?
                                 HTTP_Request_OAuth::_md5($signed_string,
