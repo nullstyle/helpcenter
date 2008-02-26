@@ -1,5 +1,5 @@
 {* Smarty *}
 
 {foreach from=$suggested_topics key=i item=topic}
-<li>{$topic.title}</li>
+<li><a href="topic.php?id={$topic.id}">{$topic.title}</a></li>
 {/foreach}
