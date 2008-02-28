@@ -55,7 +55,9 @@ OR fill in the details below and submit your topic
 </p>
 {/if}
 
-<form id="invisible-redo-form" style="display: none; width: 100%; position: relative;" action="submit.php">
+<form id="invisible-redo-form" style="display: none; width: 100%; position: relative;"
+      method="POST"
+      action="submit.php">
 <input id="invisible-redo-field" name="subject" />
 </form>
 
@@ -111,16 +113,18 @@ help people find your topic and get you good responses.
 <h4>Associate products & services</h4>
 <ul class="tight">
 {foreach from=$products key=i item=product}
-<li><label><input type="checkbox" name="product[]" value="{$product.name}" /> {$product.name}</label></li>
+<li><label><input type="checkbox" name="product[]" value="{$product.name}" />
+    {$product.name}</label>
+</li>
 {/foreach}
 </ul>
 </div>
 
-<h1 style="margin-top: 1pc;">Done? Submit your topic as one of these four types (xxxTBD): </h1>
-<button type="submit">Ask as a Question</button>
-<button type="submit">Share as an Idea</button>
-<button type="submit">Report as a Problem</button>
-<button type="submit">Just Talk</button>
+<h1 style="margin-top: 1pc;">Done? Submit your topic as one of these four types: </h1>
+<button type="submit" name="style" value="question">Ask as a Question</button>
+<button type="submit" name="style" value="idea">Share as an Idea</button>
+<button type="submit" name="style" value="problem">Report as a Problem</button>
+<button type="submit" name="style" value="talk">Just Talk</button>
 
 </form>
 

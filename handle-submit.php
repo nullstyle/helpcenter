@@ -8,6 +8,7 @@ $details = request_param('details');
 $tags = request_param('tags');
 $face = request_param('emoticon');
 $emotion = request_param('emotion');
+$style = request_param('style');
 $products = request_param('product');
 if (!$products) $products = array();
 $products_commasep = join(',', $products);
@@ -23,6 +24,7 @@ $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null,
                               # safeguard for now; FIXME when we go live
                           'topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,
+                          'topic[style]' => $style,
                           'topic[keywords]' => $tags,
                           'topic[products]' => $products_commasep,
                           'topic[emotitag][face]' => $face,
