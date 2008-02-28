@@ -146,9 +146,10 @@ function request_param($name) {
   } else if ($_POST[$name]) {
     $result = $_POST[$name];
   }
+  global $needs_unbollocks;
   # Versions before 6 do an unwarranted backslashing of request parameters;
   # Here we reverse that so we get the real data.
-  if ($needs_unbollocks)
+  if ($needs_unbollocks && get_magic_quotes_gpc())
     return unbollocks($result);
   else
     return $result;
