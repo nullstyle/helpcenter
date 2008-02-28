@@ -847,7 +847,7 @@ class Sprinkles {
     if ($req->getResponseCode() == 401) {
       error_log("Got response from API: " . $req->getResponseBody());
       # The session was no good; close it so the user can create a new one on next login
-      close_session($creds['token']);
+      $this->close_session($creds['token']);
       die("$method request for $url failed to authorize."); # FIXME: give the user an error page
     }
     return $req;    
