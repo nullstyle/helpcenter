@@ -26,7 +26,7 @@ $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null,
                           'topic[keywords]' => $tags,
                           'topic[products]' => $products_commasep,
                           'topic[emotitag][face]' => $face,
-                          'topic[emotitag][emotion]' => $emotion
+                          'topic[emotitag][feeling]' => $emotion
 ));
 
 $response_body = $req->getResponseBody();
