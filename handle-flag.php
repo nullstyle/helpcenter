@@ -36,7 +36,7 @@ $params = $type == 'topic' ? array('topic_id' => $id)
         : ($type == 'reply' ? array('reply_id' => $id)
         :  '');
 
-$creds = $sprink->current_user_creds();
+$creds = $sprink->current_user_session();
 if (!$creds) die("not logged in");  # FIXME
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, $params);

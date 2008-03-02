@@ -31,6 +31,7 @@ $filter_tag_arg = $filter_tag ? '&' ."tag=" . $filter_tag : '';
 $topics = $sprink->topics($topic_filters);
 $topic_count = count($topics['topics']);
 $topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
+$sprink->resolve_authors($topics['topics']);
 
 $top_topic_tags = take($max_top_topic_tags, 
                        $sprink->tags('http://api.getsatisfaction.com/companies/' . 

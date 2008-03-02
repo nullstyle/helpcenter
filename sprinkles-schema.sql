@@ -37,6 +37,10 @@ CREATE TABLE `sessions` (
   `token` varchar(32) default NULL,
   `token_secret` varchar(128) default NULL,
   `username` varchar(255) default NULL,
+  `user_url` varchar(1024) default NULL,
+  `user_photo` varchar(1024) default NULL,
+  `user_fn` varchar(64) default NULL,
+  `user_sprinkles_admin` varchar(1) default NULL,
   `modified_on` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

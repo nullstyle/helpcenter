@@ -14,7 +14,7 @@ error_log("Using $POST_URL to star $id");
 $params = array();
 $params = array('reply_id' => $id);
 
-$creds = $sprink->current_user_creds();
+$creds = $sprink->current_user_session();
 if (!$creds) die("not logged in");      # FIXME
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, $params);

@@ -344,14 +344,7 @@ class Sprinkles {
     $item['author'] = array();
     $item['author']['name'] = $entry->author();
     $item['author']['uri'] = $entry->author(0, array('param' => 'uri'));
-    $person = $this->get_person($item["author"]["uri"]);
-    list($person['role'], $person['role_name']) = 
-                                $this->get_person_role($item["author"]["uri"]);
-    if ($person) {
-      foreach ($person as $key => $value) {
-        $item['author'][$key] = $value;
-      }
-    }
+
     $item['updated'] = $entry->updated;
     $item['updated_relative'] = ago($entry->updated, time());
     $item['updated_formatted'] = strftime("%B %e, %y", $entry->updated);
@@ -472,6 +465,7 @@ class Sprinkles {
       $feed_raw = file_get_contents($topics_feed_url);
       $request_timer += microtime(true);
       error_log("Running request timer: " . $request_timer . "s");
+      
       $feed = new XML_Feed_Parser($feed_raw);
       $topics = array();
       foreach ($feed as $entry) {
@@ -570,15 +564,39 @@ class Sprinkles {
     return $result;
   }
 
+  # resolve_authors adds person data to each item in a feed; it expects to
+  # find an 'author' element having a 'uri' property and will use get_person 
+  # and get_person_role to fetch further data about that person. The information
+  # fetched will be added to the author element, rather than replacing it.
+  # This is done in place, on the array passed in. There is no return value.
+  function resolve_authors(&$items) {
+    foreach ($items as &$item) {
+      $this->resolve_author($item);
+    }
+    return null;
+  }
+
+  function resolve_author(&$item) {
+    $person = $this->get_person($item["author"]["uri"]);
+    list($person['role'], $person['role_name']) = 
+                                $this->get_person_role($item["author"]["uri"]);
+    if ($person)
+      foreach ($person as $key => $value)
+        $item['author'][$key] = $value;
+    return null;
+  }
+
   # resolve_companies adds company data to each item in a feed; it expects to
   # find a company_url and it populated the item with the vCard data found at 
-  # that URL.
-# TBD: Port this to other elements that require fetching external resources.
+  # that URL. This is done in place, on the array passed in. There is no return 
+  # value.
+
   function resolve_companies(&$feed) {
     foreach ($feed as &$item) {
       if ($item['company_url'])
         $item['company'] = $this->company_hcard($item['company_url']);
     }
+    return null;
   }
 
   # tags returns a list of tags as found at the given URL.
@@ -859,12 +877,10 @@ class Sprinkles {
    # credentials, and that resource contains a vCard for the user with those
    # credentials.
 #FIXME: how do we signal error?
+
   function get_me_resource($creds) {
     require_once('HTTP_Request_Oauth.php');
     $me_url = $this->api_url('me');
-#     error_log("Getting /me with OAuth. Token: " . 
-#                 $creds['token'] . " " . 
-#                 $creds['token_secret']);
     $consumer_data = $this->oauth_consumer_data();
     $req = new HTTP_Request_Oauth($me_url,
                    array('consumer_key' => $consumer_data['key'],
@@ -885,23 +901,28 @@ class Sprinkles {
     return $this->get_person_from_string($req->getResponseBody());
   }
 
-  function current_user_creds() {
+  function current_user_session() {
     $session_id = $this->nascent_session_id;
     if (!$session_id) $session_id = $_COOKIE["session_id"];
     if (!$session_id) return null;
     # error_log("looking up creds for token $session_id");
 #print "Going to session table.";
 #    dump($session_id);
-    $sql = "select username,token,token_secret from sessions where token='". 
-           $session_id . "'";
+    $sql = "select token,token_secret, username, user_url, user_photo, user_fn " .
+           "from sessions where token='". $session_id . "'";
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
     # error_log("got " . $cols[1] . " " . $cols[2]);
-    if (!$cols) { setcookie('session_id', ''); return null; } # Cookie session was not in DB; clear it
-    return array('username' => $cols[0],
-                 'token' => $cols[1],
-                 'token_secret' => $cols[2]);
+    if (!$cols) {  # Cookie session was not in DB; clear it.
+      setcookie('session_id', ''); return null;
+    }
+    return array('token' => $cols[0],
+                 'token_secret' => $cols[1],
+                 'username' => $cols[2],
+                 'user_url' => $cols[3],
+                 'user_photo' => $cols[4],
+                 'user_fn' => $cols[5]);
   }
   
   # current_user returns the vCard of the currently logged-in user. If it needs to
@@ -909,24 +930,39 @@ class Sprinkles {
   # The returned vCard also contains a boolean field 'sprinkles_admin' indicating
   # whether this user has the privilege to administer this Sprinkles installation.
   function current_user() {
-    $creds = $this->current_user_creds();
-    if (!$creds || !$creds['token'] || !$creds['token_secret']) return null;
-    $username = $creds['username'];
-#    if (!$username) {  # FIXME: store the whole /me resource in the database, use it here.
-      $me_person = $this->get_me_resource($creds);
+    $session = $this->current_user_session();
+    if (!$session || !$session['token'] || !$session['token_secret']) return null;
+    $username = $session['username'];
+    if (!$username) {
+      # We don't have any user data for the current user, we need to fetch it.
+      $me_person = $this->get_me_resource($session);
 	  if (!$me_person) return null;
 	  $username = $me_person['canonical_name'];
 	  if (!$username) die("Current user had no canonical_name");
-	  $result = mysql_query("update sessions set username = '" . $username
-	  					  . "' where token = '" . $creds['token'] . "'");
-	  if (!$result) die("Failed to store current user's name in database.");
-	
 	  $query = mysql_query("select * from admins where username = '" .
                            $me_person['canonical_name'] . "'");
       if ($row = mysql_fetch_array($query))
         $me_person['sprinkles_admin'] = true;
-#    }
-#    dump($me_person);
+      $sql = "update sessions set" . 
+	         " username = '" . $username . "'," . 
+	         " user_url = '" . $me_person['url'] . "'," . 
+	         " user_photo = '" . $me_person['photo'] . "'," . 
+	         " user_fn = '" . $me_person['fn'] . "'," . 
+	         " user_sprinkles_admin = '" . ($me_person['sprinkles_admin'] ? 'Y' : 'N') . "'" . 
+	  		 " where token = '" . $session['token'] . "'";
+#      error_log("Storing /me resource. $sql");			    
+	  $result = mysql_query($sql);
+	  if (!$result) die("Failed to cache current user data in database.");
+    } else {
+      error_log("Returning current user from database cache.");
+      $me_person = array('canonical_name' => $session['username'],
+                         'fn' => $session['user_fn'],
+                         'url' => $session['user_url'],
+                         'photo' => $session['user_photo'],
+                         'sprinkles_admin' => $session['user_sprinkles_admin'],
+                         );
+    }
+
     return $me_person;
   }
   

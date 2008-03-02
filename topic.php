@@ -30,6 +30,9 @@ $topic['replies'] = take_range($page_num * $page_limit,
                                $topic['replies']);
 $topic['replies'] = $sprink->flatten_threads($topic['replies']);
 
+$sprink->resolve_author($topic_head);
+$sprink->resolve_authors($topic['replies']);
+
 $related_topics = $sprink->topics(array('related' => $topic_id,
                                         'notags' => true # (speeds things up)
                                         ));

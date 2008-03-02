@@ -18,7 +18,7 @@ $params = array('reply[content]' => $content);
 if ($parent_id = request_param('parent_id'))
   $params['reply[parent_id]'] = $parent_id;
 
-$creds = $sprink->current_user_creds();
+$creds = $sprink->current_user_session();
 $req = $sprink->oauthed_request('POST', $reply_url, $creds, null, $params);
 
 if (201 != ($responseCode = $req->getResponseCode())) {

@@ -13,7 +13,7 @@ $POST_URL = $sprink->api_url("topics/" . $sfn_id . "/me_toos");
 
 # error_log("Using $POST_URL to me-too $sfn_id");
 
-$creds = $sprink->current_user_creds();
+$creds = $sprink->current_user_session();
 if (!$creds) die("You are not logged in.");  # FIXME
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, array());

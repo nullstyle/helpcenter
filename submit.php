@@ -9,6 +9,8 @@ $suggested = $sprink->topics(array('query' => $subject,
 
 $suggested = take($submit_suggestions, $suggested['topics']);
 
+$sprink->resolve_authors($suggested);
+
 $smarty->assign('subject', $subject);
 $smarty->assign('suggested', $suggested);
 $products = $sprink->products();
