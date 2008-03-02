@@ -4,6 +4,9 @@ require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
 
+if (!$sprink->current_user())
+  die("Please log in to share this topic.");
+  
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
@@ -19,7 +22,7 @@ $sprink->add_std_hash_elems($smarty);
 $smarty->assign('topic_head', $topic_head);
 $smarty->assign('topic_id', $topic_id);
 
-$smarty->assign('current_url', 'share-topic.php');
+$smarty->assign('current_url', 'share-topic.php?id=' . $topic_id);
 
 $smarty->display('share-topic.t');
 

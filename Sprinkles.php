@@ -468,6 +468,7 @@ class Sprinkles {
     try {
       global $request_timer;
       $request_timer -= microtime(true);
+      error_log("Fetching $topics_feed_url");
       $feed_raw = file_get_contents($topics_feed_url);
       $request_timer += microtime(true);
       error_log("Running request timer: " . $request_timer . "s");
@@ -607,12 +608,13 @@ class Sprinkles {
 
     # error_log "Getting $url";
 
-	global $request_timer;
-	$request_timer -= microtime(true);
-	$feed_raw = file_get_contents($url);
-	if (!$feed_raw) die("Failed to load topic at $url.");
-	$request_timer += microtime(true);
-	error_log("Running request timer is " . $request_timer . "s");
+    global $request_timer;
+    $request_timer -= microtime(true);
+    error_log("Fetching $url");
+    $feed_raw = file_get_contents($url);
+    if (!$feed_raw) die("Failed to load topic at $url.");
+    $request_timer += microtime(true);
+    error_log("Running request timer is " . $request_timer . "s");
     $topic_feed = new XML_Feed_Parser($feed_raw);
 
     if (!$topic_feed) die("Couldn't get topic feed from $url");
@@ -871,6 +873,7 @@ class Sprinkles {
                          'token_secret' => $creds['token_secret'],
                          'signature_method' => 'HMAC-SHA1',
                          'method' => 'GET'));
+    error_log("Fetching $me_url");
     global $request_timer;
     $request_timer -= microtime(true);
     $resp = $req->sendRequest(true, true);

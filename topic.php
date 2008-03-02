@@ -57,6 +57,10 @@ $smarty->assign(array('company_promoted_replies' => $company_promoted,
                       'star_promoted_replies' => $star_promoted));
 $smarty->assign('flagged_topic', request_param('flagged_topic'));
 $smarty->assign('flagged_reply', request_param('flagged_reply'));
+if (request_param('shared_with'))
+  $smarty->assign('shared_with', explode(',', request_param('shared_with')));
+if (request_param('share_failed'))
+  $smarty->assign('share_failed_msg', true);
 if (request_param('me_tood_topic'))
   $smarty->assign('me_tood_topic_msg', true);
 if (request_param('me_too_failed'))

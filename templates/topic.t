@@ -23,8 +23,24 @@ We already know that you have this
 </div>
 {/if}
 
-{if $me_tood_topic_msg}
+{if $shared_with}
+<div class="message-box" style="margin:8pt 6pt;">
+You've shared this topic with
+{foreach from=$shared_with key=i item=email}{if $i != 0}, {/if}
+{$email}{/foreach}.
+</div>
+{/if}
+
+{if $share_failed_msg}
 <div class="error-box" style="margin:8pt 6pt;">
+Oops! Something went wrong while trying to share this topic with
+{foreach from=$shared_with key=i item=email}{if $i != 0}, {/if}
+{$email}{/foreach}.
+</div>
+{/if}
+
+{if $me_tood_topic_msg}
+<div class="message-box" style="margin:8pt 6pt;">
 You have this
   {if $topic_head.topic_style == 'question'}
     question

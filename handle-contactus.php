@@ -5,7 +5,7 @@ require_once('Sprinkles.php');
 $sprink = new Sprinkles();
 
 $from = request_param('email');
-$from = preg_replace('/\n.*$/', ' ', $from);   # Sanitize this as it'll go verbatim in the SMTP headers
+$from = preg_replace('/\n.*$/', ' ', $from);   # Sanitizes $from; it'll go verbatim in the SMTP headers
 
 $message = request_param('name') . 
            ' reported a problem in the Get Satisfaction Instant On Help Center at ' . 
