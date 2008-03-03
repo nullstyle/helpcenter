@@ -798,10 +798,9 @@ class Sprinkles {
     $company_topics = array();
     $noncompany_topics = array();
     $company_hcard = $this->company_hcard();
-    $company_sfnid = $company_hcard['url'];
+    $company_urls = $company_hcard['url'];
     foreach ($topics as $topic) {
-      # BUG: company_urls are not normalized.
-      if ($topic['company_url'] == $company_sfnid) {
+      if (member($topic['company_url'], $company_urls)) {
         array_push($company_topics, $topic);
       } else {
         array_push($noncompany_topics, $topic);
@@ -950,11 +949,9 @@ class Sprinkles {
 	         " user_fn = '" . $me_person['fn'] . "'," . 
 	         " user_sprinkles_admin = '" . ($me_person['sprinkles_admin'] ? 'Y' : 'N') . "'" . 
 	  		 " where token = '" . $session['token'] . "'";
-#      error_log("Storing /me resource. $sql");			    
 	  $result = mysql_query($sql);
 	  if (!$result) die("Failed to cache current user data in database.");
     } else {
-      error_log("Returning current user from database cache.");
       $me_person = array('canonical_name' => $session['username'],
                          'fn' => $session['user_fn'],
                          'url' => $session['user_url'],
