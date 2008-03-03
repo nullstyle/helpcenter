@@ -371,7 +371,7 @@ class Sprinkles {
 #}
 
     $in_reply_to_elem = 
-                    $entry->model->getElementsByTagName('in-reply-to')->item(0);
+                   $entry->model->getElementsByTagName('in-reply-to')->item(0);
     if ($in_reply_to_elem)
       $item['in_reply_to'] = $in_reply_to_elem->nodeValue;
     global $xml_sfn_ns;
@@ -470,11 +470,11 @@ class Sprinkles {
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
-        # use 'notags' for a faster response;
-        # TBD use the 'resolve' method
+        # HINT: use 'notags' for a faster response;
+        # TBD use the 'resolve' technique
         if (!$options['notags']) {
           $topic_tags_url = $topic['id'] . '/tags';
-          $topic['tags'] = $this->tags($topic_tags_url);
+          $topic['tags'] = preg_split('/, */', sfn_element_value($entry, 'tags'));
         }
         array_push($topics, $topic);
       }
