@@ -40,7 +40,6 @@ $map_url = request_param('map_url');
 
 if ($_FILES['logo']['tmp_name']) {
   $logo_data = file_get_contents($_FILES['logo']['tmp_name']);
-  file_put_contents('logo.png', $logo_data);
 }
 
 $logo_link = request_param('logo_link');  #TBD: validate as URL?
