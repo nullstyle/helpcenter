@@ -120,7 +120,14 @@ Contact email must be a valid email address.
 </tr>
 <tr>
 <td class="form-label"> Add another link </td>
-<td> xxx </td>
+<td> 
+{foreach from=$site_links key=i item=link}
+    Text: <input name="link_text[]" value="{$link.text}" /> <br />
+     URL: <input name="link_url[]" value="{$link.url}" /> <br />
+{/foreach}
+    Text: <input name="link_text[]" /> <br />
+     URL: <input name="link_url[]" />
+</td>
 </tr>
 <tr>
 <td class="form-label"> Add additional admin </td>

@@ -59,6 +59,8 @@ $smarty->assign('reply_url', $reply_url);
 $smarty->assign(array('company_promoted_replies' => $company_promoted,
                       'star_promoted_replies' => $star_promoted));
 $smarty->assign('flagged_topic', request_param('flagged_topic'));
+$smarty->assign('own_topic', $topic_head['author']['canonical_name']
+                             == $sprink->current_username());
 $smarty->assign('flagged_reply', request_param('flagged_reply'));
 if (request_param('shared_with'))
   $smarty->assign('shared_with', explode(',', request_param('shared_with')));

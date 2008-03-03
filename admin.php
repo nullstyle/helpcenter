@@ -44,6 +44,9 @@ $smarty->assign('company_url', $company_hcard['url']);
 $sprinkles_tagged_topics = $sprink->topics(array('tag' => 'sprinkles'));
 $sprinkles_tagged_topics = take(3, $sprinkles_tagged_topics['topics']);
 
+$site_links = $sprink->site_links();
+$smarty->assign('site_links', $site_links);
+
 $smarty->assign('invalid', request_param('invalid'));
 $smarty->assign('errors', request_param('errors'));
 $smarty->assign('settings_saved', request_param('settings_saved'));

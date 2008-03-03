@@ -1025,6 +1025,21 @@ class Sprinkles {
     return $this->oauth_consumer_data;
   }
   
+  function site_links() {
+    $query = mysql_query('select text, url from site_links');
+    $result = array();
+    while ($row = mysql_fetch_row($query))
+      array_push($result, array('text' => $row[0], 'url' => $row[1]));
+    return $result;
+  }
+
+  function set_site_links($links) {
+    mysql_query('delete from site_links');
+    foreach ($links as $link) 
+      mysql_query('insert into site_links (text, url) values (\'' . $link['text'] . '\', ' .
+                  '\'' . $link['url'] . '\')');
+  }
+  
   function site_logo() {
     $sql = 'select logo_data from site_settings';
     $result = mysql_query($sql);

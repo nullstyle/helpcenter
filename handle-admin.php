@@ -72,10 +72,24 @@ else {
   $new_admins = array_diff($admin_users, $existing_admin_usernames);
 }
 
+# TBD: Validate site links?
+
 if (!$bad_fields) {
+
   ## Save the settings
-  # FIXME: not finished
-  # FIXME: needs encoding.
+
+  # Save the site links.
+  $urls = request_param('link_url');
+  $texts = request_param('link_text');
+  $links = array();
+  foreach ($urls as $url) {
+    $text = array_shift($texts);
+    if ($url || $text) {
+      array_push($links, array('url' => $url, 'text' => $text));
+    }
+  }
+  $sprink->set_site_links($links);
+
   $sql = 'update site_settings set ' . 
          'background_color = \'' . mysql_real_escape_string($background_color). '\', ' .
          'contact_email = \'' . mysql_real_escape_string($contact_email). '\', ' .

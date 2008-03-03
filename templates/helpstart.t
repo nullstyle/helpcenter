@@ -5,7 +5,7 @@
 {include file="question-box.t"}
 
 {if $contact_info.contact_phone || $contact_info.contact_email
- || $contact_info.contact_address || $contact_info.map_url}
+ || $contact_info.contact_address || $contact_info.map_url || $site_links}
 <div class="sidepane">
 <div class="sidebar">
   <h2>Our Contact info</h2>
@@ -24,6 +24,14 @@
   {$contact_info.contact_address}
   {$contact_info.map_url}
 {/if}
+
+<h3>Links</h3>
+<ul>
+{foreach from=$site_links key=i item=link}
+<li><a href="{$link.url}">{$link.text}</a></li>
+{/foreach}
+</ul>
+
 </div>
 </div>
 {/if}
@@ -63,10 +71,12 @@
 <div id="what-satisfaction">
 <h4>Where am I?</h4>
 
-<p> Welcome to Twitter's Instant-on Help Center. This service is powered by 
+<p>
+Welcome to Twitter's Instant-on Help Center. This service is powered by 
 Get Satisfaction (a community that helps people to get the most from the 
 products they use, and where companies are encouraged to get real with their 
-customers). </p>
+customers).
+</p>
 </div>
 
 {include file="footer.t"}

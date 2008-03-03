@@ -1,27 +1,23 @@
 {include file="header.t"}
 
-<h1>Login OR Sign Up</h1>
-
-<table width="100%">
-<tr>
-<td>
-
-<a href="handle-user-login.php?return={$return|urlencode}">Log in at getsatisfaction.com</a>.
-
-</td>
-<td>
-<div id="what-satisfaction" style="width: 250pt;">
-<h5>What is Satisfaction anywho?</h5>
-
-<p>Satisfaction is an open discussion-based system providing better
-customer service, with or without company involvement. Right now
-you're using an extension of the Satisfaction parent site. This is
-just one tiny branch off a whole forest of customer service <a
-href="http://www.getsatisfaction.com/">Satisfaction</a>.
+<p>
+<strong>
+To log in to your dashboard, go to Get Satisfaction and sign in or sign up.
+</strong>
 </p>
-</div>
-</td>
-</tr>
-</table>
+
+<p>
+<a href="handle-user-login.php?return={$return|urlencode}">Log in at getsatisfaction.com</a>.
+</p>
+
+<p>
+<strong>This site site is powered by Get Satisfaction.</strong> To gain 
+access to all the functions, including your personalized dashboard, you'll 
+need a Get Satisfaction account if you don't already have one.
+Don't worry! Sign up takes less than a minute, and we promise never to spam 
+you or share your information without your authorization. Once you're logged
+in, we'll also ask you to authorize your account for this site, so you never
+have to see this message again.
+</p>
 
 {include file="footer.t"}

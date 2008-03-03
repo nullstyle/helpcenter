@@ -136,9 +136,15 @@ Hey { $company_name }!
 <td id="topic-summary">
 
 <a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
+{if $own_topic}
+<div>
+You asked this question
+</div>
+{else}
 <form action="handle-me-too.php">
 <button name="sfn_id" value="{$topic_head.sfn_id}">I have this question too!</button>
 </form>
+{/if}
 
 <h3>In this topic</h3>
 <p>
@@ -227,7 +233,7 @@ official rep {/if}
 <div style="padding: 0pt 8pt;">
 
 {if !$user_name}
-  <h2><a href="handle-user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">
+  <h2><a href="user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">
     Login to reply</a>
   </h2>
 {/if}
@@ -294,7 +300,7 @@ official rep {/if}
     {if $reply.thread_end}
       {if !$user_name}
         <div style="clear:both; margin-top:4pt; font-weight:bold;">
-        <a href="handle-user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">
+        <a href="user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">
          Login to comment
         </a></div>
       {else}
