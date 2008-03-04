@@ -3,7 +3,7 @@
 <h3>Related Topics from across Satisfaction:</h3>
 <ul>
 {foreach from=$related_topics key=i item=topic}
-<li>{$topic.title} in <strong>{$topic.company.fn}</strong></li>
+<li><a href="{$topic.at_sfn}">{$topic.title}</a> in <strong>{$topic.company.fn}</strong></li>
 {/foreach}
 </ul>
 </div>

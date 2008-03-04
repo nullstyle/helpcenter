@@ -353,10 +353,17 @@ class Sprinkles {
     $item['published_relative'] = ago($entry->published, time());
     $item['published_formatted'] = strftime("%B %e, %y", $entry->published);
 
+    # TBD: refactor these
     $link_elems = $entry->model->getElementsByTagName('link');
     foreach ($link_elems as $link_elem) {
       if ($link_elem->getAttribute('rel') == 'company')
 	    $item['company_url'] = $link_elem->getAttribute('href');
+    }
+
+    $link_elems = $entry->model->getElementsByTagName('link');
+    foreach ($link_elems as $link_elem) {
+      if ($link_elem->getAttribute('rel') == 'topic_at_sfn')
+	    $item['at_sfn'] = $link_elem->getAttribute('href');
     }
 
 # TBD: Get link/@rel=replies content.
