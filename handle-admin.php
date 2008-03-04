@@ -38,8 +38,13 @@ $contact_address = request_param('contact_address');
 
 $map_url = request_param('map_url');
 
+if ($_FILES['logo']['name'] && !$_FILES['logo']['tmp_name'])
+  die('Failed upload. Too large?');
+
 if ($_FILES['logo']['tmp_name']) {
   $logo_data = file_get_contents($_FILES['logo']['tmp_name']);
+  if (length($logo_data) > $max_logo_size)
+    die('The logo was too large; please try a smaller logo');    # FIXME: user-friendly error.
 }
 
 $logo_link = request_param('logo_link');  #TBD: validate as URL?

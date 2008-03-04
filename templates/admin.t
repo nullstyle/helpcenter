@@ -90,6 +90,7 @@ Background color should indicate a color in RGB hex format: #xxx or #XxXxXx
 <tr>
 <td class="form-label"> <strong>*Your logo</strong> </td>
 <td> <input class="admin" name="logo" type="file" /> </td>
+<td>(Max. size 64K)</td>
 </tr>
 <tr>
 <td class="form-label"> Logo link </td>

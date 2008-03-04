@@ -24,7 +24,10 @@ $company_name = $company_hcard["fn"];
 $sql = "select background_color, contact_email, contact_phone, " . 
        "contact_address, logo_link, map_url, faq_type from site_settings";
 $result = mysql_query($sql);
-
+if (!$result) {
+  error_log("Failed fetching site settings with $sql");
+  die("Failed to fetch site settings from database.");
+}
 $settings = mysql_fetch_assoc($result);
 
 $smarty->assign('admin_users', $admin_users);

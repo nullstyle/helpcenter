@@ -123,6 +123,12 @@ function dump($obj) {
   print("</pre>");
 }
 
+function dump_xml($xml) {
+  $temp = $xml->saveXML();
+  $temp = preg_replace('/</', '&lt;', $temp);
+  dump($temp);
+}
+
 function unbollocks($str) {  ## CURSE CURSE CURSE
   ## unencodes strings that are needlessly encoded by default in PHP < 6.0
   return preg_replace(array("/\\\\'/", "/\\\\\\\\/", "/\\\\0/"),
@@ -394,7 +400,6 @@ class Sprinkles {
     $item['flag_count'] = sfn_element_value($entry, 'flag_count');
 
     $emotitag_elem = sfn_element($entry, 'emotitag');
-	#dump($emotitag_elem->nodeValue);
     if ($emotitag_elem) {
       $item['emotitag_face'] = $emotitag_elem->getAttribute('face');
       $item['emotitag_severity'] = $emotitag_elem->getAttribute('severity');
@@ -415,11 +420,11 @@ class Sprinkles {
     global $xml_opensearch_ns;
     if ($total_results_elem = $feed->model->getElementsByTagNameNS(
                                           $xml_opensearch_ns,
-                                          'totalresults')) {
+                                          'totalresults'))
       $result['all'] = $total_results_elem->nodeValue;
-    }
-    $result['ideas'] = sfn_element_value($feed, 'idea_count');
+
     $result['talk'] = sfn_element_value($feed, 'talk_count');
+    $result['ideas'] = sfn_element_value($feed, 'idea_count');
     $result['problems'] = sfn_element_value($feed, 'problem_count');
     $result['questions'] = sfn_element_value($feed, 'question_count');
     $result['unanswered'] = sfn_element_value($feed, 'unanswered_count');
@@ -454,6 +459,14 @@ class Sprinkles {
       if ($options['query'])
         $url_path .= '?query=' . urlencode($options['query']);
     }
+    
+    # The above options determine a "primary" feed, which is then filtered by 
+    # topic style or some other criteria, such as the "unanswered" property.
+    # The primary feed has information that we need, though (particularly the
+    # topic totals by style, which should not be filtered to one particular
+    # style). Thus we store the URL determined by the above options.
+    $primary_feed_url = $this->api_url($url_path);
+    
     $url_path .= '?';
     if ($options['style']) {
       if ($options['style'] == 'unanswered')
@@ -469,11 +482,11 @@ class Sprinkles {
       global $request_timer;
       $request_timer -= microtime(true);
       error_log("Fetching $topics_feed_url");
-      $feed_raw = file_get_contents($topics_feed_url);
+      $feed_str = file_get_contents($topics_feed_url);
       $request_timer += microtime(true);
       error_log("Running request timer: " . $request_timer . "s");
       
-      $feed = new XML_Feed_Parser($feed_raw);
+      $feed = new XML_Feed_Parser($feed_str);
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
@@ -502,8 +515,17 @@ class Sprinkles {
         $topics = $new_topics;
       }
 
+      global $request_timer;
+      $request_timer -= microtime(true);
+      error_log("Fetching $topics_feed_url");
+      $primary_feed_str = file_get_contents($primary_feed_url);
+      $request_timer += microtime(true);
+      error_log("Running request timer: " . $request_timer . "s");
+      
+      $primary_feed = new XML_Feed_Parser($primary_feed_str);
+    
       return(array('topics' => $topics,
-                   'totals' => $this->topic_totals($feed)));
+                   'totals' => $this->topic_totals($primary_feed)));
     } catch (XML_Feed_Parser_Exception $e) {
       die('Satisfaction feed did not pass validation: ' . $e->getMessage());
     }
@@ -911,9 +933,6 @@ class Sprinkles {
     $session_id = $this->nascent_session_id;
     if (!$session_id) $session_id = $_COOKIE["session_id"];
     if (!$session_id) return null;
-    # error_log("looking up creds for token $session_id");
-#print "Going to session table.";
-#    dump($session_id);
     $sql = "select token,token_secret, username, user_url, user_photo, user_fn " .
            "from sessions where token='". $session_id . "'";
     $result = mysql_query($sql);

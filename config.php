@@ -14,6 +14,8 @@ $mysql_password = '';
 # (FIXME: this doesn't apparently do anything.)
 $mysql_connect_params = 'localhost:3306';
 
+$max_logo_size = 65535;
+
 # page limits
 
 $submit_suggestions = 3;
