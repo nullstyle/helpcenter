@@ -39,7 +39,10 @@ if (request_param('admin_users'))
   $settings['admin_users_str'] = request_param('admin_users');
 
 $company_hcard = $sprink->company_hcard();
-$smarty->assign('company_url', $company_hcard['url']);
+$smarty->assign('company_url',
+    is_array($company_hcard['url'])
+    ? $company_hcard['url'][0]
+    : $company_hcard['url']);
 
 $sprinkles_tagged_topics = $sprink->topics(array('tag' => 'sprinkles'));
 $sprinkles_tagged_topics = take(3, $sprinkles_tagged_topics['topics']);

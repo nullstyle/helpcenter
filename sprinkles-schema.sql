@@ -50,7 +50,8 @@ CREATE TABLE `sessions` (
 
 DROP TABLE IF EXISTS `site_links`;
 CREATE TABLE `site_links` (
-  `url` text
+  `url` text,
+  `text` text
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
