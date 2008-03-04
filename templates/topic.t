@@ -326,7 +326,7 @@ official rep {/if}
         <input type="hidden" name="topic_id" value="{$topic_head.id}" />
         <input type="hidden" name="parent_id" value="{$reply.sfn_id}" />
         <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
-        <button type="submit">Comment</button>
+        <button onclick="this.disabled='true'; this.form.submit()" type="button">Comment</button>
         </form>
       {/if}
     <hr />
@@ -343,7 +343,7 @@ official rep {/if}
    <input type="hidden" name="reply_url" value="{$reply_url}" />
    I say:
    <textarea name="content" cols="40" rows="5" style="display: block;"></textarea>
-   <button type="submit">Reply</button>
+   <button onclick="this.disabled='true'; this.form.submit();" type="button">Reply</button>
    </form>
   </td>
   </tr>

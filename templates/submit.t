@@ -121,6 +121,7 @@ help people find your topic and get you good responses.
 </div>
 
 <h1 style="margin-top: 1pc;">Done? Submit your topic as one of these four types: </h1>
+
 <button type="submit" name="style" value="question">Ask as a Question</button>
 <button type="submit" name="style" value="idea">Share as an Idea</button>
 <button type="submit" name="style" value="problem">Report as a Problem</button>
