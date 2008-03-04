@@ -6,7 +6,7 @@ require_once('HTTP_Request_Oauth.php');
 $request_token = request_param('oauth_token');
 
 if (!$request_token)
-  die("An error occurred handling the information sent back from Satisfaction.");
+  die("An error occurred handling the information sent back from Get Satisfaction.");
 
 # TBD: refactor this
 # TBD: expire old entries (two weeks)

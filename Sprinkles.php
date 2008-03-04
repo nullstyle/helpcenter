@@ -535,7 +535,7 @@ class Sprinkles {
       return(array('topics' => $topics,
                    'totals' => $this->topic_totals($primary_feed)));
     } catch (XML_Feed_Parser_Exception $e) {
-      die('Satisfaction feed did not pass validation: ' . $e->getMessage());
+      die('Get Satisfaction feed did not pass validation: ' . $e->getMessage());
     }
   }
 
