@@ -257,7 +257,9 @@ official rep {/if}
         <p>{$reply.content}</p>
 
         <div class="float-right">
-          {if $reply.in_reply_to == $topic_head.id} {* A top-level reply. *}
+          {if $reply.in_reply_to == $topic_head.id}  {* It's a top-level reply *}
+          {if $reply.author.canonical_name != $current_user.canonical_name}
+            {* current user is not the author. *}
           <form action="handle-star.php" style="display: inline; vertical-align: middle;">
             <input type="hidden" name="topic_id" value="{$topic_head.id}"></input>
             <input type="hidden" name="reply_id" value="{$reply.id}"></input>
@@ -274,6 +276,18 @@ official rep {/if}
             {if $reply.star_count}({$reply.star_count}){/if}
             </button>
           </form>
+          {else}
+            {if $topic_head.topic_style == 'question'}
+            This answered the question
+            {elseif $topic_head.topic_style == 'idea'}
+            Good point!
+            {elseif $topic_head.topic_style == 'talk'}
+            This answered the question
+            {elseif $topic_head.topic_style =='problem'}
+            This solved the problem!
+            {/if}
+            ({$reply.star_count})          
+          {/if}
           {/if}
           {if $flagged_reply == $reply.sfn_id}
             <span class="disabled flag-button float-right">Spam</span>
