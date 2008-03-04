@@ -6,60 +6,26 @@
 {include file="lite-header.t"}
 {/if}
 
-<h1>Welcome to your Satisfaction Sprinkles</h1>
+<h1>Welcome to the Admin Page</h1>
 
 <hr />
 
-{if !$site_configured}
-<div style="float:right;">
-<a href="admin_findsite.php">Not the right company? Go back and try again.</a>
-</div>
+<p>
+Only the creator of this Instant on Help Center, and those admin designated
+by the creator, can access this page. Authorize your Get Satisfaction
+account to access this page, or sign up for an account.
+</p>
 
-<h3>Excellent, you chose the Satisfaction {$company_name} site.</h3>
-{/if}
+<button onclick="location='handle-user-login.php?return=admin.php'">Go to Get Satisfaction</button>
 
-<p>Next, <a href="handle-user-login.php?return=admin.php">Login on Get 
-  Satisfaction</a> to access your admin account here.</p>
+<p>
+To gain access to this page you will need to be approved by the creator of
+this Instant on Help Center and have an account over at Get Satisfaction.
+Don't worry! Sign up takes less than a minute, and we promise never to spam
+you or share your information without your authorization. Once you're
+logged in, we'll also ask you to authorize your account for this site, so
+you never have to see this message again.
+</p>
 
-<!--
-{if $message}
-<div class="error-box">{$message}</div>
-{/if}
-
-<form action="handle-user-login.php">
-<input type="hidden" name="return" value="admin.php" />
-<table width="100%">
-<tr>
-<td>
-<table>
-<tr>
-<td class="form-label">Choose your account:</td>
-<td> <select name="username">
-{foreach from=$accts key=i item=acct}
-       <option value="{$acct}">{$acct}</option>
-{/foreach}
-     </select>
-</td>
-</tr>
-<!--
-<tr>
-<td class="form-label">Password:</td>
-<td><input name="password" type="password" /></td>
-</tr>
-->
-<tr>
-<td></td>
-<td><button type="submit">Login</button> 
-    <p>Password gone missing? xxxLink-somewhere</p> </td>
-</tr>
-</table>
-</form>
-
-</td>
-<td style="width: 200pt;">Can't find your account? Ask one of the people listed here to give you Admin status on Satisfaction <br />
-<strong>OR</strong> <a href="">apply to be an Admin here</a>. </td>
-</tr>
-</table>
--->
 
 {include file="footer.t"}
