@@ -5,10 +5,26 @@
 <h2>Email this topic to a friend</h2>
 
 <form action="handle-share-topic.php">
-<input type="hidden" name="id" value="{$topic_id}" />
+  <input type="hidden" name="id" value="{$topic_id}" />
+
+{if !$user_name}
+Enter your name:
+<input name="sender_name"
+       onblur="var author_name_elem = getElementById('author_name');
+               author_name_elem.textContent = this.value;
+               author_name_elem.className = '';" />
+{else}
+<input name="sender_name" type="hidden" value="{$current_user.fn}" />
+{/if}
+
 
 <div class="box" style="padding: 4pt;">
-{$user_name} thinks you might be interested in this discussion from Satisfaction:
+{if !$user_name}
+<span id="author_name" class="small-note">(your name goes here)</span>
+{else}
+{$user_name}
+{/if}
+thinks you might be interested in this discussion from Satisfaction:
 
 <p>
 &ldquo;{$topic_head.title}

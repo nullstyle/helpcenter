@@ -135,9 +135,7 @@ Hey { $company_name }!
 
 <td id="topic-summary">
 
-{if $current_user}
 <a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
-{/if}
 {if $own_topic}
 <div>
 You asked this question

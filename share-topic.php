@@ -3,9 +3,6 @@ require_once("config.php");
 require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
-
-if (!$sprink->current_user())
-  die("Please log in to share this topic.");
   
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
