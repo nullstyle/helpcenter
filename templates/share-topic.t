@@ -4,6 +4,9 @@
 
 <h2>Email this topic to a friend</h2>
 
+<form action="handle-share-topic.php">
+<input type="hidden" name="id" value="{$topic_id}" />
+
 <div class="box" style="padding: 4pt;">
 {$user_name} thinks you might be interested in this discussion from Satisfaction:
 
@@ -18,10 +21,13 @@
 <p>{$topic_head.author.name} asked this on
 {$topic_head.published|date_format:"%B %e, %y"}
 </p>
+
+<textarea name="personal_message">
+</textarea>
+<div class="small-note">(Add a personal note if you like.)</div>
+
 </div>
 
-<form action="handle-share-topic.php">
-<input type="hidden" name="id" value="{$topic_id}" />
 <table>
 <tr>
 <td class="form-label oneliner right"><label for="from_email">Your email</label></td>
@@ -33,7 +39,8 @@
 </tr>
 <tr>
 <td></td>
-<td><div class="small-note">Comma-separate multiple e-mail addresses. Limited to 5 addresses.</div>
+<td>
+  <div class="small-note">Comma-separate multiple e-mail addresses. Limited to 5 addresses.</div>
 
 <button>Send it</button> OR <a href="topic.php?id={$topic_id}">Cancel</a>
 

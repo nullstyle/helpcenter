@@ -4,7 +4,6 @@
 
 <ul class="topic-list">
 {foreach from=$suggested key=i item=topic}
-{* FIXME the img isn't really properly layed out *}
 <li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
   <a href="minidashboard.php?user_url={$topic.author.url}">
   {$topic.author.name}

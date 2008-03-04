@@ -2,7 +2,7 @@
 
 <p>
 <strong>
-To log in to your dashboard, go to Get Satisfaction and sign in or sign up.
+To get involved or log in to your dashboard, go to Get Satisfaction and sign in or sign up.
 </strong>
 </p>
 
@@ -13,7 +13,7 @@ To log in to your dashboard, go to Get Satisfaction and sign in or sign up.
 <p>
 <strong>This site site is powered by Get Satisfaction.</strong> To gain 
 access to all the functions, including your personalized dashboard, you'll 
-need a Get Satisfaction account if you don't already have one.
+need a Get Satisfaction account.
 Don't worry! Sign up takes less than a minute, and we promise never to spam 
 you or share your information without your authorization. Once you're logged
 in, we'll also ask you to authorize your account for this site, so you never

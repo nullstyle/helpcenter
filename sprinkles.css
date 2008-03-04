@@ -103,6 +103,9 @@ em { font-style: normal; }
 td.oneliner { vertical-align: middle; }
 #contact-form input, #contact-form textarea { width: 260pt; }
 
+/* Share Topic Page */
+#share-topic textarea { width: 260pt; height: 6em; }
+
 /* Discuss Page */
 ul.product-list li { display: inline; font-size: 11pt; padding-right: 1pc; color: #444; }
 ul.product-list li img { vertical-align: middle; }

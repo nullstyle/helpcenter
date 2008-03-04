@@ -78,6 +78,14 @@ function member($x, $list) {
   return false;
 }
 
+# Superimposes all the key-value pairs from $a onto $b.
+function superimpose($a, $b) {
+  foreach ($a as $k => $v) {
+    $b[$k] = $v;
+  }
+  return $b;
+}
+
 # ago: Given two times $time and $now, return a string describing roughly how long 
 # ago $time was from $now--for example, "37 minutes ago."
 function ago($time, $now) {
@@ -677,15 +685,17 @@ class Sprinkles {
     $authors = array();
     $employees = array();
     foreach ($items as $item) {
-      $authors[$item['author']['url']]++;
-      list($role, $role_name) = $this->get_person_role($item['author']['url']);
+      $authors[$item['author']['uri']]++;
+      list($role, $role_name) = $this->get_person_role($item['author']['uri']);
       if ($role) {
-        $employees[$item['author']['url']] = $item['author'];
-        $employees[$item['author']['url']]['role'] = $role;
+        $employees[$item['author']['uri']] = $item['author'];
+        $employees[$item['author']['uri']]['role'] = $role;
       }
     }
     $official_reps = array();
     foreach ($employees as $emp) {
+      $emp_data = $this->get_person($emp['uri']);
+      $emp = superimpose($emp, $emp_data);
       if ($emp['role'] == 'company_rep' || $emp['role'] == 'company_admin')
         array_push($official_reps, $emp);
     }

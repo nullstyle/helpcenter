@@ -135,12 +135,14 @@ Hey { $company_name }!
 
 <td id="topic-summary">
 
+{if $current_user}
 <a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
+{/if}
 {if $own_topic}
 <div>
 You asked this question
 </div>
-{else}
+{elseif $current_user}
 <form action="handle-me-too.php">
 <button name="sfn_id" value="{$topic_head.sfn_id}">I have this question too!</button>
 </form>
