@@ -11,8 +11,13 @@
 <form action="handle-contactus.php" method="POST">
 
 <div id="daothPane"
-     style="float: right; border: 1px solid black; width: 270pt; padding: 6pt; display:none;">
+     style="float: right; border: 1px solid black; width: 270pt; padding: 6pt;">
 <h2>Do any of these help?</h2>
+
+<p id="absent-suggestions" class="light">
+We'll use the summary of your issue to search for similar topics that might be helpful.
+</p>
+
 <ul id="suggestions">
 </ul>
 <div class="float-right">
@@ -103,12 +108,13 @@ function updateSuggestions(queryText) {ldelim}
   var suggestElem = document.getElementById('suggestions');
   var url = 'proxy.php?query=' + queryText; // FIXME: url-encode
   getHTMLAJAXAsync(url, function (suggestions) {ldelim}
-    var daothPane = document.getElementById('daothPane');
+    var absentSuggestElem = document.getElementById('absent-suggestions');
     if (trim(suggestions)) {ldelim}
       suggestElem.innerHTML = suggestions;
-      daothPane.style.display = 'block';
+      absentSuggestElem.style.display = 'none';
     {rdelim} else {ldelim}
-      daothPane.style.display = 'none';  
+      absentSuggestElem.style.display = 'block';
+      suggestElem.style.display = 'none';
     {rdelim}
   {rdelim});
 {rdelim}
