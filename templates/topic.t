@@ -71,7 +71,7 @@ Note: You cannot mark your own reply as
 {/if}
 
 <div class="topic-head {$topic_head.topic_style}">
-Hey { $company_name }!
+
 <h3>
 <strong> { $topic_head.author.name }</strong> has
   {if $topic_head.topic_style == 'question'}
@@ -105,7 +105,7 @@ Hey { $company_name }!
 </td>
 
 <td style="width: auto;">
-<div style="margin: 3pt;">
+<div id="topic-head-content">
 <h3><strong>{ $topic_head.title }</strong></h3>
 
   <p>{ $topic_head.content }</p>
@@ -175,7 +175,7 @@ official rep {/if}
 <h2>Best solution from the company</h2>
 {foreach from=$company_promoted_replies key=i item=reply}
 <div class="box">
-  <p>{$reply.content}</p>
+  <p class="tight">{$reply.content}</p>
 
   <div class="light p">
   <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
@@ -197,10 +197,10 @@ official rep {/if}
 {if $star_promoted_replies}
 <tr>
 <td colspan="3">
-<h2>Best solution from people</h2>
+<h2>Best solution from the people</h2>
 {foreach from=$star_promoted_replies key=i item=reply}
 <div class="box">
-  <p>{$reply.content}</p>
+  <p class="tight">{$reply.content}</p>
 
   <div class="light p">
   <img src="{$reply.author.photo}" class="small-author-pic" style="vertical-align:middle;" />
@@ -254,7 +254,7 @@ official rep {/if}
         </strong>
         replied {$reply.updated_relative}:</span>
       
-        <p>{$reply.content}</p>
+        <p class="tight">{$reply.content}</p>
 
         <div class="float-right">
           {if $reply.in_reply_to == $topic_head.id}  {* It's a top-level reply *}

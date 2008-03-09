@@ -44,6 +44,8 @@
   {/foreach}
 {/if}
 
+<hr />
+
 <h2>Recent Discussions</h2>
 <h3>All {if !$filter_style}topics
         {elseif $filter_style == 'question'}questions

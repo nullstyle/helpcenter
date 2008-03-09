@@ -76,6 +76,8 @@ div#what-satisfaction p { color: #555; font-size: 10pt; margin: 0pt; }
 .problem { background-color: #f5d2cf; }
 .idea { background-color: #f8facd; }
 
+#topic-head-content { margin: 3pt 10pt 0pt 8pt; }
+
 .flag-button { font-size: .8em; padding: 3px; }
 
 #topic-summary { width: 160pt; color: #666666; }
@@ -107,6 +109,7 @@ td.oneliner { vertical-align: middle; }
 #share-topic textarea { width: 260pt; height: 6em; }
 
 /* Discuss Page */
+ul.product-list { padding-left: 0pt; margin-left: 0pt; }
 ul.product-list li { display: inline; font-size: 11pt; padding-right: 1pc; color: #444; }
 ul.product-list li img { vertical-align: middle; }
 .reply-count-col { text-align: center; }
@@ -121,7 +124,7 @@ hr { border: 0px; border-bottom: 1px solid #999999; height: 0px; }
 
 /* Admin Section */
 input.admin, textarea.admin { width: 180pt; }
-.form-label { font-size: .8em; }
+.form-label { font-size: .8em; width: 108pt; }
 
 /*-- USED somewhere--*/
 
@@ -133,5 +136,4 @@ ul.straight { list-style-type: none; padding-left: 0pt; }
 .tag-box { width: 200pt; }
 p .p-margin { margin-top: 6pt; }
 .box { border: 1px solid #ccc; padding: 2pt 5pt; margin: 3pt 0pt; }
-
 

@@ -6,7 +6,7 @@
 {include file="header.t"}
 {/if}
 
-<div class="right" style="margin-top: 3pt; ">Hello <strong>{$user_name}</strong> from {$company_name}.
+<div style="margin-top: 3pt; ">Hello <strong>{$user_name}</strong> from {$company_name}.
   Are you someone else?
   <a href="admin-login.php">Sign in as you</a>.
   <a href="handle-user-logout.php">Sign out</a>.
@@ -46,7 +46,7 @@ and sign in as an admin and authenticate their account. Go let them know!
 
 <div class="sidepane">
 <div class="sidebar ">
-<h3>What is this?</h3>
+<h2>What is this?</h2>
 
 <p>
 The Instant on Help Center (code named Sprinkles) is the first application 
@@ -55,15 +55,15 @@ on their site, under their terms while continuing to benefit from the network
 of companies and products on Get Satisfaction.
 </p>
 
-<h4>Need help? Want to hack it?</h4>
+<h3>Need help? Want to hack it?</h3>
 <p>
 Visit the <a href="http://code.google.com/p/getsatisfaction/">API Project Home Page</a>
 Talk about it on the <a href="http://code.google.com/p/getsatisfaction/w/list">Wiki</a>
 </p>
 
-<h4>Get help on
+<h3>Get help on
 <a href="http://getsatisfaction.com/satisfaction/products/satisfaction_satisfaction_api">
-Get Satisfaction</a></h4>
+Get Satisfaction</a></h3>
 <ul>
 {foreach from=$sprinkles_tagged_topics key=i item=topic}
 <li> <a href="topic.php?id={$topic.id|urlencode}">{$topic.title}</a> </li>
@@ -88,7 +88,7 @@ Background color should indicate a color in RGB hex format: #xxx or #XxXxXx
 </td>
 </tr>
 <tr>
-<td class="form-label"> <strong>*Your logo</strong> </td>
+<td class="form-label"> <strong><img src="images/required.png" alt="*" /> Your logo</strong> </td>
 <td> <input class="admin" name="logo" type="file" /> </td>
 <td>(Max. size 64K)</td>
 </tr>
@@ -98,7 +98,7 @@ Background color should indicate a color in RGB hex format: #xxx or #XxXxXx
 <td> (By default, the logo will link to the "Help Start" page within Sprinkles.)
 </tr>
 <tr>
-<td class="form-label"> <strong>*Company contact email</strong> </td>
+<td class="form-label"> <strong><img src="images/required.png" alr="*" /> Company contact email</strong> </td>
 <td> <input class="admin" name="contact_email" value="{$settings.contact_email}" />
 {if $invalid.contact_email}
 <div class="error-message">
