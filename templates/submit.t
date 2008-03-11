@@ -67,25 +67,44 @@ OR fill in the details below and submit your topic
 <input id="submit-subject" name="subject" style="width:350pt;" value="{$subject}" />
 
 <h4>Details</h4>
-<textarea name="details" rows="4" cols="50" style="width:350pt;">
-</textarea>
+<textarea name="details" rows="4" cols="50" style="width:350pt;">{$details}</textarea>
 
 <h4>Tell everyone how this makes you feel </h4>
 <div>
-<span onclick="for (var i in this.childNodes) {ldelim}
+<script>
+<!--
+function setEmoticonPicker() {ldelim}
+  var emoticonElem = document.getElementById('emoticon');
+  var newVal = emoticonElem.value;
+  if (newVal) {ldelim}
+    var picker = document.getElementById('emoticonPicker');
+    for (var i in picker.childNodes) {ldelim}
+      if (picker.childNodes[i].id == newVal)
+        picker.childNodes[i].src = 'images/' + picker.childNodes[i].id + '_on.png'
+      else
+        picker.childNodes[i].src = 'images/' + picker.childNodes[i].id + '.png'
+    {rdelim}
+  {rdelim}
+{rdelim}
+
+window.onload = setEmoticonPicker;
+-->
+</script>
+<span id="emoticonPicker"
+      onclick="for (var i in this.childNodes) {ldelim}
                 if (this.childNodes[i].tagName == 'IMG')
                   this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
               {rdelim}
               event.target.src='images/' + event.target.id + '_on.png';
               var emoticonElem = document.getElementById('emoticon');
               emoticonElem.value=event.target.id">
-<input id="emoticon" type="hidden" name="emoticon" value="" />
+<input id="emoticon" type="hidden" name="emoticon" value="{$emoticon}" />
 <img id="happy" src="images/happy.png" style="vertical-align:middle;" />
 <img id="sad" src="images/sad.png" style="vertical-align:middle;" />
 <img id="indifferent" src="images/indifferent.png" style="vertical-align:middle;" />
 <img id="silly" src="images/silly.png" style="vertical-align:middle;" />
 </span>
-<span>I'm: <input name="emotion" /></span>
+<span>I'm: <input name="emotion" value="{$emotion}" /></span>
 </div>
 
 <h4>Add tags</h4>
@@ -93,7 +112,7 @@ OR fill in the details below and submit your topic
 <table>
 <tr>
 <td>
-<input name="tags" value="" style="width: 150pt" /> <br />
+<input name="tags" value="{$tags}" style="width: 150pt" /> <br />
 
 <span class="small-note">Comma-separated. (e.g. hot dogs, cake, pie)</span>
 
@@ -112,8 +131,10 @@ OR fill in the details below and submit your topic
 <h4>Associate products & services</h4>
 <ul class="tight">
 {foreach from=$products key=i item=product}
-<li><label><input type="checkbox" name="product[]" value="{$product.name}" />
-    {$product.name}</label>
+<li><label><input type="checkbox" name="product[]" value="{$product.name}"
+             {if $product.selected}checked{/if} />
+    {$product.name}
+    </label>
 </li>
 {/foreach}
 </ul>

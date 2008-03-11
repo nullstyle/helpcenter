@@ -18,8 +18,18 @@ $sprink = new Sprinkles();
 $POST_URL = 'http://api.getsatisfaction.com/topics';   # FIXME: hard-coded API URL
 
 $creds = $sprink->current_user_session();
-if (!$creds)
-  die("You must log in to submit a topic");            # FIXME: give 'em a chance.
+if (!$creds) {
+  $args = 'submit.php?subject=' . urlencode($subject) .
+                     '&details=' . urlencode($details) .
+                     '&tags=' . urlencode($tags) .
+                     '&emoticon=' . urlencode($face) .
+                     '&emotion=' . urlencode($emotion) .
+                     '&style=' . urlencode($style);
+  foreach ($products as $product)
+    $args .= '&product[]=' . urlencode($product);
+  redirect('user-login.php?return=' .
+           urlencode($args));
+}
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
                     array('topic[company_domain]' => $sprink->company_sfnid,
