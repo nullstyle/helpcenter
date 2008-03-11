@@ -32,19 +32,22 @@
 <ul class="product-list">
 {foreach from=$products key=i item=product}
 <li><a href="discuss.php?product={$product.uri}{if $filter_style}&style={$filter_style}{/if}">
-    <img src="{$product.image}" />{$product.name}</a> </li>
+    <img src="{$product.image}" />{$product.name}</a>
+</li>
 {/foreach}
 </ul>
 {/if}
 
 {if !$filter_product && !$filter_tag}
+
 <h4 style="display:inline;">Top Topic Tags</h4>
   {foreach from=$top_topic_tags key=i item=tag}
   <a href="discuss.php?tag={$tag}">{$tag}</a>{if $i != count($top_topic_tags)-1},{/if}
   {/foreach}
-{/if}
 
 <hr />
+
+{/if}
 
 <h2>Recent Discussions</h2>
 <h3>All {if !$filter_style}topics

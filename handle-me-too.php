@@ -21,7 +21,7 @@ $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, array());
 $responseCode = $req->getResponseCode();
 if (400 == $responseCode) {
   redirect('topic.php?sfn_id=' . $sfn_id . 
-           '&metoo_failed=true');
+           '&me_too_failed=true');
 
   die("You have already marked this topic as \"me too,\""
       . " or it is your own topic.");                      # FIXME: nicer error
@@ -31,6 +31,6 @@ if (400 == $responseCode) {
 }
 
 redirect('topic.php?sfn_id=' . $sfn_id . 
-         '&metood_topic=true');
+         '&me_tood_topic=true');
 
 ?>

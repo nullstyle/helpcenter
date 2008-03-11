@@ -39,6 +39,14 @@ Oops! Something went wrong while trying to share this topic with
 </div>
 {/if}
 
+{if $me_too_failed_error}
+<div class="error-box" style="margin:8pt 6pt;">
+For some reason, we could not record the fact that you had this 
+question too. Perhaps you have already marked it that way, or
+perhaps there was just a glitch in Get Satisfaction. Sorry!
+</div>
+{/if}
+
 {if $me_tood_topic_msg}
 <div class="message-box" style="margin:8pt 6pt;">
 You have this
