@@ -126,6 +126,9 @@ hr { border: 0px; border-bottom: 1px solid #999999; height: 0px; }
 input.admin, textarea.admin { width: 180pt; }
 .form-label { font-size: .8em; width: 108pt; }
 
+/* Submit */
+.flat-button { border: none; background-color: #ffffff; padding: 0pt; margin: 0pt;}
+
 /*-- USED somewhere--*/
 
 .small-note { font-size: 8pt; color: #777; }

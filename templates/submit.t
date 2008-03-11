@@ -101,8 +101,8 @@ OR fill in the details below and submit your topic
 
 <td>
 <h4>What are tags?</h4>
-You can give your topic a "tag". This is a keyword that will 
-help people find your topic and get you good responses.
+  You can give your topic a "tag". This is a keyword that will 
+  help people find your topic and get you good responses.
 
 </td>
 </tr>
@@ -121,10 +121,10 @@ help people find your topic and get you good responses.
 
 <h1 style="margin-top: 1pc;">Done? Submit your topic as one of these four types: </h1>
 
-<button type="submit" name="style" value="question">Ask as a Question</button>
-<button type="submit" name="style" value="idea">Share as an Idea</button>
-<button type="submit" name="style" value="problem">Report as a Problem</button>
-<button type="submit" name="style" value="talk">Just Talk</button>
+ <button type="submit" class="flat-button" name="style" value="question"><img src="images/submit_question-hi.png" /></button
+><button type="submit" class="flat-button" name="style" value="idea"><img src="images/submit_idea-hi.png" /></button
+><button type="submit" class="flat-button" name="style" value="problem"><img src="images/submit_problem-hi.png" /></button
+><button type="submit" class="flat-button" name="style" value="talk"><img src="images/submit_talk-hi.png" /></button>
 
 </form>
 
