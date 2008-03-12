@@ -9,6 +9,8 @@
 ##
 ##  See individual methods and functions for detailed documentation.
 ##
+##  NOTE: You can expect the interface to this file to change.
+##
 ################
 require_once 'XML/Feed/Parser.php';
 require_once 'hkit.class.php';
@@ -116,9 +118,9 @@ function ago($time, $now) {
   return ($result . " ago");
 }
 
+# is_http_url determines whether the given str is an absolute URL in one
+# of the HTTP schemes (http: or https:)
 function is_http_url($str) {
-  # Naive regex for detecting URLs in the http schemes.
-  # FIXME: need something more robust.
   return preg_match("|^https?://|", $str);
 }
 
@@ -241,11 +243,6 @@ function cmp_by_updated($a, $b) {
   return $b['updated'] - $a['updated'];
 }
 
-global $robust_mode;   # Causes Sprinkles to filter a feed even if it 
-                       # is supposed to be filtered already.
-# $robust_mode = true;
-$robust_mode = false;
-
 $xml_sfn_ns = 'http://api.getsatisfaction.com/schema/0.1';
 $xml_opensearch_ns = 'http://a9.com/-/spec/opensearch/1.1/';
 
@@ -367,14 +364,19 @@ class Sprinkles {
     return $this->fix_atom_entry($entry, 'reply');
   }
 
-  function topic_totals($feed) {
-    $result = array();
+  function feed_total($feed) {
     global $xml_opensearch_ns;
     if ($total_results_elem = $feed->model->getElementsByTagNameNS(
                                           $xml_opensearch_ns,
                                           'totalResults'))
-      $result['all'] = $total_results_elem->item(0)->nodeValue;
+      return $total_results_elem->item(0)->nodeValue;
+    else return null;
+  }
 
+  function topic_totals($feed) {
+    $result = array();
+
+    $result['all'] = $this->feed_total($feed);
     $result['talk'] = sfn_element_value($feed, 'talk_count');
     $result['ideas'] = sfn_element_value($feed, 'idea_count');
     $result['problems'] = sfn_element_value($feed, 'problem_count');
@@ -430,6 +432,7 @@ class Sprinkles {
       $url_path .= '&sort=most_me_toos';
     };
     $topics_feed_url = $this->api_url($url_path);
+    
     try {
       global $request_timer;
       $request_timer -= microtime(true);
@@ -439,6 +442,7 @@ class Sprinkles {
       error_log("Running request timer: " . $request_timer . "s");
       
       $feed = new XML_Feed_Parser($feed_str);
+
       $topics = array();
       foreach ($feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
@@ -451,22 +455,6 @@ class Sprinkles {
         array_push($topics, $topic);
       }
 
-      # Robust mode filters the entries in a feed according to the criteria 
-      # that we requested with. The feed should already be filtered that way, 
-      # so this is just a safeguard.
-      # FIXME: expand robust mode to cover more options.
-      global $robust_mode;
-      if ($robust_mode && $options['style']) {
-        # Filter the topics down to those of the given style
-        $new_topics = array();
-        foreach ($topics as $t) {
-          if ($t['topic_style'] == $options['style']) {
-            array_push($new_topics, $t);
-          }
-        }
-        $topics = $new_topics;
-      }
-
       global $request_timer;
       $request_timer -= microtime(true);
       error_log("Fetching $topics_feed_url");
@@ -476,8 +464,11 @@ class Sprinkles {
       
       $primary_feed = new XML_Feed_Parser($primary_feed_str);
     
+      $totals = $this->topic_totals($primary_feed);
+      $totals['this'] = $this->feed_total($feed);
+      
       return(array('topics' => $topics,
-                   'totals' => $this->topic_totals($primary_feed)));
+                   'totals' => $totals));
     } catch (XML_Feed_Parser_Exception $e) {
       die('Get Satisfaction feed did not pass validation: ' . $e->getMessage());
     }

@@ -29,7 +29,7 @@ if ($filter_tag) $topic_filters['tag'] = $filter_tag;
 $filter_tag_arg = $filter_tag ? '&' ."tag=" . $filter_tag : '';
 
 $topics = $sprink->topics($topic_filters);
-$topic_count = count($topics['topics']);
+$topic_count = $topics['totals']['this'];
 $topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
 $sprink->resolve_authors($topics['topics']);
 
