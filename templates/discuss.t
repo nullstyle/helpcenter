@@ -69,7 +69,7 @@ about the tag: {$filter_tag}
 <div class="sidebar">
 <h3>View discussions by:</h3>
 <ul class="straight">
-<li><a href="discuss.php">All Topics xxxx{$totals.all}</a></li>
+<li><a href="discuss.php">All Topics {$totals.all}</a></li>
 <li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions {$totals.questions}</a></li>
 <li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas {$totals.ideas}</a></li>
 <li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems {$totals.problems}</a></li>

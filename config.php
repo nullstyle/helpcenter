@@ -23,4 +23,11 @@ $helpstart_topic_count = 5;
 $discuss_topic_page_limit = 3;
 $related_topics_count = 4;
 $max_top_topic_tags = 5;
+
+# $preview_after_log determines whether the user should have a chance to 
+# preview a topic for submission, after being sent to the Get Satisfaction 
+# authorization page and before actually posting the topic.
+
+$preview_after_login = true;
+
 ?>

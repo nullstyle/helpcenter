@@ -1,7 +1,7 @@
 <?php
 # $Id$
 
-####### Sprinkles.php ######
+######################### Sprinkles.php ###############################
 ##
 ##  This file defines the core logic for interacting with the 
 ##  getsatisfaction.com web API, logic shared throughout the Sprinkles 
@@ -9,9 +9,7 @@
 ##
 ##  See individual methods and functions for detailed documentation.
 ##
-##  NOTE: You can expect the interface to this file to change.
-##
-########
+################
 require_once 'XML/Feed/Parser.php';
 require_once 'hkit.class.php';
 
@@ -289,60 +287,6 @@ class Sprinkles {
     }
   }
 
-  ## Get company info
-  function company_hcard($company = null) {
-    if ($company == null) $company = $this->company_sfnid;
-    $company_url = is_http_url($company)                          # if it's a fetchable URL,
-                       ? $company                                 # use it, otherwise
-                       : $this->api_url('companies/' . $company); # it's a sfn:id, so make its URL.
-    global $h;
-    $company_hcards = $h->getByString('hcard', get_url($company_url));
-    return $company_hcards[0];
-  }
-
-  function set_company($company) {
-    $sql = 'update site_settings set ' . 
-           'company_id = \'' . $company . '\'';
-    #print $sql;
-    return mysql_query($sql);
-  }
-
-  function set_site_settings($settings) {
-    $sql = 'update site_settings set ';
-    $i = 0;
-    foreach ($settings as $name => $value) {
-      if ($i++ > 0) $sql .= ', ';
-      $sql .= $name . '=\'' . mysql_real_escape_string($value) . '\'';
-    }
-    error_log("Updating site settings: $sql");
-    return mysql_query($sql);
-  }
-
-  # add_admin_users adds the given list of usernames to the list of users that
-  # have admin rights on this installation, leaving any current admins 
-  # undisturbed. Does not signal any failure. Duplicate admin records may be 
-  # created.
-  function add_admin_users($admins) {
-    foreach ($admins as $admin) {
-      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
-    }
-  }
-
-  # set_admin_users sets the list of users that have admin rights on this
-  # Sprinkles installation to the given list of usernames, clearing out any 
-  # that alread have admin rights. Does not signal any failure.
-  function set_admin_users($admins) {
-    if (!mysql_query('delete from admins')) die(mysql_error());
-    foreach ($admins as $admin) {
-      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
-    }
-  }
-
-  function company_name() {
-    $card = $this->company_hcard($this->company_sfnid);
-    return $card['fn'];
-  }
-
   # Given an entry of a feed, either a topic or a reply, fix_atom_entry returns
   # a structure that contatins all the data we care about, in a form usable by
   # Smarty templates. This can include fetching additional resources.
@@ -428,8 +372,8 @@ class Sprinkles {
     global $xml_opensearch_ns;
     if ($total_results_elem = $feed->model->getElementsByTagNameNS(
                                           $xml_opensearch_ns,
-                                          'totalresults'))
-      $result['all'] = $total_results_elem->nodeValue;
+                                          'totalResults'))
+      $result['all'] = $total_results_elem->item(0)->nodeValue;
 
     $result['talk'] = sfn_element_value($feed, 'talk_count');
     $result['ideas'] = sfn_element_value($feed, 'idea_count');
@@ -710,6 +654,60 @@ class Sprinkles {
   }
 
   ## Get list of people associated with the company
+  ## Get company info
+  function company_hcard($company = null) {
+    if ($company == null) $company = $this->company_sfnid;
+    $company_url = is_http_url($company)                          # if it's a fetchable URL,
+                       ? $company                                 # use it, otherwise
+                       : $this->api_url('companies/' . $company); # it's a sfn:id, so make its URL.
+    global $h;
+    $company_hcards = $h->getByString('hcard', get_url($company_url));
+    return $company_hcards[0];
+  }
+
+  function set_company($company) {
+    $sql = 'update site_settings set ' . 
+           'company_id = \'' . $company . '\'';
+    #print $sql;
+    return mysql_query($sql);
+  }
+
+  function set_site_settings($settings) {
+    $sql = 'update site_settings set ';
+    $i = 0;
+    foreach ($settings as $name => $value) {
+      if ($i++ > 0) $sql .= ', ';
+      $sql .= $name . '=\'' . mysql_real_escape_string($value) . '\'';
+    }
+    error_log("Updating site settings: $sql");
+    return mysql_query($sql);
+  }
+
+  # add_admin_users adds the given list of usernames to the list of users that
+  # have admin rights on this installation, leaving any current admins 
+  # undisturbed. Does not signal any failure. Duplicate admin records may be 
+  # created.
+  function add_admin_users($admins) {
+    foreach ($admins as $admin) {
+      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
+    }
+  }
+
+  # set_admin_users sets the list of users that have admin rights on this
+  # Sprinkles installation to the given list of usernames, clearing out any 
+  # that alread have admin rights. Does not signal any failure.
+  function set_admin_users($admins) {
+    if (!mysql_query('delete from admins')) die(mysql_error());
+    foreach ($admins as $admin) {
+      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
+    }
+  }
+
+  function company_name() {
+    $card = $this->company_hcard($this->company_sfnid);
+    return $card['fn'];
+  }
+
   function employee_list() {
     $people_url = $this->api_url('companies/'.$this->company_sfnid.'/employees');
     global $h;

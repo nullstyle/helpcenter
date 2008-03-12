@@ -15,21 +15,23 @@ $products_commasep = join(',', $products);
 
 $sprink = new Sprinkles();
 
-$POST_URL = 'http://api.getsatisfaction.com/topics';   # FIXME: hard-coded API URL
-
 $creds = $sprink->current_user_session();
 if (!$creds) {
-  $args = 'submit.php?subject=' . urlencode($subject) .
-                     '&details=' . urlencode($details) .
-                     '&tags=' . urlencode($tags) .
-                     '&emoticon=' . urlencode($face) .
-                     '&emotion=' . urlencode($emotion) .
-                     '&style=' . urlencode($style);
+  $args = 'subject=' . urlencode($subject) .
+          '&details=' . urlencode($details) .
+          '&tags=' . urlencode($tags) .
+          '&emoticon=' . urlencode($face) .
+          '&emotion=' . urlencode($emotion) .
+          '&style=' . urlencode($style);
   foreach ($products as $product)
     $args .= '&product[]=' . urlencode($product);
+  $target_page = $preview_after_login                   # setting in config.php
+                   ? 'submit.php' : 'handle-submit.php';
   redirect('user-login.php?return=' .
-           urlencode($args));
+           urlencode($target_page . '?' . $args));
 }
+
+$POST_URL = 'http://api.getsatisfaction.com/topics';   # FIXME: hard-coded API URL
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
                     array('topic[company_domain]' => $sprink->company_sfnid,
