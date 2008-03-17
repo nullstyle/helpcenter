@@ -22,6 +22,8 @@
 <ul>
 {foreach from=$noncompany_topics key=i item=topic}
 <li>{$topic.title} in <strong>{$topic.company.fn}</strong></li>
+{foreachelse}
+You haven't participated in any other discussions so far.
 {/foreach}
 </ul>
 </div>

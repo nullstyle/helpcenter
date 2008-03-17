@@ -478,12 +478,9 @@ class Sprinkles {
   # A user's dashboard collects a variety of kinds of topics; dashboard_topics
   # fetchs them all and merges the results into one chronological feed.
   function dashboard_topics($person) {
-    $started = $this->topics(array('person' => $person));
     $followed = $this->topics(array('followed' => $person));
-    $items = array_merge($started['topics'],
-                         $followed['topics']);
+    $items = $followed['topics'];
     usort($items, cmp_by_updated);
-    $items = uniq($items);
     return $items;
   }
 
