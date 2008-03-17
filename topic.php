@@ -45,7 +45,6 @@ $sprink->resolve_companies($noncompany_related_topics);
 list($company_promoted, $star_promoted) = $sprink->filter_promoted($topic['replies']);
 
 $smarty->assign('topic_head', $topic_head);
-# dump($topic['replies']);
 $smarty->assign('replies', $topic['replies']);
 $smarty->assign('related_topics', $noncompany_related_topics);
 $smarty->assign('particip', $topic['particip']);

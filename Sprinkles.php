@@ -308,29 +308,16 @@ class Sprinkles {
     $item['published_relative'] = ago($entry->published, time());
     $item['published_formatted'] = strftime("%B %e, %y", $entry->published);
 
-    # TBD: refactor these
+    # Get various <link> tags. TBD: refactor these
     $link_elems = $entry->model->getElementsByTagName('link');
     foreach ($link_elems as $link_elem) {
       if ($link_elem->getAttribute('rel') == 'company')
 	    $item['company_url'] = $link_elem->getAttribute('href');
-    }
-
-    $link_elems = $entry->model->getElementsByTagName('link');
-    foreach ($link_elems as $link_elem) {
       if ($link_elem->getAttribute('rel') == 'topic_at_sfn')
 	    $item['at_sfn'] = $link_elem->getAttribute('href');
+      if ($link_elem->getAttribute('rel') == 'replies')
+	    $item['replies_url'] = $link_elem->getAttribute('href');
     }
-
-# TBD: Get link/@rel=replies content.
-#
-# http://uk3.php.net/manual/en/function.xpath-eval-expression.php
-#
-#foreach ($link_elems as $elem) {
-#  foreach ($elem->attributes as $attr)
-#    if ($attr->name == 'rel' && $attr->value == 'replies') {
-#      die ($elem->content);
-#    }
-#}
 
     $in_reply_to_elem = 
                    $entry->model->getElementsByTagName('in-reply-to')->item(0);
