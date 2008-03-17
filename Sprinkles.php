@@ -421,7 +421,8 @@ class Sprinkles {
     # style). Thus we store the URL determined by the above options.
     $primary_feed_url = $this->api_url($url_path);
     
-    $url_path .= '?';
+    if (!preg_match('/\?/', $url_path))
+      $url_path .= '?';
     if ($options['style']) {
       if ($options['style'] == 'unanswered')
         $url_path .= '&sort=unanswered';

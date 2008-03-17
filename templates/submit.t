@@ -1,8 +1,36 @@
 {include file="header.t"}
 
+<script type="text/javascript" src="sprinkles.js"></script>
+
+<script type="text/javascript">
+<!--
+function redoSearch() {ldelim}
+  var subjectField = document.getElementById('submit-subject');
+  var queryText = subjectField.value;
+  
+  var url = 'topic-suggestions.php?mode=fancy&query=' + queryText; // FIXME: url-encode
+  getHTMLAJAXAsync(url, function (suggestions) {ldelim}
+    var suggestionsElem = document.getElementById('suggestions');
+    var suggestionsLegendElem = document.getElementById('suggestions-legend');
+    var absentSuggestionsElem = document.getElementById('absent-suggestions');
+    if (trim(suggestions)) {ldelim}
+      suggestionsElem.innerHTML = suggestions;
+      suggestionsElem.style.display = 'block';
+      suggestionsLegendElem.style.display = 'block';
+      absentSuggestionsElem.style.display = 'none';
+    {rdelim} else {ldelim}
+      absentSuggestionsElem.style.display = 'block';
+      suggestionsElem.style.display = 'none';
+      suggestionsLegendElem.style.display = 'none';
+    {rdelim}
+  {rdelim});
+{rdelim}
+-->
+</script>
+
 <h1>Do any of these help?</h1>
 
-<ul class="topic-list">
+<ul class="topic-list" id="suggestions">
 {foreach from=$suggested key=i item=topic}
 <li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
   <a href="minidashboard.php?user_url={$topic.author.url}">
@@ -19,20 +47,9 @@
 {/foreach}
 </ul>
 
-<script type="text/javascript">
-<!--
-function redoSearch() {ldelim}
-  var redoField = document.getElementById('invisible-redo-field');
-  var subjectField = document.getElementById('submit-subject');
-  redoField.value = subjectField.value;
-  var redoForm = document.getElementById('invisible-redo-form');
-  redoForm.submit();
-{rdelim}
--->
-</script>
-
-{if $suggested}
-<table style="width:100%;">
+<table style="width:100%;" id="suggestions-legend"
+  {if $suggested}style="display:block;"{else}style="display:none;"{/if}
+>
 <tr><td class="left-hed"> Nope? </td>
 <td>
 <p> <img class="float-right" 
@@ -44,15 +61,16 @@ function redoSearch() {ldelim}
 </td>
 </tr>
 </table>
-{else}
-<p> <img class="float-right" 
-         alt="Powered by Satisfaction" src="images/poweredbysmall.png" />
+
+<p id="absent-suggestions" class="topic-list"
+  {if !$suggested}style="display:block;"{else}style="display:none;"{/if}
+>
+<img class="float-right" alt="Powered by Satisfaction" src="images/poweredbysmall.png" />
 Sorry, we looked for similar topics in our system and didn't find any.
 If you re-word your topic you can also 
 <a href="#" onclick="redoSearch(); return false;">re-do the search</a>,
 OR fill in the details below and submit your topic
 </p>
-{/if}
 
 <form id="invisible-redo-form" style="display: none; width: 100%; position: relative;"
       method="POST"
@@ -92,12 +110,12 @@ window.onload = setEmoticonPicker;
 </script>
 <span id="emoticonPicker"
       onclick="for (var i in this.childNodes) {ldelim}
-                if (this.childNodes[i].tagName == 'IMG')
-                  this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
-              {rdelim}
-              event.target.src='images/' + event.target.id + '_on.png';
-              var emoticonElem = document.getElementById('emoticon');
-              emoticonElem.value=event.target.id">
+                 if (this.childNodes[i].tagName == 'IMG')
+                   this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
+               {rdelim}
+               event.target.src='images/' + event.target.id + '_on.png';
+               var emoticonElem = document.getElementById('emoticon');
+               emoticonElem.value=event.target.id">
 <input id="emoticon" type="hidden" name="emoticon" value="{$emoticon}" />
 <img id="happy" src="images/happy.png" style="vertical-align:middle;" />
 <img id="sad" src="images/sad.png" style="vertical-align:middle;" />

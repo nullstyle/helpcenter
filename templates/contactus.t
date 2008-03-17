@@ -40,73 +40,13 @@ We'll use the summary of your issue to search for similar topics that might be h
 </tr>
 </table>
 
+<script type="text/javascript" src="sprinkles.js"></script>
+
 <script type="text/javascript">
-<!-- // FIXME: credit this snippet
-var AJAX = function() {ldelim}
-  // (IE) XMLHttpRequest is an ActiveXObject in IE
-  return {ldelim}
-    isLoaded : 2,
-    isComplete : 4,
-  
-  newRequest : function() {ldelim}
-    var http_request;
-    if(window.XMLHttpRequest) {ldelim} // native XMLHttpRequest object (FireFox, etc.)
-      try {ldelim}
-        http_request = new XMLHttpRequest();
-      {rdelim} catch(e) {ldelim}
-        throw ("Failed to create (native) XMLHttpRequest");
-      {rdelim}
-    {rdelim} else if(window.ActiveXObject) {ldelim} //IE
-      try {ldelim}
-          http_request = new ActiveXObject("Msxml2.XMLHTTP");
-      {rdelim} catch(e) {ldelim}
-        try {ldelim}
-          http_request = new ActiveXObject("Microsoft.XMLHTTP");
-        {rdelim} catch(e) {ldelim}
-          throw ("Failed to create (ActiveX) XMLHttpRequest object");
-        {rdelim}
-      {rdelim}
-    {rdelim}
-    return http_request;
-  {rdelim}
-  {rdelim};
-{rdelim}();
-
-function getHTMLAJAX(url) {ldelim}
-// TBD: async
-  var req = AJAX.newRequest();
-  req.open('GET', url, true);
-  var result;
-  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.send();
-  return req.responseText;
-{rdelim}
-
-var LOADED = 4;
-
-function getHTMLAJAXAsync(url, kappa) {ldelim}
-// TBD: async
-  var req = AJAX.newRequest();
-  req.open('GET', url, true);
-  var result;
-  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.onreadystatechange = function() {ldelim}
-    if (req.readyState == LOADED) {ldelim}
-      kappa(req.responseText);
-    {rdelim}
-  {rdelim}
-  req.send();
-{rdelim}
-
-function trim(str) {ldelim}
-  var result = str.replace(/^[\n\r\t]+/, '');
-  result = result.replace(/[\n\r\t]+$/, '');
-  return result;
-{rdelim}
-
+<!--
 function updateSuggestions(queryText) {ldelim}
   var suggestElem = document.getElementById('suggestions');
-  var url = 'proxy.php?query=' + queryText; // FIXME: url-encode
+  var url = 'topic-suggestions.php?query=' + queryText; // FIXME: url-encode
   getHTMLAJAXAsync(url, function (suggestions) {ldelim}
     var absentSuggestElem = document.getElementById('absent-suggestions');
     if (trim(suggestions)) {ldelim}
@@ -122,7 +62,7 @@ function updateSuggestions(queryText) {ldelim}
 </script>
 
 <div id="contact-form">
-<h4> <img src="images/required.png" alr="*" /> Summary of your issue</h4>
+<h4> <img src="images/required.png" alt="*" /> Summary of your issue</h4>
 <input name="summary" onblur="updateSuggestions(this.value)" />
 
 <h4>This is what I DID</h4>
