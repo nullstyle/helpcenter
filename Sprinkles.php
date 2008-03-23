@@ -184,26 +184,91 @@ $cache_misses = 0;
 
 $request_timer = 0;
 
-function get_url($url) {
+function invalidate_http_cache($url) {
+  mysql_query('delete from http_cache where url = \'' .
+              mysql_real_escape_string($url) . '\'');
+}
+
+function get_url($url, $cache_hard=true) {
   global $http_cache_timeout;
   if (!$http_cache_timeout) die("\$http_cache_timeout not set");
   mysql_query('delete from http_cache where fetched_on < now() - ' .
               $http_cache_timeout);
-  $sql = 'select content from http_cache where url = \'' . $url . 
+  $sql = 'select content, fetched_on from http_cache where url = \'' . 
+         mysql_real_escape_string($url) . 
          '\' and fetched_on >= now() - ' . $http_cache_timeout;
   $q = mysql_query($sql);
   if (!$q) die(mysql_error());
+  global $cache_hits;
   if ($row = mysql_fetch_row($q)) {
-    global $cache_hits;
-    $cache_hits++;
-    return $row[0];
+    list($content, $fetched_on) = $row;
+    if ($cache_hard) {
+      $cache_hits++;
+      return $content;
+    } else {
+      # Format the date as required by the HTTP spec.
+      # cf. RFC 2616 Sec 3.3.1:
+      #   http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html
+      $fetched_on_rec = strptime($fetched_on, '%Y-%m-%d %H:%M:%S');
+      # TBD: use http_date
+      $fetched_on_http_date = 
+          gmstrftime('%a, %d %b %Y %H:%M:%S %Z',
+                     gmmktime($fetched_on_rec['tm_hour'],
+                              $fetched_on_rec['tm_min'],
+                              $fetched_on_rec['tm_sec'],
+                              $fetched_on_rec['tm_mon']+1,
+                              $fetched_on_rec['tm_mday'],
+                              $fetched_on_rec['tm_year']));
+      
+      require_once('HTTP/Request.php');
+      $req = new HTTP_Request($url);
+      $req->addHeader('If-Modified-Since', $fetched_on_http_date);
+      global $request_timer;
+      $request_timer -= microtime(true);
+      $ok = $req->sendRequest();
+      $request_timer += microtime(true);
+      error_log("Running request timer: " . $request_timer . "s");  
+      if (!PEAR::isError($ok))
+        $respCode = $req->getResponseCode();
+        if (304 == $respCode) {
+          # 304 Not Modified; we can use the cached copy.
+          error_log('Cache hit at ' . $url . ' using If-Modified-Since: '
+                    . $fetched_on_http_date);
+          $cache_hits++;
+          return $content;
+        } elseif (200 <= $respCode && $respCode < 300) {
+          # Got an OK response, use it.
+          error_log('Cache refresh at ' . $url . '. If-Modified-Since: '
+                    . $fetched_on_http_date);
+          $content = $req->getResponseBody();
+          $fetched_on_rec = strptime($req->getResponseHeader('Date'),
+                                     '%a, %d %b %Y %H:%M:%S %Z');
+          $fetched_on = gmstrftime('%Y-%m-%d %H:%M:%S',
+                                  gmmktime($fetched_on_rec['tm_hour'],
+                                           $fetched_on_rec['tm_min'],
+                                           $fetched_on_rec['tm_sec'],
+                                           $fetched_on_rec['tm_mon']+1,
+                                           $fetched_on_rec['tm_mday'],
+                                           $fetched_on_rec['tm_year']));
+          error_log("Date: " . $fetched_on);
+          mysql_query('delete from http_cache where url = \'' .
+                           mysql_real_escape_string($url) . '\'');
+          if (!mysql_query('insert into http_cache (url, content, fetched_on)'.
+                           ' values (\'' . 
+                           mysql_real_escape_string($url) . '\', \'' . 
+                           mysql_real_escape_string($content) . '\', \'' . 
+                           mysql_real_escape_string($fetched_on) . '\')'))
+            die(mysql_error());
+          return $content;
+        }
+    }
   } else {
     global $cache_misses;
     $cache_misses++;
     error_log("Cache miss; fetching $url");
 	global $request_timer;
     $request_timer -= microtime(true);
-    $content = file_get_contents($url);  # TBD: recognize errors here
+    $content = file_get_contents($url);
     $request_timer += microtime(true);
     error_log("Running request timer: " . $request_timer . "s");
     if ($content) {
@@ -408,31 +473,35 @@ class Sprinkles {
     # style). Thus we store the URL determined by the above options.
     $primary_feed_url = $this->api_url($url_path);
     
-    if (!preg_match('/\?/', $url_path))
-      $url_path .= '?';
+    $extra_params = "";
     if ($options['style']) {
       if ($options['style'] == 'unanswered')
-        $url_path .= '&sort=unanswered';
+        $extra_params .= '&sort=unanswered';
       else
-        $url_path .= '&style=' . $options['style'];
+        $extra_params .= '&style=' . $options['style'];
     }
     if ($options['frequently_asked']) {
-      $url_path .= '&sort=most_me_toos';
+      $extra_params .= '&sort=most_me_toos';
     };
+    if ($extra_params) {
+      if (preg_match('/\?/', $url_path))
+        $url_path .= $extra_params;
+      else
+        $url_path .= '?' . $extra_params;
+    }
     $topics_feed_url = $this->api_url($url_path);
     
     try {
       global $request_timer;
       $request_timer -= microtime(true);
-      error_log("Fetching $topics_feed_url");
-      $feed_str = file_get_contents($topics_feed_url);
+      $topics_feed_str = get_url($topics_feed_url, false);
       $request_timer += microtime(true);
       error_log("Running request timer: " . $request_timer . "s");
       
-      $feed = new XML_Feed_Parser($feed_str);
+      $topics_feed = new XML_Feed_Parser($topics_feed_str);
 
       $topics = array();
-      foreach ($feed as $entry) {
+      foreach ($topics_feed as $entry) {
         $topic = $this->fix_atom_entry($entry, 'topic');
         # HINT: use 'notags' for a faster response;
         # TBD use the 'resolve' technique
@@ -443,17 +512,20 @@ class Sprinkles {
         array_push($topics, $topic);
       }
 
-      global $request_timer;
-      $request_timer -= microtime(true);
-      error_log("Fetching $topics_feed_url");
-      $primary_feed_str = file_get_contents($primary_feed_url);
-      $request_timer += microtime(true);
-      error_log("Running request timer: " . $request_timer . "s");
+      if ($primary_feed_url == $topics_feed_url) {
+        $primary_feed = $topics_feed;
+      } else {
+        global $request_timer;
+        $request_timer -= microtime(true);
+        $primary_feed_str = get_url($primary_feed_url, false);
+        $request_timer += microtime(true);
+        error_log("Running request timer: " . $request_timer . "s");
       
-      $primary_feed = new XML_Feed_Parser($primary_feed_str);
+        $primary_feed = new XML_Feed_Parser($primary_feed_str);
+      }
     
       $totals = $this->topic_totals($primary_feed);
-      $totals['this'] = $this->feed_total($feed);
+      $totals['this'] = $this->feed_total($topics_feed);
       
       return(array('topics' => $topics,
                    'totals' => $totals));
@@ -578,15 +650,11 @@ class Sprinkles {
   function topic($id) {
     $url = $id;
 
-    assert(!!$url);
 # TBD: add check that $url is rooted at a sanctioned base URL
-
-    # error_log "Getting $url";
 
     global $request_timer;
     $request_timer -= microtime(true);
-    error_log("Fetching $url");
-    $feed_raw = file_get_contents($url);
+    $feed_raw = get_url($url, false);
     if (!$feed_raw) die("Failed to load topic at $url.");
     $request_timer += microtime(true);
     error_log("Running request timer is " . $request_timer . "s");
@@ -649,6 +717,13 @@ class Sprinkles {
   }
 
   function set_site_settings($settings) {
+    $result = mysql_query('select count(*) from site_settings');
+    $row = mysql_fetch_row($result);
+    if ($row[0] < 1)
+      mysql_query('insert into site_settings '.
+                  'values (\'#86fff6\',null,null,null,null,null,null,' .
+                  'null,null,null,null,null,null);');
+    
     $sql = 'update site_settings set ';
     $i = 0;
     foreach ($settings as $name => $value) {
@@ -685,7 +760,9 @@ class Sprinkles {
   }
 
   function employee_list() {
-    $people_url = $this->api_url('companies/'.$this->company_sfnid.'/employees');
+# TBD: generalize for the company
+    $people_url = $this->api_url('companies/' . $this->company_sfnid . 
+                                 '/employees');
     global $h;
     $people_list = $h->getByString('hcard', get_url($people_url));
     return $people_list;
@@ -765,6 +842,7 @@ class Sprinkles {
   # generally contains only URLs. Use the method "products" to get a list of 
   # products including everything we know about them.
   function product_list() {
+# TBD: generalize for the company.
     $products_url = $this->api_url('companies/'. $this->company_sfnid .'/products');
 
     global $h;
@@ -806,7 +884,7 @@ class Sprinkles {
    }
 
   # Given a list of topics, partition it into the ones that are associated
-  # on the current company and those that aren't.
+  # with the current company and those that aren't.
   function company_partition($topics) {
     $company_topics = array();
     $noncompany_topics = array();
@@ -1022,8 +1100,9 @@ class Sprinkles {
                  'map_url' => $map_url);
   }
 
+
   var $oauth_consumer_data;
-   
+  
   function oauth_consumer_data() {
     if (!$this->oauth_consumer_data) {
       $sql = 'select oauth_consumer_key, oauth_consumer_secret '.
@@ -1035,6 +1114,16 @@ class Sprinkles {
     return $this->oauth_consumer_data;
   }
   
+  function findsite_data() {
+    $oauth_consumer_data = $this->oauth_consumer_data();
+    $sprinkles_root_url = sprinkles_root_url();
+    return array('oauth_consumer_key' => $oauth_consumer_data['key'],
+                 'oauth_consumer_secret' => $oauth_consumer_data['secret'],
+                 'company_sfnid' => $this->company_sfnid,
+                 'sprinkles_root_url' => $sprinkles_root_url
+                 );
+  }
+
   function site_links() {
     $query = mysql_query('select text, url from site_links');
     $result = array();
@@ -1088,6 +1177,7 @@ function redirect($url) {
 $mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);
 if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
 
+#FIXME: get the whole site_settings row ONCE per request.
 function sprinkles_root_url() {
   $q = mysql_query('select sprinkles_root_url from site_settings');
   if (!$q) die("Database error getting Sprinkles root URL: " . mysql_error());

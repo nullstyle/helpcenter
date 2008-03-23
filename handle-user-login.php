@@ -5,7 +5,14 @@ require_once('HTTP_Request_Oauth.php');
 
 $sprink = new Sprinkles();
 
+$return = request_param('return');
+
 $consumer_data = $sprink->oauth_consumer_data();
+if (!$consumer_data['key'] || !$consumer_data['secret']){
+  die("The OAuth consumer data was missing from the Instant-On Help " . 
+      "Center database! Perhaps something went wrong during installation " . 
+      "and setup.");
+}
 $oauth_req = new HTTP_Request_OAuth(
                    'http://getsatisfaction.com/api/request_token',
                    array('consumer_key' => $consumer_data['key'],
@@ -30,7 +37,6 @@ if (!$result) die("Error inserting OAuth tokens into database.");
 
 $first_login = request_param('first_login');
 
-$return = request_param('return');
 $callback_url = sprinkles_root_url() . 'handle-oauth-return.php?' . 
                   ($first_login ? 'first_login=true&': '') .
                   'return=' . urlencode($return);

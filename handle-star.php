@@ -29,7 +29,10 @@ if (201 != $responseCode) {
   die("API Error $responseCode starring reply $id.");
 }
 
-redirect('topic.php?id=' . request_param('topic_id'));
+$topic_url = request_param('topic_id');
+invalidate_http_cache($topic_url);
+
+redirect('topic.php?id=' . urlencode($topic_url));
 
 ?>
 

@@ -30,6 +30,9 @@ if (400 == $responseCode) {
   die("API Error $responseCode me-tooing topic $sfn_id.");
 }
 
+$topic_url = $sprink->api_url("topics/" . $sfn_id);
+invalidate_http_cache($topic_url);
+
 redirect('topic.php?sfn_id=' . $sfn_id . 
          '&me_tood_topic=true');
 

@@ -14,17 +14,27 @@
 
 <div class="sidepane">
 <div class="sidebar" style="background-color: white">
-<a>Subscribe to your feed with RSS on getsatisfaction.com</a> (xxx).
+<a>Subscribe to 
+{if $user_is_self}
+your
+{else}
+their
+{/if}
+feed with RSS on getsatisfaction.com</a> (xxx).
 </div>
 
 <div class="sidebar">
-<h3>Recent Topics from your Satisfaction Dashboard:</h3>
+<h3>Recent Topics from {$user_possessive} Satisfaction Dashboard:</h3>
 <ul>
 {foreach from=$noncompany_topics key=i item=topic}
 <li>{$topic.title} in <strong>{$topic.company.fn}</strong></li>
 {foreachelse}
-You haven't participated in any other discussions so far.
+{if $user_is_self} You haven't
+{else}             {$user.fn} hasn't
+{/if}
+participated in any other discussions so far.
 {/foreach}
+
 </ul>
 </div>
 </div>
@@ -72,7 +82,10 @@ You haven't participated in any other discussions so far.
 {foreachelse}
   <tr><td></td>
     <td class="content-col">
-      You haven't participated in any {$company_name} discussions so far.
+      {if $user_is_self} You haven't
+      {else}             {$user.fn} hasn't
+      {/if}
+      participated in any {$company_name} discussions so far.
     </td><td></td>
   </tr>
 {/foreach}
