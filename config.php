@@ -20,7 +20,7 @@ $max_logo_size = 65535;
 
 $submit_suggestions = 3;
 $helpstart_topic_count = 5; 
-$discuss_topic_page_limit = 3;
+$discuss_topic_page_limit = 6;
 $related_topics_count = 4;
 $max_top_topic_tags = 5;
 
