@@ -17,6 +17,8 @@ $sprink = new Sprinkles();
 
 $creds = $sprink->current_user_session();
 if (!$creds) {
+  $target_page = $preview_after_login                   # setting in config.php
+                   ? 'submit.php' : 'handle-submit.php';
   $args = 'subject=' . urlencode($subject) .
           '&details=' . urlencode($details) .
           '&tags=' . urlencode($tags) .
@@ -25,8 +27,6 @@ if (!$creds) {
           '&style=' . urlencode($style);
   foreach ($products as $product)
     $args .= '&product[]=' . urlencode($product);
-  $target_page = $preview_after_login                   # setting in config.php
-                   ? 'submit.php' : 'handle-submit.php';
   redirect('user-login.php?return=' .
            urlencode($target_page . '?' . $args));
 }

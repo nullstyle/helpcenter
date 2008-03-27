@@ -65,7 +65,7 @@ too&mdash;got it!
 
 {if $self_star_error}
 <div class="error-box" style="margin:8pt 6pt;">
-Note: You cannot mark your own reply as
+Note: That reply was either authored by you or it was already marked by you as
   {if $topic_head.topic_style == 'question'}
     "answering the question."
   {elseif $topic_head.topic_style == 'idea'}
@@ -75,6 +75,7 @@ Note: You cannot mark your own reply as
   {elseif $topic_head.topic_style =='problem'}
     "solving the problem."
   {/if}
+So we didn't take any action.
 </div>
 {/if}
 
@@ -164,16 +165,16 @@ You asked this question
    {if $reply_count != 1}replies{else}reply{/if}<br />
 </p>
 {if $particip.count_official_reps}
-<p>
-<strong>{$particip.count_official_reps}</strong>
-{if count($particip.official_reps) != 1} 
-official reps {else}
-official rep {/if}
-<br />
-{foreach from=$particip.official_reps key=i item=rep}
-<img src="{$rep.photo}" class="small-author-pic" />
-{/foreach}
-</p>
+  <p>
+  <strong>{$particip.count_official_reps}</strong>
+  {if count($particip.official_reps) != 1} 
+  official reps {else}
+  official rep {/if}
+  <br />
+  {foreach from=$particip.official_reps key=i item=rep}
+    <img src="{$rep.photo}" class="small-author-pic" />
+  {/foreach}
+  </p>
 {/if}
 </td>
 </tr>

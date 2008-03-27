@@ -6,7 +6,6 @@ require_once('Sprinkles.php');
 $sprink = new Sprinkles();
 
 $topic_id = request_param('topic_id');
-
 $reply_url = request_param('replies_url');
 
 if (!($content = request_param('content')))
@@ -17,6 +16,8 @@ if ($parent_id = request_param('parent_id'))
   $params['reply[parent_id]'] = $parent_id;
 
 $creds = $sprink->current_user_session();
+if (!$cred)
+  die("Not logged in! (FIXME)");
 $req = $sprink->oauthed_request('POST', $reply_url, $creds, null, $params);
 
 if (201 != ($responseCode = $req->getResponseCode())) {

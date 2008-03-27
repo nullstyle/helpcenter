@@ -9,13 +9,17 @@ $sprink = new Sprinkles();
 
 $sfn_id = request_param('sfn_id');
 
-$POST_URL = $sprink->api_url("topics/" . $sfn_id . "/me_toos");
-
-# error_log("Using $POST_URL to me-too $sfn_id");
-
 $creds = $sprink->current_user_session();
-if (!$creds) die("You are not logged in.");  # FIXME
+if (!$creds) {
+  $target_page = $preview_after_login                   # setting in config.php
+                   ? 'topic.php' : 'handle-me-too.php';
+  $args = 'sfn_id=' . urlencode($sfn_id);
+  redirect('user-login.php?return=' .
+           urlencode($target_page . '?' . $args));
+}
 
+
+$POST_URL = $sprink->api_url("topics/" . $sfn_id . "/me_toos");
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, array());
 
 $responseCode = $req->getResponseCode();

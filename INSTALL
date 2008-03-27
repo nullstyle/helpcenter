@@ -65,6 +65,9 @@ INSTALLATION INSTRUCTIONS
        % mkdir templates_c
        % chown www templates_c
      
+     ATTENTION: Make sure the templates_c directory is writable by the 
+     webserver.
+     
   6. Create a MySQL database.
 
        % mysql

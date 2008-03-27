@@ -14,6 +14,9 @@ if (!$page_num) { $page_num = 0; }
 
 $topic_id = request_param('id');
 if (!$topic_id) {
+  $topic_id = request_param('topic_id');
+}
+if (!$topic_id) {
   $sfn_id = request_param('sfn_id');
   $topic_id = $sprink->api_url("topics/" . $sfn_id);
 }
