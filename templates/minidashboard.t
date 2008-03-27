@@ -27,7 +27,7 @@ feed with RSS on getsatisfaction.com</a> (xxx).
 <h3>Recent Topics from {$user_possessive} Get Satisfaction Dashboard:</h3>
 <ul>
 {foreach from=$noncompany_topics key=i item=topic}
-<li>{$topic.title} in <strong>{$topic.company.fn}</strong></li>
+<li><a href="{$topic.at_sfn}">{$topic.title}</a> in <strong>{$topic.company.fn}</strong></li>
 {foreachelse}
 {if $user_is_self} You haven't
 {else}             {$user.fn} hasn't
@@ -76,7 +76,7 @@ participated in any other discussions so far.
     </table>
     </td>
     <td class="reply-count-col">
-      <span class="huge">{$topic.reply_count}</a></span> <br />
+      <span class="huge">{$topic.reply_count}</span> <br />
         {if $topic.reply_count == 1} reply {else} replies {/if} </td>
   </tr>
 {foreachelse}
