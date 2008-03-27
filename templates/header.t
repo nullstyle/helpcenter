@@ -5,7 +5,7 @@
 {include file="topnav.t"}
 
 <a href="{$logo_link}">
-<img class="header-logo" src="logo.php" alt="{ $company_name } Powered by: Satisfaction" />
+<img class="header-logo" src="logo.php" alt="{ $company_name } Powered by: Get Satisfaction" />
 </a>
 
 <div style="clear: right; margin-top: 3pt;"> </div>

@@ -233,7 +233,7 @@ official rep {/if}
 
 <div class="sidepane">
   <img style="padding: 6pt; margin: 6pt;" src="images/poweredbysmall.png"
-       alt="Powered by: Satisfaction" />
+       alt="Powered by: Get Satisfaction" />
 
   {include file="related-topics.t"}
 </div>

@@ -2,7 +2,7 @@
 
 {include file="lite-header.t"}
 
-<h1>Welcome to your Satisfaction Sprinkles</h1>
+<h1>Welcome to your Get Satisfaction Sprinkles</h1>
 
 {if $msg == 'missing_sprinkles_root_url'}
 <div class="error-box">
@@ -20,11 +20,11 @@ to you when you downloaded the Instant-On Help Center from Get Satisfaction.
 </div>
 {/if}
 
-<h2>Start by finding your Satisfaction site.<br />
+<h2>Start by finding your Get Satisfaction site.<br />
 Then it's only two more simple steps and you're good to go.</h2>
 
 <p>
-What is the address of your company's Satisfaction site?
+What is the address of your company's Get Satisfaction site?
 <form action="handle-admin-findsite.php" method="POST">
 
 <table style="padding: 0pt 8pt;">

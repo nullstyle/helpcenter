@@ -53,7 +53,7 @@ function redoSearch() {ldelim}
 <tr><td class="left-hed"> Nope? </td>
 <td>
 <p> <img class="float-right" 
-         alt="Powered by Satisfaction" src="images/poweredbysmall.png" />
+         alt="Powered by Get Satisfaction" src="images/poweredbysmall.png" />
   Well then, fill in the details below and submit your topic for
   everyone to see and answer <br />
   OR reword your topic and
@@ -65,7 +65,7 @@ function redoSearch() {ldelim}
 <p id="absent-suggestions" class="topic-list"
   {if !$suggested}style="display:block;"{else}style="display:none;"{/if}
 >
-<img class="float-right" alt="Powered by Satisfaction" src="images/poweredbysmall.png" />
+<img class="float-right" alt="Powered by Get Satisfaction" src="images/poweredbysmall.png" />
 Sorry, we looked for similar topics in our system and didn't find any.
 If you re-word your topic you can also 
 <a href="#" onclick="redoSearch(); return false;">re-do the search</a>,

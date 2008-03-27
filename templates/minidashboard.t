@@ -24,7 +24,7 @@ feed with RSS on getsatisfaction.com</a> (xxx).
 </div>
 
 <div class="sidebar">
-<h3>Recent Topics from {$user_possessive} Satisfaction Dashboard:</h3>
+<h3>Recent Topics from {$user_possessive} Get Satisfaction Dashboard:</h3>
 <ul>
 {foreach from=$noncompany_topics key=i item=topic}
 <li>{$topic.title} in <strong>{$topic.company.fn}</strong></li>

@@ -7,7 +7,7 @@
 <button type="submit" style="vertical-align: middle;">Go</button>
 
 <a href="http://www.getsatisfaction.com/">
-<img class="pin-right" alt="Powered by Satisfaction"
+<img class="pin-right" alt="Powered by Get Satisfaction"
      src="images/poweredbysmall.png" width="113" height="30" />
 </a>
 

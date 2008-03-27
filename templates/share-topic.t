@@ -24,7 +24,7 @@ Enter your name:
 {else}
 {$user_name}
 {/if}
-thinks you might be interested in this discussion from Satisfaction:
+thinks you might be interested in this discussion from Get Satisfaction:
 
 <p>
 &ldquo;{$topic_head.title}
