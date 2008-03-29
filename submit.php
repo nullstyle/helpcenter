@@ -13,8 +13,7 @@ $selected_products = request_param('product');
 if (!$selected_products)
   $selected_products = array();
 
-$suggested = $sprink->topics(array('query' => $subject,
-                                   'notags' => true));
+$suggested = $sprink->topics(array('query' => $subject));
 
 $suggested = take($submit_suggestions, $suggested['topics']);
 

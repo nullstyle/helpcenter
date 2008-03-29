@@ -399,6 +399,7 @@ class Sprinkles {
     }
     $item['star_count'] = sfn_element_value($entry, 'star_count');
     $item['flag_count'] = sfn_element_value($entry, 'flag_count');
+    $item['tags'] = preg_split('/, */', sfn_element_value($entry, 'tags'));
 
     $emotitag_elem = sfn_element($entry, 'emotitag');
     if ($emotitag_elem) {
@@ -417,6 +418,7 @@ class Sprinkles {
   }
 
   function feed_total($feed) {
+    assert($feed);
     global $xml_opensearch_ns;
     if ($total_results_elem = $feed->model->getElementsByTagNameNS(
                                           $xml_opensearch_ns,
@@ -426,6 +428,8 @@ class Sprinkles {
   }
 
   function topic_totals($feed) {
+    assert($feed);
+
     $result = array();
 
     $result['all'] = $this->feed_total($feed);
@@ -439,8 +443,10 @@ class Sprinkles {
 
   ## Topics for the company, filtered by properites specified in $options.
   # Presently, you can only filter on one of the axes: product, tag, query, person,
-  # followed, or related.
-  function topics($options) {
+  # followed, or related. The at_least parameter gives a minimum number of 
+  # topics that should be returned. You might get more than this number. 
+  # Using a smaller number should result in a quicker return.
+  function topics($options, $at_least = 1) {
     if (!singleton(array($options['product'], $options['tag'], $options['query'],
                       $options['person'], $options['followed'], $options['related']))) {
         die('Sprinkles::topics($options) got more than one of these options: '
@@ -465,13 +471,14 @@ class Sprinkles {
       if ($options['query'])
         $url_path .= '?query=' . urlencode($options['query']);
     }
-    
-    # The above options determine a "primary" feed, which is then filtered by 
-    # topic style or some other criteria, such as the "unanswered" property.
-    # The primary feed has information that we need, though (particularly the
-    # topic totals by style, which should not be filtered to one particular
-    # style). Thus we store the URL determined by the above options.
-    $primary_feed_url = $this->api_url($url_path);
+
+    # The above options determine an "unfiltered" feed, which is then filtered 
+    # by topic style or some other criteria, such as the "unanswered" property.
+    # The unfiltered feed has information that we need, though (particularly 
+    # the topic totals by style, which should not be filtered to one particular
+    # style). Thus we note the URL determined by the above options, before 
+    # choosing the filtered URL.
+    $unfiltered_feed_url = $this->api_url($url_path);
     
     $extra_params = "";
     if ($options['style']) {
@@ -490,42 +497,52 @@ class Sprinkles {
         $url_path .= '?' . $extra_params;
     }
     $topics_feed_url = $this->api_url($url_path);
+    $topics_feed_page_url = $topics_feed_url;
     
     try {
-      global $request_timer;
-      $request_timer -= microtime(true);
-      $topics_feed_str = get_url($topics_feed_url, false);
-      $request_timer += microtime(true);
-      error_log("Running request timer: " . $request_timer . "s");
+      # == FETCH THE FEED ==
       
-      $topics_feed = new XML_Feed_Parser($topics_feed_str);
+      # Atom feeds at Get Satisfaction are divided into pages; each page
+      # contains a link/@rel="next" element at the top which points to the
+      # next page. We loop, collecting these pages, until we have as many
+      # entries as $at_least, or run out of pages.
 
       $topics = array();
-      foreach ($topics_feed as $entry) {
-        $topic = $this->fix_atom_entry($entry, 'topic');
-        # HINT: use 'notags' for a faster response;
-        # TBD use the 'resolve' technique
-        if (!$options['notags']) {
-          $topic_tags_url = $topic['id'] . '/tags';
-          $topic['tags'] = preg_split('/, */', sfn_element_value($entry, 'tags'));
+
+      $first_topics_feed_page = null;
+      $prev_page_url = null;
+      $last_page_url = "-1";   # placeholder to ensure prev != last when we start.
+
+      while (count($topics) < $at_least && $last_page_url != $prev_page_url) {
+        $topics_feed_page_str = get_url($topics_feed_page_url, false);
+        $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
+
+        # stash the first page of the feed for later reference
+        if ($first_topics_feed_page == null) $first_topics_feed_page = $topics_feed;
+        
+        foreach ($topics_feed->model->getElementsByTagName("link") as $link_elem) {
+          if ($link_elem->getAttribute('rel') == 'next')
+            $next_page_url = $link_elem->getAttribute('href');
+          if ($link_elem->getAttribute('rel') == 'last')
+            $last_page_url = $link_elem->getAttribute('href');
         }
-        array_push($topics, $topic);
+        foreach ($topics_feed as $entry) {
+          $topic = $this->fix_atom_entry($entry, 'topic');
+          array_push($topics, $topic);
+        }
+        $prev_page_url = $topics_feed_page_url;
+        $topics_feed_page_url = $next_page_url;
       }
 
-      if ($primary_feed_url == $topics_feed_url) {
-        $primary_feed = $topics_feed;
+      if ($unfiltered_feed_url == $topics_feed_url) {
+        $unfiltered_feed = $first_topics_feed_page;
       } else {
-        global $request_timer;
-        $request_timer -= microtime(true);
-        $primary_feed_str = get_url($primary_feed_url, false);
-        $request_timer += microtime(true);
-        error_log("Running request timer: " . $request_timer . "s");
-      
-        $primary_feed = new XML_Feed_Parser($primary_feed_str);
+        $unfiltered_feed_str = get_url($unfiltered_feed_url, false);
+        $unfiltered_feed = new XML_Feed_Parser($unfiltered_feed_str);
       }
     
-      $totals = $this->topic_totals($primary_feed);
-      $totals['this'] = $this->feed_total($topics_feed);
+      $totals = $this->topic_totals($unfiltered_feed);
+      $totals['this'] = $this->feed_total($first_topics_feed_page);
       
       return(array('topics' => $topics,
                    'totals' => $totals));
@@ -652,12 +669,8 @@ class Sprinkles {
 
 # TBD: add check that $url is rooted at a sanctioned base URL
 
-    global $request_timer;
-    $request_timer -= microtime(true);
     $feed_raw = get_url($url, false);
     if (!$feed_raw) die("Failed to load topic at $url.");
-    $request_timer += microtime(true);
-    error_log("Running request timer is " . $request_timer . "s");
     $topic_feed = new XML_Feed_Parser($feed_raw);
 
     if (!$topic_feed) die("Couldn't get topic feed from $url");

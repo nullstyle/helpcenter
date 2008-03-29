@@ -8,8 +8,7 @@ $mode = request_param('mode');
 if (!$mode) $mode = 'simple';
 
 $sprink = new Sprinkles();
-$suggested = $sprink->topics(array('query' => $query,
-                                   'notags' => true));
+$suggested = $sprink->topics(array('query' => $query));
 
 $topics = take(3, $suggested['topics']);
 

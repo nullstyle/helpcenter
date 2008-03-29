@@ -123,4 +123,18 @@ about the tag: {$filter_tag}
 {/foreach}
 </table>
 
+{if $num_pages > 1}
+{if ($page_num > 0)}
+<a href="discuss.php?page={$page_num-1}">&lt;</a>
+{else}
+&nbsp;
+{/if}
+Page {$page_num+1} of {$num_pages}
+{if ($page_num+1 < $num_pages)}
+<a href="discuss.php?page={$page_num+1}">&gt;</a>
+{else}
+&nbsp;
+{/if}
+{/if}
+
 {include file="footer.t"}

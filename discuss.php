@@ -3,6 +3,9 @@ require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
 
+$page_num = request_param('page');
+if (!$page_num) { $page_num = 0; }
+
 $topic_filters = array();
 
 $filter_style = request_param('style');
@@ -28,10 +31,15 @@ if ($filter_tag) $topic_filters['tag'] = $filter_tag;
 
 $filter_tag_arg = $filter_tag ? '&' ."tag=" . $filter_tag : '';
 
-$topics = $sprink->topics($topic_filters);
+$topics = $sprink->topics($topic_filters, ($page_num + 1) * $discuss_page_size);
 $topic_count = $topics['totals']['this'];
-$topics['topics'] = take($discuss_topic_page_limit, $topics['topics']); # FIXME needs pagination
+$topics['topics'] = take_range($page_num * $discuss_page_size,
+                               ($page_num + 1) * $discuss_page_size,
+                               $topics['topics']);
 $sprink->resolve_authors($topics['topics']);
+
+$smarty->assign('page_num', $page_num);
+$smarty->assign('num_pages', ceil($topic_count/$topic_page_size));
 
 $top_topic_tags = take($max_top_topic_tags, 
                        $sprink->tags('http://api.getsatisfaction.com/companies/' . 

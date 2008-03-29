@@ -20,9 +20,11 @@ $max_logo_size = 65535;
 
 $submit_suggestions = 3;
 $helpstart_topic_count = 5; 
-$discuss_topic_page_limit = 6;
+$discuss_page_size = 6;
 $related_topics_count = 4;
 $max_top_topic_tags = 5;
+$topic_page_size = 5; # TBD: regularize these names
+
 
 # $preview_after_log determines whether the user should have a chance to 
 # preview a topic for submission, after being sent to the Get Satisfaction 

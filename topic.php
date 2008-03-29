@@ -7,8 +7,6 @@ $sprink = new Sprinkles();
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
-$page_limit = 5;
-
 $page_num = request_param('page');
 if (!$page_num) { $page_num = 0; }
 
@@ -28,17 +26,15 @@ $reply_count = count($topic['replies']);
 $topic['replies'] = $sprink->thread_items($topic['replies'], $topic_head['id']);
 $toplevel_reply_count = count($topic['replies']);
 
-$topic['replies'] = take_range($page_num * $page_limit,
-                               ($page_num + 1) * $page_limit,
+$topic['replies'] = take_range($page_num * $topic_page_size,
+                               ($page_num + 1) * $topic_page_size,
                                $topic['replies']);
 $topic['replies'] = $sprink->flatten_threads($topic['replies']);
 
 $sprink->resolve_author($topic_head);
 $sprink->resolve_authors($topic['replies']);
 
-$related_topics = $sprink->topics(array('related' => $topic_id,
-                                        'notags' => true # (speeds things up)
-                                        ));
+$related_topics = $sprink->topics(array('related' => $topic_id));
 list($company_related_topics, $noncompany_related_topics) = 
        $sprink->company_partition($related_topics['topics']);
 $noncompany_related_topics = 
@@ -54,7 +50,7 @@ $smarty->assign('particip', $topic['particip']);
 $smarty->assign('tags', $topic['tags']);
 $smarty->assign(array('reply_count' => $reply_count,
                       'toplevel_reply_count' => $toplevel_reply_count));
-$smarty->assign('num_pages', ceil($toplevel_reply_count/$page_limit));
+$smarty->assign('num_pages', ceil($toplevel_reply_count/$topic_page_size));
 $smarty->assign('page_num', $page_num);
 $smarty->assign('topic_id', $topic_id);
 $smarty->assign('reply_url', $reply_url);
