@@ -11,21 +11,22 @@ if ($username_canonical) {
   $user = $sprink->get_person($sprink->api_url("people/$username_canonical"));
   $user_possessive = $user['fn'] . "'s";
   $is_self = false;
+  $all_topics = $sprink->topics(array('person' => $username_canonical));
 } else if ($user_url = request_param('user_url')) {
   $user = $sprink->get_person($user_url);
   $user_possessive = $user['fn'] . "'s";
   $username_canonical = $user['canonical_name'];
   $is_self = false;
+  $all_topics = $sprink->topics(array('person' => $username_canonical));
 } else {
   $user = $sprink->current_user();
   $user_possessive = 'your';
   $username_canonical = $user['canonical_name'];
   $is_self = true;
+  $all_topics = $sprink->topics(array('followed' => $username_canonical));
 }
 
-# die($user['canonical_name']);
-
-$all_topics = $sprink->dashboard_topics($username_canonical);
+$all_topics = $all_topics['topics'];
 
 assert($all_topics);
 assert(count($all_topics) > 0);

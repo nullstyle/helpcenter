@@ -518,7 +518,6 @@ class Sprinkles {
       while (count($topics) < $at_least && $topics_feed_page_url &&
               $last_page_url != $prev_page_url) {
         $topics_feed_page_str = get_url($topics_feed_page_url, false);
-        error_log("FEED: $topics_feed_page_str");
         $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
 
         # stash the first page of the feed for later reference
