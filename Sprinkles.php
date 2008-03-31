@@ -397,6 +397,7 @@ class Sprinkles {
       $item['reply_count'] = sfn_element_value($entry, 'reply_count');
       if (!($item['reply_count'] > 0)) $item['reply_count'] = 0;
     }
+    $item['follower_count'] = sfn_element_value($entry, 'follower_count');
     $item['star_count'] = sfn_element_value($entry, 'star_count');
     $item['flag_count'] = sfn_element_value($entry, 'flag_count');
     $item['tags'] = preg_split('/, */', sfn_element_value($entry, 'tags'));
@@ -457,6 +458,7 @@ class Sprinkles {
                       $options['product'] . "/topics" :
                       $url_path = 'products/' . $options['product'] . '/topics';
     } else if ($options['tag']) {
+      $options['tag'] = preg_replace('/ /', '_', $options['tag']);
       $url_path = 'tags/' . $options['tag'] . '/topics';
     } else if ($options['person']) {
       $url_path = 'people/' . $options['person'] . '/topics';
@@ -513,8 +515,10 @@ class Sprinkles {
       $prev_page_url = null;
       $last_page_url = "-1";   # placeholder to ensure prev != last when we start.
 
-      while (count($topics) < $at_least && $last_page_url != $prev_page_url) {
+      while (count($topics) < $at_least && $topics_feed_page_url &&
+              $last_page_url != $prev_page_url) {
         $topics_feed_page_str = get_url($topics_feed_page_url, false);
+        error_log("FEED: $topics_feed_page_str");
         $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
 
         # stash the first page of the feed for later reference

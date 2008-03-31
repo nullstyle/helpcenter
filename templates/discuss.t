@@ -86,7 +86,7 @@ about the tag: {$filter_tag}
     <td><img src="images/{$topic.topic_style}_med.png"
                  alt="{$topic.topic_style}" /></td>
     <td class="content-col">
-    <h3><a href="topic.php?id={$topic.id}">{$topic.title}</a></h3>
+    <h3><a href="topic.php?sfn_id={$topic.sfn_id}">{$topic.title}</a></h3>
     <p>{if $topic.reply_count} Last reply
                  {else} Posted {/if} {$topic.updated_relative}.</p>
 

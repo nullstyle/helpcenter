@@ -66,7 +66,7 @@ Talk about it on the <a href="http://code.google.com/p/getsatisfaction/w/list">W
 Get Satisfaction</a></h3>
 <ul>
 {foreach from=$sprinkles_tagged_topics key=i item=topic}
-<li> <a href="topic.php?id={$topic.id|urlencode}">{$topic.title}</a> </li>
+<li> <a href="topic.php?sfn_id={$topic.sfn_id|urlencode}">{$topic.title}</a> </li>
 {/foreach}
 </ul>
 

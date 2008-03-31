@@ -42,7 +42,7 @@ function redoSearch() {ldelim}
      {elseif $topic.topic_style == 'problem'}Reported:
      {elseif $topic.topic_style == 'idea'}Said:
      {/if}
-     <a href="topic.php?id={$topic.id|urlencode}">
+     <a href="topic.php?sfn_id={$topic.sfn_id|urlencode}">
      {$topic.title}</a> </li>
 {/foreach}
 </ul>
