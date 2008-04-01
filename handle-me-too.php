@@ -18,17 +18,15 @@ if (!$creds) {
            urlencode($target_page . '?' . $args));
 }
 
-
 $POST_URL = $sprink->api_url("topics/" . $sfn_id . "/me_toos");
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, array());
 
 $responseCode = $req->getResponseCode();
-if (400 == $responseCode) {
+if (0 == $responseCode) {
+  die("Timeout accessing the API, while posting to $POST_URL."); # FIXME: recover for user
+} else if (400 == $responseCode) {
   redirect('topic.php?sfn_id=' . $sfn_id . 
            '&me_too_failed=true');
-
-  die("You have already marked this topic as \"me too,\""
-      . " or it is your own topic.");                      # FIXME: nicer error
 } else if (201 != $responseCode) {
 #  error_log($req->getResponseBody());
   die("API Error $responseCode me-tooing topic $sfn_id.");

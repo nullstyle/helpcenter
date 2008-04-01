@@ -964,7 +964,8 @@ class Sprinkles {
     $req_params['consumer_key'] = $consumer_data['key'];
     $req_params['consumer_secret'] = $consumer_data['secret'];
     $req_params['signature_method'] = 'HMAC-SHA1';
-    $req = new HTTP_Request_Oauth($url, $req_params);
+    $req_params['timeout'] = $oauth_request_timeout;
+    $req = new HTTP_Request_Oauth($url, $req_params);  # TBD: set timeout
     foreach ($query_params as $name => $val) {
       $req->addParam($name, $val);
     }

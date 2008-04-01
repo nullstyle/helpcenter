@@ -151,7 +151,19 @@ You asked this question
 </div>
 {elseif $current_user}
 <form action="handle-me-too.php">
-<button name="sfn_id" value="{$topic_head.sfn_id}">I have this question too!</button>
+<button name="sfn_id" value="{$topic_head.sfn_id}">
+  I have this 
+  {if $topic_head.topic_style == 'question'}
+    question
+  {elseif $topic_head.topic_style == 'idea'}
+    idea
+  {elseif $topic_head.topic_style == 'talk'}
+    question
+  {elseif $topic_head.topic_style =='problem'}
+    problem
+  {/if}
+  too!
+</button>
 </form>
 {/if}
 
