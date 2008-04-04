@@ -31,8 +31,6 @@ $oauth_req = new HTTP_Request_OAuth(
 
 $resp = $oauth_req->sendRequest(true, true);
 
-#dump($oauth_req->getResponseBody());
-
 list($token, $token_secret) = $oauth_req->getResponseTokenSecret();
 
 $result = mysql_query("update sessions set token = '" . $token . 

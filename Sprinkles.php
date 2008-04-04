@@ -26,7 +26,7 @@ require_once 'list.php';
 #   (Errors are always logged, unless logging is turned off with $logging.)
 $logging = true;
 $verbose = false;
-$debugging = false;
+$debugging = true;
 
 # Smarty directory configuration
 require_once('smarty/Smarty.class.php');
@@ -205,6 +205,7 @@ function insert_into($table, $fields) {
     $sql .= '\'' . mysql_real_escape_string($field) . '\'';
   }
   $sql .= ')';
+  debug($sql);
   return mysql_query($sql);
 }
 
@@ -974,7 +975,6 @@ class Sprinkles {
   
   function open_session($token) {
     if (!$token) die("Call to open_session with blank token: '$token'");
-# TBD: fetch /me resource and stash its info in the session table.
     setcookie('session_id', $token);
     $this->nascent_session_id = $token;
     return $token;

@@ -30,9 +30,8 @@ if (!$token || !$secret) {
   die("Failed to fetch OAuth request token from getsatisfaction.com.");
 }
 
-$result = mysql_query('insert into sessions (token, token_secret) values (\''
-                      . $token . '\', \'' . $secret . '\')');
-
+$result = insert_into('sessions', array('token' => $token,
+                                        'token_secret' => $secret));
 if (!$result) die("Error inserting OAuth tokens into database.");
 
 $first_login = request_param('first_login');
@@ -41,7 +40,7 @@ $callback_url = sprinkles_root_url() . 'handle-oauth-return.php?' .
                   ($first_login ? 'first_login=true&': '') .
                   'return=' . urlencode($return);
 
-# FIXME: hardcoded API URL
+# FIXME: hardcoded API URL!
 $url = 'http://getsatisfaction.com/api/authorize?oauth_token='. $token
          . '&oauth_callback=' . urlencode($callback_url);
 
