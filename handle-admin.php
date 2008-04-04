@@ -61,7 +61,7 @@ if (!$active_username) {
 
 $existing_admin_users = $sprink->get_users();
 if (!$sprink->user_is_admin()) {
-  redirect('dead-end.php'); exit(0);
+  redirect('error.php'); exit(0);
 }
 
 sort($existing_admin_users);

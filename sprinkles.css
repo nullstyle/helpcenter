@@ -41,7 +41,7 @@ div#content { background-color : #fff; padding: 20px; }
 /* Header */
 div.header { border-bottom: 1px solid gray; }
 img.header-logo { width: 150px; }
-ul.topnav { float: right; padding: 0px; }
+ul.topnav { padding: 0px; }
 ul.topnav li { display: inline; font-size: 10pt; padding-right: 1pc; color: #666; }
 ul.topnav li a:hover { background-color:#E6FF84; text-decoration: none; }
 

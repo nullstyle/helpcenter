@@ -14,7 +14,7 @@ if (!$username) {
 }
 $admin_users = $sprink->get_users();
 if (!$sprink->user_is_admin()) {
-  redirect('dead-end.php');   # FIXME: find a more gracious out for user
+  redirect('error.php');   # FIXME: find a more gracious out for user
   exit(0);
 }
 
