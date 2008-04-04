@@ -16,6 +16,7 @@ require_once 'XML/Feed/Parser.php';
 require_once 'hkit.class.php';
 
 require_once 'config.php';
+require_once 'list.php';
 
 # Smarty configuration
 require_once('smarty/Smarty.class.php');
@@ -28,64 +29,7 @@ $smarty->cache_dir    = $sprinkles_dir . '/cache/';
 global $h;
 $h = new hKit;
 
-# take: return a list of the first $n elements from $list
-function take($n, $list) {
-  if (!is_array($list)) throw new Exception("Non-array passed to 'take'");
-  $result = array();
-  $i = 0;
-  foreach ($list as $item) {
-    if (++$i > $n) { break; }
-      array_push($result, $item);
-  }
-  return $result;
-}
-
-# take_range: return a list of elements from $list numbered $lo through $hi-1
-function take_range($lo, $hi, $list) {
-  $result = array();
-  $i = 0;
-  foreach ($list as $item) {
-    if ($i >= $hi) { break; }
-    if ($i >= $lo) {
-      array_push($result, $item);
-    }
-    $i++;
-  }
-  return $result;
-}
-
-# singleton($array) is true if there is no more than one non-null item in $array
-function singleton($array) {
-  return count(array_filter($array)) <= 1;
-}
-
-# uniq($array) is a copy of $array with consecutive duplicates removed.
-function uniq($array) {
-  $deck = null;
-  $result = array();
-  foreach ($array as $item) {
-    if ($item != $deck)
-      array_push($result, $item);
-    $deck = $item;
-  }
-  return $result;
-}
-
-# PHP's array_search is useless, as it may return 0 when the element
-# is first in the list, and 0 is indistinguishable from false.
-function member($x, $list) {
-  foreach ($list as $y) if ($x==$y) return true;
-  return false;
-}
-
-# Superimposes all the key-value pairs from $a onto $b.
-function superimpose($a, $b) {
-  foreach ($a as $k => $v) {
-    $b[$k] = $v;
-  }
-  return $b;
-}
-
+# REFACTOR
 # ago: Given two times $time and $now, return a string describing roughly how long 
 # ago $time was from $now--for example, "37 minutes ago."
 function ago($time, $now) {
@@ -189,45 +133,78 @@ function invalidate_http_cache($url) {
               mysql_real_escape_string($url) . '\'');
 }
 
+# mysql_date: given a date in seconds-since-the-epoch, return the 
+# MySQL-formatted string for that date.
+function mysql_date($date) {
+  return gmstrftime('%Y-%m-%d %H:%M:%S', $date);
+}
+
+# from_mysql_date: parse the given string as date in MySQL's format and return
+# it in seconds since the epoch.
+function from_mysql_date($date_str) {
+  $date_rec = strptime($date_str, '%Y-%m-%d %H:%M:%S');
+  return gmmktime($date_rec['tm_hour'],
+                  $date_rec['tm_min'],
+                  $date_rec['tm_sec'],
+                  $date_rec['tm_mon']+1,
+                  $date_rec['tm_mday'],
+                  $date_rec['tm_year']);
+}
+
+# from_http_date: parse the given string as an HTTP (RFC 2616) Date string
+# it in seconds since the epoch.
+function from_http_date($date_str) {
+  $date_rec = strptime($date_str, '%a, %d %b %Y %H:%M:%S %Z');
+  return mktime($date_rec['tm_hour'],
+                  $date_rec['tm_min'],
+                  $date_rec['tm_sec'],
+                  $date_rec['tm_mon']+1,
+                  $date_rec['tm_mday'],
+                  $date_rec['tm_year']);
+}
+
 function get_url($url, $cache_hard=true) {
   global $http_cache_timeout;
+  global $cache_hits;
+
+  # Check whether we have a cached response for this URL
+  # Note there are two cache timestamps: fetched_on_server is tied to the 
+  # server (mothership)'s clock and fetched_on is tied to the local clock.
+  # We are careful to compare the local now() against fetched_on and the
+  # server's "Date:" header values against fetched_on_server.
   if (!$http_cache_timeout) die("\$http_cache_timeout not set");
+  # Expire old cache entries.
   mysql_query('delete from http_cache where fetched_on < now() - ' .
               $http_cache_timeout);
-  $sql = 'select content, fetched_on from http_cache where url = \'' . 
+  # Load a valid cache element, if any.
+  $sql = 'select content, fetched_on_server from http_cache where url = \'' . 
          mysql_real_escape_string($url) . 
          '\' and fetched_on >= now() - ' . $http_cache_timeout;
   $q = mysql_query($sql);
   if (!$q) die(mysql_error());
-  global $cache_hits;
+
+  require_once('HTTP/Request.php');
   if ($row = mysql_fetch_row($q)) {
     list($content, $fetched_on) = $row;
     if ($cache_hard) {
+      # Under "hard" caching, return the cached data without talking to server.
       $cache_hits++;
       return $content;
     } else {
-      # Format the date as required by the HTTP spec.
-      # cf. RFC 2616 Sec 3.3.1:
-      #   http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html
-      $fetched_on_rec = strptime($fetched_on, '%Y-%m-%d %H:%M:%S');
-      # TBD: use http_date
-      $fetched_on_http_date = 
-          gmstrftime('%a, %d %b %Y %H:%M:%S %Z',
-                     gmmktime($fetched_on_rec['tm_hour'],
-                              $fetched_on_rec['tm_min'],
-                              $fetched_on_rec['tm_sec'],
-                              $fetched_on_rec['tm_mon']+1,
-                              $fetched_on_rec['tm_mday'],
-                              $fetched_on_rec['tm_year']));
+      # Under "soft" caching, we make a request to ask the server if the resource
+      # has changed since our copy.
       
-      require_once('HTTP/Request.php');
+      $fetched_on_http_date = http_date(from_mysql_date($fetched_on));
+      
       $req = new HTTP_Request($url);
       $req->addHeader('If-Modified-Since', $fetched_on_http_date);
+
       global $request_timer;
       $request_timer -= microtime(true);
       $ok = $req->sendRequest();
       $request_timer += microtime(true);
       error_log("Running request timer: " . $request_timer . "s");  
+
       if (!PEAR::isError($ok))
         $respCode = $req->getResponseCode();
         if (304 == $respCode) {
@@ -237,27 +214,18 @@ function get_url($url, $cache_hard=true) {
           $cache_hits++;
           return $content;
         } elseif (200 <= $respCode && $respCode < 300) {
-          # Got an OK response, use it.
+          # Got an OK response, use the data.
           error_log('Cache refresh at ' . $url . '. If-Modified-Since: '
                     . $fetched_on_http_date);
           $content = $req->getResponseBody();
-          $fetched_on_rec = strptime($req->getResponseHeader('Date'),
-                                     '%a, %d %b %Y %H:%M:%S %Z');
-          $fetched_on = gmstrftime('%Y-%m-%d %H:%M:%S',
-                                  gmmktime($fetched_on_rec['tm_hour'],
-                                           $fetched_on_rec['tm_min'],
-                                           $fetched_on_rec['tm_sec'],
-                                           $fetched_on_rec['tm_mon']+1,
-                                           $fetched_on_rec['tm_mday'],
-                                           $fetched_on_rec['tm_year']));
-          error_log("Date: " . $fetched_on);
+          $fetched_on_server = mysql_date(from_http_date($req->getResponseHeader('Date')));
           mysql_query('delete from http_cache where url = \'' .
                            mysql_real_escape_string($url) . '\'');
-          if (!mysql_query('insert into http_cache (url, content, fetched_on)'.
+          if (!mysql_query('insert into http_cache (url, content, fetched_on_server)'.
                            ' values (\'' . 
                            mysql_real_escape_string($url) . '\', \'' . 
                            mysql_real_escape_string($content) . '\', \'' . 
-                           mysql_real_escape_string($fetched_on) . '\')'))
+                           mysql_real_escape_string($fetched_on_server) . '\')'))
             die(mysql_error());
           return $content;
         }
@@ -266,23 +234,42 @@ function get_url($url, $cache_hard=true) {
     global $cache_misses;
     $cache_misses++;
     error_log("Cache miss; fetching $url");
-	global $request_timer;
+      
+    $req = new HTTP_Request($url);
+
+    global $request_timer;
     $request_timer -= microtime(true);
-    $content = file_get_contents($url);
+    $ok = $req->sendRequest();
     $request_timer += microtime(true);
-    error_log("Running request timer: " . $request_timer . "s");
-    if ($content) {
-      if (!mysql_query('insert into http_cache (url, content) values (\'' . 
-                  mysql_real_escape_string($url) . '\', \'' . 
-                  mysql_real_escape_string($content) . '\')'))
+    error_log("Running request timer: " . $request_timer . "s");  
+
+    if (PEAR::isError($ok)) 
+      die("Unknown error ($ok) on GET $url");
+
+    $respCode = $req->getResponseCode();
+    if (200 <= $respCode && $respCode < 300) {
+      # Got an OK response, use it.
+      $content = $req->getResponseBody();
+      $fetched_on_server = mysql_date(from_http_date($req->getResponseHeader('Date')));
+      error_log("Date header:" . $req->getResponseHeader('Date'));
+      error_log("using fetched_on:" . $fetched_on);
+      mysql_query('delete from http_cache where url = \'' .
+                  mysql_real_escape_string($url) . '\'');
+      if (!mysql_query('insert into http_cache (url, content, fetched_on_server)'.
+                       ' values (\'' . 
+                       mysql_real_escape_string($url) . '\', \'' . 
+                       mysql_real_escape_string($content) . '\', \'' . 
+                       mysql_real_escape_string($fetched_on_server) . '\')'))
         die(mysql_error());
+      return $content;
+    } else {
+       error_log("GET $url returned $respCode");
+       return null;
     }
-    return $content;
   }
 }
 
 function parse_hproduct($str) {
-#  $str = preg_replace('/&(?!amp;)/', '&amp;', $str); # stopgap needed when $str is broken
   $xml = simplexml_load_string($str);
   if (!$xml) return null;
   $root_nodes = $xml->xpath("//*[@class='hproduct']");
@@ -349,6 +336,8 @@ class Sprinkles {
     }
   }
 
+
+  # REFACTOR
   # Given an entry of a feed, either a topic or a reply, fix_atom_entry returns
   # a structure that contatins all the data we care about, in a form usable by
   # Smarty templates. This can include fetching additional resources.
@@ -414,10 +403,7 @@ class Sprinkles {
     return $item;
   }
   
-  function fix_atom_reply($entry) {
-    return $this->fix_atom_entry($entry, 'reply');
-  }
-
+  # REFACTOR
   function feed_total($feed) {
     assert($feed);
     global $xml_opensearch_ns;
@@ -428,6 +414,7 @@ class Sprinkles {
     else return null;
   }
 
+  # REFACTOR
   function topic_totals($feed) {
     assert($feed);
 
@@ -442,6 +429,7 @@ class Sprinkles {
     return $result;     
   }
 
+  # REFACTOR
   ## Topics for the company, filtered by properites specified in $options.
   # Presently, you can only filter on one of the axes: product, tag, query, person,
   # followed, or related. The at_least parameter gives a minimum number of 
@@ -554,6 +542,7 @@ class Sprinkles {
     }
   }
 
+  # REFACTOR?
   # A user's dashboard collects a variety of kinds of topics; dashboard_topics
   # fetchs them all and merges the results into one chronological feed.
   function dashboard_topics($person) {
@@ -563,6 +552,7 @@ class Sprinkles {
     return $items;
   }
 
+  # REFACTOR
   # thread_items takes a feed and a root item (given by ID); it returns the 
   # feed in a forest structure where each item's 'replies' property contains 
   # the list of its replies. The trees in the forest are the immediate 
@@ -597,6 +587,7 @@ class Sprinkles {
     return $items;
   }
 
+  # REFACTOR
   # flatten_threads takes a forest as returned by thread_items and hoists
   # all 2nd-level nodes to the top level. These nodes are still also 
   # listed in the 'replies' property of each root node.
@@ -613,6 +604,7 @@ class Sprinkles {
     return $result;
   }
 
+  # REFACTOR
   # resolve_authors adds person data to each item in a feed; it expects to
   # find an 'author' element having a 'uri' property and will use get_person 
   # and get_person_role to fetch further data about that person. The information
@@ -625,6 +617,7 @@ class Sprinkles {
     return null;
   }
 
+  # REFACTOR
   function resolve_author(&$item) {
     $person = $this->get_person($item["author"]["uri"]);
     list($person['role'], $person['role_name']) = 
@@ -635,11 +628,11 @@ class Sprinkles {
     return null;
   }
 
+  # REFACTOR
   # resolve_companies adds company data to each item in a feed; it expects to
   # find a company_url and it populated the item with the vCard data found at 
   # that URL. This is done in place, on the array passed in. There is no return 
   # value.
-
   function resolve_companies(&$feed) {
     foreach ($feed as &$item) {
       if ($item['company_url'])
@@ -648,6 +641,7 @@ class Sprinkles {
     return null;
   }
 
+  # REFACTOR
   # tags returns a list of tags as found at the given URL.
   function tags($url) {
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
@@ -667,6 +661,7 @@ class Sprinkles {
     return $tags;
   }
 
+  # REFACTOR
   function topic($id) {
     $url = $id;
 
@@ -713,6 +708,7 @@ class Sprinkles {
                  'tags' => $tags);
   }
 
+  # REFACTOR
   ## Get list of people associated with the company
   ## Get company info
   function company_hcard($company = null) {
@@ -770,13 +766,14 @@ class Sprinkles {
     }
   }
 
+  # REFACTOR
   function company_name() {
     $card = $this->company_hcard($this->company_sfnid);
     return $card['fn'];
   }
 
+  # REFACTOR
   function employee_list() {
-# TBD: generalize for the company
     $people_url = $this->api_url('companies/' . $this->company_sfnid . 
                                  '/employees');
     global $h;
@@ -784,6 +781,7 @@ class Sprinkles {
     return $people_list;
   }
 
+  # REFACTOR
   ## Fetch the people records of all the company's people 
   function employees() {
     if ($this->employees_cache) return $this->employees_cache;
@@ -804,6 +802,7 @@ class Sprinkles {
     return $this->employees_cache;
   }
 
+  # REFACTOR
   # Given a person URL, find their role at the Sprinkles company and return a
   # a pair of the technical role identifier (e.g. company_rep) and the human-
   # readable name of the role (e.g. "Official Rep"). Returns null if the given
@@ -817,6 +816,7 @@ class Sprinkles {
     return null;
   }
   
+  # REFACTOR
   function get_person_from_string($str) {
     global $h;
     $people = $h->getByString('hcard', $str);
@@ -827,6 +827,7 @@ class Sprinkles {
     return $person;
   }
 
+  # REFACTOR
   function get_person($url) {
     if ($this->people_cache[$url]) return $this->people_cache[$url];
     global $h;
@@ -835,6 +836,7 @@ class Sprinkles {
     return $person;
   }
 
+  # REFACTOR
   # product_api_url gives the URL for a product based on either of its
   # sfn:id or its id.
   function product_api_url($id) {
@@ -842,6 +844,7 @@ class Sprinkles {
     return $this->api_url($path);
   }
 
+  # REFACTOR
   # Given a product URL or sfn:id, returns a structure describing the product.
   function get_product($url) {
     if ($this->products_cache[$url]) return ($this->products_cache[$url]);
@@ -854,6 +857,7 @@ class Sprinkles {
     return $result;
   }
 
+  # REFACTOR
   # product_list returns a list of the current company's products; the list 
   # generally contains only URLs. Use the method "products" to get a list of 
   # products including everything we know about them.
@@ -867,6 +871,7 @@ class Sprinkles {
     return $products_list;
   }
 
+  # REFACTOR
   # products returns full product information for each product connected with the
   # current company.
   function products() {
@@ -887,18 +892,20 @@ class Sprinkles {
     return $products;
   }
 
-   # Given a list of topic replies, return a pair of (a) just those that are 
-   # company-promoted and (b) just those that are people-promoted (star-promoted).
-   function filter_promoted($replies) {
-     $company_promoted = array();
-     $star_promoted = array();
-     foreach ($replies as $reply) {
-       if ($reply['company_promoted']) array_push($company_promoted, $reply);
-       if ($reply['star_promoted']) array_push($star_promoted, $reply);
-     }
-     return array($company_promoted, $star_promoted);
-   }
+  # REFACTOR
+  # Given a list of topic replies, return a pair of (a) just those that are 
+  # company-promoted and (b) just those that are people-promoted (star-promoted).
+  function filter_promoted($replies) {
+    $company_promoted = array();
+    $star_promoted = array();
+    foreach ($replies as $reply) {
+      if ($reply['company_promoted']) array_push($company_promoted, $reply);
+      if ($reply['star_promoted']) array_push($star_promoted, $reply);
+    }
+    return array($company_promoted, $star_promoted);
+  }
 
+  # REFACTOR
   # Given a list of topics, partition it into the ones that are associated
   # with the current company and those that aren't.
   function company_partition($topics) {
@@ -916,6 +923,7 @@ class Sprinkles {
     return array($company_topics, $noncompany_topics);
   }
   
+  # REFACTOR
   function api_url($path) {    # FIXME: demote to non-class-method
     if (is_http_url($path)) {
       $parts = parse_url($path);
@@ -945,6 +953,7 @@ class Sprinkles {
     setcookie('session_id', '');
   }
 
+  # REFACTOR
   # oauthed_request($method, $url, $creds, $req_params, $query_params) makes
   # a request using HTTP method $method to the url $url, supplying oauth
   # credentials from $cred and using the optional request parameters
@@ -980,11 +989,11 @@ class Sprinkles {
     return $req;    
   }
  
-   # get_me_resource fetches the path /me from the API, using the given Oauth
-   # credentials, and that resource contains a vCard for the user with those
-   # credentials.
+  # REFACTOR
+  # get_me_resource fetches the path /me from the API, using the given Oauth
+  # credentials, and that resource contains a vCard for the user with those
+  # credentials.
 #FIXME: how do we signal error?
-
   function get_me_resource($creds) {
     require_once('HTTP_Request_Oauth.php');
     $me_url = $this->api_url('me');
@@ -1185,6 +1194,7 @@ class Sprinkles {
   }
 }
 
+# REFACTOR
 function redirect($url) {
   header('Location: ' . $url, true, 302);
 }

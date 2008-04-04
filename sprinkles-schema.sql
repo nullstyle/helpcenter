@@ -24,6 +24,7 @@ CREATE TABLE `http_cache` (
   `url` varchar(1024) default NULL,
   `headers` blob,
   `content` blob,
+  `fetched_on_server` datetime NOT NULL,
   `fetched_on` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
