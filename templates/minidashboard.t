@@ -14,13 +14,13 @@
 
 <div class="sidepane">
 <div class="sidebar" style="background-color: white">
-<a>Subscribe to 
+<a href="http://getsatisfaction.com/people/{$user.canonical_name}.rss">Subscribe to 
 {if $user_is_self}
 your
 {else}
 their
 {/if}
-feed with RSS on getsatisfaction.com</a> (xxx).
+feed with RSS on getsatisfaction.com</a>.
 </div>
 
 <div class="sidebar">

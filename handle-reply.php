@@ -16,7 +16,7 @@ if ($parent_id = request_param('parent_id'))
   $params['reply[parent_id]'] = $parent_id;
 
 $creds = $sprink->current_user_session();
-if (!$cred)
+if (!$creds)
   die("Not logged in! (FIXME)");
 $req = $sprink->oauthed_request('POST', $reply_url, $creds, null, $params);
 
