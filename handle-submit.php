@@ -50,8 +50,8 @@ $response_body = $req->getResponseBody();
 try {
   $topic_feed = new XML_Feed_Parser($response_body);
 } catch (Exception $e) {
-  error_log("Failed to post new topic; response was: " . $req->getResponseCode() . 
-            ", body: " . $response_body);
+  error("Failed to post new topic; response was: " . $req->getResponseCode() . 
+        ", body: " . $response_body);
   die("Posting the topic failed.");
 }
 

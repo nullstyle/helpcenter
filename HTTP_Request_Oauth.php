@@ -107,8 +107,6 @@
 
             $r = HTTP_Request::sendRequest($saveBody);
             
-            //error_log(print_r($this, 1));
-            
             return $r;
         }
         
@@ -180,7 +178,6 @@
         
         function _sha1($s, $consumer_secret, $token_secret) {
           $key = $consumer_secret . '&' . $token_secret;
-          error_log("HMAC-SHA1ing " . $s . " with " . $key);
           $digest_b64 = base64_encode(hash_hmac("sha1", $s, $key, TRUE));
           return $digest_b64;
         }
@@ -250,9 +247,7 @@
             $parameters_to_normalize = array_merge($this->_url->querystring,
                                                    $this->_postData,
                                                    $parameters_to_normalize);
-#dump($this->_postData);
-#dump($parameters_to_normalize);
-            
+
             $normalized_params_string = $this->oauth_parametersToString($parameters_to_normalize);
             
             $signature_parts = array($this->_method,
@@ -261,9 +256,6 @@
 
             $signed_string = join('&', array_map('urlencode', $signature_parts));
 
-            # error_log("Signing $signed_string");
-            
-#dump($this);
             $oauth_parameters['oauth_signature'] = 
                 	$this->signature_method == 'md5' ?
                                 HTTP_Request_OAuth::_md5($signed_string,
@@ -274,8 +266,6 @@
                                                          $this->_consumer_secret,
                                                          $this->_token_secret) :
                         die('unknown signature method');
-
-            error_log("signature: " . $oauth_parameters['oauth_signature']);
 
             if($authHeader) {
                 // oauth_* params go into the Authorization request header

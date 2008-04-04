@@ -33,7 +33,6 @@ $to = request_param('to_email');     # TBD: handle more than one address
 if (preg_match('/,/', $to))
   die("Sharing with more than one recipient is not yet implemented. :-(");
 
-error_log("Attempting to send email '$subject' from $from to $to with body $message");
 $result = mail($to, $subject, $message, "From: $from");
 if ($result) {
   redirect('topic.php?id=' . $id . '&shared_with=' . urlencode($to));

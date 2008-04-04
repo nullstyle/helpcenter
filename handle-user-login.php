@@ -25,8 +25,8 @@ $resp = $oauth_req->sendRequest(true, true);
 list($token, $secret) = $oauth_req->getResponseTokenSecret();
 
 if (!$token || !$secret) {
-  error_log("Failed to fetch OAuth request token " . 
-            "(Result token: '$token'; Token secret: '$token_secret')");
+  error("Failed to fetch OAuth request token " . 
+        "(Result token: '$token'; Token secret: '$token_secret')");
   die("Failed to fetch OAuth request token from getsatisfaction.com.");
 }
 

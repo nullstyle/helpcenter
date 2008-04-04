@@ -30,7 +30,7 @@ if (400 == ($responseCode = $req->getResponseCode())) { # TBD: refine this to re
 }
 
 if (201 != $responseCode) {
-  error_log("Failed starring with POST to $POST_URL: " . $req->getResponseBody());
+  error("Failed starring with POST to $POST_URL: " . $req->getResponseBody());
   die("API Error $responseCode starring reply $reply_id.");
 }
 

@@ -35,8 +35,6 @@ $resp = $oauth_req->sendRequest(true, true);
 
 list($token, $token_secret) = $oauth_req->getResponseTokenSecret();
 
-# error_log("got permanent user token: $token, $secret");
-
 $result = mysql_query("update sessions set token = '" . $token . 
                       "', token_secret = '" . $token_secret . 
                       "' where token = '" . $request_token . "'");

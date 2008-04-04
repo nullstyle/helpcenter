@@ -28,7 +28,6 @@ if (0 == $responseCode) {
   redirect('topic.php?sfn_id=' . $sfn_id . 
            '&me_too_failed=true');
 } else if (201 != $responseCode) {
-#  error_log($req->getResponseBody());
   die("API Error $responseCode me-tooing topic $sfn_id.");
 }
 

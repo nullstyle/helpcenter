@@ -18,7 +18,17 @@ require_once 'hkit.class.php';
 require_once 'config.php';
 require_once 'list.php';
 
-# Smarty configuration
+# Configuration: to log or not to log?
+#   There are three kinds of logging: messages, errors, and debugging output.
+#   To disable all three, set $logging to false.
+#   To disable messages, set $verbose to false.
+#   To disable debugging output, set $debugging to false.
+#   (Errors are always logged, unless logging is turned off with $logging.)
+$logging = true;
+$verbose = false;
+$debugging = false;
+
+# Smarty directory configuration
 require_once('smarty/Smarty.class.php');
 $smarty = new Smarty();
 $smarty->template_dir = $sprinkles_dir . '/templates/';
@@ -81,6 +91,24 @@ function dump_xml($xml) {
   dump($temp);
 }
 
+function debug($msg) {
+  global $logging, $debugging;
+  if ($logging && $debugging)
+    error_log($msg);
+}
+
+function message($msg) {
+  global $logging, $verbose;
+  if ($logging && $verbose)
+    error_log($msg);
+}
+
+function error($msg) {
+  global $logging;
+  if ($logging)
+    error_log($msg);
+}
+
 function unbollocks($str) {  ## CURSE CURSE CURSE
   ## unencodes strings that are needlessly encoded by default in PHP < 6.0
   return preg_replace(array("/\\\\'/", "/\\\\\\\\/", "/\\\\0/"),
@@ -117,22 +145,6 @@ function feedTagNS($feed, $ns, $tagName) {  # FIXME: use this.
   return $feed->model->getElementsByTagNameNS($ns, $tagName);
 }
 
-# get_url returns the contents of the given URL, using a DB-backed cache as necessary
-# This function blindly caches everything, regardless of headers and such, so use it
-# only when you don't expect the underlying resource to change during the timeout period.
-# Configure the timeout period in seconds using the $http_cache_timeout global.
-$http_cache_timeout = 3600; # seconds
-
-$cache_hits = 0;    # For diagnostic purposes; TBD: offer a way to examine these.
-$cache_misses = 0;
-
-$request_timer = 0;
-
-function invalidate_http_cache($url) {
-  mysql_query('delete from http_cache where url = \'' .
-              mysql_real_escape_string($url) . '\'');
-}
-
 # mysql_date: given a date in seconds-since-the-epoch, return the 
 # MySQL-formatted string for that date.
 function mysql_date($date) {
@@ -163,9 +175,41 @@ function from_http_date($date_str) {
                   $date_rec['tm_year']);
 }
 
+# get_url returns the contents of the given URL, using a DB-backed cache as 
+# necessary. The second parameter chooses between "hard" and "soft" caching.
+# With hard-caching on (true), we won't contact the server if we have a cached 
+# copy of a resource. With soft-caching (false) we always ask the server 
+# whether the resource has changed before using a cached item. In both cases,
+# cached items will expire after a fixed timeout period. Configure the timeout 
+# period in seconds using the $http_cache_timeout global in config.php.
+
+$request_timer = 0;    # Used for collecting the amt. of time spent making 
+                       # API requests.
+
+function invalidate_http_cache($url) {
+  mysql_query('delete from http_cache where url = \'' .
+              mysql_real_escape_string($url) . '\'');
+}
+
+function insert_into($table, $fields) {
+  $sql =  'insert into ' . $table . ' (';
+  $count = 0;
+  foreach ($fields as $field => $value) {
+    if ($count++ > 0) $sql .= ', ';
+    $sql .= $field;
+  }
+  $sql .= ') values (';
+  $count = 0;
+  foreach ($fields as $field) {
+    if ($count++ > 0) $sql .= ', ';
+    $sql .= '\'' . mysql_real_escape_string($field) . '\'';
+  }
+  $sql .= ')';
+  return mysql_query($sql);
+}
+
 function get_url($url, $cache_hard=true) {
   global $http_cache_timeout;
-  global $cache_hits;
 
   # Check whether we have a cached response for this URL
   # Note there are two cache timestamps: fetched_on_server is tied to the 
@@ -186,54 +230,48 @@ function get_url($url, $cache_hard=true) {
   require_once('HTTP/Request.php');
   if ($row = mysql_fetch_row($q)) {
     list($content, $fetched_on) = $row;
-    if ($cache_hard) {
-      # Under "hard" caching, return the cached data without talking to server.
-      $cache_hits++;
-      return $content;
-    } else {
-      # Under "soft" caching, we make a request to ask the server if the resource
-      # has changed since our copy.
-      
-      $fetched_on_http_date = http_date(from_mysql_date($fetched_on));
-      
-      $req = new HTTP_Request($url);
-      $req->addHeader('If-Modified-Since', $fetched_on_http_date);
 
-      global $request_timer;
-      $request_timer -= microtime(true);
-      $ok = $req->sendRequest();
-      $request_timer += microtime(true);
-      error_log("Running request timer: " . $request_timer . "s");  
+    # Under "hard" caching, return the cached data without talking to server.
+    if ($cache_hard) return $content;
 
-      if (!PEAR::isError($ok))
-        $respCode = $req->getResponseCode();
-        if (304 == $respCode) {
-          # 304 Not Modified; we can use the cached copy.
-          error_log('Cache hit at ' . $url . ' using If-Modified-Since: '
-                    . $fetched_on_http_date);
-          $cache_hits++;
-          return $content;
-        } elseif (200 <= $respCode && $respCode < 300) {
-          # Got an OK response, use the data.
-          error_log('Cache refresh at ' . $url . '. If-Modified-Since: '
-                    . $fetched_on_http_date);
-          $content = $req->getResponseBody();
-          $fetched_on_server = mysql_date(from_http_date($req->getResponseHeader('Date')));
-          mysql_query('delete from http_cache where url = \'' .
-                           mysql_real_escape_string($url) . '\'');
-          if (!mysql_query('insert into http_cache (url, content, fetched_on_server)'.
-                           ' values (\'' . 
-                           mysql_real_escape_string($url) . '\', \'' . 
-                           mysql_real_escape_string($content) . '\', \'' . 
-                           mysql_real_escape_string($fetched_on_server) . '\')'))
-            die(mysql_error());
-          return $content;
-        }
+    # Under "soft" caching, we make a request to ask the server if the resource
+    # has changed since our copy.
+    
+    $fetched_on_http_date = http_date(from_mysql_date($fetched_on));
+      
+    $req = new HTTP_Request($url);
+    $req->addHeader('If-Modified-Since', $fetched_on_http_date);
+
+    global $request_timer;
+    $request_timer -= microtime(true);
+    $ok = $req->sendRequest();
+    $request_timer += microtime(true);
+    message("Running request timer: " . $request_timer . "s");  
+
+    if (!PEAR::isError($ok)) {
+      $respCode = $req->getResponseCode();
+      if (304 == $respCode) {
+        # 304 Not Modified; we can use the cached copy.
+        message('Cache hit at ' . $url . ' using If-Modified-Since: '
+                . $fetched_on_http_date);
+        return $content;
+      } elseif (200 <= $respCode && $respCode < 300) {
+        # Got an OK response, use the data.
+        message('Cache refresh at ' . $url . '. If-Modified-Since: '
+                . $fetched_on_http_date);
+        $content = $req->getResponseBody();
+        $fetched_on_server = mysql_date(from_http_date($req->getResponseHeader('Date')));
+        mysql_query('delete from http_cache where url = \'' .
+                    mysql_real_escape_string($url) . '\'');
+        if (!insert_into('http_cache', array('url' => $url,
+                                             'content' => $content,
+                                             'fetched_on_server' => $fetched_on_server)))
+          die(mysql_error());
+        return $content;
+      }
     }
   } else {
-    global $cache_misses;
-    $cache_misses++;
-    error_log("Cache miss; fetching $url");
+    message("Cache miss; fetching $url");
       
     $req = new HTTP_Request($url);
 
@@ -241,7 +279,7 @@ function get_url($url, $cache_hard=true) {
     $request_timer -= microtime(true);
     $ok = $req->sendRequest();
     $request_timer += microtime(true);
-    error_log("Running request timer: " . $request_timer . "s");  
+    message("Running request timer: " . $request_timer . "s");  
 
     if (PEAR::isError($ok)) 
       die("Unknown error ($ok) on GET $url");
@@ -251,19 +289,15 @@ function get_url($url, $cache_hard=true) {
       # Got an OK response, use it.
       $content = $req->getResponseBody();
       $fetched_on_server = mysql_date(from_http_date($req->getResponseHeader('Date')));
-      error_log("Date header:" . $req->getResponseHeader('Date'));
-      error_log("using fetched_on:" . $fetched_on);
       mysql_query('delete from http_cache where url = \'' .
                   mysql_real_escape_string($url) . '\'');
-      if (!mysql_query('insert into http_cache (url, content, fetched_on_server)'.
-                       ' values (\'' . 
-                       mysql_real_escape_string($url) . '\', \'' . 
-                       mysql_real_escape_string($content) . '\', \'' . 
-                       mysql_real_escape_string($fetched_on_server) . '\')'))
+      if (!insert_into('http_cache', array('url' => $url,
+                                           'content' => $content,
+                                           'fetched_on_server' => $fetched_on_server)))
         die(mysql_error());
       return $content;
     } else {
-       error_log("GET $url returned $respCode");
+       error("GET $url returned $respCode");
        return null;
     }
   }
@@ -289,8 +323,9 @@ function parse_hproduct($str) {
   return $result;
 }
 
-# compare two objects by their 'updated' fields, returning a value either 
-# negative, zero, or positive, for use with sorting functions.
+# cmop_by_updated: compare two objects by their 'updated' fields, returning a 
+# value either negative, zero, or positive, for use with sorting functions.
+# Useful for sorting synthetic feeds.
 function cmp_by_updated($a, $b) {
   return $b['updated'] - $a['updated'];
 }
@@ -645,7 +680,6 @@ class Sprinkles {
   # tags returns a list of tags as found at the given URL.
   function tags($url) {
     if ($this->tags_cache[$url]) return $this->tags_cache[$url];
-    # error_log "Getting $url";
 
     $xml = simplexml_load_file($url);  # FIXME: caching.
     $root_nodes = $xml->xpath("//*[@class='tag']");
@@ -742,7 +776,7 @@ class Sprinkles {
       if ($i++ > 0) $sql .= ', ';
       $sql .= $name . '=\'' . mysql_real_escape_string($value) . '\'';
     }
-    error_log("Updating site settings: $sql");
+
     return mysql_query($sql);
   }
 
@@ -752,7 +786,7 @@ class Sprinkles {
   # created.
   function add_admin_users($admins) {
     foreach ($admins as $admin) {
-      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
+      insert_into('admins', array('username' => $admin));
     }
   }
 
@@ -762,7 +796,7 @@ class Sprinkles {
   function set_admin_users($admins) {
     if (!mysql_query('delete from admins')) die(mysql_error());
     foreach ($admins as $admin) {
-      mysql_query('insert into admins (username) values (\'' . $admin . '\')');
+      insert_into('admins', array('username' => $admin));
     }
   }
 
@@ -981,7 +1015,7 @@ class Sprinkles {
     $resp = $req->sendRequest(true, true);
     if (!$resp) die("$method request to $url failed. ");
     if ($req->getResponseCode() == 401) {
-      error_log("Got response from API: " . $req->getResponseBody());
+      debug("Got response from API: " . $req->getResponseBody());
       # The session was no good; close it so the user can create a new one on next login
       $this->close_session($creds['token']);
       die("$method request for $url failed to authorize."); # FIXME: give the user an error page
@@ -1005,12 +1039,12 @@ class Sprinkles {
                          'token_secret' => $creds['token_secret'],
                          'signature_method' => 'HMAC-SHA1',
                          'method' => 'GET'));
-    error_log("Fetching $me_url");
+
     global $request_timer;
     $request_timer -= microtime(true);
     $resp = $req->sendRequest(true, true);
     $request_timer += microtime(true);
-    error_log("Running request timer: " . $request_timer . "s");
+    message("Running request timer: " . $request_timer . "s");
     if (!$resp) die("Request to $me_url failed. ");
     if ($req->getResponseCode() == 401)
        die("Request for /me failed to authorize.");
@@ -1026,7 +1060,7 @@ class Sprinkles {
     $result = mysql_query($sql);
     if (!$result) { die(mysql_error()); }
     $cols = mysql_fetch_array($result);
-    # error_log("got " . $cols[1] . " " . $cols[2]);
+
     if (!$cols) {  # Cookie session was not in DB; clear it.
       setcookie('session_id', ''); return null;
     }
@@ -1161,8 +1195,8 @@ class Sprinkles {
   function set_site_links($links) {
     mysql_query('delete from site_links');
     foreach ($links as $link) 
-      mysql_query('insert into site_links (text, url) values (\'' . $link['text'] . '\', ' .
-                  '\'' . $link['url'] . '\')');
+      insert_into('site_links', array('text' => $link['text'],
+                                      'url' => $link['url']));
   }
   
   function site_logo() {

@@ -24,7 +24,10 @@ $discuss_page_size = 6;
 $related_topics_count = 4;
 $max_top_topic_tags = 5;
 $topic_page_size = 5; # TBD: regularize these names
-$oauth_request_timeout = 10;
+
+$oauth_request_timeout = 10; # seconds (accepts floating point)
+
+$http_cache_timeout = 3600; # seconds (must be whole number)
 
 # $preview_after_log determines whether the user should have a chance to 
 # preview a topic for submission, after being sent to the Get Satisfaction 
