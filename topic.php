@@ -23,13 +23,13 @@ if (!$topic_id) die("Internal error: expected id parameter.");
 $topic = $sprink->topic($topic_id);
 $topic_head = array_shift($topic['replies']);
 $reply_count = count($topic['replies']);
-$topic['replies'] = $sprink->thread_items($topic['replies'], $topic_head['id']);
+$topic['replies'] = thread_items($topic['replies'], $topic_head['id']);
 $toplevel_reply_count = count($topic['replies']);
 
 $topic['replies'] = take_range($page_num * $topic_page_size,
                                ($page_num + 1) * $topic_page_size,
                                $topic['replies']);
-$topic['replies'] = $sprink->flatten_threads($topic['replies']);
+$topic['replies'] = flatten_threads($topic['replies']);
 
 $sprink->resolve_author($topic_head);
 $sprink->resolve_authors($topic['replies']);
@@ -39,9 +39,9 @@ list($company_related_topics, $noncompany_related_topics) =
        $sprink->company_partition($related_topics['topics']);
 $noncompany_related_topics = 
                   take($related_topics_count, $noncompany_related_topics);
-$sprink->resolve_companies($noncompany_related_topics);
+resolve_companies($noncompany_related_topics);
 
-list($company_promoted, $star_promoted) = $sprink->filter_promoted($topic['replies']);
+list($company_promoted, $star_promoted) = filter_promoted($topic['replies']);
 
 $smarty->assign('topic_head', $topic_head);
 $smarty->assign('replies', $topic['replies']);

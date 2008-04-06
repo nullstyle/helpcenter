@@ -39,7 +39,7 @@ $noncompany_topics = take(4, $noncompany_topics);
 
 $sprink->resolve_authors($company_topics);
 
-$sprink->resolve_companies($noncompany_topics);
+resolve_companies($noncompany_topics);
 
 $smarty->assign('company_topics', $company_topics);
 $smarty->assign('noncompany_topics', $noncompany_topics);
