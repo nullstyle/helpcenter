@@ -23,7 +23,7 @@ require_once 'Satisfaction.php';
 # Smarty directory configuration
 require_once('smarty/Smarty.class.php');
 $smarty = new Smarty();
-$smarty->template_dir = $sprinkles_dir . '/templates/';
+$smarty->template_dir = $sprinkles_dir . '/themes/default/templates/';
 $smarty->compile_dir  = $sprinkles_dir . '/templates_c/';
 $smarty->config_dir   = $sprinkles_dir . '/configs/';
 $smarty->cache_dir    = $sprinkles_dir . '/cache/';

@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf8" />
-<link rel="stylesheet" type="text/css" href="sprinkles.css">
+<link rel="stylesheet" type="text/css" href="themes/default/sprinkles.css">
 <title>{$company_name} Powered by: Get Satisfaction</title>
 <style>body {ldelim} background-color: {$background_color} {rdelim} </style>
 </head>
