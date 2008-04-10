@@ -1,0 +1,257 @@
+= PHP Get Satisfaction Web API Library Documentation =
+
+SYNOPSIS
+
+The file Satisfaction.php provides a set of routines for fetching data from and posting data to the Get Satisfaction web API. It includes functions for fetching with companies, people, products, tags, and topics, acording to various criteria, as well as functions for writing back to the API with an authorized Get Satisfaction account, include posting, starring and flagging topics.
+
+INSTALLATION
+
+The library consists of a single PHP file which you can easily include from other PHP files; to use the caching features you will need to have a MySQL database with the following schema installed (just run this SQL command to create the table):
+
+  create table http_cache (
+    url varchar(1024),
+    headers blob,
+    content blob,
+    fetched_on_server datetime not null,
+    fetched_on timestamp not null
+      default current_timestamp on update current_timestamp
+  );
+
+The interface consists of a set of functions for fetching API objects, posting data into the API, and manipulating the objects returned. This document describes the interface in detail.
+ 
+GET SATISFACTION API OBJECT IDENTIFIERS
+
+Every object in the Get Satisfaction web API has an ID, which is a URL that uniquely identifies it amongst all objects in the API (and indeed, anywhere else); this is called simply the object's ID. This ID can also be used to fetch a representation of the object over HTTP. Because these IDs can be quite long, each one is also identified by a numeric ID distinguishing it from others of the same type; this is called the object's sfn:id or sfn_id. For example, the number
+89521 is the sfn:id of a topic, but it might also be the sfn:id of a company, a person, or some other kind of object.
+
+IDs in the Get Satisfaction API are opaque: you should not try to interpret the parts of the ID.
+
+Many functions of the PHP Get Satisfaction API library accept just the ID, or just the sfn:id, of an object. Some functions accept one or the other, auto-detecting the sort of ID it has been given. Which type of ID a function accepts is made clear in its documentation.
+
+Each function has a short comment describing its behavior in Satisfaction.php.
+
+COMPANIES
+
+ * company_hcard($company_id)
+ 
+   Returns the vCard data of a company; it accepts an ID or an sfn:id.
+
+ * company_name($compant_id)
+ 
+   Returns the name of a company, given $company_id as either kind of ID.
+
+vCard data is an associative array. For companies, vCards may include the following fields: fn, url.
+
+PEOPLE
+
+ * get_person($url)
+ 
+   Returns the vCard data for a person, given by URL (including an ID).
+ 
+ * get_me_person($consumer_data, $session_creds)
+ 
+   Returns the vCard data for "me". That is, given OAuth session credentials $session_creds, it returns the vCard data for the user authorized under those credentials. The $consumer_data argument gives the OAuth consumer data, which is provided when you sign up to use the Get Satisfaction API; it should be formatted as an array with keys 'key' and 'secret' containing the respective bits of data.
+
+ * get_person_from_string($str)
+ 
+ Parses vCard data from the string $str. 
+
+vCard data for an individual person can include the fields fn, photo, url, role, and canonical_name.  The fn field is the user's full name, which may be in use by other users. The canonical_name is a string that uniquely identifies the person; it can be seen as the person's primary key.
+
+xxxTBD undocument this function: it should be private.
+
+ * employee_list($company_sfnid)
+ 
+   Returns a list of employees for given the company (having sfn:id $company_sfnid), in the form of minimal vCards. These "minimal" vCards need only contain the fields url and role; hence the employees function is generally more useful.
+
+ * employees($company_sfnid)
+ 
+   Returns a list of employees of the given company, as full-fledged vCards, containing all the usual person fields as well as role and role_name (see below).
+ 
+ * get_person_role($company_sfnid, $person_url)
+ 
+   Returns the role of the given person at the given company, as a pair list($role, $role_name).
+
+The role_name field is a human-readable string describing the role; the role field is a token that identifies the role uniquely; currently the only roles are company_admin, company_rep and employee. Distinct roles may have the same human-readable role_name.
+
+A person may or may not have a role at a given company, and may have roles at more than one company. Thus "role" and "role_name" fields are only included in vCards returned by the employees() function.
+
+PRODUCTS
+
+ * parse_hProduct($str) (PRIVATE)
+
+ * product_list($company_sfnid) 
+ 
+   Returns a list of the products associated with the given company. (PRIVATE)
+
+ * products($company_sfnid) 
+ 
+   Teturns a list of the products associated with the given company, as product records.
+
+ * get_product($url)
+ 
+   Fetches a product from $url, which may be an ID.
+
+Product records have fields name, uri, and image.
+
+TAGS
+
+ * tags($url) 
+ 
+   Returns the tags found at $url.
+
+TOPICS
+
+ * topic($company_sfnid, $topic_id)
+ 
+   Fetches all the data for a single topic, by ID $topic_id; the result is a record containing these fields:
+
+   * replies
+
+     An array containing the items in the topic's feed; this includes a first item, which is the topic "head", or starting post, and a list of replies to that post. Each item is in turn a record with fields corresponding to the data elements from the feed, plus some additional fields, described below under "Feed Entries"
+
+   * particip
+    
+     An array of "person" records for people participating in the topic. The role fields of these records taken with respect to the company $company_sfnid.
+
+   * tags
+    
+     An array of tags on this topic, each a simple string.
+
+ * topics($company_sfnid, $options, $at_least)
+ 
+   Fetches a list of at least $at_least topics (defaulting to at least 1) under company $company_sfnid, according to the criteria specified in $options. The array $options can contain at most one of the options product, tag, query, person, followed, or related. It can also contain any of the options style and frequently_asked.
+   
+   With no options, it returns all the topics for the company $company_sfnid. The options filter the returned list as follows:
+
+    * tag
+   
+      Topics tagged with the given tag.
+   
+    * product
+   
+      Topics associated with the given product.
+   
+    * person
+   
+      Topics authored by the given person.
+   
+    * related
+   
+      Return topics related to the given string, according to the Get Satisfaction server.
+   
+    * followed
+   
+      Topics followed by the given person.
+     
+   The result is an associative array with fields:
+   
+    * topics
+   
+      The list of topics, each formatted as described under "Feed Entries."
+   
+    * totals 
+   
+      An associative array whose fields count the number of topics of various kinds (total, unanswered, questions, problems, and ideas) that are beneath the specified company.
+
+Feed Entries
+
+TBD
+
+the 'updated' field (the date of last update, in epoch format) also drives 'updated_relative' (a string like "45 minutes ago") and 'updated_formatted' (something like "June 1, 2008") which are useful for use in the templates. Note that the first item in the 'replies' array is different: it is the "head" or "lead_item", the post the started the topic. It has different properties than the other items.
+
+There are some fields available for each item which need to be separately fetched and thus could be expensive. To make this information available without paying the cost by default, there is a set of extra functions which modify a feed by adding in this additional information. These functions include resolve_authors and resolve_companies.
+
+I dealt with this by adding an additional call that modifies the array, populating it with the additional data. The example is "resolve_companies" which fetches company data for each topic in a topics feed. I intend to use this technique to deal with such cases in the future.
+
+Additional Feed Functions
+
+ * thread_items($feed, $root)
+ 
+   Given a feed as returned by topic(), convert it into "threaded" form. This means that the items in the resulting array are just the top-level replies; each of these has a 'replies' field which in turn contains a list of subordinate replies, formatted just as in the input. This uses the in-reply-to field in the feed determine the threading structure.
+   
+   The $root parameter is the ID (and URL) of the root item in the feed, that is, the topic itself, the item which is not a reply to any other. 
+   
+   Presently, Get Satisfaction uses a two-level reply structure, so elements in the 'replies' field do not themselves have replies. However, thread_items will handle deper nesting if it is given.
+   
+ * flatten_threads($items)
+ 
+   Given a threaded feed as returned by thread_items(), flatten it to a list by appending an item's replies after that item in the returned feed.
+   
+   This can be useful when preparing a threaded topic feed for use by a template; the flattened structure may be easier to use.
+
+   For example, if the input held these four top-level items, each with a 'replies' array as shown:
+   
+     A replies => []
+     B replies => [B1, B2]
+     C replies => [C1, C2, C3]
+     D replies => [D1]
+   
+   then the result would be a flat list as follows:
+
+     A, B, B1, B2, C, C1, C2, C3, D, D1
+   
+   The threading structure is still indicated by means of the 'in-reply-to' field of each item. As a convenience, the last item in each sub-thread is marked with a true value in a field thread_end. 
+   
+ * filter_promoted($replies)
+ 
+   Filters a list of replies to the promoted items only, returning a pair of the company-promoted items and the star-promoted items, respectively.
+   
+   "Company-promoted" items are those that a company representative has designated as useful.
+
+   "Star-promoted" items are those that have received a certain number of stars (currently 3) from Get Satisfaction users.
+
+ * company_partition($company_hcard, $topics)
+
+   Given a company, specified by its vCard, and a list $topics, separate $topics into those that partain to the given company and those that do not. The result is a pair list($company_topics, $other_topics).
+
+POSTING
+
+ * oauthed_request($consumer_data, $method, $url,
+                   $creds, $req_params, $query_params)
+
+   Make an API request, authenticated with OAuth.
+   
+   The $consumer_data argument is an array containing the consumer key and secret provided when you signed up for the Get Satisfaction web API, formatted as follows:
+   
+     'key' => consumer key
+     'secret' => consumer secret
+
+   $method and $url sepcify the HTTP method and URL for the request. $req_params specifies any additional parameters to the request--these are passed directly to the HTTP_Request object (see docs for HTTP_Request). The $query_params argument specifies additional URL query-string parameters (for a GET request) or request-body parameters (for a POST request).
+   
+   The $creds argument gives the OAuth credentials of the user on whose behalf you are making the request. For example, to post a new topic as authored by a given user, use the credentials of that user. The $creds argument should be an array with fields 'token' and 'token_secret', containing the respective parts of the OAuth credentials.
+   
+   OAuth credentials for a user are obtained through the OAuth authorization process (see http://api.getsatisfaction.com/).
+
+UTILITIES
+
+Logging
+
+For its internal use, and for the convenience of library users, the library offers three levels of logging, (debug, message, and error) which can be enabled or disabled using the globals
+
+ * $logging
+ 
+   When set to false, no logging will occur. When set to true, error messages will be logged; debug messages and informational messages will be logged.
+   
+ * $verbose
+ 
+   When set to false, no informational messages will be logged. When set true and logging is on (above) then informational messages will be logged.
+   
+ * $debugging
+ 
+   When set to false, no debugging messages will be logged. When set to true and logging is on (above) then debugging messages will be logged.
+
+The logging routines are as follows:
+
+  * error($str)
+    
+    Send $str to the log as an error message.
+    
+  * message($str)
+  
+    Send $str to the log as an informational message.
+    
+  * debug($str)
+  
+    Send $str to the log as a debugging message.
+

@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `http_cache`;
 CREATE TABLE `http_cache` (
-  `url` varchar(1024) default NULL,
+  `url` varchar(1024),
   `headers` blob,
   `content` blob,
   `fetched_on_server` datetime NOT NULL,

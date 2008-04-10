@@ -521,7 +521,7 @@ function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $qu
 # Using a smaller number should result in a quicker return.
 function topics($company_sfnid, $options, $at_least = 1) {
   if (!singleton(array($options['product'], $options['tag'], $options['query'],
-                    $options['person'], $options['followed'], $options['related']))) {
+                       $options['person'], $options['followed'], $options['related']))) {
       die('Sprinkles::topics($options) got more than one of these options: '
           .'product, tag, query, person, followed, or related.');
   }
