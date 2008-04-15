@@ -13,16 +13,8 @@ if (!$consumer_data['key'] || !$consumer_data['secret']){
       "Center database! Perhaps something went wrong during installation " . 
       "and setup.");
 }
-$oauth_req = new HTTP_Request_OAuth(
-                   'http://getsatisfaction.com/api/request_token',
-                   array('consumer_key' => $consumer_data['key'],
-                         'consumer_secret' => $consumer_data['secret'],
-                         'signature_method' => 'HMAC-SHA1',
-                         'method' => 'GET'));
 
-$resp = $oauth_req->sendRequest(true, true);
-
-list($token, $secret) = $oauth_req->getResponseTokenSecret();
+list($token, $secret) = get_oauth_request_token($consumer_data);
 
 if (!$token || !$secret) {
   error("Failed to fetch OAuth request token " . 

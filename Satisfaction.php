@@ -510,6 +510,32 @@ function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $qu
   return $req;
 }
 
+function get_oauth_request_token($consumer_data) {
+  $oauth_req = new HTTP_Request_OAuth(
+                     'http://getsatisfaction.com/api/request_token',
+                     array('consumer_key' => $consumer_data['key'],
+                           'consumer_secret' => $consumer_data['secret'],
+                           'signature_method' => 'HMAC-SHA1',
+                           'method' => 'GET'));
+  $resp = $oauth_req->sendRequest(true, true);
+  return $oauth_req->getResponseTokenSecret();
+}
+
+function get_oauth_access_token($consumer_data, $request_token, $request_token_secret) {
+  $oauth_req = new HTTP_Request_OAuth(
+                     'http://getsatisfaction.com/api/access_token',
+                     array('consumer_key' => $consumer_data['key'],
+                           'consumer_secret' => $consumer_data['secret'],
+                           'token' => $request_token,
+                           'token_secret' => $request_token_secret,
+                           'signature_method' => 'HMAC-SHA1',
+                           'method' => 'GET'));
+
+  $resp = $oauth_req->sendRequest(true, true);
+
+  return $oauth_req->getResponseTokenSecret();
+}
+
 ##
 ## TOPICS
 ##
