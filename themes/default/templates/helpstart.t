@@ -72,11 +72,13 @@
 <h4>Where am I?</h4>
 
 <p>
-Welcome to Twitter's Instant-on Help Center. This service is powered by 
+Welcome to {$company_name}'s Instant-on Help Center. This service is powered by 
 Get Satisfaction (a community that helps people to get the most from the 
 products they use, and where companies are encouraged to get real with their 
 customers).
 </p>
 </div>
+
+<!-- Page took: {$page_timer}s -->
 
 {include file="footer.t"}

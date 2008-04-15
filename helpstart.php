@@ -23,4 +23,5 @@ $sprink->add_std_hash_elems($smarty);
 $smarty->assign('current_url', 'helpstart.php');
 
 $smarty->display('helpstart.t');
+
 ?>
