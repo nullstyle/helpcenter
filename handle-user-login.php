@@ -32,10 +32,6 @@ $callback_url = sprinkles_root_url() . 'handle-oauth-return.php?' .
                   ($first_login ? 'first_login=true&': '') .
                   'return=' . urlencode($return);
 
-# FIXME: hardcoded API URL!
-$url = 'http://getsatisfaction.com/api/authorize?oauth_token='. $token
-         . '&oauth_callback=' . urlencode($callback_url);
-
-redirect($url);
+redirect(oauth_authorization_url($token, $callback_url));
 
 ?>

@@ -518,7 +518,8 @@ function get_oauth_request_token($consumer_data) {
                            'signature_method' => 'HMAC-SHA1',
                            'method' => 'GET'));
   $resp = $oauth_req->sendRequest(true, true);
-  return $oauth_req->getResponseTokenSecret();
+  list($token, $secret) = $oauth_req->getResponseTokenSecret();
+  return array($token, $secret);
 }
 
 function get_oauth_access_token($consumer_data, $request_token, $request_token_secret) {
@@ -533,7 +534,15 @@ function get_oauth_access_token($consumer_data, $request_token, $request_token_s
 
   $resp = $oauth_req->sendRequest(true, true);
 
-  return $oauth_req->getResponseTokenSecret();
+  list($token, $secret) = $oauth_req->getResponseTokenSecret();
+
+  return array($token, $secret);
+}
+
+function oauth_authorization_url($token, $callback_url) {
+  return 'http://getsatisfaction.com/api/authorize?oauth_token='. $token
+           . '&oauth_callback=' . urlencode($callback_url);
+
 }
 
 ##

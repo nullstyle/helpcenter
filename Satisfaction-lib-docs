@@ -207,22 +207,59 @@ Additional Feed Functions
 
 POSTING
 
+This section documents the routines used for posting data into Get Satisfaction.
+All posting operations use the OAuth standard and depend on having the authorization of a Get Satisfaction user account. OAuth provides a way for a user to authorize an API client to post on behalf of its account.
+
+All OAuth requests are made on the basis of a "consumer key and secret," which are provided when you register to use the Get Satisfaction API. Each of the OAuth-related calls in this library accepts a $consumer_data parameter which is formatted as follows:
+
+     'key' => $consumer_key
+     'secret' => $consumer_secret
+
+
+
  * oauthed_request($consumer_data, $method, $url,
                    $creds, $req_params, $query_params)
 
    Make an API request, authenticated with OAuth.
    
-   The $consumer_data argument is an array containing the consumer key and secret provided when you signed up for the Get Satisfaction web API, formatted as follows:
-   
-     'key' => consumer key
-     'secret' => consumer secret
-
-   $method and $url sepcify the HTTP method and URL for the request. $req_params specifies any additional parameters to the request--these are passed directly to the HTTP_Request object (see docs for HTTP_Request). The $query_params argument specifies additional URL query-string parameters (for a GET request) or request-body parameters (for a POST request).
+   The $consumer_data argument is explained above. Arguments $method and $url specify the HTTP method to apply and the URL to apply it to. The $req_params specifies any additional parameters to the request--these are passed directly to the HTTP_Request object (see docs for HTTP_Request). The $query_params argument specifies additional URL query-string parameters (for a GET request) or request-body parameters (for a POST request).
    
    The $creds argument gives the OAuth credentials of the user on whose behalf you are making the request. For example, to post a new topic as authored by a given user, use the credentials of that user. The $creds argument should be an array with fields 'token' and 'token_secret', containing the respective parts of the OAuth credentials.
    
    OAuth credentials for a user are obtained through the OAuth authorization process (see http://api.getsatisfaction.com/).
+   
+ * get_oauth_request_token($consumer_data)
 
+   Fetch an OAuth request token from the Get Satisfaction server, using consumer data from $consumer_data (formatted as above). The result is a pair
+   
+     array($token, $token_secret)
+   
+   which can be used later, when the user returns from the authorization process, to identify the user. You might store this pair of tokens together with the user's cookie, so that you can match the ultimate authorization with a user session.
+   
+   After obtaining the request_token, you should redirect the user to the URL provided by the oauth_authorization_url function, below, to permit the user to authorize that token.
+ 
+ * oauth_authorization_url($token, $callback_url)
+  
+   Return a URL at which the user can authorize (or deny!) access to the given token. If the user authorizes the token, he or she will be redirected to the given $callback_url, with an additional CGI parameter, oauth_token, whose value is the $token passed in. For example, if the $token were 6cx2haob33pl and the $callback_url were
+   
+     http://example.com/handle-oauth-return.php?foo=bar
+     
+   Then, upon successful authorization, the user would be redirected to 
+  
+     http://example.com/handle-oauth-return.php?foo=bar&oauth_token=6cx2haob33pl
+   
+   You can then use the request token and secret (as returned from get_oauth_request_token, above) to fetch the OAuth access token, using the get_oauth_access_token, below. Note the distinction between a *request* token and an *access* token: The request token is fetched before authorization, and is used to request authorization; the access token is fetched after authorization, and is used for all of that user's OAuth requests (such as posting a topic) during a the given session.
+   
+ * get_oauth_access_token($consumer_data, $request_token, $request_token_secret)
+ 
+   Fetch an authorized access token for the given request token. The access token can be used for writing back to Get Satisfaction by passing it to the oauthed_request function (above).
+   
+   Once a user has authorized a request token, fetch an access token by calling get_oauth_access_token with the request token and secret that was returned by get_oauth_request_token for that particular user. This returns a new pair
+   
+     array($token, $token_secret)
+     
+   which constitutes a value for the $creds argument to oauthed_request. Once you've fetched the access token, the original request token for that user is no longer useful.
+ 
 UTILITIES
 
 Logging
