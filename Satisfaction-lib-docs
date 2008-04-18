@@ -32,6 +32,8 @@ Each function has a short comment describing its behavior in Satisfaction.php.
 
 COMPANIES
 
+Companies are represented in the Get Satisfaction API using the vCard data model.
+
  * company_hcard($company_id)
  
    Returns the vCard data of a company; it accepts an ID or an sfn:id.
@@ -44,6 +46,10 @@ vCard data is an associative array. For companies, vCards may include the follow
 
 PEOPLE
 
+People are represented in the Get Satisfaction API using the vCard data model.
+
+vCard data for an individual person can include the fields fn, photo, url, role, and canonical_name.  The fn field is the user's full name, which may be in use by other users. The canonical_name is a string that uniquely identifies the person; it can be seen as the person's primary key.
+
  * get_person($url)
  
    Returns the vCard data for a person, given by URL (including an ID).
@@ -52,13 +58,7 @@ PEOPLE
  
    Returns the vCard data for "me". That is, given OAuth session credentials $session_creds, it returns the vCard data for the user authorized under those credentials. The $consumer_data argument gives the OAuth consumer data, which is provided when you sign up to use the Get Satisfaction API; it should be formatted as an array with keys 'key' and 'secret' containing the respective bits of data.
 
- * get_person_from_string($str)
- 
- Parses vCard data from the string $str. 
-
-vCard data for an individual person can include the fields fn, photo, url, role, and canonical_name.  The fn field is the user's full name, which may be in use by other users. The canonical_name is a string that uniquely identifies the person; it can be seen as the person's primary key.
-
-xxxTBD undocument this function: it should be private.
+The following routines return a person's attributes with respect to a given company.
 
  * employee_list($company_sfnid)
  
@@ -74,11 +74,11 @@ xxxTBD undocument this function: it should be private.
 
 The role_name field is a human-readable string describing the role; the role field is a token that identifies the role uniquely; currently the only roles are company_admin, company_rep and employee. Distinct roles may have the same human-readable role_name.
 
-A person may or may not have a role at a given company, and may have roles at more than one company. Thus "role" and "role_name" fields are only included in vCards returned by the employees() function.
+A person may or may not have a role at a given company, and may have roles at more than one company. Thus "role" and "role_name" fields are included in vCards returned by the employees() function, but not in those returned by get_person(), or get_me_person().
 
 PRODUCTS
 
- * parse_hProduct($str) (PRIVATE)
+Product records have fields name, uri, and image.
 
  * product_list($company_sfnid) 
  
@@ -91,8 +91,6 @@ PRODUCTS
  * get_product($url)
  
    Fetches a product from $url, which may be an ID.
-
-Product records have fields name, uri, and image.
 
 TAGS
 
@@ -156,16 +154,118 @@ TOPICS
 
 Feed Entries
 
-TBD
+The list of items returned by topic() or topics() is a list of feed items, the format of which is described here. Note that the items returned by topics() are topics, but with topic(), the first item is the "topic head"--it has the same fields as a topic in the topics() result--but the other items are replies. Some fields are present for replies and not for topics, or vice versa
 
-the 'updated' field (the date of last update, in epoch format) also drives 'updated_relative' (a string like "45 minutes ago") and 'updated_formatted' (something like "June 1, 2008") which are useful for use in the templates. Note that the first item in the 'replies' array is different: it is the "head" or "lead_item", the post the started the topic. It has different properties than the other items.
+The format of each item is an array containing the following keys.
 
-There are some fields available for each item which need to be separately fetched and thus could be expensive. To make this information available without paying the cost by default, there is a set of extra functions which modify a feed by adding in this additional information. These functions include resolve_authors and resolve_companies.
+ * id
+ 
+   The unique ID of the item (as a URI).
+ 
+ * sfn_id
+ 
+   The item's sfn:id, a number that uniquely distinguishes it from other items of the same kind (that is, from other topics, if this item is a topic, or other replies, if this one is a reply).
+ 
+ * title
+ 
+   In the case of topics, the topic title. In the case of replies, a descriptive string such as "John Q. replied to 'There's a green blob in my OJ.'"
+   
+ * content
+ 
+   The content of the item, in HTML.
+   
+ * author
+ 
+   A person record (see get_person(), above) describing the author of the item.
 
-I dealt with this by adding an additional call that modifies the array, populating it with the additional data. The example is "resolve_companies" which fetches company data for each topic in a topics feed. I intend to use this technique to deal with such cases in the future.
+ * updated, updated_relative, updated_formatted
+ 
+   The timestamp when the item was last updated. The 'updated' field is in seconds-since-the-epoch format; 'updated_relative' is a human-readble string describing the approximate elapsed time since the update (such as, "2 weeks ago"); 'updated_formatted' is a human-readable string giving the date of the update (such as, "December 8, 07"). 
+   
+   For a topic, the update time will reflect the latest replies under that topic.
+ 
+ * published, published_relative, published_formatted
+ 
+   The timestamp when the item was first published. The 'published' field is in seconds-since-the-epoch format; 'published_relative' is a human-readble string describing the approximate elapsed time since the publication (such as, "2 weeks ago"); 'published_formatted' is a human-readable string giving the date of the publication (such as, "December 8, 07").
+   
+   The publication date of a topic is not affected by its replies.
+ 
+ * company_url
+ 
+   The company to which the topic pertains, represented as a URL. Not present for replies.
+ 
+ * at_sfn
+ 
+   A URL where the item can be found on the Get Satisfaction main site. This is a URL for a user interface to the item, as opposed to a machine-readable API resource.
+ 
+ * replies_url
+
+   The URL of the API resource where replies to the item should be posted. Not present for reply items.
+ 
+ * in_reply_to
+ 
+   For reply items, the ID (as a URI) of the item to which this one is a reply. For example, for top-level replies this would be a topic ID; for second-level replies this would be a reply ID. Not present for topic items.
+   
+ * topic_style
+ 
+   For topic items, the style of the topic, one of the tokens question, idea, problem, or talk.
+ 
+ * reply_count
+ 
+   For topic items, the number of replies, whether direct or indirent. Not present for replies.
+ 
+ * follower_count
+ 
+   The number of people following this topic.
+   
+ * star_count
+ 
+   The number of people who have starred this item.
+   
+ * flag_count
+ 
+   The number of people who have flagged this item (as inappropriate).
+   
+ * tags
+ 
+   A comma-separated list of tags on the item. Note that each comma may be immediately followed by whitespace which is not part of the tag, but whitespace following the next printing character is part of the tag.
+   
+ * emotitag_face
+ 
+   A token identifying the face associated with the item, one of happy, sad, silly or indifferent.
+ 
+ * emotitag_severity
+ 
+   A number indicating the intensity of the associated emotion.
+ 
+ * emotitag_emotion
+ 
+   A string, the emotion entered by the author when posting the item. It is implicitly prefixed by the word "I'm": for example, if this field were "perplexed," it would normally be displayed as "I'm perplexed."
+ 
+ * star_promoted
+ 
+   For replies, a boolean indicating whether the reply has been promoted by the people, that is, through receiving a threshold number of stars from users.
+ 
+ * company_promoted
+  
+   For replies, a boolean indicating whether the reply has been promoted by the owning company, which is performed through a separate administrative interface.
+
+Besides the above, which are included by default in the value returned by topic() or topics(), there are some available fields which need to be separately fetched and thus could be expensive. To make this information available without paying the cost by default, there is a set of extra functions which modify a feed by adding in this additional information. These functions include resolve_authors and resolve_companies.
 
 Additional Feed Functions
 
+ * resolve_authors($company_sfnid, &$items)
+ 
+   Given a list of feed items (replies or topics), add to each author record the fields role and role_name, indicating the person's role at the company $company_sfnid. As elsewhere, role is a token, one of employee, company_admin, or company_rep, while role_name is a human-readable string.
+   
+   NOTE that the argument $items is destructively modified: resolve_authors has no return value but the necessary data is added to the argument array directly.
+   
+ * resolve_companies(&$items)
+ 
+   Given a list of topic items, add to each one a field 'company' which contains the hCard data of the corresponding company. This will fetch the 'company_url' field and parse the resulting data.
+   
+   NOTE that the argument $items is destructively modified: resolve_companies has no return value but the necessary data is added to the argument array directly.
+   
  * thread_items($feed, $root)
  
    Given a feed as returned by topic(), convert it into "threaded" form. This means that the items in the resulting array are just the top-level replies; each of these has a 'replies' field which in turn contains a list of subordinate replies, formatted just as in the input. This uses the in-reply-to field in the feed determine the threading structure.

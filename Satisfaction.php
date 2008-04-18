@@ -676,7 +676,7 @@ function thread_items($feed, $root) {
     $items[$item['id']] = $item;
   }
 
-  # Next, create a pointer from each reply from its parent
+  # Next, create a pointer to each reply from its parent
   foreach ($items as $item) {
     if ($item['in_reply_to'])
       if ($items[$item['in_reply_to']]) {

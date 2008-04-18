@@ -18,7 +18,7 @@ if (!$creds) {
            urlencode($target_page . '?' . $args));
 }
 
-$POST_URL = $sprink->api_url($reply_id . "/stars");
+$POST_URL = $sprink->api_url($reply_id . "/stars");     # FIXME use @rel=stars link from feed
 
 $params = array('reply_id' => $reply_id);
 
