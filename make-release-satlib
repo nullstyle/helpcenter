@@ -1,14 +1,16 @@
 #!/bin/sh
 
-VERSION=0.1
+VERSION=0.11
 
 if [[ -d release ]];
 then
   cd release
   svn export svn+ssh://ezra@dev.getsatisfaction.com/svn/sprinkles/trunk sprinkles-$VERSION
+  markdown sprinkles-$VERSION/Satisfaction-lib-docs > sprinkles-$VERSION/Satisfaction-lib-docs.html
   tar czvf Satisfaction-lib-PHP-$VERSION.tar.gz \
               sprinkles-$VERSION/Satisfaction.php \
-              sprinkles-$VERSION/Satisfaction-lib-docs;
+              sprinkles-$VERSION/Satisfaction-lib-docs \
+              sprinkles-$VERSION/Satisfaction-lib-docs.html;
 else
   echo "No release/ directory here; make one first.";
 fi

@@ -132,9 +132,6 @@ function from_http_date($date_str) {
 # cached items will expire after a fixed timeout period. Configure the timeout 
 # period in seconds using the $http_cache_timeout global in config.php.
 
-$request_timer = 0;    # Used for collecting the amt. of time spent making 
-                       # API requests.
-
 function invalidate_http_cache($url) {
   mysql_query('delete from http_cache where url = \'' .
               mysql_real_escape_string($url) . '\'');
@@ -181,7 +178,7 @@ function get_url($url, $cache_hard=true) {
     list($content, $fetched_on) = $row;
 
     # Under "hard" caching, return the cached data without talking to server.
-    if ($cache_hard) return $content;
+    if ($cache_hard) { message("Hard cache hit at $url"); return $content; }
 
     # Under "soft" caching, we make a request to ask the server if the resource
     # has changed since our copy.
@@ -191,23 +188,23 @@ function get_url($url, $cache_hard=true) {
     $req = new HTTP_Request($url);
     $req->addHeader('If-Modified-Since', $fetched_on_http_date);
 
-    global $request_timer;
     $request_timer -= microtime(true);
     $ok = $req->sendRequest();
     $request_timer += microtime(true);
-    message("Running request timer: " . $request_timer . "s");  
 
     if (!PEAR::isError($ok)) {
       $respCode = $req->getResponseCode();
       if (304 == $respCode) {
         # 304 Not Modified; we can use the cached copy.
-        message('Cache hit at ' . $url . ' using If-Modified-Since: '
-                . $fetched_on_http_date);
+        message('Cache hit at ' . $url . ' using If-Modified-Since: ' .
+                $fetched_on_http_date . 
+                "Request timer: $request_timer" . 's');
         return $content;
       } elseif (200 <= $respCode && $respCode < 300) {
         # Got an OK response, use the data.
-        message('Cache refresh at ' . $url . '. If-Modified-Since: '
-                . $fetched_on_http_date);
+        message('Cache refresh at ' . $url . ' If-Modified-Since: ' .
+                $fetched_on_http_date . 
+                '. Request timer: ' . $request_timer . 's');
         $content = $req->getResponseBody();
         $fetched_on_server = mysql_date(from_http_date($req->getResponseHeader('Date')));
         mysql_query('delete from http_cache where url = \'' .
@@ -220,15 +217,12 @@ function get_url($url, $cache_hard=true) {
       }
     }
   } else {
-    message("Cache miss; fetching $url");
-      
     $req = new HTTP_Request($url);
 
-    global $request_timer;
     $request_timer -= microtime(true);
     $ok = $req->sendRequest();
     $request_timer += microtime(true);
-    message("Running request timer: " . $request_timer . "s");  
+    message("Cache miss at $url Request timer: " . $request_timer . "s");  
 
     if (PEAR::isError($ok)) 
       die("Unknown error trying GET $url");
@@ -320,11 +314,10 @@ function get_me_person($consumer_data, $session_creds) {
                        'signature_method' => 'HMAC-SHA1',
                        'method' => 'GET'));
 
-  global $request_timer;
   $request_timer -= microtime(true);
   $resp = $req->sendRequest(true, true);
   $request_timer += microtime(true);
-  message("Running request timer: " . $request_timer . "s");
+  message("Bypassed cache at $me_url Request timer: " . $request_timer . "s");
 
   if (!$resp) throw new Exception("Request to $me_url failed. ");
   if ($req->getResponseCode() == 401)
@@ -607,8 +600,6 @@ function topics($company_sfnid, $options, $at_least = 1) {
   }
   $topics_feed_url = api_url($url_path);
   $topics_feed_page_url = $topics_feed_url;
-  
-  debug($topics_feed_url);
   
   try {
     # == FETCH THE FEED ==
