@@ -4,9 +4,6 @@ require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
 
-$company_hcard = $sprink->company_hcard();
-$company_name = $company_hcard["fn"];
-
 $page_num = request_param('page');
 if (!$page_num) { $page_num = 0; }
 

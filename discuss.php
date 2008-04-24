@@ -23,13 +23,13 @@ if ($filter_product_id) {
 }
 
 $filter_product_arg = $filter_product ?
-                         "&product=" . $filter_product['uri'] :
+                         '&product=' . $filter_product['uri'] :
                          '';
 
 $filter_tag = request_param('tag');
 if ($filter_tag) $topic_filters['tag'] = $filter_tag;
 
-$filter_tag_arg = $filter_tag ? '&' ."tag=" . $filter_tag : '';
+$filter_tag_arg = $filter_tag ? '&tag=' . $filter_tag : '';
 
 $topics = $sprink->topics($topic_filters, ($page_num + 1) * $discuss_page_size);
 $topic_count = $topics['totals']['this'];
@@ -43,12 +43,15 @@ $smarty->assign('num_pages', ceil($topic_count/$topic_page_size));
 
 $top_topic_tags = take($max_top_topic_tags, 
                        $sprink->tags('http://api.getsatisfaction.com/companies/' . 
-                       $sprink->company_sfnid . 
-                       '/tags?on=topics&sort=usage&limit=5'));
+                                     $sprink->company_sfnid . 
+                                     '/tags?on=topics&sort=usage&limit=5'));
 
+# discuss_tag_url: function to allow template designers to get the URL of a 
+# discussion page for a particular tag.
 function discuss_tag_url($params, &$smarty) {
   return('discuss.php?tag=' . $params['tag']);
 }
+$smarty->register_function('discuss_tag_url', 'discuss_tag_url');
 
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign(array('filter_product' => $filter_product,
@@ -62,7 +65,6 @@ $smarty->assign('filter_tag_arg', $filter_tag_arg);
 
 $smarty->assign('totals', $topics['totals']);
 
-$smarty->register_function('discuss_tag_url', 'discuss_tag_url');
 $smarty->assign('current_url', 'discuss.php?' . $filter_tag_arg
                                               . $filter_product_arg
                                               . $filter_style_arg);

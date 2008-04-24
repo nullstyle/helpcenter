@@ -21,6 +21,7 @@ if (!$sprink->user_is_admin()) {
 $company_hcard = $sprink->company_hcard();
 $company_name = $company_hcard["fn"];
 
+# TBD: fetch the site_settings row just once per request.
 $sql = "select background_color, contact_email, contact_phone, " . 
        "contact_address, logo_link, map_url, faq_type from site_settings";
 $result = mysql_query($sql);

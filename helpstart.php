@@ -4,9 +4,6 @@ require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
 
-$company_hcard = $sprink->company_hcard();
-$company_name = $company_hcard["fn"];
-
 $entries = $sprink->topics(array());
 $entries['topics'] = take($helpstart_topic_count, $entries['topics']);
 

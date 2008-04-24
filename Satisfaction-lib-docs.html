@@ -1,0 +1,381 @@
+<!-- HTML source auto-generated from Markdown -->
+
+<h1>PHP Get Satisfaction Web API Library Documentation</h1>
+
+<h2>Synopsis</h2>
+
+<p>The file Satisfaction.php provides a set of routines for fetching data from and posting data to the Get Satisfaction web API. It includes functions for fetching with companies, people, products, tags, and topics, acording to various criteria, as well as functions for writing back to the API with an authorized Get Satisfaction account, include posting, starring and flagging topics.</p>
+
+<h2>Installation</h2>
+
+<p>The library consists of a single PHP file which you can easily include from other PHP files; to use the caching features you will need to have a MySQL database with the following schema installed (just run this SQL command to create the table):</p>
+
+<pre><code>create table http_cache (
+  url varchar(1024),
+  headers blob,
+  content blob,
+  fetched_on_server datetime not null,
+  fetched_on timestamp not null
+    default current_timestamp on update current_timestamp
+);
+</code></pre>
+
+<p>The interface consists of a set of functions for fetching API objects, posting data into the API, and manipulating the objects returned. This document describes the interface in detail.</p>
+
+<h2>Get Satisfaction API object identifiers</h2>
+
+<p>Every object in the Get Satisfaction web API has an ID, which is a URL that uniquely identifies it amongst all objects in the API (and indeed, anywhere else); this is called simply the object's ID. This ID can also be used to fetch a representation of the object over HTTP. Because these IDs can be quite long, each one is also identified by a numeric ID distinguishing it from others of the same type; this is called the object's sfn:id. For example, the number
+89521 is the sfn:id of a topic, but it might also be the sfn:id of a company, a person, or some other kind of object.</p>
+
+<p>IDs in the Get Satisfaction API are opaque: you should not try to interpret the parts of the ID.</p>
+
+<p>Many functions of the PHP Get Satisfaction API library accept just the ID, or just the sfn:id, of an object. Some functions accept one or the other, auto-detecting the sort of ID it has been given. Which type of ID a function accepts is made clear in its documentation.</p>
+
+<h2>Companies</h2>
+
+<p>Companies are represented in the Get Satisfaction API using the vCard data model.</p>
+
+<ul>
+<li><p><code>company_hcard($company_id)</code></p>
+
+<p>Returns the vCard data of a company; it accepts an ID or an sfn:id.</p></li>
+<li><p><code>company_name($compant_id)</code></p>
+
+<p>Returns the name of a company, given <code>$company_id</code> as either kind of ID.</p></li>
+</ul>
+
+<p>vCard data is an associative array. For companies, vCards may include the fields <code>fn</code> and <code>url</code>.</p>
+
+<h2>People</h2>
+
+<p>People are represented in the Get Satisfaction API using the vCard data model.</p>
+
+<p>vCard data for an individual person can include the fields <code>fn</code>, <code>photo</code>, <code>url</code>, <code>role</code>, and <code>canonical_name</code>.  The <code>fn</code> field is the user's full name, which may be in use by other users. The canonical_name is a string that uniquely identifies the person; it can be seen as the person's primary key.</p>
+
+<ul>
+<li><p><code>get_person($url)</code></p>
+
+<p>Returns the vCard data for a person, given by URL (including an ID).</p></li>
+<li><p><code>get_me_person($consumer_data, $session_creds)</code></p>
+
+<p>Returns the vCard data for "me". That is, given OAuth session credentials <code>$session_creds</code>, it returns the vCard data for the user authorized under those credentials. The <code>$consumer_data</code> argument gives the OAuth consumer data, which is provided when you sign up to use the Get Satisfaction API; it should be formatted as an array with keys <code>key</code> and <code>secret</code> containing the respective bits of data.</p></li>
+</ul>
+
+<p>The following routines return a person's attributes with respect to a given company.</p>
+
+<ul>
+<li><p><code>employee_list($company_sfnid)</code></p>
+
+<p>Returns a list of employees for given the company (having sfn:id <code>$company_sfnid</code>), in the form of minimal vCards. These "minimal" vCards need only contain the fields url and role; hence the <code>employees</code> function is generally more useful.</p></li>
+<li><p><code>employees($company_sfnid)</code></p>
+
+<p>Returns a list of employees of the given company, as full-fledged vCards, containing all the usual person fields as well as <code>role</code> and <code>role_name</code> (see below).</p></li>
+<li><p><code>get_person_role($company_sfnid, $person_url)</code></p>
+
+<p>Returns the role of the given person at the given company, as a pair <code>list($role, $role_name)</code>.</p></li>
+</ul>
+
+<p>The <code>role_name</code> field is a human-readable string describing the role; the <code>role</code> field is a token that identifies the role uniquely; currently the only roles are <code>company_admin</code>, <code>company_rep</code> and <code>employee</code>. Distinct roles may have the same human-readable <code>role_name</code>.</p>
+
+<p>A person may or may not have a role at a given company, and may have roles at more than one company. Thus <code>role</code> and <code>role_name</code> fields are included in vCards returned by the <code>employees</code> function, but not in those returned by <code>get_person</code>, or <code>get_me_person</code>.</p>
+
+<h2>Products</h2>
+
+<p>Product records have fields <code>name</code>, <code>uri</code>, and <code>image</code>.</p>
+
+<ul>
+<li><p><code>products($company_sfnid)</code></p>
+
+<p>Teturns a list of the products associated with the given company, as product records.</p></li>
+<li><p><code>get_product($url)</code></p>
+
+<p>Fetches a product from <code>$url</code>, which may be an ID.</p></li>
+</ul>
+
+<h2>Tags</h2>
+
+<p>Tags can be fetched from a given URL using this routine.</p>
+
+<ul>
+<li><p><code>tags($url)</code></p>
+
+<p>Returns the tags found at <code>$url</code>.</p></li>
+</ul>
+
+<h2>Topics</h2>
+
+<p>Individual topics and lists of topics can be fetched with the following routines.</p>
+
+<ul>
+<li><p><code>topic($company_sfnid, $topic_id)</code></p>
+
+<p>Fetches all the data for a single topic, by ID <code>$topic_id</code>; the result is a record containing these fields:</p>
+
+<ul>
+<li><p><code>replies</code></p>
+
+<p>An array containing the items in the topic's feed; this includes a first item, which is the topic "head", or starting post, and a list of replies to that post. Each item is in turn a record with fields corresponding to the data elements from the feed, plus some additional fields, described below under "Feed entries"</p></li>
+<li><p><code>particip</code></p>
+
+<p>An array of "person" records for people participating in the topic. The role fields of these records taken with respect to the company $company_sfnid.</p></li>
+<li><p><code>tags</code></p>
+
+<p>An array of tags on this topic, each a simple string.</p></li>
+</ul></li>
+<li><p><code>topics($company_sfnid, $options, $at_least)</code></p>
+
+<p>Fetches a list of at least <code>$at_least</code> topics (defaulting to at least 1) under company <code>$company_sfnid</code>, according to the criteria specified in <code>$options</code>. The array <code>$options</code> can contain at most one of the options <code>product</code>, <code>tag</code>, <code>query</code>, <code>person</code>, <code>followed</code>, or <code>related</code>. It can also contain any of the options <code>style</code> and <code>frequently_asked</code>.</p>
+
+<p>With no options, it returns all the topics for the company <code>$company_sfnid</code>. The options filter the returned list as follows:</p>
+
+<ul>
+<li><p><code>tag</code></p>
+
+<p>Topics tagged with the given tag.</p></li>
+<li><p><code>product</code></p>
+
+<p>Topics associated with the given product.</p></li>
+<li><p><code>person</code></p>
+
+<p>Topics authored by the given person.</p></li>
+<li><p><code>related</code></p>
+
+<p>Return topics related to the given string, according to the Get Satisfaction server.</p></li>
+<li><p><code>followed</code></p>
+
+<p>Topics followed by the given person.</p></li>
+</ul>
+
+<p>The result is an associative array with fields:</p>
+
+<ul>
+<li><p><code>topics</code></p>
+
+<p>The list of topics, each formatted as described under "Feed entries."</p></li>
+<li><p><code>totals</code></p>
+
+<p>An associative array whose fields count the number of topics of various kinds (total, unanswered, questions, problems, and ideas) that are beneath the specified company.</p></li>
+</ul></li>
+</ul>
+
+<h3>Feed entries</h3>
+
+<p>The list of items returned by <code>topic</code> or <code>topics</code> is a list of feed items, the format of which is described here. Note that the items returned by <code>topics</code> are topics, but with <code>topic</code>, the first item is the "topic head"--it has the same fields as a topic in the <code>topics</code> result--but the other items are replies. Some fields are present for replies and not for topics, or vice versa</p>
+
+<p>The format of each item is an array containing the following keys.</p>
+
+<ul>
+<li><p><code>id</code></p>
+
+<p>The unique ID of the item (as a URI).</p></li>
+<li><p><code>sfn_id</code></p>
+
+<p>The item's sfn:id, a number that uniquely distinguishes it from other items of the same kind (that is, from other topics, if this item is a topic, or other replies, if this one is a reply).</p></li>
+<li><p><code>title</code></p>
+
+<p>In the case of topics, the topic title. In the case of replies, a descriptive string such as "John Q. replied to 'There's a green blob in my OJ.'"</p></li>
+<li><p><code>content</code></p>
+
+<p>The content of the item, in HTML.</p></li>
+<li><p><code>author</code></p>
+
+<p>A person record (see <code>get_person</code>, above) describing the author of the item.</p></li>
+<li><p><code>updated</code>, <code>updated_relative</code>, <code>updated_formatted</code></p>
+
+<p>The timestamp when the item was last updated. The <code>updated</code> field is in seconds-since-the-epoch format; <code>updated_relative</code> is a human-readble string describing the approximate elapsed time since the update (such as, "2 weeks ago"); <code>updated_formatted</code> is a human-readable string giving the date of the update (such as, "December 8, 07"). </p>
+
+<p>For a topic, the update time will reflect the latest replies under that topic.</p></li>
+<li><p><code>published</code>, <code>published_relative</code>, <code>published_formatted</code></p>
+
+<p>The timestamp when the item was first published. The <code>published</code> field is in seconds-since-the-epoch format; <code>published_relative</code> is a human-readble string describing the approximate elapsed time since the publication (such as, "2 weeks ago"); <code>published_formatted</code> is a human-readable string giving the date of the publication (such as, "December 8, 07").</p>
+
+<p>The publication date of a topic is not affected by its replies.</p></li>
+<li><p><code>company_url</code></p>
+
+<p>The company to which the topic pertains, represented as a URL. Not present for replies.</p></li>
+<li><p><code>at_sfn</code></p>
+
+<p>A URL where the item can be found on the Get Satisfaction main site. This is a URL for a user interface to the item, as opposed to a machine-readable API resource.</p></li>
+<li><p><code>replies_url</code></p>
+
+<p>The URL of the API resource where replies to the item should be posted. Not present for reply items.</p></li>
+<li><p><code>in_reply_to</code></p>
+
+<p>For reply items, the ID (as a URI) of the item to which this one is a reply. For example, for top-level replies this would be a topic ID; for second-level replies this would be a reply ID. Not present for topic items.</p></li>
+<li><p><code>topic_style</code></p>
+
+<p>For topic items, the style of the topic, one of the tokens <code>question</code>, <code>idea</code>, <code>problem</code>, or <code>talk</code>.</p></li>
+<li><p><code>reply_count</code></p>
+
+<p>For topic items, the number of replies, whether direct or indirect. Not present for replies.</p></li>
+<li><p><code>follower_count</code></p>
+
+<p>The number of people following this topic.</p></li>
+<li><p><code>star_count</code></p>
+
+<p>The number of people who have starred this item.</p></li>
+<li><p><code>flag_count</code></p>
+
+<p>The number of people who have flagged this item (as inappropriate).</p></li>
+<li><p><code>tags</code></p>
+
+<p>A comma-separated list of tags on the item. Note that each comma may be immediately followed by whitespace which is not part of the tag, but whitespace following the next printing character is part of the tag.</p></li>
+<li><p><code>emotitag_face</code></p>
+
+<p>A token identifying the face associated with the item, one of <code>happy</code>, <code>sad</code>, <code>silly</code> or <code>indifferent</code>.</p></li>
+<li><p><code>emotitag_severity</code></p>
+
+<p>A number indicating the intensity of the associated emotion.</p></li>
+<li><p><code>emotitag_emotion</code></p>
+
+<p>A string, the emotion entered by the author when posting the item. It is implicitly prefixed by the word "I'm": for example, if this field were "perplexed," it would normally be displayed as "I'm perplexed."</p></li>
+<li><p><code>star_promoted</code></p>
+
+<p>For replies, a boolean indicating whether the reply has been promoted by the people, that is, through receiving a threshold number of stars from users.</p></li>
+<li><p><code>company_promoted</code></p>
+
+<p>For replies, a boolean indicating whether the reply has been promoted by the owning company, which is performed through a separate administrative interface.</p></li>
+</ul>
+
+<h3>Additional Feed Functions</h3>
+
+<p>Besides the above, which are included by default in the value returned by <code>topic</code> or <code>topics</code>, there are some available fields which need to be separately fetched and thus could be expensive. To make this information available without paying the cost by default, there is a set of extra functions which modify a feed by adding in this additional information. These functions include <code>resolve_authors</code> and <code>resolve_companies</code> and are described below.</p>
+
+<ul>
+<li><p><code>resolve_authors($company_sfnid, &amp;$items)</code></p>
+
+<p>Given a list of feed items (replies or topics), add to each author record the fields role and role_name, indicating the person's role at the company <code>$company_sfnid</code>. As elsewhere, role is a token, one of employee, <code>company_admin</code>, or <code>company_rep</code>, while <code>role_name</code> is a human-readable string.</p>
+
+<p>NOTE that the argument <code>$items</code> is destructively modified: <code>resolve_authors</code> has no return value but the necessary data is added to the argument array directly.</p></li>
+<li><p><code>resolve_companies(&amp;$items)</code></p>
+
+<p>Given a list of topic items, add to each one a field <code>company</code> which contains the hCard data of the corresponding company. This will fetch the <code>company_url</code> field and parse the resulting data.</p>
+
+<p>NOTE that the argument <code>$items</code> is destructively modified: <code>resolve_companies</code> has no return value but the necessary data is added to the argument array directly.</p></li>
+<li><p><code>thread_items($feed, $root)</code></p>
+
+<p>Given a feed as returned by <code>topic</code>, convert it into "threaded" form. This means that the items in the resulting array are just the top-level replies; each of these has a <code>replies</code> field which in turn contains a list of subordinate replies, formatted just as in the input. This uses the <code>in-reply-to</code> field in the feed determine the threading structure.</p>
+
+<p>The <code>$root</code> parameter is the ID (and URL) of the root item in the feed, that is, the topic itself, the item which is not a reply to any other. </p>
+
+<p>Presently, Get Satisfaction uses a two-level reply structure, so elements in the <code>replies</code> field do not themselves have replies. However, <code>thread_items</code> will handle deper nesting if it is given.</p></li>
+<li><p><code>flatten_threads($items)</code></p>
+
+<p>Given a threaded feed as returned by <code>thread_items</code>, flatten it to a list by appending an item's replies after that item in the returned feed.</p>
+
+<p>This can be useful when preparing a threaded topic feed for use by a template; the flattened structure may be easier to use.</p>
+
+<p>For example, if the input held these four top-level items, each with a <code>replies</code> array as shown:</p>
+
+<ul>
+<li>A's replies => []</li>
+<li>B's replies => [B1, B2]</li>
+<li>C's replies => [C1, C2, C3]</li>
+<li>D's replies => [D1]</li>
+</ul>
+
+<p>then the result would be a flat list as follows:</p>
+
+<blockquote>
+  <p>A, B, B1, B2, C, C1, C2, C3, D, D1</p>
+</blockquote>
+
+<p>The threading structure is still indicated by means of the <code>in-reply-to</code> field of each item. As a convenience, the last item in each sub-thread is marked with a true value in a field thread_end. </p></li>
+<li><p><code>filter_promoted($replies)</code></p>
+
+<p>Filters a list of replies to the promoted items only, returning a pair of the company-promoted items and the star-promoted items, respectively.</p>
+
+<p>"Company-promoted" items are those that a company representative has designated as useful.</p>
+
+<p>"Star-promoted" items are those that have received a certain number of stars (currently 3) from Get Satisfaction users.</p></li>
+<li><p><code>company_partition($company_hcard, $topics)</code></p>
+
+<p><p>Given a company, specified by its vCard, and a list $topics, separate $topics into those that partain to the given company and those that do not. The result is a pair <code>list($company_topics, $other_topics)</code>.</p></li>
+</ul></p>
+
+<h2>Posting</h2>
+
+<p>This section documents the routines used for posting data into Get Satisfaction.
+All posting operations use the OAuth standard and depend on having the authorization of a Get Satisfaction user account. OAuth provides a way for a user to authorize an API client to post on behalf of its account.</p>
+
+<p>All OAuth requests are made on the basis of a "consumer key and secret," which are provided when you register to use the Get Satisfaction API. Each of the OAuth-related calls in this library accepts a <code>$consumer_data</code> parameter which is formatted as follows:</p>
+
+<pre><code>  'key' =&gt; $consumer_key
+  'secret' =&gt; $consumer_secret
+</code></pre>
+
+<p>The routines for authorizing and posting through the API are as follows:</p>
+
+<ul>
+<li><p><code>oauthed_request($consumer_data, $method, $url,
+               $creds, $req_params, $query_params)</code></p>
+
+<p>Make an API request, authenticated with OAuth.</p>
+
+<p>The <code>$consumer_data</code> argument is explained above. Arguments <code>$method</code> and <code>$url</code> specify the HTTP method to apply and the URL to apply it to. The <code>$req_params</code> specifies any additional parameters to the request--these are passed directly to the <code>HTTP_Request</code> object (see docs for <code>HTTP_Request</code>). The <code>$query_params</code> argument specifies additional URL query-string parameters (for a GET request) or request-body parameters (for a POST request).</p>
+
+<p>The <code>$creds</code> argument gives the OAuth credentials of the user on whose behalf you are making the request. For example, to post a new topic as authored by a given user, use the credentials of that user. The $creds argument should be an array with fields <code>token</code> and <code>token_secret</code>, containing the respective parts of the OAuth credentials.</p>
+
+<p>OAuth credentials for a user are obtained through the OAuth authorization process (see the <a href="http://api.getsatisfaction.com/">Get Satisfaction API documentation</a>).</p></li>
+<li><p><code>get_oauth_request_token($consumer_data)</code></p>
+
+<p>Fetch an OAuth request token from the Get Satisfaction server, using consumer data from $consumer_data (formatted as above). The result is a pair</p>
+
+<p><code>array($token, $token_secret)</code></p>
+
+<p>which can be used later, when the user returns from the authorization process, to identify the user. You might store this pair of tokens together with the user's cookie, so that you can match the ultimate authorization with a user session.</p>
+
+<p>After obtaining the request<em>token, you should redirect the user to the URL provided by the oauth</em>authorization_url function, below, to permit the user to authorize that token.</p></li>
+<li><p><code>oauth_authorization_url($token, $callback_url)</code></p>
+
+<p>Return a URL at which the user can authorize (or deny!) access to the given token. If the user authorizes the token, he or she will be redirected to the given $callback<em>url, with an additional CGI parameter, oauth</em>token, whose value is the $token passed in. For example, if the $token were 6cx2haob33pl and the $callback_url were</p>
+
+<p><code>http://example.com/handle-oauth-return.php?foo=bar</code></p>
+
+<p>Then, upon successful authorization, the user would be redirected to </p>
+
+<p><code>http://example.com/handle-oauth-return.php?foo=bar&amp;oauth_token=6cx2haob33pl</code></p>
+
+<p>You can then use the request token and secret (as returned from get<em>oauth</em>request<em>token, above) to fetch the OAuth access token, using the get</em>oauth<em>access</em>token, below. Note the distinction between a <em>request</em> token and an <em>access</em> token: The request token is fetched before authorization, and is used to request authorization; the access token is fetched after authorization, and is used for all of that user's OAuth requests (such as posting a topic) during a the given session.</p></li>
+<li><p><code>get_oauth_access_token($consumer_data, $request_token, $request_token_secret)</code></p>
+
+<p>Fetch an authorized access token for the given request token. The access token can be used for writing back to Get Satisfaction by passing it to the oauthed_request function (above).</p>
+
+<p>Once a user has authorized a request token, fetch an access token by calling get<em>oauth</em>access<em>token with the request token and secret that was returned by get</em>oauth<em>request</em>token for that particular user. This returns a new pair</p>
+
+<p><code>array($token, $token_secret)</code></p>
+
+<p>which constitutes a value for the $creds argument to oauthed_request. Once you've fetched the access token, the original request token for that user is no longer useful.</p></li>
+</ul>
+
+<h2>Utilities</h2>
+
+<h3>Logging</h3>
+
+<p>For its internal use, and for the convenience of library users, the library offers three levels of logging, (debug, message, and error) which can be enabled or disabled using the globals</p>
+
+<ul>
+<li><p>$logging</p>
+
+<p>When set to false, no logging will occur. When set to true, error messages will be logged; debug messages and informational messages will be logged.</p></li>
+<li><p>$verbose</p>
+
+<p>When set to false, no informational messages will be logged. When set true and logging is on (above) then informational messages will be logged.</p></li>
+<li><p>$debugging</p>
+
+<p>When set to false, no debugging messages will be logged. When set to true and logging is on (above) then debugging messages will be logged.</p></li>
+</ul>
+
+<p>The logging routines are as follows:</p>
+
+<ul>
+<li><p>error($str)</p>
+
+<p>Send $str to the log as an error message.</p></li>
+<li><p>message($str)</p>
+
+<p>Send $str to the log as an informational message.</p></li>
+<li><p>debug($str)</p>
+
+<p>Send $str to the log as a debugging message.</p></li>
+</ul>
