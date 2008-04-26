@@ -12,4 +12,6 @@ $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('contactus.t');
 
+finish_request('contactus');
+
 ?>

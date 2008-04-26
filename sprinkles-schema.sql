@@ -95,9 +95,3 @@ DROP TABLE IF EXISTS `admins`;
 CREATE TABLE `admins` (
   `username` varchar(255) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `admins`
---
-
-

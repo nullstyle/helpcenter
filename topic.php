@@ -75,4 +75,7 @@ $smarty->assign('current_url', 'topic.php?id=' . $topic_id);
 $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('topic.t');
+
+finish_request('topic');
+
 ?>

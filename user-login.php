@@ -14,4 +14,6 @@ $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('user-login.t');
 
+finish_request('user-login');
+
 ?>

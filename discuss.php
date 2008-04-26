@@ -72,4 +72,6 @@ $smarty->assign('current_url', 'discuss.php?' . $filter_tag_arg
 $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('discuss.t');
+
+finish_request('discuss');
 ?>

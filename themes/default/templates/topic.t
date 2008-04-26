@@ -144,7 +144,7 @@ So we didn't take any action.
 
 <td id="topic-summary">
 
-<a href="share-topic.php?id={$topic_id}">Share</a> or follow this topic
+<a href="share-topic.php?id={$topic_id}">Share</a> this topic
 {if $own_topic}
 <div>
 You asked this question

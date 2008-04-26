@@ -448,6 +448,11 @@ function redirect($url) {
   header('Location: ' . $url, true, 302);
 }
 
+function finish_request($page) {
+  global $page_timer;
+  message("Page $page rendered in " . (microtime(true) - $page_timer));
+}
+
 # FIXME: connect params don't have any effect.
 
 $mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);

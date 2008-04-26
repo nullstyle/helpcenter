@@ -43,4 +43,6 @@ $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('submit.t');
 
+finish_request('submit');
+
 ?>

@@ -72,4 +72,6 @@ $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('admin.t');
 
+finish_request('admin');
+
 ?>

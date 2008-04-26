@@ -16,4 +16,6 @@ $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('faq.t');
 
+finish_request('faq');
+
 ?>

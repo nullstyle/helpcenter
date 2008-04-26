@@ -21,4 +21,6 @@ $smarty->assign('current_url', 'share-topic.php?id=' . $topic_id);
 
 $smarty->display('share-topic.t');
 
+finish_request('share-topic');
+
 ?>

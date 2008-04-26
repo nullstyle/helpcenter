@@ -19,4 +19,7 @@ $smarty->assign('suggested_topics', $topics);
 $smarty->assign('mode', $mode);
 
 $smarty->display('topic-suggestions.t');
+
+finish_request('topic-suggestions');
+
 ?>

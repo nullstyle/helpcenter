@@ -367,7 +367,7 @@ function employees($company_sfnid) {
   return $employees_cache;
 }
 
-# Given a person URL, find their role at the Sprinkles company and return a
+# Given a person URL, find their role at the given company and return a
 # a pair of the technical role identifier (e.g. company_rep) and the human-
 # readable name of the role (e.g. "Official Rep"). Returns null if the given
 # person has no role at the current company.
@@ -484,8 +484,8 @@ function tags($url) {
 # associative array having keys 'token' and 'token_secret', containing the 
 # corresponding OAuth values. 
 function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $query_params) {
-  if (!$method) die("Sprinkles method oauthed_request requires method parameter");
-  if (!$url) die("Sprinkles method oauthed_request requires URL parameter");
+  if (!$method) die("oauthed_request() requires method parameter");
+  if (!$url) die("oauthed_request() requires URL parameter");
   require_once('HTTP_Request_Oauth.php');
   $req_params['method'] = $method;
   $req_params['token'] = $creds['token'];
@@ -550,7 +550,7 @@ function oauth_authorization_url($token, $callback_url) {
 function topics($company_sfnid, $options, $at_least = 1) {
   if (!singleton(array($options['product'], $options['tag'], $options['query'],
                        $options['person'], $options['followed'], $options['related']))) {
-      die('Sprinkles::topics($options) got more than one of these options: '
+      die('topics($options) got more than one of these options: '
           .'product, tag, query, person, followed, or related.');
   }
   if ($options['product']) {

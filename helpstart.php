@@ -21,4 +21,6 @@ $smarty->assign('current_url', 'helpstart.php');
 
 $smarty->display('helpstart.t');
 
+finish_request('helpstart');
+
 ?>

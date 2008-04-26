@@ -34,4 +34,5 @@ $smarty->assign('no_admin_link', true);
 
 $smarty->display('admin-findsite.t');
 
+finish_request('admin-findsite');
 ?>
