@@ -1,94 +1,47 @@
 {include file="header.t"}
 
-<h1>{$user_possessive|capitalize} (Mini) Dashboard
-{if $user_is_self}
-<a href="{$sfn_root}me">See your full dashboard on Get Satisfaction</a>
-{else}
-<a href="{$sfn_root}people/{$username_canonical}">See their full dashboard on Get Satisfaction</a>
-{/if}
-</h1>
 
-{include file="question-box.t"}
+<div id="container">
+	<div id="content">
+		<h1>
+		  <img src="{$user.photo}" alt="user photo" style="float:left;margin:0 20px 20px 0" />
+		  {if $current_user.canonical_name != $user.canonical_name}
+        {$user_possessive|capitalize} Activity
+		  {else}
+        Hello {$user_name}
+		  {/if}
+		</h1>
 
-<h2>{$user_possessive|capitalize} Recent {$company_name} Discussions</h2>
+		<div class="topic-list mixed">
+		{foreach from=$company_topics key=i item=topic}
+		  {include file="mixed-topic-list.t"}
+		{foreachelse}
+      You haven't participated in any {$company_name} discussions so far.
+		{/foreach}			
+		</div>
+		
+	</div><!-- #content -->
+</div><!-- #container -->
 
-<div class="sidepane">
-<div class="sidebar" style="background-color: white">
-<a href="{$sfn_root}people/{$user.canonical_name}.rss">Subscribe to 
-{if $user_is_self}
-your
-{else}
-their
-{/if}
-feed with RSS on getsatisfaction.com</a>.
-</div>
-
+{include file="sidebar.t"}
 <div class="sidebar">
-<h3>Recent Topics from {$user_possessive} Get Satisfaction Dashboard:</h3>
-<ul>
-{foreach from=$noncompany_topics key=i item=topic}
-<li><a href="{$topic.at_sfn}">{$topic.title}</a> in <strong>{$topic.company.fn}</strong></li>
-{foreachelse}
-{if $user_is_self} You haven't
-{else}             {$user.fn} hasn't
-{/if}
-participated in any other discussions so far.
-{/foreach}
-
-</ul>
-</div>
-</div>
-
-<table class="topic-list">
-{foreach from=$company_topics key=i item=topic}
-  <tr>
-    <td><img src="images/{$topic.topic_style}_med.png"
-                 alt="{$topic.topic_style}" /></td>
-    <td class="content-col">
-    <h3><a href="topic.php?sfn_id={$topic.sfn_id}">{$topic.title}</a></h3>
-    <p>{if $topic.reply_count} Last reply
-                 {else} Posted {/if} {$topic.updated_relative}.</p>
-
-    <p>{$topic.content}</p>
-
-    <table class="p-margin">
-    <tr>
-    <td>
-    <img class="tiny-author-pic" style="vertical-align: middle;"
-            src="{$topic.author.photo}" />
-    </td>
-    <td>
-   <a href="minidashboard.php?user_url={$topic.author.url}">
-   {$topic.author.name} 
-   </a>
-    {if $topic.topic_style == 'question'} asked this question
-    {elseif $topic.topic_style == 'idea'} shared this idea
-    {elseif $topic.topic_style == 'talk'} asked this question
-    {elseif $topic.topic_style == 'problem'} reported this problem
+  <h3>
+    <a href="http://getsatisfaction.com/people/{$user.canonical_name}">Recent topics from 
+    {if $current_user.canonical_name != $user.canonical_name}
+      {$user.user_name}
+    {else}
+      your
     {/if}
-    {$topic.published_relative}.
-{if $topic.tags}
-    It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if}
-    <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach}
-{/if}
-    </td>
-    </tr>
-    </table>
-    </td>
-    <td class="reply-count-col">
-      <span class="huge">{$topic.reply_count}</span> <br />
-        {if $topic.reply_count == 1} reply {else} replies {/if} </td>
-  </tr>
-{foreachelse}
-  <tr><td></td>
-    <td class="content-col">
-      {if $user_is_self} You haven't
-      {else}             {$user.fn} hasn't
-      {/if}
-      participated in any {$company_name} discussions so far.
-    </td><td></td>
-  </tr>
-{/foreach}
-</table>
+    Satisfaction Dashboard:</a>
+  </h3>
+  <ul>
+  {foreach from=$noncompany_topics key=i item=topic}
+    <li>{$topic.title} in <strong><a href="{$topic.company.uri}">{$topic.company.fn}</a></strong></li>
+    {foreachelse}
+    <li>You haven't participated in any other discussions so far.</li>
+    {/foreach}
+  </ul>
+</div>
+
 
 {include file="footer.t"}

@@ -1,0 +1,458 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sandbox 1.x\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2008-01-03 00:36+0900\n"
+"Last-Translator: Takayuki Miyoshi <takayukister@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_c\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: sandbox\n"
+
+#: sandbox/404.php:7
+#: sandbox/header.php:4
+msgid "Not Found"
+msgstr "見つかりません。"
+
+#: sandbox/404.php:9
+msgid "Apologies, but we were unable to find what you were looking for. Perhaps  searching will help."
+msgstr "残念ながらお探しのページが見つかりませんでした。検索ボックスを使えば探し出すことができるかもしれません。"
+
+#: sandbox/404.php:14
+#: sandbox/functions.php:258
+#: sandbox/search.php:53
+#: sandbox/sidebar.php:39
+msgid "Find"
+msgstr "検索"
+
+#: sandbox/archive.php:9
+#, php-format
+msgid "Daily Archives: <span>%s</span>"
+msgstr "日単位のアーカイブ: <span>%s</span>"
+
+#: sandbox/archive.php:11
+#, php-format
+msgid "Monthly Archives: <span>%s</span>"
+msgstr "月単位のアーカイブ: <span>%s</span>"
+
+#: sandbox/archive.php:13
+#, php-format
+msgid "Yearly Archives: <span>%s</span>"
+msgstr "年単位のアーカイブ: <span>%s</span>"
+
+#: sandbox/archive.php:15
+msgid "Blog Archives"
+msgstr "ブログアーカイブ"
+
+#: sandbox/archive.php:21
+#: sandbox/archive.php:48
+#: sandbox/author.php:12
+#: sandbox/author.php:37
+#: sandbox/category.php:10
+#: sandbox/category.php:39
+#: sandbox/index.php:7
+#: sandbox/index.php:35
+#: sandbox/search.php:11
+#: sandbox/search.php:39
+#: sandbox/tag.php:9
+#: sandbox/tag.php:39
+msgid "<span class=\"meta-nav\">&laquo;</span> Older posts"
+msgstr "<span class=\"meta-nav\">&laquo;</span> より古い投稿"
+
+#: sandbox/archive.php:22
+#: sandbox/archive.php:49
+#: sandbox/author.php:13
+#: sandbox/author.php:38
+#: sandbox/category.php:11
+#: sandbox/category.php:40
+#: sandbox/index.php:8
+#: sandbox/index.php:36
+#: sandbox/search.php:12
+#: sandbox/search.php:40
+#: sandbox/tag.php:10
+#: sandbox/tag.php:40
+msgid "Newer posts <span class=\"meta-nav\">&raquo;</span>"
+msgstr "より新しい投稿 <span class=\"meta-nav\">&raquo;</span>"
+
+#: sandbox/archive.php:28
+#: sandbox/author.php:19
+#: sandbox/category.php:17
+#: sandbox/index.php:13
+#: sandbox/search.php:18
+#: sandbox/tag.php:16
+#, php-format
+msgid "Permalink to %s"
+msgstr "%s のパーマリンク"
+
+#: sandbox/archive.php:29
+#: sandbox/author.php:20
+#: sandbox/category.php:18
+#: sandbox/index.php:14
+#: sandbox/search.php:19
+#: sandbox/tag.php:17
+#, php-format
+msgid "%1$s &#8211; %2$s"
+msgstr "%1$s &#8211; %2$s"
+
+#: sandbox/archive.php:31
+#: sandbox/attachment.php:13
+#: sandbox/author.php:22
+#: sandbox/category.php:20
+#: sandbox/index.php:16
+#: sandbox/search.php:21
+#: sandbox/single.php:15
+#: sandbox/tag.php:19
+msgid "Read More <span class=\"meta-nav\">&raquo;</span>"
+msgstr "続きを読む <span class=\"meta-nav\">&raquo;</span>"
+
+#: sandbox/archive.php:35
+#: sandbox/category.php:24
+#: sandbox/index.php:21
+#: sandbox/search.php:25
+#: sandbox/tag.php:23
+#, php-format
+msgid "By %s"
+msgstr "作者: %s"
+
+#: sandbox/archive.php:35
+#: sandbox/attachment.php:19
+#: sandbox/category.php:24
+#: sandbox/index.php:21
+#: sandbox/search.php:25
+#: sandbox/single.php:21
+#: sandbox/tag.php:23
+#, php-format
+msgid "View all posts by %s"
+msgstr "%s の投稿をすべて表示"
+
+#: sandbox/archive.php:37
+#: sandbox/author.php:26
+#: sandbox/index.php:23
+#: sandbox/search.php:27
+#: sandbox/tag.php:25
+#, php-format
+msgid "Posted in %s"
+msgstr "%s カテゴリー"
+
+#: sandbox/archive.php:39
+#: sandbox/author.php:28
+#: sandbox/category.php:30
+#: sandbox/index.php:25
+msgid "<span class=\"tag-links\">Tagged "
+msgstr "<span class=\"tag-links\">タグ "
+
+#: sandbox/archive.php:40
+#: sandbox/archives.php:32
+#: sandbox/attachment.php:39
+#: sandbox/author.php:29
+#: sandbox/category.php:31
+#: sandbox/comments.php:39
+#: sandbox/comments.php:65
+#: sandbox/index.php:26
+#: sandbox/links.php:20
+#: sandbox/page.php:14
+#: sandbox/search.php:31
+#: sandbox/single.php:41
+#: sandbox/tag.php:31
+msgid "Edit"
+msgstr "編集"
+
+#: sandbox/archive.php:41
+#: sandbox/author.php:30
+#: sandbox/category.php:32
+#: sandbox/index.php:27
+#: sandbox/search.php:32
+#: sandbox/tag.php:32
+msgid "Comments (0)"
+msgstr "コメント（0）"
+
+#: sandbox/archive.php:41
+#: sandbox/author.php:30
+#: sandbox/category.php:32
+#: sandbox/index.php:27
+#: sandbox/search.php:32
+#: sandbox/tag.php:32
+msgid "Comments (1)"
+msgstr "コメント（1）"
+
+#: sandbox/archive.php:41
+#: sandbox/author.php:30
+#: sandbox/category.php:32
+#: sandbox/index.php:27
+#: sandbox/search.php:32
+#: sandbox/tag.php:32
+msgid "Comments (%)"
+msgstr "コメント（%）"
+
+#: sandbox/archives.php:20
+msgid "Archives by Category"
+msgstr "カテゴリー別アーカイブ"
+
+#: sandbox/archives.php:26
+msgid "Archives by Month"
+msgstr "月別のアーカイブ"
+
+#: sandbox/attachment.php:15
+#: sandbox/index.php:18
+#: sandbox/single.php:17
+msgid "Pages:"
+msgstr "ページ:"
+
+#: sandbox/attachment.php:18
+#, php-format
+msgid "This entry was written by %1$s, posted on <abbr class=\"published\" title=\"%2$sT%3$s\">%4$s at %5$s</abbr>, filed under %6$s and tagged %7$s. Bookmark the <a href=\"%8$s\" title=\"Permalink to %9$s\" rel=\"bookmark\">permalink</a>. Follow any comments here with the <a href=\"%10$s\" title=\"Comments RSS to %9$s\" rel=\"alternate\" type=\"application/rss+xml\">RSS feed for this post</a>."
+msgstr "この投稿は %1$s によって作成され、<abbr class=\"published\" title=\"%2$sT%3$s\">%4$s %5$s</abbr> に公開されました。%6$s カテゴリーに属し、%7$s のタグが付けられています。ブックマークにはこのページの <a href=\"%8$s\" title=\"%9$s のパーマリンク\" rel=\"bookmark\">パーマリンク</a> を登録するとよいでしょう。この投稿へのコメントは <a href=\"%10$s\" title=\"%9$s のコメント RSS\" rel=\"alternate\" type=\"application/rss+xml\">RSS フィード</a>で購読することができます。"
+
+#: sandbox/attachment.php:25
+#: sandbox/single.php:27
+msgid "and tagged"
+msgstr "また、タグ"
+
+#: sandbox/attachment.php:31
+#: sandbox/single.php:33
+#, php-format
+msgid "<a class=\"comment-link\" href=\"#respond\" title=\"Post a comment\">Post a comment</a> or leave a trackback: <a class=\"trackback-link\" href=\"%s\" title=\"Trackback URL for your post\" rel=\"trackback\">Trackback URL</a>."
+msgstr "この投稿に<a class=\"comment-link\" href=\"#respond\" title=\"コメントする\">コメントを残すことができます</a>。また、ご自分のサイトからトラックバックを送ることも可能です。<a class=\"trackback-link\" href=\"%s\" title=\"投稿のトラックバック URL\" rel=\"trackback\">この投稿のトラックバックURL</a>"
+
+#: sandbox/attachment.php:33
+#: sandbox/single.php:35
+#, php-format
+msgid "Comments are closed, but you can leave a trackback: <a class=\"trackback-link\" href=\"%s\" title=\"Trackback URL for your post\" rel=\"trackback\">Trackback URL</a>."
+msgstr "現在コメントは受け付けておりませんが、ご自分のサイトからトラックバックを送ることはできます。<a class=\"trackback-link\" href=\"%s\" title=\"投稿のトラックバック URL\" rel=\"trackback\">この投稿のトラックバックURL</a>"
+
+#: sandbox/attachment.php:35
+#: sandbox/single.php:37
+msgid "Trackbacks are closed, but you can <a class=\"comment-link\" href=\"#respond\" title=\"Post a comment\">post a comment</a>."
+msgstr "この投稿に<a class=\"comment-link\" href=\"#respond\" title=\"コメントする\">コメントを残すことができます</a>。トラックバックは現在受け付けておりません。"
+
+#: sandbox/attachment.php:37
+#: sandbox/single.php:39
+msgid "Both comments and trackbacks are currently closed."
+msgstr "現在コメント、トラックバックともに受け付けておりません。"
+
+#: sandbox/author.php:8
+#, php-format
+msgid "Author Archives: <span class=\"vcard\">%s</span>"
+msgstr "投稿者のアーカイブ: <span class=\"vcard\">%s</span>"
+
+#: sandbox/category.php:6
+msgid "Category Archives:"
+msgstr "カテゴリーのアーカイブ:"
+
+#: sandbox/category.php:27
+#, php-format
+msgid "Also posted in %s"
+msgstr "他に次のカテゴリーにも含まれています: %s"
+
+#: sandbox/comments.php:9
+msgid "This post is password protected. Enter the password to view any comments."
+msgstr "この投稿はパスワードで保護されています。コメントを閲覧するにはパスワードを入力してください。"
+
+#: sandbox/comments.php:28
+#, php-format
+msgid "<span>%d</span> Comments"
+msgstr "<span>%d</span>個のコメント"
+
+#: sandbox/comments.php:28
+msgid "<span>One</span> Comment"
+msgstr "<span>1</span>個のコメント"
+
+#: sandbox/comments.php:35
+#, php-format
+msgid "Posted %1$s at %2$s <span class=\"meta-sep\">|</span> <a href=\"%3$s\" title=\"Permalink to this comment\">Permalink</a>"
+msgstr "%1$s %2$s に投稿 <span class=\"meta-sep\">|</span> <a href=\"%3$s\" title=\"このコメントのパーマリンク\">パーマリンク</a>"
+
+#: sandbox/comments.php:40
+msgid "\t\t\t\t\t<span class='unapproved'>Your comment is awaiting moderation.</span>\n"
+msgstr "\t\t\t\t\t<span class='unapproved'>あなたのコメントは管理者の承認待ちです。</span>\n"
+
+#: sandbox/comments.php:54
+#, php-format
+msgid "<span>%d</span> Trackbacks"
+msgstr "<span>%d</span>個のトラックバック"
+
+#: sandbox/comments.php:54
+msgid "<span>One</span> Trackback"
+msgstr "<span>1</span>個のトラックバック"
+
+#: sandbox/comments.php:61
+#, php-format
+msgid "By %1$s on %2$s at %3$s"
+msgstr "%1$s さんからのコメント %2$s, %3$s"
+
+#: sandbox/comments.php:66
+msgid "\\t\\t\\t\\t\\t<span class=\"unapproved\">Your trackback is awaiting moderation.</span>\\n"
+msgstr "\\t\\t\\t\\t\\t<span class=\"unapproved\">あなたのトラックバックは管理者の承認待ちです。</span>\\n"
+
+#: sandbox/comments.php:79
+msgid "Post a Comment"
+msgstr "コメントを書く"
+
+#: sandbox/comments.php:82
+#, php-format
+msgid "You must be <a href=\"%s\" title=\"Log in\">logged in</a> to post a comment."
+msgstr "コメントを投稿するには<a href=\"%s\" title=\"Log in\">ログイン</a>する必要があります。"
+
+#: sandbox/comments.php:90
+#, php-format
+msgid "<span class=\"loggedin\">Logged in as <a href=\"%1$s\" title=\"Logged in as %2$s\">%2$s</a>.</span> <span class=\"logout\"><a href=\"%3$s\" title=\"Log out of this account\">Log out?</a></span>"
+msgstr "<span class=\"loggedin\"><a href=\"%1$s\" title=\"%2$s としてログイン中\">%2$s</a> としてログイン中。</span> <span class=\"logout\"><a href=\"%3$s\" title=\"このアカウントからログアウト\">ログアウト</a>しますか?</span>"
+
+#: sandbox/comments.php:97
+msgid "Your email is <em>never</em> published nor shared."
+msgstr "メールアドレスが公開されたり他で使われたりすることは<em>ありません</em>。"
+
+#: sandbox/comments.php:97
+msgid "Required fields are marked <span class=\"required\">*</span>"
+msgstr "<span class=\"required\">*</span> 印の項目は必須項目です。"
+
+#: sandbox/comments.php:99
+msgid "Name"
+msgstr "名前"
+
+#: sandbox/comments.php:99
+#: sandbox/comments.php:102
+msgid "<span class=\"required\">*</span>"
+msgstr "<span class=\"required\">*</span>"
+
+#: sandbox/comments.php:102
+msgid "Email"
+msgstr "メールアドレス"
+
+#: sandbox/comments.php:105
+msgid "Website"
+msgstr "ウェブサイト"
+
+#: sandbox/comments.php:110
+msgid "Comment"
+msgstr "コメント"
+
+#: sandbox/comments.php:113
+msgid "Post Comment"
+msgstr "コメントを書く"
+
+#: sandbox/footer.php:3
+msgid "WordPress"
+msgstr "WordPress"
+
+#: sandbox/footer.php:5
+msgid "Sandbox for WordPress"
+msgstr "Sandbox for WordPress"
+
+#: sandbox/footer.php:5
+msgid "Sandbox"
+msgstr "Sandbox"
+
+#: sandbox/functions.php:251
+#: sandbox/functions.php:331
+#: sandbox/sidebar.php:35
+msgid "Search"
+msgstr "検索"
+
+#: sandbox/functions.php:270
+#: sandbox/functions.php:333
+#: sandbox/sidebar.php:55
+msgid "Meta"
+msgstr "メタ"
+
+#: sandbox/functions.php:287
+#: sandbox/functions.php:335
+#: sandbox/functions.php:336
+msgid "RSS Links"
+msgstr "RSS リンク"
+
+#: sandbox/functions.php:292
+#: sandbox/header.php:9
+#: sandbox/sidebar.php:49
+msgid "Posts RSS feed"
+msgstr "投稿 RSS フィード"
+
+#: sandbox/functions.php:292
+#: sandbox/sidebar.php:49
+msgid "All posts"
+msgstr "すべての投稿"
+
+#: sandbox/functions.php:293
+#: sandbox/header.php:10
+#: sandbox/sidebar.php:50
+msgid "Comments RSS feed"
+msgstr "コメント RSS フィード"
+
+#: sandbox/functions.php:293
+#: sandbox/sidebar.php:50
+msgid "All comments"
+msgstr "すべてのコメント"
+
+#: sandbox/functions.php:311
+msgid "Title:"
+msgstr "タイトル:"
+
+#: sandbox/header.php:4
+msgid " &raquo; "
+msgstr " &raquo; "
+
+#: sandbox/header.php:26
+msgid "Skip navigation to the content"
+msgstr "ナビゲーションをスキップしてコンテンツへ"
+
+#: sandbox/header.php:26
+msgid "Skip to content"
+msgstr "コンテンツへスキップ"
+
+#: sandbox/page.php:12
+msgid "Pages: "
+msgstr "ページ"
+
+#: sandbox/search.php:8
+msgid "Search Results for:"
+msgstr "検索結果:"
+
+#: sandbox/search.php:29
+msgid "Tagged "
+msgstr "タグ"
+
+#: sandbox/search.php:46
+msgid "Nothing Found"
+msgstr "見つかりませんでした。"
+
+#: sandbox/search.php:48
+msgid "Sorry, but nothing matched your search criteria. Please try again with some different keywords."
+msgstr "残念ながらマッチする内容は見つかりませんでした。他のキーワードでお試し下さい。"
+
+#: sandbox/sidebar.php:6
+msgid "Pages"
+msgstr "ページ"
+
+#: sandbox/sidebar.php:13
+msgid "Categories"
+msgstr "カテゴリー"
+
+#: sandbox/sidebar.php:21
+msgid "Archives"
+msgstr "アーカイブ"
+
+#: sandbox/sidebar.php:47
+msgid "RSS Feeds"
+msgstr "RSS フィード"
+
+#: sandbox/single.php:20
+#, php-format
+msgid "This entry was written by %1$s, posted on <abbr class=\"published\" title=\"%2$sT%3$s\">%4$s at %5$s</abbr>, filed under %6$s%7$s. Bookmark the <a href=\"%8$s\" title=\"Permalink to %9$s\" rel=\"bookmark\">permalink</a>. Follow any comments here with the <a href=\"%10$s\" title=\"Comments RSS to %9$s\" rel=\"alternate\" type=\"application/rss+xml\">RSS feed for this post</a>."
+msgstr "この投稿は %1$s によって作成され、<abbr class=\"published\" title=\"%2$sT%3$s\">%4$s %5$s</abbr> に公開されました。%6$s  カテゴリーに属し、%7$s が付けられています。ブックマークにはこのページの <a href=\"%8$s\" title=\"%9$sのパーマリンク\" rel=\"bookmark\">パーマリンク</a> を登録するとよいでしょう。この投稿へのコメントは <a href=\"%10$s\" title=\"%9$sのコメント RSS\" rel=\"alternate\" type=\"application/rss+xml\">RSS フィード</a>で購読することができます。"
+
+#: sandbox/tag.php:6
+msgid "Tag Archives:"
+msgstr "タグのアーカイブ:"
+
+#: sandbox/tag.php:28
+#, php-format
+msgid "Also tagged %s"
+msgstr "また %s のタグ付き"
+

@@ -1,176 +1,155 @@
 {include file="header.t"}
 
-<script type="text/javascript" src="sprinkles.js"></script>
 
-<script type="text/javascript">
-<!--
-function redoSearch() {ldelim}
-  var subjectField = document.getElementById('submit-subject');
-  var queryText = subjectField.value;
-  
-  var url = 'topic-suggestions.php?mode=fancy&query=' + queryText; // FIXME: url-encode
-  getHTMLAJAXAsync(url, function (suggestions) {ldelim}
-    var suggestionsElem = document.getElementById('suggestions');
-    var suggestionsLegendElem = document.getElementById('suggestions-legend');
-    var absentSuggestionsElem = document.getElementById('absent-suggestions');
-    if (trim(suggestions)) {ldelim}
-      suggestionsElem.innerHTML = suggestions;
-      suggestionsElem.style.display = 'block';
-      suggestionsLegendElem.style.display = 'block';
-      absentSuggestionsElem.style.display = 'none';
-    {rdelim} else {ldelim}
-      absentSuggestionsElem.style.display = 'block';
-      suggestionsElem.style.display = 'none';
-      suggestionsLegendElem.style.display = 'none';
-    {rdelim}
-  {rdelim});
-{rdelim}
--->
-</script>
+<div id="container">
+	<div id="content">
+	
+		<script type="text/javascript" src="sprinkles.js"></script>
 
-<h1>Do any of these help?</h1>
+		<script type="text/javascript">
+		<!--
+		function redoSearch() {ldelim}
+		  var subjectField = document.getElementById('submit-subject');
+		  var queryText = subjectField.value;
+		  var url = 'topic-suggestions.php?mode=fancy&query=' + queryText; // FIXME: url-encode
+		  getHTMLAJAXAsync(url, function (suggestions) {ldelim}
+		    var suggestionsElem = document.getElementById('suggestions');
+		    var suggestionsLegendElem = document.getElementById('suggestions-legend');
+		    var absentSuggestionsElem = document.getElementById('absent-suggestions');
+		    if (trim(suggestions)) {ldelim}
+		      suggestionsElem.innerHTML = suggestions;
+		      suggestionsElem.style.display = 'block';
+		      suggestionsLegendElem.style.display = 'block';
+		      absentSuggestionsElem.style.display = 'none';
+		    {rdelim} else {ldelim}
+		      absentSuggestionsElem.style.display = 'block';
+		      suggestionsElem.style.display = 'none';
+		      suggestionsLegendElem.style.display = 'none';
+		    {rdelim}
+		  {rdelim});
+		{rdelim}
+		-->
+		</script>	
+		
+		<form id="new_topic_form" class="question" method="get" action="submit.php">
+  		<fieldset>
+		    <legend><strong>1)</strong> I have a...</legend>
+		    <div style="float: right; width:240px" id="live_results">
+		      <p><strong>These topics may help:</strong></p><br />
+	        <ul class="results">
+        		{foreach from=$suggested key=i item=topic}
+        		<li style="background-image: none; background-color: transparent;"><a href="topic.php?id={$topic.id|urlencode}">{$topic.title}</a></li>
+        		{/foreach}
+		      </ul>
+	      </div>
+        <ul class="rows">
+          <li>
+  		      <select name="style" style="width: 400px">
+  		        <option value="question">Question that needs an answer</option>
+  		        <option value="idea">Idea that I'd like to share</option>
+  		        <option value="problem">Problem that needs solving</option>
+  		        <option value="talk">Discussion I want to start</option>
+  		      </select>
+		      </li>
+		      <li>
+    		    <label id="question_prompt" class="prompt">What's your question? (One or two paragraphs work best.)</label>
+  		      <label id="idea_prompt" class="prompt" style="display: none;">Tell us about this idea. (One or two paragraphs work best.)</label>
+  		      <label id="problem_prompt" class="prompt" style="display: none;">What seems to be the problem? (One or two paragraphs work best.)</label>
+  		      <label id="talk_prompt" class="prompt" style="display: none;">What's on your mind? (One or two paragraphs work best.)</label>
+            <br />
+  		      <textarea id="topic_additional_detail" name="topic[additional_detail]" rows="6" cols="36" style="width: 400px"></textarea>  		        
+		      </li>
+		      <li>
+  		      <label>Give your <span class="dyn_style">question</span> a great title:</label><br />
+  		      <input id="topic_subject" name="topic[subject]" value="{$subject}" type="text" style="width: 400px" />
+  		      <br /><br />
+		        <div class="alert">
+  		        <small>Great: <strong>Why won't my iPhone's calendar sync with Outlook 2007?</strong></small><br />
+  		        <small>Not so great: <strong>syncing calendar?????</strong></small>
+  		      </div>
+		      </li>
+	      </ul>
+  		</fieldset>
 
-<ul class="topic-list" id="suggestions">
-{foreach from=$suggested key=i item=topic}
-<li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
-  <a href="minidashboard.php?user_url={$topic.author.url}">
-  {$topic.author.name}
-  </a>
-     {if $topic.author.role}({$topic.author.role_name}){/if} 
-     {if $topic.topic_style == 'question'}Asked:
-     {elseif $topic.topic_style == 'talk'}Said:
-     {elseif $topic.topic_style == 'problem'}Reported:
-     {elseif $topic.topic_style == 'idea'}Said:
-     {/if}
-     <a href="topic.php?sfn_id={$topic.sfn_id|urlencode}">
-     {$topic.title}</a> </li>
-{/foreach}
-</ul>
+  		<fieldset>
+  		  <legend><strong>2)</strong> Which {$company_name} product(s) is this topic about? </legend>
+  		  
+	      <ul id="topic_product_list" class="clearfix">
+	    	{foreach from=$products key=i item=product}
+  			  <li>
+			      <input type="checkbox" id="product_{$i}" name="product[]" value="{$product.name}" {if $product.selected}checled="checked"{/if} />
+  			    <label for="product_{$i}">{$product.name}</label>
+  			  </li>
+  			{/foreach}
+	      </ul>
+  		</fieldset>
 
-<table style="width:100%;" id="suggestions-legend"
-  {if $suggested}style="display:block;"{else}style="display:none;"{/if}
->
-<tr><td class="left-hed"> Nope? </td>
-<td>
-<p> <img class="float-right" 
-         alt="Powered by Get Satisfaction" src="images/poweredbysmall.png" />
-  Well then, fill in the details below and submit your topic for
-  everyone to see and answer <br />
-  OR reword your topic and
-  <a href="#" onclick="redoSearch(); return false;">re-do the search</a>
-</td>
-</tr>
-</table>
+  		<fieldset>
+	      <legend><strong>3)</strong> Tag it with words...</legend>
+        
+	      <div id="new_topic_tags">
+	        <label for="topic_keywords">Add words that describe your <span class="dyn_style">question</span> (optional)</label><br />
+	        <textarea class="text" id="topic_keywords" name="topic[keywords]" rows="2" cols="40"></textarea>
+	        <br />
+	        <small>Comma-separated (e.g. hot dogs, cake, pie)</small>
+	        <br /><br />
+	        <p>Or choose from these popular tags:</p>
+          {foreach from=$top_tags key=i item=tag}
+  		      <span class="tag_toggle"><a href="#" id="tag_{$i}" onclick='return false;'>{$tag}</a></span>{if $i+1 < $top_tags_count}, {/if}
+  		    {/foreach}
+	      </div><!-- End Tag with words -->
+	    </fieldset>
+	    
+	    <fieldset>
+		    <legend>...and feelings. How does this make you feel? </legend>
 
-<p id="absent-suggestions" class="topic-list"
-  {if !$suggested}style="display:block;"{else}style="display:none;"{/if}
->
-<img class="float-right" alt="Powered by Get Satisfaction" src="images/poweredbysmall.png" />
-Sorry, we looked for similar topics in our system and didn't find any.
-If you re-word your topic you can also 
-<a href="#" onclick="redoSearch(); return false;">re-do the search</a>,
-OR fill in the details below and submit your topic
-</p>
+	      <div id="satisfactometer">
+    			<script type="text/javascript">
+    			<!--
+    			function setEmoticonPicker() {ldelim}
+    			  var emoticonElem = document.getElementById('emoticon');
+    			  var newVal = emoticonElem.value;
+    			  if (newVal) {ldelim}
+    			    var picker = document.getElementById('emoticon_picker');
+    			    for (var i in picker.childNodes) {ldelim}
+    			      if (picker.childNodes[i].id == newVal)
+    			        picker.childNodes[i].src = 'images/' + picker.childNodes[i].id + '_on.png'
+    			      else
+    			        picker.childNodes[i].src = 'images/' + picker.childNodes[i].id + '.png'
+    			    {rdelim}
+    			  {rdelim}
+    			{rdelim}
 
-<form id="invisible-redo-form" style="display: none; width: 100%; position: relative;"
-      method="POST"
-      action="submit.php">
-<input id="invisible-redo-field" name="subject" />
-</form>
+    			window.onload = setEmoticonPicker;
+    			-->
+    			</script>
+    			<span id="emoticon_picker"
+    			      onclick="for (var i in this.childNodes) {ldelim}
+    			                 if (this.childNodes[i].tagName == 'IMG')
+    			                   this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
+    			               {rdelim}
+    			               event.target.src='images/' + event.target.id + '_on.png';
+    			               var emoticonElem = document.getElementById('emoticon');
+    			               emoticonElem.value=event.target.id">
+    			  <input id="emoticon" type="hidden" name="emoticon" value="{$emoticon}" />
+      			<img id="happy" src="images/happy.png" style="vertical-align:middle;" alt="happy" />
+      			<img id="sad" src="images/sad.png" style="vertical-align:middle;" alt="sad" />
+      			<img id="indifferent" src="images/indifferent.png" style="vertical-align:middle;" alt="indifferent" />
+      			<img id="silly" src="images/silly.png" style="vertical-align:middle;" alt="silly" />
+    			</span>
+		      <br />
+		      <br />
+		      <span>I'm: <input name="emotion" value="{$emotion}" /></span>
+		    </div><!-- End Emoticon Picker -->
+        <div class="clear"></div>
+  		</fieldset>
 
-<h4> Your Topic <img src="images/required.png" alt="*" /> </h4>
+  		<fieldset>
+  			<input type="submit" value="Post your topic" style="font-size:1.4em;border:3px solid #ccc; padding: 5px 10px;"/>
+  		</fieldset>
+	  </form>
 
-<form style="width: 100%; position: relative;" action="handle-submit.php">
-
-<input id="submit-subject" name="subject" style="width:350pt;" value="{$subject}" />
-
-<h4>Details</h4>
-<textarea name="details" rows="4" cols="50" style="width:350pt;">{$details}</textarea>
-
-<h4>Tell everyone how this makes you feel </h4>
-<div>
-<script>
-<!--
-function setEmoticonPicker() {ldelim}
-  var emoticonElem = document.getElementById('emoticon');
-  var newVal = emoticonElem.value;
-  if (newVal) {ldelim}
-    var picker = document.getElementById('emoticonPicker');
-    for (var i in picker.childNodes) {ldelim}
-      if (picker.childNodes[i].id == newVal)
-        picker.childNodes[i].src = 'images/' + picker.childNodes[i].id + '_on.png'
-      else
-        picker.childNodes[i].src = 'images/' + picker.childNodes[i].id + '.png'
-    {rdelim}
-  {rdelim}
-{rdelim}
-
-window.onload = setEmoticonPicker;
--->
-</script>
-<span id="emoticonPicker"
-      onclick="for (var i in this.childNodes) {ldelim}
-                 if (this.childNodes[i].tagName == 'IMG')
-                   this.childNodes[i].src = 'images/' + this.childNodes[i].id + '.png';
-               {rdelim}
-               event.target.src='images/' + event.target.id + '_on.png';
-               var emoticonElem = document.getElementById('emoticon');
-               emoticonElem.value=event.target.id">
-<input id="emoticon" type="hidden" name="emoticon" value="{$emoticon}" />
-<img id="happy" src="images/happy.png" style="vertical-align:middle;" />
-<img id="sad" src="images/sad.png" style="vertical-align:middle;" />
-<img id="indifferent" src="images/indifferent.png" style="vertical-align:middle;" />
-<img id="silly" src="images/silly.png" style="vertical-align:middle;" />
-</span>
-<span>I'm: <input name="emotion" value="{$emotion}" /></span>
-</div>
-
-<h4>Add tags</h4>
-
-<table>
-<tr>
-<td>
-<input name="tags" value="{$tags}" style="width: 150pt" /> <br />
-
-<span class="small-note">Comma-separated. (e.g. hot dogs, cake, pie)</span>
-
-</td>
-
-<td>
-<h4>What are tags?</h4>
-  You can give your topic a "tag". This is a keyword that will 
-  help people find your topic and get you good responses.
-
-</td>
-</tr>
-</table>
-
-<div>
-<h4>Associate products & services</h4>
-<ul class="tight">
-{foreach from=$products key=i item=product}
-<li><label><input type="checkbox" name="product[]" value="{$product.name}"
-             {if $product.selected}checked{/if} />
-    {$product.name}
-    </label>
-</li>
-{/foreach}
-</ul>
-</div>
-
-<h1 style="margin-top: 1pc;">Done? Submit your topic as one of these four types: </h1>
-
- <button type="submit" class="flat-button" name="style" value="question"><img src="images/submit_question-hi.png" /></button
-><button type="submit" class="flat-button" name="style" value="idea"><img src="images/submit_idea-hi.png" /></button
-><button type="submit" class="flat-button" name="style" value="problem"><img src="images/submit_problem-hi.png" /></button
-><button type="submit" class="flat-button" name="style" value="talk"><img src="images/submit_talk-hi.png" /></button>
-
-</form>
-
-</div>
+	</div><!-- #content -->
+</div><!-- #container -->
 
 {include file="footer.t"}
-
-</div>
-</body>
-</html>

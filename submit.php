@@ -17,6 +17,12 @@ $suggested = $sprink->topics(array('query' => $subject));
 
 $suggested = take($submit_suggestions, $suggested['topics']);
 
+$top_tags = take(8, 
+                    $sprink->tags('http://api.getsatisfaction.com/companies/' . 
+                    $sprink->company_sfnid . 
+                    '/tags?on=topics&sort=usage&limit=8'));
+
+
 $sprink->resolve_authors($suggested);
 
 $smarty->assign('subject', $subject);
@@ -26,6 +32,8 @@ $smarty->assign('emoticon', $face);
 $smarty->assign('emotion', $emotion);
 $smarty->assign('style', $style);
 $smarty->assign('product', $selected_products);
+$smarty->assign('top_tags', $top_tags);
+$smarty->assign('top_tags_count', count($top_tags));
 
 $smarty->assign('suggested', $suggested);
 $products = $sprink->products();

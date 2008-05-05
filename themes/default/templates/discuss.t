@@ -1,140 +1,59 @@
-{* Smarty *}
-
 {include file="header.t"}
 
-{if $filter_product}
-<h2>Discuss the {$filter_product.name}</h2>
-<a href="discuss.php">Return to all Discussions about all products &amp; services</a>
-<table width="100%">
-<tr>
-<td><img style="vertical-align: top; float: left;" src="{$filter_product.image}" />
-  {$filter_product.description}
-</td>
-{if $filter_product.tags}
-<td>Product Tags</td>
-<td class="tag-box">
-    {foreach from=$filter_product.tags item=tag}
-    <a href="{discuss_tag_url tag=$tag}">{$tag}</a>{if !$smarty.foreach.tag.last},{/if}
+
+<div id="container">
+	<div id="content">
+
+	{include file="topic-box.t"}
+    <!-- <ul id="topic-filter"> <li><a href="" class="on">Latest</a></li> {if $topic_style=='question'} <li><a href="">Frequently Asked</a></li> {elseif $topic_style=='problem'} <li><a href="">Common</a></li> {else} <li><a href="">Popular</a></li> {/if} <li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered</a></li> </ul> -->
+		{if $filter_style}<img src="http://getsatisfaction.com/images/{$filter_style}_med.png" id="topic-style" alt="{$topic.topic_style}" />{/if}
+		<div id="topic-list-head">
+  		<h2>Recent {$friendly_style}s
+    		{if $filter_product}
+    		  about {$filter_product.name}
+    		{elseif $filter_tag}
+    		  tagged {$filter_tag}
+    		{/if}
+    		<span>({$topic_count})</span>
+  		</h2>		
+  		{if $top_topic_tags && !$filter_product}
+  		<p class="topic-tag-list">View {$friendly_style}s about:
+  		  {foreach from=$top_topic_tags key=i item=tag}
+  		  <a href="discuss.php?style={$filter_style}&amp;tag={$tag}">{$tag}</a>{if $i != count($top_topic_tags)-1},{/if}
+  		  {/foreach}
+  		</p>
+  		{elseif $filter_style && $filter_product}
+  		  <p class="topic-tag-list"><a href="discuss.php?style={$filter_style}">Return to all {$friendly_style}s</a> | <a href="discuss.php?product={$filter_product.uri}">See all topics about this product</a></p>
+  		{/if}
+    </div>
+    
+    {if $filter_product}
+      <div id="topic-product" style="clear:left; margin-left: 45px;">
+      <img style="vertical-align: top; float: left;" src="{$filter_product.image}" id="topic-style" alt="{$filter_product.name} photo" />
+      <!-- {$filter_product.description} -->
+      Tagged:
+      {foreach from=$filter_product.tags key=i item=tag}
+        <a href="{discuss_tag_url tag=$tag}">{$tag}</a>{if $i != count($filter_product.tags)-1},{/if}
+      {/foreach}
+      </div>
+  	{/if}
+
+		<div class="topic-list{if !$filter_style} mixed{/if}">
+		{foreach from=$topics key=i item=topic}
+      {include file="$topic_list_template"}
     {/foreach}
-</td>
-{/if}
-</tr>
-</table>
-{else}
-<h1>Discuss with us</h1>
-{/if}
-
-{include file="question-box.t"}
-
-{if $products && !$filter_product && !$filter_tag}
-<h2>Discuss our Products</h2>
-
-<ul class="product-list">
-{foreach from=$products key=i item=product}
-<li><a href="discuss.php?product={$product.uri}{if $filter_style}&style={$filter_style}{/if}">
-    <img src="{$product.image}" />{$product.name}</a>
-</li>
-{/foreach}
-</ul>
-{/if}
-
-{if !$filter_product && !$filter_tag}
-
-<h4 style="display:inline;">Top Topic Tags</h4>
-  {foreach from=$top_topic_tags key=i item=tag}
-  <a href="discuss.php?tag={$tag}">{$tag}</a>{if $i != count($top_topic_tags)-1},{/if}
-  {/foreach}
-
-<hr />
-
-{/if}
-
-<h2>Recent Discussions</h2>
-<h3>All {if !$filter_style}topics
-        {elseif $filter_style == 'question'}questions
-        {elseif $filter_style == 'talk'}talk topics
-        {elseif $filter_style == 'idea'}ideas
-        {elseif $filter_style == 'problem'}problems
-        {elseif $filter_style == 'unanswered'}unanswered topics
-        {/if}
-{if $filter_product}
-about the product: {$filter_product.name}
-{elseif $filter_tag}
-about the tag: {$filter_tag}
-{/if}
- ({$topic_count})
-</h3>
-
-<div class="sidepane">
-<div class="sidebar">
-<h3>View discussions by:</h3>
-<ul class="straight">
-<li><a href="discuss.php">All Topics {$totals.all}</a></li>
-<li><a href="?style=question{$filter_product_arg}{$filter_tag_arg}">Questions {$totals.questions}</a></li>
-<li><a href="?style=idea{$filter_product_arg}{$filter_tag_arg}">Ideas {$totals.ideas}</a></li>
-<li><a href="?style=problem{$filter_product_arg}{$filter_tag_arg}">Problems {$totals.problems}</a></li>
-<li><a href="?style=talk{$filter_product_arg}{$filter_tag_arg}">Talk Topics {$totals.talk}</a></li>
-<li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered {$totals.unanswered}</a></li>
-</ul>
-</div>
-<div class="sidebar blue"><a href="{$sfn_root}me">Go to your dashboard on Get Satisfaction</a></div>
-</div>
-
-<table class="topic-list">
-{foreach from=$topics key=i item=topic}
-  <tr>
-    <td><img src="images/{$topic.topic_style}_med.png"
-                 alt="{$topic.topic_style}" /></td>
-    <td class="content-col">
-    <h3><a href="topic.php?sfn_id={$topic.sfn_id}">{$topic.title}</a></h3>
-    <p>{if $topic.reply_count} Last reply
-                 {else} Posted {/if} {$topic.updated_relative}.</p>
-
-    <p>{$topic.content}</p>
-
-    <table class="p-margin">
-    <tr>
-    <td>
-    <img class="tiny-author-pic" style="vertical-align: middle;"
-            src="{$topic.author.photo}" />
-    </td>
-    <td>
-   <a href="minidashboard.php?user_url={$topic.author.url}">
-   {$topic.author.name} 
-   </a>
-    {if $topic.topic_style == 'question'} asked this question
-    {elseif $topic.topic_style == 'idea'} shared this idea
-    {elseif $topic.topic_style == 'talk'} asked this question
-    {elseif $topic.topic_style == 'problem'} reported this problem
+		</div>
+		
+    {if $num_pages > 1}
+    <div class="pager">
+      {section name=page loop=$num_pages}
+        <a href="/discuss.php?style={$filter_style}&amp;page={$smarty.section.page.iteration-1}{$filter_tag_arg}{$filter_product_arg}"{if $smarty.section.page.iteration == $page_num+1} class="on"{/if}>{$smarty.section.page.iteration}</a>
+      {/section}
+    </div>
     {/if}
-    {$topic.published_relative}.
-{if $topic.tags}
-    It's tagged {foreach from=$topic.tags key=i item=tag}{if ($i>0)},{/if}
-    <a href="discuss.php?tag={$tag}">{$tag}</a>{/foreach}
-{/if}
-    </td>
-    </tr>
-    </table>
-    </td>
-    <td class="reply-count-col">
-      <span class="huge">{$topic.reply_count}</a></span> <br />
-        {if $topic.reply_count == 1} reply {else} replies {/if} </td>
-  </tr>
-{/foreach}
-</table>
+	</div><!-- #content -->
+</div><!-- #container -->
 
-{if $num_pages > 1}
-{if ($page_num > 0)}
-<a href="discuss.php?page={$page_num-1}">&lt;</a>
-{else}
-&nbsp;
-{/if}
-Page {$page_num+1} of {$num_pages}
-{if ($page_num+1 < $num_pages)}
-<a href="discuss.php?page={$page_num+1}">&gt;</a>
-{else}
-&nbsp;
-{/if}
-{/if}
+{include file="sidebar.t"}
 
 {include file="footer.t"}

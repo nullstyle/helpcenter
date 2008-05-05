@@ -4,9 +4,6 @@ require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
 
-$page_num = request_param('page');
-if (!$page_num) { $page_num = 0; }
-
 $topic_id = request_param('id');
 if (!$topic_id) {
   $topic_id = request_param('topic_id');
@@ -23,9 +20,6 @@ $reply_count = count($topic['replies']);
 $topic['replies'] = thread_items($topic['replies'], $topic_head['id']);
 $toplevel_reply_count = count($topic['replies']);
 
-$topic['replies'] = take_range($page_num * $topic_page_size,
-                               ($page_num + 1) * $topic_page_size,
-                               $topic['replies']);
 $topic['replies'] = flatten_threads($topic['replies']);
 
 $sprink->resolve_author($topic_head);

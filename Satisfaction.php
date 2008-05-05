@@ -410,9 +410,10 @@ function parse_hProduct($str) {
 # product_list returns a list of the current company's products; the list 
 # generally contains only URLs. Use the method "products" to get a list of 
 # products including everything we know about them.
+# Filter products by 'makes' to get products made by the current company 
+# or 'related' to get products that have been associated with that company
 function product_list($company_sfnid) {
-  $products_url = api_url('companies/'. $company_sfnid .'/products');
-
+  $products_url = api_url('companies/'. $company_sfnid .'/products?filter=makes');
   return parse_hProduct(get_url($products_url));
 }
 

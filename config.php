@@ -4,11 +4,11 @@
 $sprinkles_dir = dirname(__FILE__);
 
 # API root URL and caching directory
-$api_root = "http://api.getsatisfaction.com/";
-$sfn_root = "http://getsatisfaction.com/";
+// $api_root = "http://api.getsatisfaction.com/";
+// $sfn_root = "http://getsatisfaction.com/";
 
-// $api_root = 'http://localhost:3000/';
-// $sfn_root = 'http://localhost:3001/';
+$api_root = 'http://localhost:3000/';
+$sfn_root = 'http://localhost:3001/';
 
 $mysql_username = 'root';
 $mysql_password = '';
@@ -24,7 +24,7 @@ $max_logo_size = 65535;
 
 $submit_suggestions = 3;
 $helpstart_topic_count = 5; 
-$discuss_page_size = 6;
+$discuss_page_size = 10;
 $related_topics_count = 4;
 $max_top_topic_tags = 5;
 $topic_page_size = 5; # TBD: regularize these names

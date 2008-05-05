@@ -16,7 +16,7 @@ if ($filter_style) {
 $filter_style_arg = $filter_style ? '&style=' . $filter_style : '';
 
 $filter_product_id = request_param('product');
-$filter_product = array();
+
 if ($filter_product_id) {
   $topic_filters['product'] = $filter_product_id;
   $filter_product = $sprink->get_product($filter_product_id);
@@ -46,6 +46,35 @@ $top_topic_tags = take($max_top_topic_tags,
                        $sprink->tags($api_root . '/companies/' . 
                                      $sprink->company_sfnid . 
                                      '/tags?on=topics&sort=usage&limit=5'));
+# Sets the label for topic-box
+switch ($filter_style) {
+case 'question':
+  $friendly_style = 'question';
+  $topic_list_template = "question.t";
+  $style_label = 'What do you want to ask?';
+  break;
+case 'idea':
+  $friendly_style = 'idea';
+  $topic_list_template = "idea.t";
+  $style_label = 'What do you want to share?';
+  break;
+case 'problem':
+  $friendly_style = 'problem';
+  $topic_list_template = "problem.t";
+  $style_label = 'What do you want to report';
+  break;
+case 'talk':
+  $friendly_style = 'discussion';
+  $topic_list_template = "talk.t";
+  $style_label = 'What do you want to discuss?';
+  break;
+default:
+  $friendly_style = 'topic';
+  $topic_list_template = "mixed-topic-list.t";
+}
+$smarty->assign('friendly_style', $friendly_style);
+$smarty->assign('style_label', $style_label);
+$smarty->assign('topic_list_template', $topic_list_template);
 
 # discuss_tag_url: function to allow template designers to get the URL of a 
 # discussion page for a particular tag.
@@ -66,9 +95,7 @@ $smarty->assign('filter_tag_arg', $filter_tag_arg);
 
 $smarty->assign('totals', $topics['totals']);
 
-$smarty->assign('current_url', 'discuss.php?' . $filter_tag_arg
-                                              . $filter_product_arg
-                                              . $filter_style_arg);
+$smarty->assign('current_url', 'discuss.php?' . $filter_style_arg);
 
 $sprink->add_std_hash_elems($smarty);
 

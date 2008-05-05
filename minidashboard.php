@@ -3,9 +3,6 @@ require_once('Sprinkles.php');
 
 $sprink = new Sprinkles();
 
-$company_hcard = $sprink->company_hcard();
-$company_name = $company_hcard["fn"];
-
 $username_canonical = request_param('username');
 if ($username_canonical) {
   $user = $sprink->get_person($sprink->api_url("people/$username_canonical"));

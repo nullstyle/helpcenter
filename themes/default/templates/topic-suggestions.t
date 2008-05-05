@@ -2,7 +2,7 @@
 
 {foreach from=$suggested_topics key=i item=topic}
 {if $mode=='simple'}
-<li><a href="topic.php?sfn_id={$topic.sfn_id}">{$topic.title}</a></li>
+<li><a href="topic.php?id={$topic.id}">{$topic.title}</a></li>
 {elseif $mode == 'fancy'}
 <li style="clear:left"> <img class="tiny-author-pic float-left" src="{$topic.author.photo}">
   <a href="minidashboard.php?user_url={$topic.author.url}">
@@ -14,7 +14,7 @@
      {elseif $topic.topic_style == 'problem'}Reported:
      {elseif $topic.topic_style == 'idea'}Said:
      {/if}
-     <a href="topic.php?sfn_id={$topic.sfn_id|urlencode}">
+     <a href="topic.php?id={$topic.id|urlencode}">
      {$topic.title}</a>
 </li>
 {/if}
