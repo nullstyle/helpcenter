@@ -1,6 +1,9 @@
 <?php
 $page_timer = microtime(true);
 
+$vendor_path = dirname(__FILE__) . '/vendor';
+set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
+
 # $Id$
 
 ######################### Sprinkles.php ###############################
