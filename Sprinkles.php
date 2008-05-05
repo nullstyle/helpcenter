@@ -21,6 +21,7 @@ require_once 'XML/Feed/Parser.php';
 require_once 'hkit.class.php';
 
 require_once 'config.php';
+
 require_once 'list.php';
 
 require_once 'Satisfaction.php';
@@ -469,6 +470,6 @@ function sprinkles_root_url() {
   return $row[0];
 }
 
-mysql_select_db('sprinkles');
+mysql_select_db($mysql_db ? $mysql_db : 'sprinkles');
 
 ?>
