@@ -9,8 +9,13 @@ $defaults = $sprink->findsite_data();
 $sprinkles_root_url = request_param('sprinkles_root_url');
 if (!$sprinkles_root_url)
   $sprinkles_root_url = $defaults[sprinkles_root_url];
-if (!$sprinkles_root_url)
-  $sprinkles_root_url = getenv('SCRIPT_URI');
+if (!$sprinkles_root_url) {
+  $uri  = 'http'. ($_SERVER['HTTPS'] ? 's' : null) .'://'. $_SERVER['HTTP_HOST'];
+  $uri .= ($_SERVER['SERVER_PORT'] == '80' ? '' : (":" . $_SERVER['SERVER_PORT']));
+  $uri .= $_SERVER['REQUEST_URI'];
+  
+  $sprinkles_root_url = $uri;  
+}
 $smarty->assign('sprinkles_root_url', $sprinkles_root_url);
 
 $oauth_consumer_key = request_param('oauth_consumer_key');
