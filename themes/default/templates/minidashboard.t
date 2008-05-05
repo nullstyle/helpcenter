@@ -2,9 +2,9 @@
 
 <h1>{$user_possessive|capitalize} (Mini) Dashboard
 {if $user_is_self}
-<a href="http://getsatisfaction.com/me">See your full dashboard on Get Satisfaction</a>
+<a href="{$sfn_root}me">See your full dashboard on Get Satisfaction</a>
 {else}
-<a href="http://getsatisfaction.com/people/{$username_canonical}">See their full dashboard on Get Satisfaction</a>
+<a href="{$sfn_root}people/{$username_canonical}">See their full dashboard on Get Satisfaction</a>
 {/if}
 </h1>
 
@@ -14,7 +14,7 @@
 
 <div class="sidepane">
 <div class="sidebar" style="background-color: white">
-<a href="http://getsatisfaction.com/people/{$user.canonical_name}.rss">Subscribe to 
+<a href="{$sfn_root}people/{$user.canonical_name}.rss">Subscribe to 
 {if $user_is_self}
 your
 {else}

@@ -77,7 +77,7 @@ about the tag: {$filter_tag}
 <li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered {$totals.unanswered}</a></li>
 </ul>
 </div>
-<div class="sidebar blue"><a href="http://getsatisfaction.com/me">Go to your dashboard on Get Satisfaction</a></div>
+<div class="sidebar blue"><a href="{$sfn_root}me">Go to your dashboard on Get Satisfaction</a></div>
 </div>
 
 <table class="topic-list">

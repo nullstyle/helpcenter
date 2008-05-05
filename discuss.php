@@ -40,9 +40,10 @@ $sprink->resolve_authors($topics['topics']);
 
 $smarty->assign('page_num', $page_num);
 $smarty->assign('num_pages', ceil($topic_count/$topic_page_size));
+$smarty->assign('sfn_root', $sfn_root);
 
 $top_topic_tags = take($max_top_topic_tags, 
-                       $sprink->tags('http://api.getsatisfaction.com/companies/' . 
+                       $sprink->tags($api_root . '/companies/' . 
                                      $sprink->company_sfnid . 
                                      '/tags?on=topics&sort=usage&limit=5'));
 

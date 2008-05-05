@@ -50,6 +50,7 @@ $smarty->assign('user', $user);
 $smarty->assign('username_canonical', $username_canonical);
 $smarty->assign('user_possessive', $user_possessive);
 $smarty->assign('user_is_self', $is_self);
+$smarty->assign('sfn_root', $sfn_root);
 
 $sprink->add_std_hash_elems($smarty);
 

@@ -4,15 +4,19 @@
 $sprinkles_dir = dirname(__FILE__);
 
 # API root URL and caching directory
-$api_root = 'http://api.getsatisfaction.com/';
+$api_root = "http://api.getsatisfaction.com/";
+$sfn_root = "http://getsatisfaction.com/";
 
-$mysql_username = '';
+// $api_root = 'http://localhost:3000/';
+// $sfn_root = 'http://localhost:3001/';
+
+$mysql_username = 'root';
 $mysql_password = '';
-
+$mysql_db = '';
 # Configure this if you need to talk to a MySQL database on another machine
 # or use a nonstandard port. The default should normally work. 
 # (FIXME: this doesn't apparently do anything.)
-$mysql_connect_params = 'localhost:3306';
+$mysql_connect_params = '127.0.0.1:3306';
 
 $max_logo_size = 65535;
 

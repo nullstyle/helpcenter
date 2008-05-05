@@ -5,6 +5,7 @@ require_once 'hkit.class.php';
 require_once 'list.php';
 
 global $h;
+
 $h = new hKit;
 
 # Configuration: to log or not to log?
@@ -182,8 +183,7 @@ function get_url($url, $cache_hard=true) {
 
     # Under "soft" caching, we make a request to ask the server if the resource
     # has changed since our copy.
-    
-    $fetched_on_http_date = http_date(from_mysql_date($fetched_on));
+    $fetched_on_http_date = date(DATE_RFC1123, from_mysql_date($fetched_on));
       
     $req = new HTTP_Request($url);
     $req->addHeader('If-Modified-Since', $fetched_on_http_date);
@@ -504,8 +504,9 @@ function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $qu
 }
 
 function get_oauth_request_token($consumer_data) {
+  global $sfn_root;
   $oauth_req = new HTTP_Request_OAuth(
-                     'http://getsatisfaction.com/api/request_token',
+                     $sfn_root . 'api/request_token',
                      array('consumer_key' => $consumer_data['key'],
                            'consumer_secret' => $consumer_data['secret'],
                            'signature_method' => 'HMAC-SHA1',
@@ -516,8 +517,9 @@ function get_oauth_request_token($consumer_data) {
 }
 
 function get_oauth_access_token($consumer_data, $request_token, $request_token_secret) {
+  global $sfn_root;
   $oauth_req = new HTTP_Request_OAuth(
-                     'http://getsatisfaction.com/api/access_token',
+                     $sfn_root . 'api/access_token',
                      array('consumer_key' => $consumer_data['key'],
                            'consumer_secret' => $consumer_data['secret'],
                            'token' => $request_token,
@@ -533,7 +535,8 @@ function get_oauth_access_token($consumer_data, $request_token, $request_token_s
 }
 
 function oauth_authorization_url($token, $callback_url) {
-  return 'http://getsatisfaction.com/api/authorize?oauth_token='. $token
+  global $sfn_root;
+  return $sfn_root . 'api/authorize?oauth_token='. $token
            . '&oauth_callback=' . urlencode($callback_url);
 
 }
@@ -621,7 +624,7 @@ function topics($company_sfnid, $options, $at_least = 1) {
 
       assert(!!$topics_feed_page_str);
       $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
-
+      
       # stash the first page of the feed for later reference
       if ($first_topics_feed_page == null) $first_topics_feed_page = $topics_feed;
       

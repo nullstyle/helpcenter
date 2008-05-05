@@ -31,7 +31,7 @@ if (!$creds) {
            urlencode($target_page . '?' . $args));
 }
 
-$POST_URL = 'http://api.getsatisfaction.com/topics';   # FIXME: hard-coded API URL
+$POST_URL = $api_root . '/topics';   # FIXME: hard-coded API URL
 
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
                     array('topic[company_domain]' => $sprink->company_sfnid,

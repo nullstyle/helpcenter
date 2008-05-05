@@ -21,7 +21,6 @@ require_once 'XML/Feed/Parser.php';
 require_once 'hkit.class.php';
 
 require_once 'config.php';
-
 require_once 'list.php';
 
 require_once 'Satisfaction.php';
@@ -266,7 +265,12 @@ class Sprinkles {
   # credentials, and that resource contains a vCard for the user with those
   # credentials.
   function get_me_person($creds) {
-    return get_me_person($this->oauth_consumer_data(), $creds);
+    try {
+      return get_me_person($this->oauth_consumer_data(), $creds);      
+    } catch(Exception $e) {
+      $this->close_session();
+      return null;
+    }
   }
 
   function current_user_session() {
