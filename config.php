@@ -11,8 +11,8 @@ $company_sfnid = "satisfaction";
 // $sfn_root = 'http://localhost:3001/';
 
 $mysql_username = 'root';
-$mysql_password = '';
-$mysql_db = '';
+$mysql_password = 'loser23';
+$mysql_db = 'sprinkles_satisfaction';
 # Configure this if you need to talk to a MySQL database on another machine
 # or use a nonstandard port. The default should normally work. 
 # (FIXME: this doesn't apparently do anything.)
