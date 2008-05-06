@@ -61,7 +61,7 @@ $new_admins = request_param('new_admins');
 if ($new_admins)
   $smarty->assign('new_admins', split(',', $new_admins));
 $smarty->assign('settings', $settings);
-$smarty->assign('sprinkles_root_url', sprinkles_root_url());
+$smarty->assign('sprinkles_root_url', $sprink->sprinkles_root_url());
 $smarty->assign('sprinkles_tagged_topics', $sprinkles_tagged_topics);
 $smarty->assign('current_url', 'admin.php');   # FIXME: this leads to odd behavior on 
                                                # logout: user goes straight to sign-in

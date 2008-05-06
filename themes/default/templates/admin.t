@@ -1,16 +1,6 @@
 {* Smarty *}
 
-{if $first_config}
-{include file="lite-header.t"}
-{else}
 {include file="header.t"}
-{/if}
-
-<div style="margin-top: 3pt; ">Hello <strong>{$user_name}</strong> from {$company_name}.
-  Are you someone else?
-  <a href="admin-login.php">Sign in as you</a>.
-  <a href="handle-user-logout.php">Sign out</a>.
-</div>
 
 <h1>Admin Page</h1>
 
@@ -61,15 +51,6 @@ Visit the <a href="http://code.google.com/p/getsatisfaction/">API Project Home P
 Talk about it on the <a href="http://code.google.com/p/getsatisfaction/w/list">Wiki</a>
 </p>
 
-<h3>Get help on
-<a href="http://getsatisfaction.com/satisfaction/products/satisfaction_satisfaction_api">
-Get Satisfaction</a></h3>
-<ul>
-{foreach from=$sprinkles_tagged_topics key=i item=topic}
-<li> <a href="topic.php?sfn_id={$topic.sfn_id|urlencode}">{$topic.title}</a> </li>
-{/foreach}
-</ul>
-
 </div>
 </div>
 
@@ -116,20 +97,6 @@ Contact email must be a valid email address.
 <td> <textarea class="admin" name="contact_address" rows="2">{$settings.contact_address}</textarea> </td>
 </tr>
 <tr>
-<td class="form-label"> Link to a map </td>
-<td> <input class="admin" name="map_url" value="{$settings.map_url}" /> </td>
-</tr>
-<tr>
-<td class="form-label"> Add another link </td>
-<td> 
-{foreach from=$site_links key=i item=link}
-    Text: <input name="link_text[]" value="{$link.text}" /> <br />
-     URL: <input name="link_url[]" value="{$link.url}" /> <br />
-{/foreach}
-    Text: <input name="link_text[]" /> <br />
-     URL: <input name="link_url[]" />
-</td>
-</tr>
 <tr>
 <td class="form-label"> Add additional admin </td>
 <td>

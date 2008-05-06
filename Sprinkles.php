@@ -24,6 +24,7 @@ require_once 'config.php';
 require_once 'list.php';
 
 require_once 'Satisfaction.php';
+require_once 'Settings.php';
 
 # Smarty directory configuration
 require_once('smarty/Smarty.class.php');
@@ -35,6 +36,12 @@ $smarty->cache_dir    = $sprinkles_dir . '/cache/';
 
 global $h;
 $h = new hKit;
+
+
+$mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);
+if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
+
+mysql_select_db($mysql_db ? $mysql_db : 'sprinkles');
 
 function unbollocks($str) {  ## CURSE CURSE CURSE
   ## unencodes strings that are needlessly encoded by default in PHP < 6.0
@@ -75,13 +82,12 @@ class Sprinkles {
   var $employees_cache;
   var $people_cache = array();
   var $products_cache = array();
+  var $settings;
 
   function Sprinkles() {
-    $result = mysql_query('select company_id from site_settings');
-    if ($result) {
-      $row = mysql_fetch_array($result);
-      $this->company_sfnid = $row[0];
-    }
+    $this->settings = new Settings();
+    $this->company_sfnid = $this->settings->get('company_id');
+    
   }
 
   function api_url($url) { return api_url($url); }
@@ -365,40 +371,26 @@ class Sprinkles {
   }
 
   function site_configured() {
-    $sql = 'select configured from site_settings';
-    $row = mysql_fetch_array(mysql_query($sql));
-    return ($row[0] == 'Y');
+    return ($this->settings->get('configured') == 'Y');
   }
 
   function site_contact_info() {
-    $sql = 'select contact_email, contact_phone, contact_address, map_url '.
-           'from site_settings';
-    $result = mysql_query($sql);
-    list($contact_email, $contact_phone, $contact_address, $map_url) = 
-                                                mysql_fetch_array($result);
-    return array('contact_email' => $contact_email,
-                 'contact_phone' => $contact_phone,
-                 'contact_address' => $contact_address, 
-                 'map_url' => $map_url);
+    return array('contact_email' => $this->settings->get('contact_email'),
+                 'contact_phone' => $this->settings->get('contact_phone'),
+                 'contact_address' => $this->settings->get('contact_address'), 
+                 'map_url' => $this->settings->get('map_url'));
   }
-
-
-  var $oauth_consumer_data;
   
   function oauth_consumer_data() {
-    if (!$this->oauth_consumer_data) {
-      $sql = 'select oauth_consumer_key, oauth_consumer_secret '.
-             'from site_settings';
-      $result = mysql_query($sql);
-      list($key, $secret) = mysql_fetch_array($result);
-      $this->oauth_consumer_data = array('key' => $key, 'secret' => $secret);
-    }
-    return $this->oauth_consumer_data;
+    return array(
+      'key' => $this->settings->get('oauth_consumer_key'), 
+      'secret' => $this->settings->get('oauth_consumer_secret')
+    );
   }
   
   function findsite_data() {
     $oauth_consumer_data = $this->oauth_consumer_data();
-    $sprinkles_root_url = sprinkles_root_url();
+    $sprinkles_root_url = $this->sprinkles_root_url();
     return array('oauth_consumer_key' => $oauth_consumer_data['key'],
                  'oauth_consumer_secret' => $oauth_consumer_data['secret'],
                  'company_sfnid' => $this->company_sfnid,
@@ -422,17 +414,19 @@ class Sprinkles {
   }
   
   function site_logo() {
-    $sql = 'select logo_data from site_settings';
-    $result = mysql_query($sql);
-    list($logo_data) = mysql_fetch_array($result);
-    return $logo_data;
+    return $this->settings->get('logo_data');
   }
 
   function site_logo_link() {
-    $sql = 'select logo_link from site_settings';
-    $result = mysql_query($sql);
-    list($logo_link) = mysql_fetch_array($result);
-    return $logo_link;
+    return $this->settings->get('logo_link');
+  }
+  
+  #FIXME: get the whole site_settings row ONCE per request.
+  function sprinkles_root_url() {
+    $q = mysql_query('select sprinkles_root_url from site_settings');
+    if (!$q) die("Database error getting Sprinkles root URL: " . mysql_error());
+    $row = mysql_fetch_row($q);
+    return $row[0];
   }
 
   # add_std_hash_elems takes a Smarty object and sets some common variables 
@@ -461,19 +455,5 @@ function finish_request($page) {
   message("Page $page rendered in " . (microtime(true) - $page_timer));
 }
 
-# FIXME: connect params don't have any effect.
-
-$mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);
-if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
-
-#FIXME: get the whole site_settings row ONCE per request.
-function sprinkles_root_url() {
-  $q = mysql_query('select sprinkles_root_url from site_settings');
-  if (!$q) die("Database error getting Sprinkles root URL: " . mysql_error());
-  $row = mysql_fetch_row($q);
-  return $row[0];
-}
-
-mysql_select_db($mysql_db ? $mysql_db : 'sprinkles');
 
 ?>

@@ -1,6 +1,5 @@
 {* Smarty *}
 
-{include file="lite-header.t"}
 
 <h1>Welcome to your Get Satisfaction Sprinkles</h1>
 
@@ -54,5 +53,3 @@ What is the address of your company's Get Satisfaction site?
 
 </form>
 </p>
-
-{include file="footer.t"}

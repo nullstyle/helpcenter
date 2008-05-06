@@ -4,11 +4,11 @@
 $sprinkles_dir = dirname(__FILE__);
 
 # API root URL and caching directory
-// $api_root = "http://api.getsatisfaction.com/";
-// $sfn_root = "http://getsatisfaction.com/";
-
-$api_root = 'http://localhost:3000/';
-$sfn_root = 'http://localhost:3001/';
+$api_root = "http://api.getsatisfaction.com/";
+$sfn_root = "http://getsatisfaction.com/";
+$company_sfnid = "satisfaction";
+// $api_root = 'http://localhost:3000/';
+// $sfn_root = 'http://localhost:3001/';
 
 $mysql_username = 'root';
 $mysql_password = '';

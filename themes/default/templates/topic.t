@@ -214,35 +214,6 @@
   <ul>
     <li><a href="share-topic.php?id={$topic_id}">Share this topic</a></li>
     <li>
-      {if $own_topic}
-      <div>You
-      {if $topic_head.topic_style == 'question'}
-        asked this question
-      {elseif $topic_head.topic_style == 'idea'}
-        shared this idea
-      {elseif $topic_head.topic_style == 'talk'}
-        started this discussion
-      {elseif $topic_head.topic_style =='problem'}
-        reported this problem
-      {/if}
-      </div>
-      {elseif $current_user && $topic_head.topic_style != 'talk'}
-      <form action="handle-me-too.php">
-        <button name="sfn_id" value="{$topic_head.sfn_id}">
-          I have this 
-          {if $topic_head.topic_style == 'question'}
-            question
-          {elseif $topic_head.topic_style == 'idea'}
-            idea
-          {elseif $topic_head.topic_style =='problem'}
-            problem
-          {/if}
-          too!
-        </button>
-      </form>
-      {/if}
-    </li>
-    <li>
       <h3>In this topic</h3>
       <ul class="topic-stats">
         <li><strong>{$particip.people}</strong> {if $particip.people != 1}people{else}person{/if}</li>

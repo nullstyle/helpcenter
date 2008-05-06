@@ -28,7 +28,7 @@ if (!$result) die("Error inserting OAuth tokens into database.");
 
 $first_login = request_param('first_login');
 
-$callback_url = sprinkles_root_url() . 'handle-oauth-return.php?' . 
+$callback_url = $sprink->sprinkles_root_url() . 'handle-oauth-return.php?' . 
                   ($first_login ? 'first_login=true&': '') .
                   'return=' . urlencode($return);
 
