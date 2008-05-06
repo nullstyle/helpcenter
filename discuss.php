@@ -43,7 +43,7 @@ $smarty->assign('num_pages', ceil($topic_count/$topic_page_size));
 $smarty->assign('sfn_root', $sfn_root);
 
 $top_topic_tags = take($max_top_topic_tags, 
-                       $sprink->tags($api_root . '/companies/' . 
+                       $sprink->tags($api_root . 'companies/' . 
                                      $sprink->company_sfnid . 
                                      '/tags?on=topics&sort=usage&limit=5'));
 # Sets the label for topic-box
