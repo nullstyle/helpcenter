@@ -6,7 +6,7 @@
 
 	{include file="topic-box.t"}
     <!-- <ul id="topic-filter"> <li><a href="" class="on">Latest</a></li> {if $topic_style=='question'} <li><a href="">Frequently Asked</a></li> {elseif $topic_style=='problem'} <li><a href="">Common</a></li> {else} <li><a href="">Popular</a></li> {/if} <li><a href="?style=unanswered{$filter_product_arg}{$filter_tag_arg}">Unanswered</a></li> </ul> -->
-		{if $filter_style}<img src="http://getsatisfaction.com/images/{$filter_style}_med.png" id="topic-style" alt="{$topic.topic_style}" />{/if}
+		{if $filter_style}<img src="/images/{$filter_style}_med.png" id="topic-style" alt="{$topic.topic_style}" />{/if}
 		<div id="topic-list-head">
   		<h2>Recent {$friendly_style}s
     		{if $filter_product}

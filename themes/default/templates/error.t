@@ -3,9 +3,9 @@
 <div id="container">
 	<div id="content">
 	
-<h2>	It looks like something went wrong.</h2>
+<h2>It looks like something went wrong.</h2>
 
-<h3>Try starting at our <a href="{$sprinkles_root_url}">Help Center</a>.</h3>
+<h3>Start over at the {$company_name} <a href="{$sprinkles_root_url}">Help Center Home Page</a>.</h3>
 
 
 	</div><!-- #content -->

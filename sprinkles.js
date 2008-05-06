@@ -52,7 +52,7 @@ function getHTMLAJAXAsync(url, kappa) {
       kappa(req.responseText);
     }
   }
-  req.send();
+  req.send(null);
 }
 
 function trim(str) {

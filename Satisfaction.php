@@ -5,7 +5,6 @@ require_once 'hkit.class.php';
 require_once 'list.php';
 
 global $h;
-
 $h = new hKit;
 
 # Configuration: to log or not to log?

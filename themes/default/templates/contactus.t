@@ -1,99 +1,91 @@
 {include file="header.t"}
 
+<script type="text/javascript" src="sprinkles.js"></script>
+
+<script type="text/javascript">
+<!--
+{literal}
+function updateSuggestions(queryText) {
+  var suggestElem = document.getElementById('suggestions');
+  var url = 'topic-suggestions.php?query=' + queryText; // FIXME: url-encode
+  getHTMLAJAXAsync(url, function (suggestions) {
+    var absentSuggestElem = document.getElementById('absent-suggestions');
+    var presentSuggestElm = document.getElementById('suggestions-title');
+    if (trim(suggestions)) {
+      suggestElem.innerHTML = suggestions;
+      absentSuggestElem.style.display = 'none';
+      suggestElem.style.display = 'block';
+      presentSuggestElm.style.display = 'block';
+    } else {
+      absentSuggestElem.style.display = 'block';
+      suggestElem.style.display = 'none';
+      presentSuggestElm.style.display = 'none';
+    }
+ });
+}
+{/literal}
+-->
+</script>
 
 <div id="container">
 	<div id="content">
 
-
 		<h1>Contact Us</h1>
-
-		<p>Can't find the answer in our <a href="discuss.php">Discussions</a> or 
-		  <a href="faq.php">FAQ</a>? Contact us:
+		<p>
+		  Can't find the answer in our <a href="discuss.php">Discussions</a> or 
+		  <a href="discuss.php?style=question">FAQ</a>? Contact us:
 		</p>
-
-		<form action="handle-contactus.php" method="POST">
-
-		<div id="daothPane"
-		     style="float: right; border: 1px solid black; width: 270pt; padding: 6pt;">
-		<h2>Do any of these help?</h2>
-
-		<p id="absent-suggestions" class="light">
-		We'll use the summary of your issue to search for similar topics that might be helpful.
-		</p>
-
-		<ul id="suggestions">
-		</ul>
-		<div class="float-right">
-		</div>
-		</div>
-
-		<div style="width:270pt;">
-		<table width="100%">
-		<tr> <td class="form-label"> <img src="images/required.png" alt="*" />
-		       First and last name </td>
-		     <td> <input class="contactus" name="name" /> </td>
-		</tr>
-		<tr> <td class="form-label"> <img src="images/required.png" alt="*" />
-		       Email address </td>
-		     <td> <input class="contactus" name="email" /> </td>
-		</tr>
-		<tr> <td class="form-label"> Phone number </td>
-		<td> <input class="contactus" name="phone" /> </td>
-		</tr>
-		</table>
-
-		<script type="text/javascript" src="sprinkles.js"></script>
-
-		<script type="text/javascript">
-		<!--
-		function updateSuggestions(queryText) {ldelim}
-		  var suggestElem = document.getElementById('suggestions');
-		  var url = 'topic-suggestions.php?query=' + queryText; // FIXME: url-encode
-		  getHTMLAJAXAsync(url, function (suggestions) {ldelim}
-		    var absentSuggestElem = document.getElementById('absent-suggestions');
-		    if (trim(suggestions)) {ldelim}
-		      suggestElem.innerHTML = suggestions;
-		      absentSuggestElem.style.display = 'none';
-		    {rdelim} else {ldelim}
-		      absentSuggestElem.style.display = 'block';
-		      suggestElem.style.display = 'none';
-		    {rdelim}
-		  {rdelim});
-		{rdelim}
-		-->
-		</script>
-
-		<div id="contact-form">
-		<h4> <img src="images/required.png" alt="*" /> Summary of your issue</h4>
-		<input name="summary" onblur="updateSuggestions(this.value)" />
-
-		<h4>This is what I DID</h4>
-		<textarea rows="7" cols="40" name="action">
-		</textarea>
-
-		<h4>This is what I EXPECTED to happen</h4>
-		<textarea rows="7" cols="40" name="expectation">
-		</textarea>
-
-		<h4>This is what ACTUALLY happened</h4>
-		<textarea rows="7" cols="40" name="observed">
-		</textarea>
-
-		<h4>This is how I feel about it in 140 characters or less</h4>
-		<input name="feeling" />
-
-		<br />
-		<button class="align: center;" type="submit">Send it</button
-
-		</div>
-		</div>
-
+    <br />
+    
+    
+		<form action="handle-contactus.php" method="post">
+      <fieldset>
+        <div style="float: right; width:240px" id="live_results">
+          <p id="absent-suggestions" class="light">We'll use the summary of your issue to search for similar topics that might be helpful.</p>
+    		  <p id="suggestions-title" style="display:none">Do any of these help?</p>
+      		<ul id="suggestions"><li></li></ul>
+        </div>
+        <ul class="rows">
+          <li>
+        		<label style="font-size:1.2em;display:block;margin-bottom:0.5em">Summary of your issue</label>
+        		<input name="summary" style="width:420px; padding:3px 0" onkeyup="updateSuggestions(this.value)" />            
+          </li>
+          <li>
+        		<label style="font-size:1.2em;display:block;margin-bottom:0.5em">Tell us the details: (optional)</label>
+        		<textarea rows="4" cols="40" style="width:420px" name="observed" onclick="this.focus();this.select()">What did you do? What did you expect to happen? What actually happened?</textarea><br />
+          </li>
+          <li>
+            <label style="font-size:1.2em;display:block;margin-bottom:0.5em">This is how I feel about it: (optional)</label>
+        		<input name="feeling" style="width:420px; padding:3px 0" /><br />
+        		<small>140 characters or less please</small>
+          </li>
+        </ul>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Some information about yourself</legend>
+        <ul class="rows">
+          <li>
+            <label>First and last name:</label><br />
+            <input class="contactus" style="width:180px" name="name" />
+          </li>
+          <li>
+            <label>Email address:</label><br />
+            <input class="contactus" style="width:180px" name="email" />    
+          </li>
+          <li>
+            <label>Phone number: (optional)</label><br />
+            <input class="contactus" style="width:180px" name="phone" />
+          </li>
+          <li>
+            <button class="align: center;" type="submit">Send it</button>
+          </li>
+        </ul>
+      </fieldset>
 		</form>
 
 	</div><!-- #content -->
 </div><!-- #container -->
-
-{include file="sidebar.t"}
 
 {include file="footer.t"}
 

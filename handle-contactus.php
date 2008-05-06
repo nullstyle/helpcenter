@@ -11,9 +11,7 @@ $message = request_param('name') .
            ' reported a problem in the Get Satisfaction Instant On Help Center at ' . 
            date('H:i:s T, Y/m/d') . '.' . "\n\n" . 
            'Summary: ' . request_param('summary') . "\n\n" .
-           'What I did: ' . request_param('action') . "\n\n" .
-           'What I expected to happen: ' . request_param('expectation') . "\n\n" .
-           'What I observed: ' . request_param('observed') . "\n\n" .
+           'Details: ' . request_param('observed') . "\n\n" .
            'I\'m ' . request_param('feeling');
 
 $subject = request_param('summary');

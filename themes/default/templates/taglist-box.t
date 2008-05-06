@@ -1,5 +1,5 @@
 <div class="taglist-box">
-  <h4>Browse topics by category</h4>
+  <h4>Browse topics</h4>
   <ul style="list-style-type:none;float:left;margin-right:40px">
   {foreach from=$top_topic_tags key=i item=tag}
   <li><a href="discuss.php?tag={$tag}">{$tag}</a></li>

@@ -7,13 +7,13 @@
     <!-- PAGE ERRORS -->
     
 		{if $blank_reply_error}
-		<div class="error-box" style="margin:8pt 6pt;">
+		<div class="error-box">
 		Enter some text to reply and click the 'Comment' or 'Reply' button directly below that text.
 		</div>
 		{/if}
 
 		{if $blank_reply_error}
-		<div class="error-box" style="margin:8pt 6pt;">
+		<div class="error-box">
 		We already know that you have this 
 		  {if $topic_head.topic_style == 'question'}
 		    question!
@@ -28,7 +28,7 @@
 		{/if}
 
 		{if $shared_with}
-		<div class="message-box" style="margin:8pt 6pt;">
+		<div class="message-box">
   		You've shared this topic with
   		{foreach from=$shared_with key=i item=email}{if $i != 0}, {/if}
   		{$email}{/foreach}.
@@ -36,7 +36,7 @@
 		{/if}
 
 		{if $share_failed_msg}
-		<div class="error-box" style="margin:8pt 6pt;">
+		<div class="error-box">
 		Oops! Something went wrong while trying to share this topic with
 		{foreach from=$shared_with key=i item=email}{if $i != 0}, {/if}
 		{$email}{/foreach}.
@@ -44,7 +44,7 @@
 		{/if}
 
 		{if $me_too_failed_error}
-		<div class="error-box" style="margin:8pt 6pt;">
+		<div class="error-box">
 		For some reason, we could not record the fact that you had this 
 		question too. Perhaps you have already marked it that way, or
 		perhaps there was just a glitch in Get Satisfaction. Sorry!
@@ -52,7 +52,7 @@
 		{/if}
 
 		{if $me_tood_topic_msg}
-		<div class="message-box" style="margin:8pt 6pt;">
+		<div class="message-box">
 		You have this
 		  {if $topic_head.topic_style == 'question'}
 		    question
@@ -109,7 +109,7 @@
       
       <!-- Topic details -->
       <div id="topic-bubble">
-        <img src="http://getsatisfaction.com/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
+        <img src="/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
         <h1>{$topic_head.title}</h1>
         <div>{$topic_head.content}</div>
         {if $flagged_topic == $topic_head.sfn_id}
