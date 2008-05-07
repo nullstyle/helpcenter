@@ -473,8 +473,9 @@ class Sprinkles {
                           'current_user' => $current_user,
                           'user_name' => $current_user['fn'],
                           'site_configured' => $this->site_configured(),
-                          'page_timer' => microtime(true) - $page_timer,
-                          'sprinkles_root_url' => $this->sprinkles_root_url()));
+                          'sprinkles_root_url' => $this->sprinkles_root_url()),
+                          'user_is_admin' => $this->user_is_admin(),
+                          'page_timer' => microtime(true) - $page_timer));
   }
 }
 
