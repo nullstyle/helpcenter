@@ -84,16 +84,17 @@ if (!$bad_fields) {
   ## Save the settings
 
   # Save the site links.
-  $urls = request_param('link_url');
-  $texts = request_param('link_text');
-  $links = array();
-  foreach ($urls as $url) {
-    $text = array_shift($texts);
-    if ($url || $text) {
-      array_push($links, array('url' => $url, 'text' => $text));
-    }
-  }
-  $sprink->set_site_links($links);
+  // $urls = request_param('link_url');
+  // $texts = request_param('link_text');
+  // $links = array();
+  // foreach ($urls as $url) {
+  //   $text = array_shift($texts);
+  //   if ($url || $text) {
+  //     array_push($links, array('url' => $url, 'text' => $text));
+  //   }
+  // }
+  
+  // $sprink->set_site_links($links);
 
   $sql = 'update site_settings set ' . 
          'background_color = \'' . mysql_real_escape_string($background_color). '\', ' .
