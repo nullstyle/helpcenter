@@ -9,9 +9,9 @@ $user = $sprink->current_user();
 
 $username = $sprink->current_username();
 if (!$username) {
-  redirect('admin-login.php');
-  exit(0);
+  redirect($sprink->authorize_url('admin.php', false)); exit(0);
 }
+
 $admin_users = $sprink->get_users();
 if (!$sprink->user_is_admin()) {
   redirect('error.php');   # FIXME: find a more gracious out for user

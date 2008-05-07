@@ -49,6 +49,6 @@ $result = $sprink->set_site_settings(
                       'sprinkles_root_url' => $sprinkles_root_url));
 if (!$result) die (mysql_error());
 
-redirect('handle-user-login.php?first_login=true&return=admin.php?hooked=true');
+redirect($sprink->authorize_url('admin.php?hooked=true', true));
 
 ?>

@@ -3,7 +3,6 @@ Satisfaction.php
 Sprinkles.php
 admin-fields.php
 admin-findsite.php
-admin-login.php
 admin.php
 config.php
 contactus-success.php
@@ -22,7 +21,6 @@ handle-reply.php
 handle-share-topic.php
 handle-star.php
 handle-submit.php
-handle-user-login.php
 handle-user-logout.php
 hcard.profile.php
 helpstart.php

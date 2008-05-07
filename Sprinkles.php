@@ -25,6 +25,7 @@ require_once 'list.php';
 
 require_once 'Satisfaction.php';
 require_once 'Settings.php';
+require_once('HTTP_Request_Oauth.php');
 
 # Smarty directory configuration
 require_once('smarty/Smarty.class.php');
@@ -91,6 +92,33 @@ class Sprinkles {
   }
 
   function api_url($url) { return api_url($url); }
+  
+  function authorize_url($return, $first_login) {
+    $consumer_data = $this->oauth_consumer_data();
+    if (!$consumer_data['key'] || !$consumer_data['secret']){
+      die("The OAuth consumer data was missing from the Instant-On Help " . 
+          "Center database! Perhaps something went wrong during installation " . 
+          "and setup.");
+    }
+    
+    list($token, $secret) = get_oauth_request_token($consumer_data);
+    
+    if (!$token || !$secret) {
+      error("Failed to fetch OAuth request token " . 
+            "(Result token: '$token'; Token secret: '$token_secret')");
+      die("Failed to fetch OAuth request token from getsatisfaction.com.");
+    }
+    
+    $result = insert_into('sessions', array('token' => $token,
+                                            'token_secret' => $secret));
+    if (!$result) die("Error inserting OAuth tokens into database.");
+    
+    $callback_url = $this->sprinkles_root_url() . 'handle-oauth-return.php?' . 
+                      ($first_login ? 'first_login=true&': '') .
+                      'return=' . urlencode($return);
+
+    return oauth_authorization_url($token, $callback_url);
+  }
 
   ## Topics for the company, filtered by properites specified in $options.
   # Presently, you can only filter on one of the axes: product, tag, query, person,

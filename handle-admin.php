@@ -56,7 +56,7 @@ $sprink = new Sprinkles();  # TBD: this is expensive; cheapen!
 $active_username = $sprink->current_username();
 
 if (!$active_username) {
-  redirect('admin-login.php'); exit(0);
+  redirect($sprink->authorize_url('admin.php', false)); exit(0);
 }
 
 $existing_admin_users = $sprink->get_users();
