@@ -97,7 +97,7 @@
           <a href="minidashboard.php?user_url={$topic_head.author.url}">
             {$topic_head.author.name}
           </a>
-          </span> 
+          </span>
           {if $topic_head.topic_style == 'question'} asked this question
           {elseif $topic_head.topic_style == 'idea'} shared this idea
           {elseif $topic_head.topic_style == 'talk'} asked this question
@@ -237,6 +237,30 @@
     {/if}
     </li>
   </ul>
+  {if $topic_head.tags}
+  <ul>
+    <li>
+    <h3>Tags</h3>
+    <ul>
+    {foreach from=$topic_head.tags key=i item=tag}
+      <li><a href="discuss.php?tag={$tag}">{$tag}</a></li>
+    {/foreach} 
+    </ul>
+    </li>
+  </ul>
+  {/if}
+  {if $topic_head.products}
+  <ul>
+    <li>
+    <h3>Tags</h3>
+    <ul>
+    {foreach from=$topic_head.products key=i item=product}
+      <li><a href="discuss.php?product={$product}">{$product}</a></li>
+    {/foreach} 
+    </ul>
+    </li>
+  </ul>
+  {/if}
 </div>
 
 {include file="footer.t"}
