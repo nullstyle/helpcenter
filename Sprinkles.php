@@ -440,6 +440,8 @@ class Sprinkles {
     $smarty->assign(array('logo_link' => $logo_link,
                           'background_color' => $this->site_background_color(),
                           'company_name' => $this->company_name(),
+                          'contact_address' => $this->settings->get('contact_address'),
+                          'contact_phone' => $this->settings->get('contact_phone'),
                           'current_user' => $current_user,
                           'user_name' => $current_user['fn'],
                           'site_configured' => $this->site_configured(),

@@ -18,10 +18,8 @@
     <div id="footer_about">
       <h3>About</h3>
       <p>
-        <strong>PBwiki, Inc.</strong><br />
-	      1825 S Grant St, St. 850<br />
-	      San Mateo, CA 94402<br /><br />
-        1-866-WIKI-4ME<br />
+        {if ($contact_address|strip) != ""}{$contact_address|nl2br}<br /><br />{/if}
+        {$contact_phone}<br />
 	      <strong><a href="mailto:sales@pbwiki.com">sales@pbwiki.com</a></strong>
 	    </p>
     </div>
