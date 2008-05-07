@@ -10,7 +10,6 @@ $company_sfnid = "sprinklestestcompany";
 
 $api_root           = 'http://localhost:3000/';
 $sfn_root           = 'http://localhost:3001/';
-$author_image_root  = 'http://getsatisfaction.com/';
 
 $mysql_username = 'root';
 $mysql_password = '';

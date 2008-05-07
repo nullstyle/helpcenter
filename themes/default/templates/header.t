@@ -25,6 +25,6 @@
 
 	<div id="header">
 	  <img src="images/powered_by.png" alt="Powered by Get Satisfaction" class="powered_by" />
-		<h1 id="helpcenter-title"><span><a href="/" title="" rel="home">{$company_name} Help Center</a></span></h1>		
+		<h1 id="helpcenter-title"><span><a href="{$sprinkles_root_url}" title="" rel="home">{$company_name} Help Center</a></span></h1>		
 	</div>
 <!-- END HEADER -->

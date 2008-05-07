@@ -444,7 +444,6 @@ class Sprinkles {
                           'user_name' => $current_user['fn'],
                           'site_configured' => $this->site_configured(),
                           'page_timer' => microtime(true) - $page_timer,
-                          'author_image_root' => $this->settings->get("author_image_root"),
                           'sprinkles_root_url' => $this->sprinkles_root_url()));
   }
 }

@@ -90,7 +90,7 @@
       <!-- Topic Creator -->
       <div class="creator">
         <a href="minidashboard.php?user_url={$topic_head.author.url}">
-          <img src="{$author_image_root}{$topic_head.author.photo}" class="topic-author-pic" alt="{$topic_head.author.name}'s avatar" />
+          <img src="{$topic_head.author.photo}" class="topic-author-pic" alt="{$topic_head.author.name}'s avatar" />
         </a>
         <div class="topic-author-caption">
           <span class="topic-byline">
