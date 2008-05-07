@@ -5,7 +5,7 @@
 			<span class="reply_label">{if $topic.reply_count == 1} reply {else} replies{/if}</span>
 		</span>
 	</a>
-	<span class="t-img"><img src="/images/{$topic.topic_style}_small.png" alt="{$topic.topic_style}"/></span>
+	<span class="t-img"><img src="{$sprinkles_root_url}/images/{$topic.topic_style}_small.png" alt="{$topic.topic_style}"/></span>
   <div class="topic-list-content">
     <h3>
       <a href="topic.php?id={$topic.id}">{$topic.title}</a>

@@ -436,13 +436,16 @@ class Sprinkles {
     $logo_link = $this->site_logo_link();
     if (!$logo_link) $logo_link = 'helpstart.php';
     global $page_timer;
+    
     $smarty->assign(array('logo_link' => $logo_link,
                           'background_color' => $this->site_background_color(),
                           'company_name' => $this->company_name(),
                           'current_user' => $current_user,
                           'user_name' => $current_user['fn'],
                           'site_configured' => $this->site_configured(),
-                          'page_timer' => microtime(true) - $page_timer));
+                          'page_timer' => microtime(true) - $page_timer,
+                          'author_image_root' => $this->settings->get("author_image_root"),
+                          'sprinkles_root_url' => $this->sprinkles_root_url()));
   }
 }
 

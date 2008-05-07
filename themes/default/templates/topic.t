@@ -90,7 +90,7 @@
       <!-- Topic Creator -->
       <div class="creator">
         <a href="minidashboard.php?user_url={$topic_head.author.url}">
-          <img src="{$topic_head.author.photo}" class="topic-author-pic" alt="{$topic_head.author.photo}" />
+          <img src="{$author_image_root}{$topic_head.author.photo}" class="topic-author-pic" alt="{$topic_head.author.name}'s avatar" />
         </a>
         <div class="topic-author-caption">
           <span class="topic-byline">
@@ -109,7 +109,7 @@
       
       <!-- Topic details -->
       <div id="topic-bubble">
-        <img src="/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
+        <img src="{$sprinkles_root_url}/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
         <h1>{$topic_head.title}</h1>
         <div>{$topic_head.content}</div>
         {if $flagged_topic == $topic_head.sfn_id}

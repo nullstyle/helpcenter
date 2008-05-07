@@ -36,7 +36,7 @@
     </div>
     
     <div id="blurb">
-      <p><strong style="font-size: 130%">Help Center is powered by Get Satisfaction</strong></p><br />
+      <p><strong style="font-size: 130%">Help Center is powered <br />by Get Satisfaction</strong></p><br />
       <p>The support network for people to get the most from the products they use. Casual users, dedicated experts, and company employees all come together to answer questions, solve problems, and share ideas</p>
     </div>
 

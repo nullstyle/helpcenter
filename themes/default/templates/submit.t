@@ -31,7 +31,7 @@
 		-->
 		</script>	
 		
-		<form id="new_topic_form" class="question" method="get" action="submit.php">
+		<form id="new_topic_form" class="question" method="post" action="handle-submit.php">
   		<fieldset>
 		    <legend><strong>1)</strong> I have a...</legend>
 		    <div style="float: right; width:240px" id="live_results">
@@ -57,11 +57,11 @@
   		      <label id="problem_prompt" class="prompt" style="display: none;">What seems to be the problem? (One or two paragraphs work best.)</label>
   		      <label id="talk_prompt" class="prompt" style="display: none;">What's on your mind? (One or two paragraphs work best.)</label>
             <br />
-  		      <textarea id="topic_additional_detail" name="topic[additional_detail]" rows="6" cols="36" style="width: 400px"></textarea>  		        
+  		      <textarea id="topic_additional_detail" name="additional_detail" rows="6" cols="36" style="width: 400px"></textarea>  		        
 		      </li>
 		      <li>
   		      <label>Give your <span class="dyn_style">question</span> a great title:</label><br />
-  		      <input id="topic_subject" name="topic[subject]" value="{$subject}" type="text" style="width: 400px" />
+  		      <input id="topic_subject" name="subject" value="{$subject}" type="text" style="width: 400px" />
   		      <br /><br />
 		        <div class="alert">
   		        <small>Great: <strong>Why won't my iPhone's calendar sync with Outlook 2007?</strong></small><br />
@@ -77,7 +77,7 @@
 	      <ul id="topic_product_list" class="clearfix">
 	    	{foreach from=$products key=i item=product}
   			  <li>
-			      <input type="checkbox" id="product_{$i}" name="product[]" value="{$product.name}" {if $product.selected}checled="checked"{/if} />
+			      <input type="checkbox" id="product_{$i}" name="product[]" value="{$product.name}" {if $product.selected}checked="checked"{/if} />
   			    <label for="product_{$i}">{$product.name}</label>
   			  </li>
   			{/foreach}
@@ -89,7 +89,7 @@
         
 	      <div id="new_topic_tags">
 	        <label for="topic_keywords">Add words that describe your <span class="dyn_style">question</span> (optional)</label><br />
-	        <textarea class="text" id="topic_keywords" name="topic[keywords]" rows="2" cols="40"></textarea>
+	        <textarea class="text" id="topic_keywords" name="keywords" rows="2" cols="40"></textarea>
 	        <br />
 	        <small>Comma-separated (e.g. hot dogs, cake, pie)</small>
 	        <br /><br />
