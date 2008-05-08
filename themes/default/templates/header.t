@@ -10,19 +10,19 @@
 <body {if $body_css_id} id="{$body_css_id}"{/if}>
 
 <div id="wrapper" class="hfeed">
-	{include file="navigation.t"}
-
-	<ul id="aux-navigation">
-	  <li>{if $user_name}
-		Hi {$user_name} (<a href="minidashboard.php">Your dashboard</a>) | 	{if $user_is_admin}(<a href="admin.php">Admin</a>) | {/if}
-		<a href="handle-user-logout.php?return={$current_url|urlencode}">Log out</a>
-		{else}
-		  {if !$login_page}
-		  <a href="user-login.php?return=minidashboard.php">Log in to view your dashboard</a>
-		  {/if}
-		{/if}</li>
-	</ul>
-
+  <div id="navigation">
+  	{include file="navigation.t"}
+  	<ul id="aux-navigation">
+  	  <li>{if $user_name}
+  		Hi {$user_name} (<a href="minidashboard.php">Your dashboard</a>) | 	{if $user_is_admin}(<a href="admin.php">Admin</a>) | {/if}
+  		<a href="handle-user-logout.php?return={$current_url|urlencode}">Log out</a>
+  		{else}
+  		  {if !$login_page}
+  		  <a href="user-login.php?return=minidashboard.php">Log in to view your dashboard</a>
+  		  {/if}
+  		{/if}</li>
+  	</ul>
+  </div>
 	<div id="header">
 	  <a href="http://getsatisfaction.com" class="powered_by"><img src="images/powered_by.png" alt="Powered by Get Satisfaction" /></a>
 		<h1 id="helpcenter-title"><span><a href="helpstart.php" title="" rel="home">{$company_name} Help Center</a></span></h1>		
