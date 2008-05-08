@@ -18,28 +18,6 @@ INSTALLATION INSTRUCTIONS
 
      See http://dev.mysql.com/downloads/mysql/5.0.html.
 
-  3. Install PHP library dependencies.
-
-     a) HTTP_Request
-
-        The HTTP_Request library can be installed at the command line
-        using pear:
-
-          % pear install Http_Request
-
-        Sprinkles has been tested with HTTP_Request version 1.4.2.
-
-     b) Smarty
-     
-        Download the latest version of the Smarty templating engine from
-        
-          http://www.smarty.net/download.php
-        
-        Once downloaded, follow the directions in the INSTALL file in
-        the package. You should just need to copy the files in the libs/
-        directory into your PHP library location (for example, into
-        /usr/local/lib/php/smarty/)
-
   4. Install Sprinkles into your web directory.
 
 	1. Install Sprinkles into your web directory.
