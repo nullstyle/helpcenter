@@ -27,10 +27,10 @@
 
     <div id="start_a_topic">
       <ul class="post_links">
-        <li><a href="topics/new?style=question" class="question">Ask a question</a></li>
-        <li><a href="topics/new?style=idea" class="idea">Share an idea</a></li>
-        <li><a href="topics/new?style=problem" class="problem">Report a problem</a></li>
-        <li><a href="topics/new?style=talk" class="talk">Start a discussion</a></li>
+        <li><a href="discuss.php?style=question" class="question">Ask a question</a></li>
+        <li><a href="discuss.php?style=idea" class="idea">Share an idea</a></li>
+        <li><a href="discuss.php?style=problem" class="problem">Report a problem</a></li>
+        <li><a href="discuss.php?style=talk" class="talk">Start a discussion</a></li>
       </ul>
     </div>
     
