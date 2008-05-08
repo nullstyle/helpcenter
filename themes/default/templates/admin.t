@@ -5,8 +5,6 @@
 <div id="container">
   
   <div id="content">
-    <h1>Admin Page</h1>
-
     {if $errors}
     <div class="error-box">
       Your settings could not be saved. Please correct the errors below.
@@ -33,12 +31,13 @@
         and sign in as an admin and authenticate their account. Go let them know!
       </div>
     {/if}
-
+    
+    <h1>Admin Page</h1>
     <form action="handle-admin.php" method="post" enctype="multipart/form-data">
       <fieldset>
       <legend>Edit your current settings</legend>
-      <ul class="rows left-aligned-labels">
-        <li class="clearfix">
+      <ul class="rows l-al">
+        <!-- <li class="clearfix">
           {if $invalid.background_color}
           <div class="error-message">
             Background color should indicate a color in RGB hex format: #xxx or #XxXxXx
@@ -56,7 +55,7 @@
           <label for="link-input">Logo link:</label>
           <input name="logo_link" id="link-input" value="{$settings.logo_link}">
           <span class="helper">links to helpstart.php by default</span>
-        </li>
+        </li> -->
         <li class="clearfix">
           {if $invalid.contact_email}
           <div class="error-message">

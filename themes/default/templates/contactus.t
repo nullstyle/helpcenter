@@ -31,13 +31,7 @@ function updateSuggestions(queryText) {
 	<div id="content">
 
 		<h1>Contact Us</h1>
-		<p>
-		  Can't find the answer in our <a href="discuss.php">Discussions</a> or 
-		  <a href="discuss.php?style=question">FAQ</a>? Contact us:
-		</p>
-    <br />
-    
-    
+		<p>Can't find the answer in our <a href="discuss.php">Discussions</a> or <a href="discuss.php?style=question">FAQ</a>? Contact us: </p>
 		<form action="handle-contactus.php" method="post">
       <fieldset>
         <div style="float: right; width:240px" id="live_results">
@@ -45,18 +39,18 @@ function updateSuggestions(queryText) {
     		  <p id="suggestions-title" style="display:none">Do any of these help?</p>
       		<ul id="suggestions"><li></li></ul>
         </div>
-        <ul class="rows">
+        <ul class="rows t-al">
           <li>
-        		<label style="font-size:1.2em;display:block;margin-bottom:0.5em">Summary of your issue</label>
-        		<input name="summary" style="width:420px; padding:3px 0" onkeyup="updateSuggestions(this.value)" />            
+        		<label style="font-size:1.2em;">Summary of your issue</label>
+        		<input name="summary" onkeyup="updateSuggestions(this.value)" />            
           </li>
           <li>
-        		<label style="font-size:1.2em;display:block;margin-bottom:0.5em">Tell us the details: (optional)</label>
-        		<textarea rows="4" cols="40" style="width:420px" name="observed" onclick="this.focus();this.select()">What did you do? What did you expect to happen? What actually happened?</textarea><br />
+        		<label style="font-size:1.2em;">Tell us the details: (optional)</label>
+        		<textarea rows="4" cols="40" name="observed" onclick="this.focus();this.select()">What did you do? What did you expect to happen? What actually happened?</textarea><br />
           </li>
           <li>
-            <label style="font-size:1.2em;display:block;margin-bottom:0.5em">This is how I feel about it: (optional)</label>
-        		<input name="feeling" style="width:420px; padding:3px 0" /><br />
+            <label style="font-size:1.2em;">This is how I feel about it: (optional)</label>
+        		<input name="feeling" /><br />
         		<small>140 characters or less please</small>
           </li>
         </ul>
@@ -64,18 +58,18 @@ function updateSuggestions(queryText) {
       
       <fieldset>
         <legend>Some information about yourself</legend>
-        <ul class="rows">
+        <ul class="rows t-al">
           <li>
-            <label>First and last name:</label><br />
-            <input class="contactus" style="width:180px" name="name" />
+            <label>First and last name:</label>
+            <input class="contactus" name="name" />
           </li>
           <li>
-            <label>Email address:</label><br />
-            <input class="contactus" style="width:180px" name="email" />    
+            <label>Email address:</label>
+            <input class="contactus" name="email" />    
           </li>
           <li>
-            <label>Phone number: (optional)</label><br />
-            <input class="contactus" style="width:180px" name="phone" />
+            <label>Phone number: (optional)</label>
+            <input class="contactus" name="phone" />
           </li>
           <li>
             <button class="align: center;" type="submit">Send it</button>

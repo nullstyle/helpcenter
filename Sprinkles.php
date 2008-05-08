@@ -469,6 +469,7 @@ class Sprinkles {
                           'background_color' => $this->site_background_color(),
                           'company_name' => $this->company_name(),
                           'contact_address' => $this->settings->get('contact_address'),
+                          'contact_email' => $this->settings->get('contact_email'),
                           'contact_phone' => $this->settings->get('contact_phone'),
                           'current_user' => $current_user,
                           'user_name' => $current_user['fn'],

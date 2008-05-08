@@ -18,9 +18,10 @@
     <div id="footer_about">
       <h3>About</h3>
       <p>
-        {if ($contact_address|strip) != ""}{$contact_address|nl2br}<br /><br />{/if}
-        {$contact_phone}<br />
-	      <strong><a href="mailto:sales@pbwiki.com">sales@pbwiki.com</a></strong>
+        {if $company_name}{$company_name}<br /><br />{/if}
+        {if $contact_phone}{$contact_phone}<br />{/if}
+        {if ($contact_email|strip) != ""}<a href="mailto:{$contact_email}">{$contact_email}</a><br /><br />{/if}
+        {if ($contact_address|strip) != ""}{$contact_address|nl2br}{/if}
 	    </p>
     </div>
 
