@@ -8,22 +8,43 @@
 
 		<script type="text/javascript">
 		<!--
-		function redoSearch() {ldelim}
-		  var subjectField = document.getElementById('topic-additional-detail');
-		  var queryText = subjectField.value;
-		  var url = 'topic-suggestions.php?query=' + queryText; // FIXME: url-encode
-		  getHTMLAJAXAsync(url, function (suggestions) {ldelim}
-		    var suggestionsElem = document.getElementById('suggestions');
-		    if (trim(suggestions)) {ldelim}
-		      suggestionsElem.innerHTML = suggestions;
-		      suggestionsElem.style.display = 'block';
-		    {rdelim} else {ldelim}
-		      suggestionsElem.style.display = 'none';
-		    {rdelim}
-		  {rdelim});
-		{rdelim}
-		
-		{literal}
+    {literal}
+
+    LiveSearch = function() {
+      this.initialize();
+    }
+
+    LiveSearch.prototype = {
+      initialize: function() {
+        this.searcher = null;
+        this.last_value = null;
+      },
+      start: function(on, to) {
+        this.on = on;
+        this.to = document.getElementById(to);
+        object = this;
+        this.searcher = setInterval(function() {object.search.apply(object, [])}, 2500);
+      },
+      stop: function() {
+        clearInterval(this.searcher);
+      },
+      search: function() {
+        if(this.last_value != this.on.value && this.on.value != "") {
+          this.last_value = this.on.value;
+          var url = 'topic-suggestions.php?query=' + this.on.value;
+          object = this;
+          getHTMLAJAXAsync(url, function (results) {
+            object.update_results(trim(results));
+          });
+        }
+      },
+      update_results: function(results) {
+        this.to.innerHTML = results;
+      }
+    }
+
+    live_search = new LiveSearch();
+
 		function addTag(tag) {
 		  var tagField = document.getElementById('topic-keywords');
 		  var flattened = tagField.value.replace(/\s+/g,'');
@@ -59,7 +80,7 @@
   		      <label id="idea_prompt" class="prompt" style="display: none;">Tell us about this idea. (One or two paragraphs work best.)</label>
   		      <label id="problem_prompt" class="prompt" style="display: none;">What seems to be the problem? (One or two paragraphs work best.)</label>
   		      <label id="talk_prompt" class="prompt" style="display: none;">What's on your mind? (One or two paragraphs work best.)</label>
-  		      <textarea id="topic-additional-detail" name="additional_detail" onkeyup="redoSearch()" rows="6" cols="36" style="width: 400px"></textarea>  		        
+  		      <textarea id="topic-additional-detail" name="additional_detail" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" rows="6" cols="36" style="width: 400px"></textarea>  		        
 		      </li>
 		      <li>
   		      <label>Give your <span class="dyn_style">question</span> a great title:</label>
