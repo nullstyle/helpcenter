@@ -82,7 +82,7 @@ p {margin:1em 0;}
 form {}
 fieldset{margin-bottom:2.5em;border:none;}
 legend{font-size:1.3em;display:block;margin:0 0 1em 0; text-indent:0; color:black;}
-button, .button {overflow:visible; background:#99CC66; border:1px solid #75A848;color:#FFFFCC !important;cursor:pointer;font-size:10px;font-weight:bold;height:22px;padding:0pt 4px;}
+button, .button {overflow:visible; background:#99CC66; border:1px solid #75A848;color:#FFFFCC !important;cursor:pointer;font-size:100%;font-weight:bold;padding: 4px 6px;}
 button:hover, .button:hover {border-color:#535353;}
 textarea {font-family: inherit; font-size:inherit;}
 ul.rows li{margin:1.5em 0;}

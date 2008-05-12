@@ -51,7 +51,7 @@
   </div>
   {/if}
 
-  <form action="handle-admin-findsite.php" method="POST">
+  <form action="handle-admin-findsite.php" method="post">
     
     <h2>Step 1. Configure Help Center for your site.</h2>
     <p style="text-indent:74px;color:#666;">Then it's only two more simple steps and you're good to go.</p>
@@ -74,7 +74,7 @@
         <label>Help Center URL (this page)</label>
         <input class="admin" name="sprinkles_root_url" value="{$sprinkles_root_url}" />
       </li>
-      <button type="submit">Continue to authorization</button>
+      <li><button type="submit">Continue to authorization</button></li>
     </ul>
   </form>
 </div>

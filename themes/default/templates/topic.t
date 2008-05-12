@@ -68,7 +68,7 @@
 		{/if}
 
 		{if $self_star_error}
-		<div class="error-box" style="margin:8pt 6pt;">
+		<div class="error-box">
 		Note: You cannot mark your own reply as
 		  {if $topic_head.topic_style == 'question'}
 		    "answering the question."
@@ -112,10 +112,13 @@
         <img src="{$sprinkles_root_url}/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
         <h1>{$topic_head.title}</h1>
         <div>{$topic_head.content}</div>
+        
         {if $flagged_topic == $topic_head.sfn_id}
-          <span class="disabled flag-button float-right">This is inappropriate</span>
+          <br />
+          <span class="disabled flag-button">This is inappropriate</span>
         {else}
-          <a href="handle-flag.php?type=topic&amp;id={$topic_head.sfn_id|urlencode}&amp;topic_id={$topic_head.id|urlencode}" class="flag-button float-right"> This is inappropriate </a>
+          <br />
+          <a href="handle-flag.php?type=topic&amp;id={$topic_head.sfn_id|urlencode}&amp;topic_id={$topic_head.id|urlencode}" class="flag-button"> This is inappropriate </a>
         {/if}
         {if $topic_head.emotitag_face || $topic_head.emotitag_emotion}
           <div> 
@@ -198,7 +201,7 @@
             <form id="reply-form" action="handle-reply.php" method="POST">
               <div><input type="hidden" name="replies_url" value="{$topic_head.replies_url}" />
               <input type="hidden" name="topic_id" value="{$topic_head.id}" /></div>
-              <textarea name="content" cols="42" rows="5" style="display: block;"></textarea>
+              <textarea name="content" cols="62" rows="5" style="display: block;"></textarea>
               <br />
               <button onclick="this.disabled='true'; this.form.submit()" type="button">Reply</button>
             </form>
