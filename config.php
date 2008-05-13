@@ -11,8 +11,8 @@ $sfn_root = "http://getsatisfaction.com/";
 // $sfn_root           = 'http://localhost:3001/';
 
 $mysql_username = 'root';
-$mysql_password = '';
-$mysql_db = 'sprinkles';
+$mysql_password = 'loser23';
+$mysql_db = 'sprinkles_satisfaction';
 $mysql_connect_params = '127.0.0.1:3306';
 
 $max_logo_size = 65535;

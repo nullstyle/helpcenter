@@ -27,13 +27,7 @@
 		{/foreach}
 	</div>
 	
-	{if $num_pages > 1}
-  <div class="pager">
-    {section name=page loop=$num_pages}
-      <a href="discuss.php?style={$filter_style}&amp;page={$smarty.section.page.iteration-1}{$filter_tag_arg}{$filter_product_arg}"{if $smarty.section.page.iteration == $page_num+1} class="on"{/if}>{$smarty.section.page.iteration}</a>
-    {/section}
-  </div>
-  {/if}
+  {include file="pager.t"}
 	
 </div><!-- #container -->
 
