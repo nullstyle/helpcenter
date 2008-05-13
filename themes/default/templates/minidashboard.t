@@ -2,7 +2,7 @@
 
 <div id="container">
 	<div id="content">
-		<img src="{$user.photo}" alt="user photo" id="topic-style" style="margin-bottom:20px" />
+		<a href="http://getsatisfaction.com/people/{$user.canonical_name}" style="margin-bottom:20px; float: left;" ><img src="{$user.photo}" alt="user photo" id="topic-style" /></a>
 		<div id="topic-list-head">
   		<h1>
   		  {if $current_user.canonical_name != $user.canonical_name}
@@ -44,7 +44,7 @@
     {else}
       You
     {/if}
-    on <a href="http://getsatisfaction.com">Get Satisfaction</a></a>
+    on <a href="http://getsatisfaction.com">Get Satisfaction</a>
   </h3>
   <ul>
     {foreach from=$noncompany_topics key=i item=topic}

@@ -72,7 +72,7 @@
         <div><input type="hidden" name="replies_url" value="{$topic_head.replies_url}" />
         <input type="hidden" name="topic_id" value="{$topic_head.id}" />
         <input type="hidden" name="parent_id" value="{$reply.sfn_id}" /></div>
-        <textarea name="content" cols="42" rows="5" style="display: block;"></textarea>
+        <textarea name="content" cols="62" rows="5" style="display: block;"></textarea>
         <br />
         <button onclick="this.disabled='true'; this.form.submit()" type="button">Comment</button>
         <a href="#" onclick="document.getElementById('comment-form-{$reply.sfn_id}').style.display='none';document.getElementById('comment-link-{$reply.sfn_id}').style.display='inline';return false;">Cancel</a>

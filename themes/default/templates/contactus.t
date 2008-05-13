@@ -5,24 +5,42 @@
 <script type="text/javascript">
 <!--
 {literal}
-function updateSuggestions(queryText) {
-  var suggestElem = document.getElementById('suggestions');
-  var url = 'topic-suggestions.php?query=' + queryText; // FIXME: url-encode
-  getHTMLAJAXAsync(url, function (suggestions) {
-    var absentSuggestElem = document.getElementById('absent-suggestions');
-    var presentSuggestElm = document.getElementById('suggestions-title');
-    if (trim(suggestions)) {
-      suggestElem.innerHTML = suggestions;
-      absentSuggestElem.style.display = 'none';
-      suggestElem.style.display = 'block';
-      presentSuggestElm.style.display = 'block';
-    } else {
-      absentSuggestElem.style.display = 'block';
-      suggestElem.style.display = 'none';
-      presentSuggestElm.style.display = 'none';
-    }
- });
+
+LiveSearch = function() {
+  this.initialize();
 }
+
+LiveSearch.prototype = {
+  initialize: function() {
+    this.searcher = null;
+    this.last_value = null;
+  },
+  start: function(on, to) {
+    this.on = on;
+    this.to = document.getElementById(to);
+    object = this;
+    this.searcher = setInterval(function() {object.search.apply(object, [])}, 2500);
+  },
+  stop: function() {
+    clearInterval(this.searcher);
+  },
+  search: function() {
+    if(this.last_value != this.on.value && this.on.value != "") {
+      this.last_value = this.on.value;
+      var url = 'topic-suggestions.php?query=' + this.on.value;
+      object = this;
+      getHTMLAJAXAsync(url, function (results) {
+        object.update_results(trim(results));
+      });
+    }
+  },
+  update_results: function(results) {
+    this.to.innerHTML = results;
+  }
+}
+
+live_search = new LiveSearch();
+
 {/literal}
 -->
 </script>
@@ -41,16 +59,16 @@ function updateSuggestions(queryText) {
         </div>
         <ul class="rows t-al">
           <li>
-        		<label style="font-size:1.2em;">Summary of your issue</label>
-        		<input name="summary" onkeyup="updateSuggestions(this.value)" />            
+        		<label style="font-size:1.2em;" for="summary-input">Summary of your issue</label>
+        		<input name="summary" id="summary-input" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" />            
           </li>
           <li>
-        		<label style="font-size:1.2em;">Tell us the details: (optional)</label>
-        		<textarea rows="4" cols="40" name="observed" onclick="this.focus();this.select()">What did you do? What did you expect to happen? What actually happened?</textarea><br />
+        		<label style="font-size:1.2em;" for="observed-input">Tell us the details: (optional)</label>
+        		<textarea rows="4" cols="40" id="observed-input" name="observed" onclick="this.focus();this.select()">What did you do? What did you expect to happen? What actually happened?</textarea><br />
           </li>
           <li>
-            <label style="font-size:1.2em;">This is how I feel about it: (optional)</label>
-        		<input name="feeling" /><br />
+            <label style="font-size:1.2em;" for="feeling-input">This is how I feel about it: (optional)</label>
+        		<input name="feeling" id="feeling-input" /><br />
         		<small>140 characters or less please</small>
           </li>
         </ul>
@@ -60,19 +78,19 @@ function updateSuggestions(queryText) {
         <legend>Some information about yourself</legend>
         <ul class="rows t-al">
           <li>
-            <label>First and last name:</label>
-            <input class="contactus" name="name" />
+            <label for="name-input">First and last name:</label>
+            <input name="name" id="name-input" />
           </li>
           <li>
-            <label>Email address:</label>
-            <input class="contactus" name="email" />    
+            <label for="email-input">Email address:</label>
+            <input name="email" id="email-input" />    
           </li>
           <li>
-            <label>Phone number: (optional)</label>
-            <input class="contactus" name="phone" />
+            <label for="phone-input">Phone number: (optional)</label>
+            <input name="phone" id="phone-input" />
           </li>
           <li>
-            <button class="align: center;" type="submit">Send it</button>
+            <button type="submit">Send it</button>
           </li>
         </ul>
       </fieldset>

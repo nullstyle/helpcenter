@@ -18,23 +18,29 @@
   </script>
 	<div id="content">
   	<h1>Email this {$topic_head.topic_style} to friends</h1>
-    <br /><br />
 
   	<form action="handle-share-topic.php">
-  	  <input type="hidden" name="id" value="{$topic_id}" />
-  	  
-  	  <label for="from_email">Your email:</label><br />
-    	<input name="from_email" style="width:250px" /><br /><br />
-    	
-    	<label for="to_email">Email to:</label><br />
-  	  <input name="to_email" style="width:250px" /><br />
-      <small>Comma-separate multiple e-mail addresses.</small><br /><br />
-
+  	  <div><input type="hidden" name="id" value="{$topic_id}" /></div>
+  	  <ul class="rows t-al">
+  	    <li class="clearfix">
+  	      <label for="from_email">Your email:</label>
+    	    <input name="from_email" />
+    	  </li>
+  	    <li class="clearfix">
+    	    <label for="to_email">Email to:</label>
+  	      <input name="to_email" />
+          <small class="helper">Comma-separate multiple e-mail addresses.</small>
+        </li>
+      </ul>
       <div id="share-preview">
 
       	{if !$user_name}
-      	<label>Enter your name:</label><br />
-      	<input name="sender_name" id="sender_name" style="width:250px" onkeyup="update_preview()" /><br /><br />
+      	<ul class="rows t-al">
+    	    <li class="clearfix">
+          	<label for="sender_name">Enter your name:</label>
+          	<input name="sender_name" id="sender_name" onkeyup="update_preview()" />
+      	  </li>
+        </ul>
       	{else}
       	<div><input name="sender_name" id="sender_name" type="hidden" value="{$current_user.fn}" /></div>
       	{/if}
@@ -44,10 +50,14 @@
         {else}
         {$user_name}
         {/if}
-        thinks you might be interested in this {$topic_head.topic_style} from COMPANY NAME:</p>
-
-      	<label>Add a personal note:</label><br />
-      	<textarea name="personal_message" id="personal_message" style="width:250px"></textarea>
+        thinks you might be interested in this {$topic_head.topic_style} from {$company_name}:</p>
+              	
+      	<ul class="rows t-al">
+    	    <li class="clearfix">
+          	<label for="personal_message">Add a personal note:</label>
+          	<textarea name="personal_message" id="personal_message"></textarea>
+      	  </li>
+        </ul>
         <br />
         <br />
         <hr />

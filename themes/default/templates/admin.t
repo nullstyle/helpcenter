@@ -35,7 +35,10 @@
     <h1>Admin Page</h1>
     <form action="handle-admin.php" method="post" enctype="multipart/form-data">
       <fieldset>
-      <legend>Edit your current settings</legend>
+
+      <legend>
+      {if $site_configured}Edit your current settings{else}Help Center Setup{/if}     
+      </legend>
       <ul class="rows l-al">
         <!-- <li class="clearfix">
           {if $invalid.background_color}
@@ -63,15 +66,15 @@
           </div>
           {/if}
           <label for="contact-email">Company contact email:</label>
-          <input name="contact_email" id="contact-email" value="{$settings.contact_email}"> 
+          <input name="contact_email" id="contact-email" value="{$settings.contact_email}" /> 
         </li>
         <li class="clearfix">
           <label for="contact-phone">Contact phone number:</label>
-          <input name="contact_phone" id="contact-phone" value="{$settings.contact_phone}">
+          <input name="contact_phone" id="contact-phone" value="{$settings.contact_phone}" /> 
         </li>
         <li class="clearfix">
           <label for="address-input">Mailing address:</label>
-          <textarea name="contact_address" id="address-input" rows="2">{$settings.contact_address}</textarea>
+          <textarea name="contact_address" id="address-input" rows="2" cols="30">{$settings.contact_address}</textarea>
         </li>
         <li class="clearfix">
           {if $invalid.admin_users_str}
@@ -80,13 +83,13 @@
           </div>
           {/if}
           <label for="admin-textarea">Add additional admin:</label>
-          <textarea name="admin_users_str" id="admin-textarea" rows="2">{if $settings.admin_users_str}{$settings.admin_users_str} {else}{foreach from=$admin_users key=i item=user}{$user.username} {/foreach} {/if}</textarea>
+          <textarea name="admin_users_str" id="admin-textarea" rows="2" cols="30">{if $settings.admin_users_str}{$settings.admin_users_str} {else}{foreach from=$admin_users key=i item=user}{$user.username} {/foreach} {/if}</textarea>
           <span class="helper">
             Comma or space separated
           </span>
         </li>
         <li class="clearfix">
-          <button name="save" type="submit" style="margin-top: 6pt;">{if $site_configured} Save changes {else} OK, Start up Sprinkles! {/if}</button>
+          <button name="save" type="submit" style="margin-top: 6pt;">{if $site_configured} Save changes {else} OK, Start up Help Center! {/if}</button>
         </li>
       </ul>
       </fieldset>

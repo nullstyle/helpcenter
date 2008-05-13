@@ -1,0 +1,121 @@
+/*
+  Extented from Andey Skelton and Scott Allan Wallick's Sandbox Wordpess theme
+
+  http://www.plaintxt.org/themes/sandbox/
+  http://andy.wordpress.com/
+  http://www.plaintxt.org/
+*/
+
+/* Two-column with sidebar on right */
+@import url('templates/sandbox-layouts/2c-r.css');
+/* Two-column with sidebar on left */
+/*@import url('templates/sandbox-layouts/2c-l.css');*/
+/* Three-column with sidebars on left */
+/*@import url('templates/sandbox-layouts/3c-l.css');*/
+/* Three-column with sidebars on right */
+/*@import url('templates/sandbox-layouts/3c-r.css');*/
+/* Three-column with content in the center */
+/*@import url('templates/sandbox-layouts/3c-b.css');*/
+/* One-column with content in the center */
+/*@import url('templates/sandbox-layouts/1c-b.css');*/
+
+/* ----  Reset & Hacks ----  */
+* {padding:0;margin:0;}
+img {border:0;}
+ol,ul {list-style:none;}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+
+/* ----  Layout ----  */
+body {text-align:center;background: white url(images/bg_header.gif) repeat-x;font-family:"Lucida Grande",Verdana,"Bitstream Vera Sans",Arial,sans-serif; font-size:.8em;}
+div#wrapper {padding:0 20px;width:964px;margin:0 auto;text-align:left;}
+ul#primary-navigation {float:left;margin:7px 0 0;}
+ul#primary-navigation li {float:left;margin-right:6px;font-size:.85em;}
+ul#primary-navigation li a { padding: 6px 8px 7px; display:block;}
+ul#primary-navigation li.on a {background-color: #FFF; color: #555;}
+ul#primary-navigation li.on a:hover {color:#555;}
+ul#aux-navigation {font-size:.8em;float:right;margin:10px 0;color:#ccc;}
+ul#aux-navigation li{float:left;}
+ul#aux-navigation a,ul#primary-navigation a{color:white;}
+ul#aux-navigation a:hover,ul#primary-navigation a:hover{color:white; text-decoration: underline;}
+div#header {text-align:left;margin-bottom:3em;clear:both;}
+div#container {position: relative;margin-bottom:4em;min-height:300px;}
+* html div#container {height:300px;} /* hide from newer browers */
+div#content {position:relative;z-index:1;}
+div.sidebar {position:relative;z-index:2;}
+div.sidebar h3 {font-size:14px;color:#333;border-bottom:1px solid #DEDEDE;margin-bottom:12px;padding-bottom:4px;}
+div.sidebar li {list-style:none;margin:0 0 1em;}
+div.sidebar li form {margin:0.2em 0 0;padding:0;}
+div.sidebar ul {margin:0 0 2.4em 0}
+div.sidebar ul ul {margin:0 0 0 1em;}
+div.sidebar ul ul li {list-style:disc;margin:5px 0 0 0;}
+div.sidebar ul ul ul {margin:0 0 0 0.5em;}
+div.sidebar ul ul ul li {list-style:circle;}
+#primary ul, #secondary ul {margin-bottom:25px;}
+#primary li, #secondary li {list-style-type:square;color:#999;}
+#product-list li.on a { color: inherit; }
+.topic-box {padding-bottom:3em;}
+.topic-box textarea, .topic-box button {float:left;}
+.taglist-box {padding-bottom:3em; float: left;}
+.powered_by {float: right; padding-top:36px;}
+
+
+/* ----  Typography ----  */
+a {color:#2583AD;text-decoration:none;}
+a:hover {color:red}
+h1#helpcenter-title  {color:#555555;font-family:Georgia,Times,"Times New Roman",serif;font-size:40px;line-height:1em;padding:30px 0 18px;}
+h2 {}
+h3 {}
+h4 {font-size:16px;margin-bottom:1em;}
+p {margin:1em 0;}
+.light{color:#888;}
+.error-box{margin-bottom:2em;padding:6px 12px;color:red;border:2px solid red;}
+.message-box{margin-bottom:2em;padding:6px 12px;color:black;border:2px solid #FFFF99;background:#FFFFEF;}
+
+
+/* ----  Forms  ----  */
+form {}
+fieldset{margin-bottom:2.5em;border:none;}
+legend{font-size:1.3em;display:block;margin:0 0 1em 0; text-indent:0; color:black;}
+button, .button {overflow:visible; background:#99CC66; border:1px solid #75A848;color:#FFFFCC !important;cursor:pointer;font-size:100%;font-weight:bold;padding: 4px 6px;}
+button:hover, .button:hover {border-color:#535353;}
+textarea {font-family: inherit; font-size:inherit;}
+ul.rows li{margin:1.5em 0;}
+/* left aligned labels */
+.l-al label, .l-al label{display:block;float:left;width:160px;padding-right:20px;}
+.l-al input, .r-al input, .l-al textarea, .r-al textarea{float:left;width:180px;padding:2px 0;}
+.l-al .helper, .r-al .helper{clear:both;font-size:0.9em;color:gray;margin-left:180px;display:block;}
+.l-al .error-message, .r-al .error-message {color:red; font-weight:bold; margin:1em 0 0.5em 0;}
+/* right aligned labels */
+.r-al label{text-align:right;}
+/* top aligned labels */
+.t-al label{display:block; padding-bottom: 0.3em;}
+.t-al input, .t-al textarea{width:280px;padding:2px 0;}
+.t-al .helper{clear:both;font-size:0.9em;color:gray;display:block;}
+.t-al .error-message {color:red; font-weight:bold; margin:1em 0 0.5em 0;}
+
+
+/* ----  Footer  (footer.t)  ----  */
+#footer{background:#C3CACD url(../../images/footer_shadow.png) repeat-x scroll 0% 0%;padding:30px 0 12px;color:#444;}
+#footer #footer_content{width:964px;text-align:left;padding:0 18px;margin:0 auto;}
+#footer h3{color:#414142;font-size:1.1em;font-weight:bold;margin-bottom:0.8em;margin-top:0pt !important;}
+#footer ul li{margin-bottom:0.6em;}
+#footer #footer_links{float:left;width:180px;margin-right:20px;padding-right:20px;border-right:1px dotted #999999;}
+#footer #footer_about{float:left;width:160px;}
+#footer #blurb{float:right;width:300px;margin-right:20px;padding-right:20px;border-right:1px dotted #999999;}
+#footer #start_a_topic{float:right;width:180px;}
+#footer #start_a_topic ul.post_links li{margin-bottom:4px;}
+#footer #start_a_topic ul.post_links li a{color:#333333;display:block;font-weight:bold;padding:5px 0pt 5px 30px;border: 2px solid #999;}
+#footer #start_a_topic ul.post_links li a:hover{border-color: #444;}
+#footer #start_a_topic ul.post_links li a.question {background:#E2F4F8 url(../../images/question_16.png) no-repeat scroll 8px 50%; }
+#footer #start_a_topic ul.post_links li a.idea {background:#FDF1CE url(../../images/idea_16.png) no-repeat scroll 7px 50%; }
+#footer #start_a_topic ul.post_links li a.problem {background:#FAA1A1 url(../../images/problem_16.png) no-repeat scroll 7px 50%; }
+#footer #start_a_topic ul.post_links li a.talk {background:#DFEFCE url(../../images/talk_16.png) no-repeat scroll 7px 50%; }
+#footer #footer_copy{clear:both;font-size:90%;font-weight:bold;padding-top:30px;text-align:center;}
+
+

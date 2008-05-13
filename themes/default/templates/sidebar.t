@@ -23,10 +23,10 @@
 					<li><a href="discuss.php?style=idea">Ideas</a> ({$totals.ideas})</li>
 					<li><a href="discuss.php?style=talk">Discussions</a> ({$totals.talk})</li>
 					<li id="search">
-						<form id="searchform" method="get" action="">
+						<form id="searchform" method="get" action="results.php">
 							<div>
-								<input id="s" name="s" class="text-input" type="text" value="" tabindex="1" accesskey="S" />
-								<input id="searchsubmit" class="button" name="searchsubmit" type="submit" value="Search" tabindex="2" />
+								<input id="s" name="query" class="text-input" type="text" value="" tabindex="1" accesskey="S" />
+								<input id="searchsubmit" class="button" type="submit" value="Search" tabindex="2" />
 							</div>
 						</form>
 					</li>

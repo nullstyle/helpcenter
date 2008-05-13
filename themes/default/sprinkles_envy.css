@@ -1,0 +1,120 @@
+/*
+  Extented from Andey Skelton and Scott Allan Wallick's Sandbox Wordpess theme
+
+  http://www.plaintxt.org/themes/sandbox/
+  http://andy.wordpress.com/
+  http://www.plaintxt.org/
+*/
+
+/* Two-column with sidebar on right */
+@import url('templates/sandbox-layouts/2c-r.css');
+/* Two-column with sidebar on left */
+/*@import url('templates/sandbox-layouts/2c-l.css');*/
+/* Three-column with sidebars on left */
+/*@import url('templates/sandbox-layouts/3c-l.css');*/
+/* Three-column with sidebars on right */
+/*@import url('templates/sandbox-layouts/3c-r.css');*/
+/* Three-column with content in the center */
+/*@import url('templates/sandbox-layouts/3c-b.css');*/
+/* One-column with content in the center */
+/*@import url('templates/sandbox-layouts/1c-b.css');*/
+
+/* ----  Reset & Hacks ----  */
+* {padding:0;margin:0;}
+img {border:0;}
+ol,ul {list-style:none;}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+
+/* ----  Layout ----  */
+body {text-align:center;background: #CCC;font-family:"Helvetica",Arial,sans-serif; font-size:0.85em;line-height:1.2;}
+div#wrapper {padding:0 20px;width:80%;background-color:#FFF;margin:0 auto;text-align:left;}
+div#navigation {background-color:#8e8e8e;float:left;padding:8px 20px 6px;margin:0 -20px;}
+ul#primary-navigation {float:left;}
+ul#primary-navigation li {float:left;font-size:0.9em;margin-right:4px;}
+ul#primary-navigation li a { padding: 6px 8px 4px; display:block; line-height:0.9;}
+ul#primary-navigation li.on a {color: #FFF; background-color:#6f6f6f;}
+ul#primary-navigation li.on a:hover {color:#FFF;}
+ul#aux-navigation {padding:6px 0; font-size:.8em;float:right;color:#ccc;}
+ul#aux-navigation li{float:left;}
+ul#aux-navigation a,ul#primary-navigation a{color:#333;}
+div#header {text-align:left;padding:2em 0 3em;clear:both;}
+div#container {position: relative;margin-bottom:4em;min-height:300px;}
+* html div#container {height:300px;} /* hide from newer browers */
+div#content {position:relative;z-index:1;}
+div.sidebar {position:relative;z-index:2;}
+div.sidebar h3 {margin-bottom:12px;}
+div.sidebar li {list-style:none;margin:0 0 1em;}
+div.sidebar li form {margin:0.2em 0 0;padding:0;}
+div.sidebar ul {margin:0 0 2.4em 0}
+div.sidebar ul ul {margin:0 0 0 1em;}
+div.sidebar ul ul li {list-style:disc;margin:5px 0 0 0;}
+div.sidebar ul ul ul {margin:0 0 0 0.5em;}
+div.sidebar ul ul ul li {list-style:circle;}
+#primary ul, #secondary ul {margin-bottom:25px;}
+#primary li, #secondary li {list-style-type:square;color:#999;}
+#product-list li.on a { color: inherit; }
+.topic-box {padding-bottom:3em;}
+.topic-box textarea, .topic-box button {float:left;}
+.taglist-box {padding-bottom:3em; float: left;}
+.powered_by {float: right;}
+
+
+/* ----  Typography ----  */
+a {color:#007ED0;text-decoration:none;}
+a:hover {text-decoration:underline;}
+h1#helpcenter-title a {color:#555;font-size:150%;line-height:1;}
+h2 {color:#444!important;font-size:1.1em;text-transform:uppercase;}
+h3 {color:#67A521!important;font-size:1em;text-transform:uppercase;}
+h4 {color:#67A521!important;font-size:1em;text-transform:uppercase;margin-bottom:1em;}
+p {margin:1em 0;}
+.light{color:#888;}
+.error-box{margin-bottom:2em;padding:6px 12px;color:red;border:2px solid red;}
+.message-box{margin-bottom:2em;padding:6px 12px;color:black;border:2px solid #FFFF99;background:#FFFFEF;}
+
+
+/* ----  Forms  ----  */
+form {}
+fieldset{margin-bottom:2.5em;border:none;}
+legend{font-size:1.3em;display:block;margin:0 0 1em 0; text-indent:0; color:black;}
+button, .button {overflow:visible; background:#99CC66; border:1px solid #75A848;color:#FFFFCC !important;cursor:pointer;font-size:100%;font-weight:bold;padding: 4px 6px;}
+button:hover, .button:hover {border-color:#535353;}
+textarea {font-family: inherit; font-size:inherit;}
+ul.rows li{margin:1.5em 0;}
+/* left aligned labels */
+.l-al label, .l-al label{display:block;float:left;width:160px;padding-right:20px;}
+.l-al input, .r-al input{float:left;width:180px;padding:2px 0;}
+.l-al .helper, .r-al .helper{clear:both;font-size:0.9em;color:gray;margin-left:180px;display:block;}
+.l-al .error-message, .r-al .error-message {color:red; font-weight:bold; margin:1em 0 0.5em 0;}
+/* right aligned labels */
+.r-al label{text-align:right;}
+/* top aligned labels */
+.t-al label{display:block; padding-bottom: 0.3em;}
+.t-al input{width:280px;padding:2px 0;}
+.t-al .helper{clear:both;font-size:0.9em;color:gray;display:block;}
+.t-al .error-message {color:red; font-weight:bold; margin:1em 0 0.5em 0;}
+
+
+/* ----  Footer  (footer.t)  ----  */
+
+#footer{background:#CCC; color:#444;}
+#footer #footer_content{background:#FFF;border-top:1px solid #CCC;width:80%;text-align:left;padding:20px;margin:0 auto;}
+#footer h3{margin-bottom:0.8em}
+#footer ul li{margin-bottom:0.6em;}
+#footer #footer_links{float:left;width:20%;margin-right:20px;border-right:1px dotted #999999;}
+#footer #footer_about{float:left;width:20%;}
+#footer #blurb{float:right;width:30%;margin-right:20px;border-right:1px dotted #999999;}
+#footer #start_a_topic{float:right;width:20%;}
+#footer #start_a_topic ul.post_links li{margin-bottom:4px;}
+#footer #start_a_topic ul.post_links li a{color:#333333;display:block;font-weight:bold;padding:5px 0pt 5px 30px;border: 2px solid #999;}
+#footer #start_a_topic ul.post_links li a:hover{border-color: #444;}
+#footer #start_a_topic ul.post_links li a.question {background:#E2F4F8 url(http://getsatisfaction.com/images/question_16.png) no-repeat scroll 8px 50%; }
+#footer #start_a_topic ul.post_links li a.idea {background:#FDF1CE url(http://getsatisfaction.com/images/idea_16.png) no-repeat scroll 7px 50%; }
+#footer #start_a_topic ul.post_links li a.problem {background:#FAA1A1 url(http://getsatisfaction.com/images/problem_16.png) no-repeat scroll 7px 50%; }
+#footer #start_a_topic ul.post_links li a.talk {background:#DFEFCE url(http://getsatisfaction.com/images/talk_16.png) no-repeat scroll 7px 50%; }
+#footer #footer_copy{clear:both;font-size:90%;font-weight:bold;padding-top:30px;text-align:center;}
