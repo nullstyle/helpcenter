@@ -1,4 +1,6 @@
 <?php
+try {
+
 require_once('Sprinkles.php');
 require_once('admin-fields.php');
 
@@ -125,4 +127,10 @@ if (!$bad_fields) {
   $params .= '&admin_users=' . urlencode($admin_users_str);
   redirect('admin.php?errors=true' . $params);
 }
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
+
 ?>

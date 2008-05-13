@@ -1,4 +1,5 @@
 <?php
+try {
 
 require_once('config.php');
 require_once('Sprinkles.php');
@@ -62,4 +63,8 @@ if ($topic_feed->id()) {     # FIXME: better error checking here.
   print "An error occured";
 }
 
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 ?>

@@ -1,4 +1,5 @@
 <?php
+try {
 
 # POST to /topics/$sfn_id/me_toos
 
@@ -36,5 +37,10 @@ invalidate_http_cache($topic_url);
 
 redirect('topic.php?sfn_id=' . $sfn_id . 
          '&me_tood_topic=true');
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

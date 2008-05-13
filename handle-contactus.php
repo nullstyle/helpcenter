@@ -1,5 +1,5 @@
 <?php
-
+try {
 require_once('Sprinkles.php');
 
 $sprink = new Sprinkles();
@@ -25,4 +25,8 @@ $name = request_param('name');
 
 redirect('contactus-success.php?name=' . urlencode($name));
 
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 ?>

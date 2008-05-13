@@ -1,4 +1,5 @@
 <?php
+try {
 
 require_once('config.php');
 require_once('Sprinkles.php');
@@ -25,5 +26,10 @@ if (201 != ($responseCode = $req->getResponseCode())) {
 }
 
 redirect('topic.php?id=' . urlencode($topic_id));
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

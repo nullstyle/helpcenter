@@ -1,5 +1,6 @@
 <?php
-require_once("config.php");
+try { 
+
 require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
@@ -25,5 +26,11 @@ $smarty->assign('totals', $topics['totals']);
 $smarty->display('helpstart.t');
 
 finish_request('helpstart');
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->assign('error_msg', $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

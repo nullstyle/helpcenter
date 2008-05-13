@@ -48,10 +48,6 @@ function error($msg) {
     error_log($msg);
 }
 
-function assert_well($bool) {
-  if (!$bool) { error("Assertion failed"); die("Assertion failed"); }
-}
-
 # is_http_url determines whether the given str is an absolute URL in one
 # of the HTTP schemes (http: or https:)
 function is_http_url($str) {
@@ -162,7 +158,7 @@ function get_url($url, $cache_hard=true) {
   # server (mothership)'s clock and fetched_on is tied to the local clock.
   # We are careful to compare the local now() against fetched_on and the
   # server's "Date:" header values against fetched_on_server.
-  if (!$http_cache_timeout) die("\$http_cache_timeout not set");
+  if (!$http_cache_timeout) throw new Exception("\$http_cache_timeout not set");
   # Expire old cache entries.
   mysql_query('delete from http_cache where fetched_on < now() - ' .
               $http_cache_timeout);
@@ -171,7 +167,7 @@ function get_url($url, $cache_hard=true) {
          mysql_real_escape_string($url) . 
          '\' and fetched_on >= now() - ' . $http_cache_timeout;
   $q = mysql_query($sql);
-  if (!$q) die(mysql_error());
+  if (!$q) throw new Exception("Getting cache, got database error: " . mysql_error());
 
   require_once('HTTP/Request.php');
   if ($row = mysql_fetch_row($q)) {
@@ -183,7 +179,7 @@ function get_url($url, $cache_hard=true) {
     # Under "soft" caching, we make a request to ask the server if the resource
     # has changed since our copy.
     $fetched_on_http_date = date(DATE_RFC1123, from_mysql_date($fetched_on));
-      
+    
     $req = new HTTP_Request($url);
     $req->addHeader('If-Modified-Since', $fetched_on_http_date);
 
@@ -211,7 +207,7 @@ function get_url($url, $cache_hard=true) {
         if (!insert_into('http_cache', array('url' => $url,
                                              'content' => $content,
                                              'fetched_on_server' => $fetched_on_server)))
-          die(mysql_error());
+          throw new Exception("Database error writing to HTTP cache: " . mysql_error());
         return $content;
       }
     }
@@ -224,7 +220,7 @@ function get_url($url, $cache_hard=true) {
     message("Cache miss at $url Request timer: " . $request_timer . "s");  
 
     if (PEAR::isError($ok)) 
-      die("Unknown error trying GET $url");
+      throw new Exception("Unknown error trying GET $url");
 
     $respCode = $req->getResponseCode();
     if (200 <= $respCode && $respCode < 300) {
@@ -236,7 +232,7 @@ function get_url($url, $cache_hard=true) {
       if (!insert_into('http_cache', array('url' => $url,
                                            'content' => $content,
                                            'fetched_on_server' => $fetched_on_server)))
-        die(mysql_error());
+        throw new Exception("Database error writing to HTTP cache: " . mysql_error());
       return $content;
     } else {
        error("GET $url returned $respCode");
@@ -330,7 +326,6 @@ function get_me_person($consumer_data, $session_creds) {
 
 ## employee_list: Get list of people associated with the company
 function employee_list($company_sfnid) {
-  assert_well($company_sfnid);
   $employees_url = api_url('companies/' . $company_sfnid . 
                            '/employees');
   global $h;
@@ -426,7 +421,7 @@ function products($company_sfnid) {
     $url = api_url($product["uri"]);
     if (is_http_url($url))
       $product = parse_hProduct(get_url($url));
-    else die("Internal error: strange uri in product: $url");
+    else throw new Exception("Internal error: strange uri in product: $url");
     assert(is_array($product));
     array_push($products, $product[0]); # Just the first product from each URL is included.
   }
@@ -484,8 +479,8 @@ function tags($url) {
 # associative array having keys 'token' and 'token_secret', containing the 
 # corresponding OAuth values. 
 function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $query_params) {
-  if (!$method) die("oauthed_request() requires method parameter");
-  if (!$url) die("oauthed_request() requires URL parameter");
+  if (!$method) throw new Exception("oauthed_request() requires method parameter");
+  if (!$url) throw new Exception("oauthed_request() requires URL parameter");
   require_once('HTTP_Request_Oauth.php');
   $req_params['method'] = $method;
   $req_params['token'] = $creds['token'];
@@ -499,7 +494,7 @@ function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $qu
     $req->addParam($name, $val);
   }
   $resp = $req->sendRequest(true, true);
-  if (!$resp) die("$method request to $url failed.");
+  if (!$resp) throw new Exception("$method request to $url failed.");
   return $req;
 }
 
@@ -553,7 +548,7 @@ function oauth_authorization_url($token, $callback_url) {
 function topics($company_sfnid, $options, $at_least = 1) {
   if (!singleton(array($options['product'], $options['tag'], $options['query'],
                        $options['person'], $options['followed'], $options['related']))) {
-      die('topics($options) got more than one of these options: '
+      throw new Exception('topics($options) got more than one of these options: '
           .'product, tag, query, person, followed, or related.');
   }
   if ($options['product']) {
@@ -604,9 +599,8 @@ function topics($company_sfnid, $options, $at_least = 1) {
   $topics_feed_url = api_url($url_path);
   $topics_feed_page_url = $topics_feed_url;
   
-  try {
     # == FETCH THE FEED ==
-    
+  
     # Atom feeds at Get Satisfaction are divided into pages; each page
     # contains a link/@rel="next" element at the top which points to the
     # next page. We loop, collecting these pages, until we have as many
@@ -623,8 +617,13 @@ function topics($company_sfnid, $options, $at_least = 1) {
       $topics_feed_page_str = get_url($topics_feed_page_url, false);
 
       assert(!!$topics_feed_page_str);
-      $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
-      
+      try {
+        $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
+      } catch (XML_Feed_Parser_Exception $e) {
+        throw new Exception("Get Satisfaction feed at $topics_feed_page_url not valid: "
+                            . $e->getMessage());
+      }
+
       # stash the first page of the feed for later reference
       if ($first_topics_feed_page == null) $first_topics_feed_page = $topics_feed;
       
@@ -646,7 +645,12 @@ function topics($company_sfnid, $options, $at_least = 1) {
       $unfiltered_feed = $first_topics_feed_page;
     } else {
       $unfiltered_feed_str = get_url($unfiltered_feed_url, false);
-      $unfiltered_feed = new XML_Feed_Parser($unfiltered_feed_str);
+      try {
+        $unfiltered_feed = new XML_Feed_Parser($unfiltered_feed_str);
+      } catch (XML_Feed_Parser_Exception $e) {
+        throw new Exception("Get Satisfaction feed at $unfiltered_feed_url not valid: "
+                            . $e->getMessage());
+      }
     }
   
     $totals = topic_totals($unfiltered_feed);
@@ -654,9 +658,6 @@ function topics($company_sfnid, $options, $at_least = 1) {
     
     return(array('topics' => $topics,
                  'totals' => $totals));
-  } catch (XML_Feed_Parser_Exception $e) {
-    die('Get Satisfaction feed did not pass validation: ' . $e->getMessage());
-  }
 }
 
 # thread_items takes a feed and a root item (given by ID); it returns the 
@@ -783,7 +784,7 @@ function fix_atom_entry($entry, $kind) {
   $item = array();
   $item['id'] = $entry->id;
     $item['id'] = preg_replace('/\?.*$/', '', $item['id']); # FIXME: this b/c id is not canonical
-    if (!$item['id']) die('no id');
+    if (!$item['id']) throw new Exception('No ID in item $entry');
     $item['title'] = $entry->title;
   $item['content'] = $entry->content;
   $item['author'] = array();
@@ -817,7 +818,7 @@ function fix_atom_entry($entry, $kind) {
   $item['sfn_id'] = sfn_element_value($entry, 'id');
   $item['topic_style'] = sfn_element_value($entry, 'topic_style');
   if ($kind == 'topic' && !$item['topic_style'])
-    die("SFN feed problem: no sfn:topic_style on $kind " . $item['id']);
+    throw new Exception("SFN feed problem: no sfn:topic_style on $kind " . $item['id']);
   if ($kind == 'topic') {
     $item['reply_count'] = sfn_element_value($entry, 'reply_count');
     if (!($item['reply_count'] > 0)) $item['reply_count'] = 0;
@@ -902,10 +903,9 @@ function topic($company_sfnid, $topic_id) {
   $url = $topic_id;
 
   $feed_raw = get_url($url, false);
-  if (!$feed_raw) die("Failed to load topic at $url.");
+  if (!$feed_raw) throw new Exception("Failed to load topic at $url.");
   $topic_feed = new XML_Feed_Parser($feed_raw);
-
-  if (!$topic_feed) die("Couldn't get topic feed from $url");
+  if (!$topic_feed) throw new Exception("Couldn't get topic feed from $url");
 
   # Add stuff to the raw feed data using fix_atom_entry
   $items = array();

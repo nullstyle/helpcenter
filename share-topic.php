@@ -1,4 +1,6 @@
 <?php
+try {
+
 require_once("config.php");
 require_once("Sprinkles.php");
 
@@ -22,5 +24,10 @@ $smarty->assign('current_url', 'share-topic.php?id=' . $topic_id);
 $smarty->display('share-topic.t');
 
 finish_request('share-topic');
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

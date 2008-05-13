@@ -1,5 +1,5 @@
 <?php
-
+try {
 require_once('Sprinkles.php');
 
 $sprink = new Sprinkles();
@@ -40,4 +40,8 @@ $smarty->assign('no_admin_link', true);
 $smarty->display('admin-findsite.t');
 
 finish_request('admin-findsite');
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 ?>

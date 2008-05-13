@@ -1,13 +1,16 @@
 #!/bin/sh
 
-VERSION=0.11
+VERSION=0.12
+DIR=sprinkles-$VERSION
 
 if [[ -d release ]];
 then
   cd release
-  svn export svn+ssh://ezra@dev.getsatisfaction.com/svn/sprinkles/trunk sprinkles-$VERSION
-  markdown sprinkles-$VERSION/Satisfaction-lib-docs > sprinkles-$VERSION/Satisfaction-lib-docs.html
-  tar czvf Sprinkles-$VERSION.tar.gz -T MANIFEST;
+  svn export svn+ssh://ezra@dev.getsatisfaction.com/svn/sprinkles/trunk $DIR
+  markdown $DIR/Satisfaction-lib-docs > $DIR/Satisfaction-lib-docs.html
+  # cd $DIR
+  perl -lpe '$_ = "'$DIR/'" . $_' $DIR/MANIFEST > /tmp/MANIFEST
+  tar czvf ../Sprinkles-$VERSION.tar.gz -T /tmp/MANIFEST;
 else
   echo "No release/ directory here; make one first.";
 fi

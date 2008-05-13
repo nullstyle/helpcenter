@@ -1,4 +1,6 @@
 <?php
+try {
+
 require_once('Sprinkles.php');
 
 $sprink = new Sprinkles();
@@ -52,5 +54,10 @@ $smarty->assign('sfn_root', $sfn_root);
 $sprink->add_std_hash_elems($smarty);
 
 $smarty->display('minidashboard.t');
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

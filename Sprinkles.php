@@ -1,9 +1,4 @@
 <?php
-$page_timer = microtime(true);
-
-$vendor_path = dirname(__FILE__) . '/vendor';
-set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
-
 # $Id$
 
 ######################### Sprinkles.php ###############################
@@ -17,30 +12,45 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
 ##  NOTE: You can expect the interface to this file to change.
 ##
 ################
-require_once 'XML/Feed/Parser.php';
-require_once 'hkit.class.php';
 
-require_once 'config.php';
-require_once 'list.php';
+$page_timer = microtime(true);
 
-require_once 'Satisfaction.php';
-require_once 'Settings.php';
+
+$vendor_path = dirname(__FILE__) . '/vendor';
+set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
+
+set_exception_handler(default_exception_handler);
+set_error_handler(default_error_handler);
+
 require_once('HTTP_Request_Oauth.php');
+require_once 'config.php';
 
 # Smarty directory configuration
+# We do this first so we can use it to handle errors.
 require_once('smarty/Smarty.class.php');
 $smarty = new Smarty();
 $smarty->template_dir = $sprinkles_dir . '/themes/default/templates/';
-$smarty->compile_dir  = $sprinkles_dir . '/templates_c/';
+$smarty->compile_dir  = $sprinkles_dir . '/templates_c';
 $smarty->config_dir   = $sprinkles_dir . '/configs/';
 $smarty->cache_dir    = $sprinkles_dir . '/cache/';
+
+# Third-party libraries
+require_once 'XML/Feed/Parser.php';
+require_once 'hkit.class.php';
+
+# Utilities
+require_once 'list.php';
+
+# The API library
+require_once 'Satisfaction.php';
+
+require_once 'Settings.php';
 
 global $h;
 $h = new hKit;
 
-
 $mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);
-if (!$mysql) die("Stopping: Couldn't connect to MySQL database.");
+if (!$mysql) throw new Exception("Stopping: Couldn't connect to MySQL database.");
 
 mysql_select_db($mysql_db ? $mysql_db : 'sprinkles');
 
@@ -250,7 +260,8 @@ class Sprinkles {
   # Sprinkles installation to the given list of usernames, clearing out any 
   # that alread have admin rights. Does not signal any failure.
   function set_admin_users($admins) {
-    if (!mysql_query('delete from admins')) die(mysql_error());
+    if (!mysql_query('delete from admins'))
+      throw new Exception("Database error deleting from table admins: " . mysql_error());
     foreach ($admins as $admin) {
       insert_into('admins', array('username' => $admin));
     }
@@ -259,7 +270,7 @@ class Sprinkles {
   var $nascent_session_id;   # the session ID, when we've just set it and have not yet received a cookie
   
   function open_session($token) {
-    if (!$token) die("Call to open_session with blank token: '$token'");
+    if (!$token) throw new Exception("Call to open_session with blank token: '$token'");
     setcookie('session_id', $token);
     $this->nascent_session_id = $token;
     return $token;
@@ -290,7 +301,7 @@ class Sprinkles {
       debug("Got response from API: " . $req->getResponseBody());
       # The session was no good; close it so the user can create a new one on next login
       $this->close_session($creds['token']);
-      die("$method request for $url failed to authorize."); # FIXME: give the user an error page
+      throw new Exception("$method request for $url failed to authorize.");
     }
     return $req; 
   }
@@ -314,7 +325,8 @@ class Sprinkles {
     $sql = "select token,token_secret, username, user_url, user_photo, user_fn " .
            "from sessions where token='". $session_id . "'";
     $result = mysql_query($sql);
-    if (!$result) { die(mysql_error()); }
+    if (!$result) { throw new Exception("Database error looking up current session: "
+                                        . mysql_error()); }
     $cols = mysql_fetch_array($result);
 
     if (!$cols) {  # Cookie session was not in DB; clear it.
@@ -341,7 +353,7 @@ class Sprinkles {
       $me_person = $this->get_me_person($session);
 	  if (!$me_person) return null;
 	  $username = $me_person['canonical_name'];
-	  if (!$username) die("Current user had no canonical_name");
+	  if (!$username) throw new Exception("Current user had no canonical_name");
 	  $query = mysql_query("select * from admins where username = '" .
                            $me_person['canonical_name'] . "'");
       if ($row = mysql_fetch_array($query))
@@ -354,7 +366,7 @@ class Sprinkles {
 	         " user_sprinkles_admin = '" . ($me_person['sprinkles_admin'] ? 'Y' : 'N') . "'" . 
 	  		 " where token = '" . $session['token'] . "'";
 	  $result = mysql_query($sql);
-	  if (!$result) die("Failed to cache current user data in database.");
+	  if (!$result) throw new Exception("Failed to cache current user data in database: " . mysql_error());
     } else {
       $me_person = array('canonical_name' => $session['username'],
                          'fn' => $session['user_fn'],
@@ -449,10 +461,10 @@ class Sprinkles {
     return $this->settings->get('logo_link');
   }
   
-  #FIXME: get the whole site_settings row ONCE per request.
+  # FIXME: get the whole site_settings row ONCE per request.
   function sprinkles_root_url() {
     $q = mysql_query('select sprinkles_root_url from site_settings');
-    if (!$q) die("Database error getting Sprinkles root URL: " . mysql_error());
+    if (!$q) throw new Exception("Database error getting Sprinkles root URL: " . mysql_error());
     $row = mysql_fetch_row($q);
     return $row[0];
   }
@@ -489,5 +501,19 @@ function finish_request($page) {
   message("Page $page rendered in " . (microtime(true) - $page_timer));
 }
 
+function default_exception_handler($exc) {
+  redirect('error.php?msg=' . urlescape($exc->getMessage()));
+}
+
+function default_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
+   if ($errno != E_NOTICE && $errno != E_STRICT) {
+     error("PHP Error (level $errno): '$errstr' at $errfile, line $errline, $errcontext.");
+   }
+   if ($errno != E_WARNING && $errno != E_NOTICE && $errno != E_STRICT &&
+       $errno != E_CORE_WARNING && $errno != E_COMPILE_WARNING &&
+       $errno != E_USER_WARNING && $errno != E_USER_NOTICE) {
+     die();
+   }
+}
 
 ?>

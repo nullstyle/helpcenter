@@ -1,4 +1,6 @@
 <?php
+try {
+
 require_once("config.php");
 require_once("Sprinkles.php");
 
@@ -71,5 +73,10 @@ $sprink->add_std_hash_elems($smarty);
 $smarty->display('topic.t');
 
 finish_request('topic');
+
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

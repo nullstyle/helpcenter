@@ -1,4 +1,5 @@
 <?php
+try {
 
 require_once('config.php');
 require_once('Sprinkles.php');
@@ -39,9 +40,9 @@ invalidate_http_cache($topic_url);
 
 redirect('topic.php?id=' . urlencode($topic_url));
 
-?>
-
-<?php
-
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 
 ?>

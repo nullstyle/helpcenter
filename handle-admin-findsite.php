@@ -1,4 +1,5 @@
 <?php
+try {
 
 require_once('Sprinkles.php');
 
@@ -51,4 +52,8 @@ if (!$result) die (mysql_error());
 
 redirect($sprink->authorize_url('admin.php?hooked=true', true));
 
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 ?>

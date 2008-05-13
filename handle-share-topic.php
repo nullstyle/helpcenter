@@ -1,4 +1,5 @@
 <?php
+try {
 
 require_once('Sprinkles.php');
 
@@ -40,4 +41,8 @@ if ($result) {
   redirect('topic.php?id=' . $id . '&share_failed=true');
 }
 
+} catch (Exception $e) {
+  error_log("Exception thrown while preparing page: " . $e->getMessage());
+  $smarty->display('error.t');
+}
 ?>
