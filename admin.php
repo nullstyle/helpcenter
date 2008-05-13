@@ -47,8 +47,8 @@ $smarty->assign('company_url',
     ? $company_hcard['url'][0]
     : $company_hcard['url']);
 
-$sprinkles_tagged_topics = $sprink->topics(array('tag' => 'sprinkles'));
-$sprinkles_tagged_topics = take(3, $sprinkles_tagged_topics['topics']);
+$sprinkles_tagged_topics = $sprink->topics(array('tag' => 'sprinkles', 'limit' => '3'));
+$sprinkles_tagged_topics = $sprinkles_tagged_topics['topics'];
 
 $site_links = $sprink->site_links();
 $smarty->assign('site_links', $site_links);

@@ -6,7 +6,7 @@ $sprink = new Sprinkles();
 $page_num = request_param('page');
 if (!$page_num) { $page_num = 0; }
 
-$topic_filters = array();
+$topic_filters = array("limit" => $discuss_page_size, "page" => $page_num);
 
 $filter_style = request_param('style');
 if ($filter_style) {
@@ -20,11 +20,9 @@ if ($filter_query) {
   $smarty->assign('query', $filter_query);
 }
 
-$topics = $sprink->topics($topic_filters, ($page_num + 1) * $discuss_page_size);
+$topics = $sprink->topics($topic_filters);
 $topic_count = $topics['totals']['this'];
-$topics['topics'] = take_range($page_num * $discuss_page_size,
-                               ($page_num + 1) * $discuss_page_size,
-                               $topics['topics']);
+
 $sprink->resolve_authors($topics['topics']);
 
 $smarty->assign('page_num', $page_num);

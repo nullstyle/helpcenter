@@ -7,9 +7,9 @@ require_once("Sprinkles.php");
 $sprink = new Sprinkles();
 
 $page_num = request_param('page');
-if (!$page_num) { $page_num = 0; }
+if (!$page_num) { $page_num = 1; }
 
-$topic_filters = array();
+$topic_filters = array("limit" => $discuss_page_size, "page" => $page_num);
 
 $filter_style = request_param('style');
 if ($filter_style) {
@@ -34,11 +34,9 @@ if ($filter_tag) $topic_filters['tag'] = $filter_tag;
 
 $filter_tag_arg = $filter_tag ? '&tag=' . $filter_tag : '';
 
-$topics = $sprink->topics($topic_filters, ($page_num + 1) * $discuss_page_size);
+$topics = $sprink->topics($topic_filters);
 $topic_count = $topics['totals']['this'];
-$topics['topics'] = take_range($page_num * $discuss_page_size,
-                               ($page_num + 1) * $discuss_page_size,
-                               $topics['topics']);
+
 $sprink->resolve_authors($topics['topics']);
 
 $smarty->assign('page_num', $page_num);
@@ -96,7 +94,8 @@ $smarty->assign('topic_count', $topic_count);
 $smarty->assign('filter_product_arg', $filter_product_arg);
 $smarty->assign('filter_tag_arg', $filter_tag_arg);
 
-$smarty->assign('totals', $topics['totals']);
+$counts = $sprink->topics(array("limit" => "1"));
+$smarty->assign('totals', $counts['totals']);
 
 $smarty->assign('current_url', 'discuss.php?' . $filter_style_arg);
 

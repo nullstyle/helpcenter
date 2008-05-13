@@ -11,10 +11,10 @@ $top_topic_tags = take(20,
                     '/tags?on=topics&sort=usage&limit=20'));
 
 
-$entries = $sprink->topics(array());
-$entries['topics'] = take($helpstart_topic_count, $entries['topics']);
+$entries = $sprink->topics(array("limit" => $helpstart_topic_count));
 $sprink->resolve_authors($entries['topics']);
-$topics = $sprink->topics($topic_filters, ($page_num + 1) * $discuss_page_size);
+
+$topics = $sprink->topics(array("limit" => "1"));
 
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign('entries', $entries['topics']);

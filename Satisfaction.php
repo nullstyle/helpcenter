@@ -545,7 +545,8 @@ function oauth_authorization_url($token, $callback_url) {
 # followed, or related. The at_least parameter gives a minimum number of 
 # topics that should be returned. You might get more than this number. 
 # Using a smaller number should result in a quicker return.
-function topics($company_sfnid, $options, $at_least = 1) {
+function topics($company_sfnid, $options) {
+  
   if (!singleton(array($options['product'], $options['tag'], $options['query'],
                        $options['person'], $options['followed'], $options['related']))) {
       throw new Exception('topics($options) got more than one of these options: '
@@ -590,6 +591,15 @@ function topics($company_sfnid, $options, $at_least = 1) {
   if ($options['frequently_asked']) {
     $extra_params .= '&sort=most_me_toos';
   };
+  
+  if ($options['page']) {
+    $extra_params .= '&page=' . $options['page'];
+  };  
+  
+  if ($options['limit']) {
+    $extra_params .= '&limit=' . $options['limit'];
+  };
+  
   if ($extra_params) {
     if (preg_match('/\?/', $url_path))
       $url_path .= $extra_params;
@@ -597,7 +607,6 @@ function topics($company_sfnid, $options, $at_least = 1) {
       $url_path .= '?' . $extra_params;
   }
   $topics_feed_url = api_url($url_path);
-  $topics_feed_page_url = $topics_feed_url;
   
     # == FETCH THE FEED ==
   
@@ -608,53 +617,23 @@ function topics($company_sfnid, $options, $at_least = 1) {
 
     $topics = array();
 
-    $first_topics_feed_page = null;
-    $prev_page_url = null;
-    $last_page_url = "-1";   # placeholder to ensure prev != last when we start.
+    $topics_feed_page_str = get_url($topics_feed_url, false);
 
-    while (count($topics) < $at_least && $topics_feed_page_url &&
-            $last_page_url != $prev_page_url) {
-      $topics_feed_page_str = get_url($topics_feed_page_url, false);
-
-      assert(!!$topics_feed_page_str);
-      try {
-        $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
-      } catch (XML_Feed_Parser_Exception $e) {
-        throw new Exception("Get Satisfaction feed at $topics_feed_page_url not valid: "
-                            . $e->getMessage());
-      }
-
-      # stash the first page of the feed for later reference
-      if ($first_topics_feed_page == null) $first_topics_feed_page = $topics_feed;
-      
-      foreach ($topics_feed->model->getElementsByTagName("link") as $link_elem) {
-        if ($link_elem->getAttribute('rel') == 'next')
-          $next_page_url = $link_elem->getAttribute('href');
-        if ($link_elem->getAttribute('rel') == 'last')
-          $last_page_url = $link_elem->getAttribute('href');
-      }
-      foreach ($topics_feed as $entry) {
-        $topic = fix_atom_entry($entry, 'topic');
-        array_push($topics, $topic);
-      }
-      $prev_page_url = $topics_feed_page_url;
-      $topics_feed_page_url = $next_page_url;
+    assert(!!$topics_feed_page_str);
+    try {
+      $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
+    } catch (XML_Feed_Parser_Exception $e) {
+      throw new Exception("Get Satisfaction feed at $topics_feed_page_url not valid: "
+                          . $e->getMessage());
     }
 
-    if ($unfiltered_feed_url == $topics_feed_url) {
-      $unfiltered_feed = $first_topics_feed_page;
-    } else {
-      $unfiltered_feed_str = get_url($unfiltered_feed_url, false);
-      try {
-        $unfiltered_feed = new XML_Feed_Parser($unfiltered_feed_str);
-      } catch (XML_Feed_Parser_Exception $e) {
-        throw new Exception("Get Satisfaction feed at $unfiltered_feed_url not valid: "
-                            . $e->getMessage());
-      }
+    foreach ($topics_feed as $entry) {
+      $topic = fix_atom_entry($entry, 'topic');
+      array_push($topics, $topic);
     }
   
-    $totals = topic_totals($unfiltered_feed);
-    $totals['this'] = feed_total($first_topics_feed_page);
+    $totals = topic_totals($topics_feed);
+    $totals['this'] = feed_total($topics_feed);
     
     return(array('topics' => $topics,
                  'totals' => $totals));

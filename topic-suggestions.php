@@ -8,9 +8,9 @@ $mode = request_param('mode');
 if (!$mode) $mode = 'simple';
 
 $sprink = new Sprinkles();
-$suggested = $sprink->topics(array('query' => $query));
+$suggested = $sprink->topics(array('query' => $query, "limit" => 3));
 
-$topics = take(3, $suggested['topics']);
+$topics = $suggested['topics'];
 
 if ($mode=='fancy')
   $sprink->resolve_authors($topics);

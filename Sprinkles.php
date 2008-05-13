@@ -135,8 +135,8 @@ class Sprinkles {
   # followed, or related. The at_least parameter gives a minimum number of 
   # topics that should be returned. You might get more than this number. 
   # Using a smaller number should result in a quicker return.
-  function topics($options, $at_least = 1) {
-    return topics($this->company_sfnid, $options, $at_least);
+  function topics($options) {
+    return topics($this->company_sfnid, $options);
   }
 
   function resolve_authors(&$items) {
