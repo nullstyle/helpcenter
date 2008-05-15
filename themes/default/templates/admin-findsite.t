@@ -71,8 +71,7 @@
         <input class="admin" name="oauth_consumer_secret" value="{$oauth_consumer_secret}" />
       </li>
       <li class="clearfix">
-        <label>Help Center URL (this page)</label>
-        <input class="admin" name="sprinkles_root_url" value="{$sprinkles_root_url}" />
+        <input class="admin" name="sprinkles_root_url" value="{$sprinkles_root_url}" type="hidden" />
       </li>
       <li><button type="submit">Continue to authorization</button></li>
     </ul>

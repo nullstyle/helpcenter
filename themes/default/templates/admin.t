@@ -16,7 +16,8 @@
       </div>
       {elseif $settings_saved}
       <div class="message-box">
-        Done! Your settings have been saved.
+        Done! Your settings have been saved. 
+        <br />You can <a href="helpstart.php">start here</a>.
       </div>
       {/if}
 
