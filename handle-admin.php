@@ -18,14 +18,6 @@ $email_regex = "/$nonspecial_or_dot_regex*@$word_regex(\.$word_regex)*/";
 
 $bad_fields = array();
 
-$background_color = request_param('background_color');
-
-if (preg_match($hexcolor_regex, $background_color)) {
-  $background_color = trim($background_color);
-} else {
-  array_push($bad_fields, 'background_color');
-}
-
 $contact_email = request_param('contact_email');
 
 if (preg_match($email_regex, $contact_email)) {
@@ -37,19 +29,6 @@ if (preg_match($email_regex, $contact_email)) {
 $contact_phone = request_param('contact_phone');
 
 $contact_address = request_param('contact_address');
-
-$map_url = request_param('map_url');
-
-if ($_FILES['logo']['name'] && !$_FILES['logo']['tmp_name'])
-  die('Failed upload. Too large?');
-
-if ($_FILES['logo']['tmp_name']) {
-  $logo_data = file_get_contents($_FILES['logo']['tmp_name']);
-  if (strlen($logo_data) > $max_logo_size)
-    die('The logo was too large; please try a smaller logo');    # FIXME: user-friendly error.
-}
-
-$logo_link = request_param('logo_link');  #TBD: validate as URL?
 
 # TBD: additional links
 

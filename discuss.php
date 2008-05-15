@@ -9,7 +9,7 @@ $sprink = new Sprinkles();
 $page_num = request_param('page');
 if (!$page_num) { $page_num = 1; }
 
-$topic_filters = array("limit" => $discuss_page_size, "page" => $page_num);
+$topic_filters = array("limit" => $discuss_page_size, "page" => $page_num, "sort" => 'recently_active');
 
 $filter_style = request_param('style');
 if ($filter_style) {

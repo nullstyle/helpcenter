@@ -600,6 +600,10 @@ function topics($company_sfnid, $options) {
   if ($options['limit']) {
     $extra_params .= '&limit=' . $options['limit'];
   };
+   
+  if ($options['sort']) {
+    $extra_params .= '&sort=' . $options['sort'];
+  };
   
   if ($extra_params) {
     if (preg_match('/\?/', $url_path))

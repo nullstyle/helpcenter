@@ -3,7 +3,6 @@ try {
 
 # POST to /topics/$sfn_id/me_toos
 
-require_once('config.php');
 require_once('Sprinkles.php');
 
 $sprink = new Sprinkles();

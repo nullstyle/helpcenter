@@ -15,6 +15,8 @@
 
 $page_timer = microtime(true);
 
+require_once 'boot.php';
+require_once 'config.php';
 
 $vendor_path = dirname(__FILE__) . '/vendor';
 set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
@@ -23,7 +25,6 @@ set_exception_handler(default_exception_handler);
 set_error_handler(default_error_handler);
 
 require_once('HTTP_Request_Oauth.php');
-require_once 'config.php';
 
 # Smarty directory configuration
 # We do this first so we can use it to handle errors.

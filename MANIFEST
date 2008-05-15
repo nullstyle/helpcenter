@@ -4,14 +4,13 @@ Sprinkles.php
 admin-fields.php
 admin-findsite.php
 admin.php
-config.php
+boot.php
 contactus-success.php
 contactus.php
 discuss.php
 error.php
 faq.php
 handle-admin-findsite.php
-handle-admin-logout.php
 handle-admin.php
 handle-contactus.php
 handle-flag.php

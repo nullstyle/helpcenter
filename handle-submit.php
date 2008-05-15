@@ -1,7 +1,6 @@
 <?php
 try {
 
-require_once('config.php');
 require_once('Sprinkles.php');
 
 

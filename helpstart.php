@@ -11,7 +11,7 @@ $top_topic_tags = take(20,
                     '/tags?on=topics&sort=usage&limit=20'));
 
 
-$entries = $sprink->topics(array("limit" => $helpstart_topic_count));
+$entries = $sprink->topics(array("limit" => $helpstart_topic_count, "sort" => 'recently_active'));
 $sprink->resolve_authors($entries['topics']);
 
 $topics = $sprink->topics(array("limit" => "1"));
