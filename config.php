@@ -1,13 +1,19 @@
 <?php
 
-$api_root           = 'http://localhost:3000/';
-$sfn_root           = 'http://localhost:3001/';
+// See boot.php to see additional configurable options
 
-$mysql_username = 'root';
-$mysql_password = '';
-$mysql_db = 'sprinkles';
-$mysql_connect_params = '127.0.0.1:3306';
+// Options in this file will be overridden by 
 
-$company_id = 'sprinklestestcompany'
-
+// Uncomment if you would like to override
+// $api_root           = 'http://api.getsatisfaction.com/';
+// $sfn_root           = 'http://getsatisfaction.com/';
+// 
+// $mysql_username = 'root';
+// $mysql_password = '';
+// $mysql_db = 'sprinkles';
+// $mysql_connect_params = '127.0.0.1:3306';
+// 
+// $oauth_consumer_key     = "foobarbaz";
+// $oauth_consumer_secret  = "foobarbaz";
+// $company_id             = "sprinklestestcompany";
 ?>
