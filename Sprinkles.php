@@ -402,6 +402,11 @@ class Sprinkles {
     while ($cols = mysql_fetch_array($query)) {
       if ($cols[0] == $username) return true;
     }
+    global $admins;
+    foreach ($admins as $admin) {
+      if ($admin == $username) return true;
+    }
+    
     return false;
   }
 

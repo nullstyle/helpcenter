@@ -29,6 +29,7 @@ $preview_after_login = true;
 // ====================================
 $api_root = "http://api.getsatisfaction.com/";
 $sfn_root = "http://getsatisfaction.com/";
+$admins = array();
 
 $mysql_username = 'root';
 $mysql_password = '';
