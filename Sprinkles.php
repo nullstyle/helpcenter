@@ -16,7 +16,8 @@
 $page_timer = microtime(true);
 
 require_once 'boot.php';
-require_once 'config.php';
+if(file_exists('config.php'))
+  require_once 'config.php';
 
 $vendor_path = dirname(__FILE__) . '/vendor';
 set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
