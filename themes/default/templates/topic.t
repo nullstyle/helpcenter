@@ -112,14 +112,6 @@
         <img src="{$sprinkles_root_url}/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
         <h1>{$topic_head.title}</h1>
         <div>{$topic_head.content}</div>
-        
-        {if $flagged_topic == $topic_head.sfn_id}
-          <br />
-          <span class="disabled flag-button">This is inappropriate</span>
-        {else}
-          <br />
-          <a href="handle-flag.php?type=topic&amp;id={$topic_head.sfn_id|urlencode}&amp;topic_id={$topic_head.id|urlencode}" class="flag-button"> This is inappropriate </a>
-        {/if}
         {if $topic_head.emotitag_face || $topic_head.emotitag_emotion}
           <div> 
             {if $topic_head.emotitag_face}
@@ -127,6 +119,47 @@
             {/if}
             {if $topic_head.emotitag_emotion}I'm {$topic_head.emotitag_emotion}{/if}
           </div>
+        {/if}
+        
+        {if $flagged_topic == $topic_head.sfn_id}
+          <br />
+          <span class="disabled">This is inappropriate</span>
+        {else}
+          <br />
+          <a href="handle-flag.php?type=topic&amp;id={$topic_head.sfn_id|urlencode}&amp;topic_id={$topic_head.id|urlencode}" class=""> This is inappropriate </a>
+        {/if}
+        
+        {if $topic_head.me_too_count != 0}
+        <br />
+          <p style="font-size: 120%">
+          {$topic_head.me_too_count} other 
+          {if $topic_head.me_too_count == 1} person {else} people {/if}
+          {if $topic_head.topic_style == 'question'}
+            {if $topic_head.me_too_count == 1} has {else} have {/if}
+            this question.
+          {elseif $topic_head.topic_style == 'idea'}
+            {if $topic_head.me_too_count == 1} likes {else} like {/if}
+            this idea.
+          {elseif $topic_head.topic_style =='problem'}
+            {if $topic_head.me_too_count == 1} has {else} have {/if}
+            this problem.
+          {/if}          
+          </p>
+        {/if}
+        
+        {if $own_topic}
+        {elseif $current_user}
+        <form action="handle-me-too.php">
+        <button name="sfn_id" value="{$topic_head.sfn_id}">
+          {if $topic_head.topic_style == 'question'}
+            I have this question too!
+          {elseif $topic_head.topic_style == 'idea'}
+            I like this idea
+          {elseif $topic_head.topic_style =='problem'}
+            I have this problem too!
+          {/if}
+        </button>
+        </form>
         {/if}
         
         <!-- BEST REPLIES FROM THE COMPANY -->
@@ -172,12 +205,13 @@
 
       <!-- REPLIES -->
       <div id="topic-replies">
-        {if !$user_name}
+        {if !$user_name && $reply_count > 0}
           <h3><a href="user-login.php?return=topic.php%3fid={$topic_head.id|urlencode}">Login to reply</a></h3>
-        {else}
+          <br style="clear:both"/>
+        {elseif $reply_count > 0}
           <h3><a href="#reply-form">Reply to this {$topic_head.topic_style}</a></h3>
+          <br style="clear:both"/>
         {/if}
-        <br style="clear:both"/>
         {foreach from=$replies key=i item=reply}
     	    {if $reply.in_reply_to == $topic_head.id}
     	    {include file="topic-reply.t"}

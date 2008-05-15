@@ -489,6 +489,7 @@ function oauthed_request($consumer_data, $method, $url, $creds, $req_params, $qu
   $req_params['consumer_secret'] = $consumer_data['secret'];
   $req_params['signature_method'] = 'HMAC-SHA1';
   $req_params['timeout'] = $oauth_request_timeout;
+  message("Sending $method request to $url");
   $req = new HTTP_Request_Oauth($url, $req_params);  # TBD: set timeout
   foreach ($query_params as $name => $val) {
     $req->addParam($name, $val);
@@ -626,7 +627,6 @@ function topics($company_sfnid, $options) {
       throw new Exception("Get Satisfaction feed at $topics_feed_page_url not valid: "
                           . $e->getMessage());
     }
-
     foreach ($topics_feed as $entry) {
       $topic = fix_atom_entry($entry, 'topic');
       array_push($topics, $topic);
@@ -803,6 +803,7 @@ function fix_atom_entry($entry, $kind) {
     if (!($item['reply_count'] > 0)) $item['reply_count'] = 0;
   }
   $item['follower_count'] = sfn_element_value($entry, 'follower_count');
+  $item['me_too_count'] = sfn_element_value($entry, 'me_too_count');
   $item['star_count'] = sfn_element_value($entry, 'star_count');
   $item['flag_count'] = sfn_element_value($entry, 'flag_count');
   $item['tags'] = preg_split('/, */', sfn_element_value($entry, 'tags'));

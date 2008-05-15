@@ -20,7 +20,7 @@ if (!$creds) {
 }
 
 $POST_URL = $sprink->api_url("topics/" . $sfn_id . "/me_toos");
-$req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, array());
+$req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, array("askdjnaksjdbas" => "aksjhdaksjdnaksjdnka"));
 
 $responseCode = $req->getResponseCode();
 if (0 == $responseCode) {
