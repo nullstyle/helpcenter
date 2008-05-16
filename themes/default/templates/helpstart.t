@@ -23,7 +23,7 @@
 {include file="sidebar.t"}
 <div class="sidebar">
   <h3>We support open communication</h3>
-  <a href="http://www.ccpact.com"><img src="{$sprinkles_root_url}/images/ccpact_badge.png" /></a>
+  <a href="http://www.ccpact.com"><img src="{$sprinkles_root_url}/images/ccpact_badge.png" alt="Customer Company Pact" /></a>
 </div>
 
 {include file="footer.t"}

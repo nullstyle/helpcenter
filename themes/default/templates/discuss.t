@@ -29,12 +29,12 @@
     
     {if $filter_product}
       <div id="topic-product" style="clear:left; margin-left: 45px;">
-      <img style="vertical-align: top; float: left;" src="{$filter_product.image}" id="topic-style" alt="{$filter_product.name} photo" />
+      <img style="vertical-align: top; float: left;padding-right:8px" src="{$filter_product.image}" alt="{$filter_product.name} photo" />
       <!-- {$filter_product.description} -->
-      Tagged:
+      <span>Tagged:
       {foreach from=$filter_product.tags key=i item=tag}
         <a href="{discuss_tag_url tag=$tag}">{$tag}</a>{if $i != count($filter_product.tags)-1},{/if}
-      {/foreach}
+      {/foreach}</span>
       </div>
   	{/if}
 

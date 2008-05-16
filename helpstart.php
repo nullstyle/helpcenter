@@ -10,6 +10,9 @@ $top_topic_tags = take(20,
                     $sprink->company_sfnid . 
                     '/tags?on=topics&sort=usage&limit=20'));
 
+$chunk = intval(ceil(sizeof($top_topic_tags)/4));
+
+$top_topic_tags = array_chunk($top_topic_tags, $chunk);
 
 $entries = $sprink->topics(array("limit" => $helpstart_topic_count));
 $sprink->resolve_authors($entries['topics']);
@@ -23,6 +26,7 @@ $smarty->assign('entries', $entries['topics']);
 $sprink->add_std_hash_elems($smarty);
 $smarty->assign('current_url', 'helpstart.php');
 $smarty->assign('totals', $topics['totals']);
+$smarty->assign('filter_style', 'question');
 $smarty->display('helpstart.t');
 
 finish_request('helpstart');
