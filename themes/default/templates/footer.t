@@ -40,7 +40,7 @@
     </div>
 
     <p id="footer_copy">
-      <a href="http://getsatisfaction.com/terms_of_service">Terms of service</a> | <a href="http://code.google.com/p/getsatisfaction/">Learn more about Help Center</a> | <a href="http://getsatisfaction.com/satisfaction/products/satisfaction_help_center">Give us feedback, bug reports, or just say hi</a>
+      <a href="http://getsatisfaction.com/terms_of_service">Terms of service</a> | <a href="http://getsatisfaction.com/for_companies/help_center">Learn more about Help Center</a> | <a href="http://getsatisfaction.com/satisfaction/products/satisfaction_help_center">Give us feedback, bug reports, or just say hi</a>
     </p>
   </div>
 </div><!-- END FOOTER -->

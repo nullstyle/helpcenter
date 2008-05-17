@@ -88,7 +88,7 @@ $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign(array('filter_product' => $filter_product,
                       'filter_style' => $filter_style,
                       'filter_tag' => $filter_tag));
-$smarty->assign('products', $sprink->products());
+$smarty->assign('products', $sprink->product_list());
 $smarty->assign('topics', $topics['topics']);
 $smarty->assign('topic_count', $topic_count);
 $smarty->assign('filter_product_arg', $filter_product_arg);

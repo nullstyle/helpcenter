@@ -39,9 +39,6 @@ $smarty->assign('top_tags_count', count($top_tags));
 $smarty->assign('suggested', $suggested);
 $products = $sprink->product_list();
 foreach ($products as &$product) {
-  $matches = array();
-  preg_match('!/(\d+)!', $product['uri'], &$matches);
-  $product['sfn_id'] = $matches[1];
   $product['selected'] = in_array($product['name'], $selected_products);
 }
 
