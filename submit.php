@@ -24,6 +24,24 @@ $top_tags = take(8,
                     '/tags?on=topics&sort=usage&limit=8'));
 
 
+switch ($style) {
+case 'question':
+  $friendly_style = 'question';
+  break;
+case 'idea':
+  $friendly_style = 'idea';
+  break;
+case 'problem':
+  $friendly_style = 'problem';
+  break;
+case 'talk':
+  $friendly_style = 'discussion';
+  break;
+default:
+  $friendly_style = 'topic';
+}
+
+
 $sprink->resolve_authors($suggested);
 
 $smarty->assign('subject', $subject);
@@ -32,9 +50,12 @@ $smarty->assign('tags', $tags);
 $smarty->assign('emoticon', $face);
 $smarty->assign('emotion', $emotion);
 $smarty->assign('style', $style);
+$smarty->assign('friendly_style', $friendly_style);
 $smarty->assign('product', $selected_products);
 $smarty->assign('top_tags', $top_tags);
 $smarty->assign('top_tags_count', count($top_tags));
+
+
 
 $smarty->assign('suggested', $suggested);
 $products = $sprink->product_list();

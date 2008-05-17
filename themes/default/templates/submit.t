@@ -69,21 +69,21 @@
         <ul class="rows t-al">
           <li>
   		      <select name="style" style="width: 400px">
-  		        <option value="question">Question that needs an answer</option>
-  		        <option value="idea">Idea that I'd like to share</option>
-  		        <option value="problem">Problem that needs solving</option>
-  		        <option value="talk">Discussion I want to start</option>
+  		        <option value="question"{if $style == "question"} selected="selected"{/if}>Question that needs an answer</option>
+  		        <option value="idea"{if $style == "idea"} selected="selected"{/if}>Idea that I'd like to share</option>
+  		        <option value="problem"{if $style == "problem"} selected="selected"{/if}>Problem that needs solving</option>
+  		        <option value="talk"{if $style == "talk"} selected="selected"{/if}>Discussion I want to start</option>
   		      </select>
 		      </li>
 		      <li>
-    		    <label id="question_prompt" class="prompt">What's your question? (One or two paragraphs work best.)</label>
-  		      <label id="idea_prompt" class="prompt" style="display: none;">Tell us about this idea. (One or two paragraphs work best.)</label>
-  		      <label id="problem_prompt" class="prompt" style="display: none;">What seems to be the problem? (One or two paragraphs work best.)</label>
-  		      <label id="talk_prompt" class="prompt" style="display: none;">What's on your mind? (One or two paragraphs work best.)</label>
+    		    <label id="question_prompt" class="prompt"{if $style != "question"} style="display:none;"{/if}>What's your question? (One or two paragraphs work best.)</label>
+  		      <label id="idea_prompt" class="prompt"{if $style != "idea"} style="display:none;"{/if}>Tell us about this idea. (One or two paragraphs work best.)</label>
+  		      <label id="problem_prompt" class="prompt"{if $style != "problem"} style="display:none;"{/if}>What seems to be the problem? (One or two paragraphs work best.)</label>
+  		      <label id="talk_prompt" class="prompt"{if $style != "talk"} style="display:none;"{/if}>What's on your mind? (One or two paragraphs work best.)</label>
   		      <textarea id="topic-additional-detail" name="additional_detail" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" rows="6" cols="36" style="width: 400px"></textarea>  		        
 		      </li>
 		      <li>
-  		      <label>Give your <span class="dyn_style">question</span> a great title:</label>
+  		      <label>Give your <span class="dyn_style">{$friendly_style}</span> a great title:</label>
   		      <input id="topic-subject" name="subject" value="{$subject}" type="text" style="width: 400px" />
 		        <div class="helper">
   		        <small>Great: <strong>Why won't my iPhone's calendar sync with Outlook 2007?</strong></small><br />
@@ -111,7 +111,7 @@
         
 	      <div id="new_topic_tags" class="t-al">
 	        <label for="topic_keywords">Add words that describe your <span class="dyn_style">question</span> (optional)</label>
-	        <textarea class="text" id="topic-keywords" name="keywords" rows="2" cols="40"></textarea>
+	        <textarea class="text" id="topic_keywords" name="keywords" rows="2" cols="40"></textarea>
 	        <small class="helper">Comma-separated (e.g. hot dogs, cake, pie)</small>
 	        <p>Or choose from these popular tags:</p>
           {foreach from=$top_tags key=i item=tag}

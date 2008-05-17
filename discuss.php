@@ -52,17 +52,17 @@ switch ($filter_style) {
 case 'question':
   $friendly_style = 'question';
   $topic_list_template = "question.t";
-  $style_label = 'What do you want to ask?';
+  $style_label = 'What question do you want to ask?';
   break;
 case 'idea':
   $friendly_style = 'idea';
   $topic_list_template = "idea.t";
-  $style_label = 'What do you want to share?';
+  $style_label = 'What idea do you want to share?';
   break;
 case 'problem':
   $friendly_style = 'problem';
   $topic_list_template = "problem.t";
-  $style_label = 'What do you want to report';
+  $style_label = 'What problem do you want to report?';
   break;
 case 'talk':
   $friendly_style = 'discussion';
