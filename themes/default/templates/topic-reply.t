@@ -16,7 +16,7 @@
   
   <!-- Reply content -->
   <div class="reply-content">
-    <div class="reply-text">{$reply.content}</div>
+    <div class="reply-text">{$reply.content|nl2br}</div>
     
     {if $reply.emotitag_face || $reply.emotitag_emotion}
       <div class="reply-emotion">

@@ -24,6 +24,7 @@ $smarty->assign('entries', $entries['topics']);
 
 # Standard stash items
 $sprink->add_std_hash_elems($smarty);
+$smarty->assign('products', $sprink->product_list());
 $smarty->assign('current_url', 'helpstart.php');
 $smarty->assign('totals', $topics['totals']);
 $smarty->assign('filter_style', 'question');

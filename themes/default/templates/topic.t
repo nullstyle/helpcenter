@@ -274,6 +274,20 @@
     {/if}
     </li>
   </ul>
+  
+  {if $topic_head.products}
+  <ul>
+    <li>
+    <h3>Products</h3>
+    <ul>
+    {foreach from=$topic_head.products key=i item=product}
+      <li><a href="discuss.php?product={$product}">{$product}</a></li>
+    {/foreach} 
+    </ul>
+    </li>
+  </ul>
+  {/if}
+  
   {if $topic_head.tags}
   <ul>
     <li>
@@ -281,18 +295,6 @@
     <ul>
     {foreach from=$topic_head.tags key=i item=tag}
       <li><a href="discuss.php?tag={$tag}">{$tag}</a></li>
-    {/foreach} 
-    </ul>
-    </li>
-  </ul>
-  {/if}
-  {if $topic_head.products}
-  <ul>
-    <li>
-    <h3>Tags</h3>
-    <ul>
-    {foreach from=$topic_head.products key=i item=product}
-      <li><a href="discuss.php?product={$product}">{$product}</a></li>
     {/foreach} 
     </ul>
     </li>
