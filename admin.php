@@ -13,8 +13,8 @@ if (!$username) {
 
 $admin_users = $sprink->get_users();
 if (!$sprink->user_is_admin()) {
-  redirect('error.php');   # FIXME: find a more gracious out for user
-  exit(0);
+  $sprink->add_std_hash_elems($smarty);
+  $smarty->display('not-admin.t');
 }
 
 $company_hcard = $sprink->company_hcard();
