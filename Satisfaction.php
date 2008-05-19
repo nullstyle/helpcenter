@@ -132,8 +132,9 @@ function from_http_date($date_str) {
 # period in seconds using the $http_cache_timeout global in config.php.
 
 function invalidate_http_cache($url) {
-  mysql_query('delete from http_cache where url = \'' .
-              mysql_real_escape_string($url) . '\'');
+  $result = mysql_query('delete from http_cache where url = \'' .
+                        mysql_real_escape_string($url) . '\'');
+  if (!$result) { error("Database error invalidating cache: " . mysql_error()); }
 }
 
 function insert_into($table, $fields) {
@@ -217,7 +218,7 @@ function get_url($url, $cache_hard=true) {
           throw new Exception("Database error writing to HTTP cache: " . mysql_error());
         return $content;
       }
-    }
+    } else { throw new Exception("Error while GETing $url ($ok)"); }
   } else {
     $req = new HTTP_Request($url);
 
@@ -249,13 +250,13 @@ function get_url($url, $cache_hard=true) {
   }
 }
 
-function api_url($path) {    # FIXME: demote to non-class-method
+function api_url($path) {
   if (is_http_url($path)) {
     $parts = parse_url($path);
     $path = $parts['path'] . ($parts['query'] ? '?'. $parts['query'] : '')
               . ($parts['fragment'] ? '#' : $parts['fragment']);
   }
-  preg_match('|^/*(.*)|', $path, &$temp); # ignore any leading slashes
+  preg_match('|^/*(.*)|', $path, &$temp); # (ignore any leading slashes)
   $path = $temp[1];
   global $api_root;
   return ($api_root . $path);
@@ -271,7 +272,12 @@ function company_hcard($company_id) {
                      ? $company_id                           #   use it, otherwise
                      : api_url('companies/' . $company_id);  #   it's a sfn:id, so make its URL.
   global $h;
-  $company_hcards = $h->getByString('hcard', get_url($company_url));
+  try {
+    $company_hcards = $h->getByString('hcard', get_url($company_url));
+  } catch (Exception $e) {
+    invalidate_http_cache($company_url);
+    throw $e;
+  }
   return $company_hcards[0];   # return the first card; assume there's just one
 }
 
@@ -296,11 +302,15 @@ $people_cache = array();
 
 function get_person($url) {
   if ($people_cache[$url]) return $people_cache[$url];
-  $person = get_person_from_string(get_url($url));
+  try {
+    $person = get_person_from_string(get_url($url));
+  } catch (Exception $e) {
+    invalidate_http_cache($url);
+    throw $e;
+  }
   $people_cache[$url] = $person;
   return $person;
 }
-
 
 # get_me_person fetches the path /me from the API, using the given Oauth
 # credentials. The resulting resource contains a vCard for the user with those
@@ -337,7 +347,12 @@ function employee_list($company_sfnid) {
   $employees_url = api_url('companies/' . $company_sfnid . 
                            '/employees');
   global $h;
-  $employees_list = $h->getByString('hcard', get_url($employees_url));
+  try {
+    $employees_list = $h->getByString('hcard', get_url($employees_url));
+  } catch (Exception $e) {
+    invalidate_http_cache($employees_url);
+    throw $e;
+  }
   return $employees_list;
 }
 
@@ -630,9 +645,11 @@ function topics($company_sfnid, $options) {
     try {
       $topics_feed = new XML_Feed_Parser($topics_feed_page_str);
     } catch (XML_Feed_Parser_Exception $e) {
+      invalidate_http_cache($topics_feed_page_url);
       throw new Exception("Get Satisfaction feed at $topics_feed_page_url not valid: "
                           . $e->getMessage());
     }
+
     foreach ($topics_feed as $entry) {
       $topic = fix_atom_entry($entry, 'topic');
       array_push($topics, $topic);
@@ -892,9 +909,14 @@ function topic($company_sfnid, $topic_id) {
   $url = $topic_id;
 
   $feed_raw = get_url($url, false);
-  if (!$feed_raw) throw new Exception("Failed to load topic at $url.");
-  $topic_feed = new XML_Feed_Parser($feed_raw);
-  if (!$topic_feed) throw new Exception("Couldn't get topic feed from $url");
+  if (!$feed_raw) throw new Exception("Failed to load topic feed at $url.");
+  try {
+    $topic_feed = new XML_Feed_Parser($feed_raw);
+    if (!$topic_feed) throw new Exception("Invalid feed at $url");
+  } catch (XML_Feed_Parser_Exception $e) {
+    invalidate_http_cache($url);
+    throw new Exception("Invalid feed at $url");
+  }
 
   # Add stuff to the raw feed data using fix_atom_entry
   $items = array();

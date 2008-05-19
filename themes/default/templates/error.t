@@ -16,7 +16,7 @@ to Get Satisfaction.
 {if $error_msg}
 Include this error message with your post:
 <pre>
-{$error_msg}
+{$error_msg|htmlentities}
 </pre>
 {/if}
 </p>

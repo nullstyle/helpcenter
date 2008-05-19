@@ -326,8 +326,10 @@ class hKit
     
     private function loadDoc($input_xml, $fragment=false)
     {
-        $xml         = simplexml_load_string($input_xml);
-        $this->doc    = $xml;
+        $xml        = simplexml_load_string($input_xml);
+        $this->doc  = $xml;
+        
+        if (!$xml) { throw new Exception("XML not valid in hKit: \n$input_xml"); }
         
         if ($fragment){
             $doc    = $xml->xpath("//*[@id='$fragment']");
