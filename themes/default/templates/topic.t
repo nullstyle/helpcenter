@@ -109,7 +109,7 @@
       
       <!-- Topic details -->
       <div id="topic-bubble">
-        <img src="{$sprinkles_root_url}/images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
+        <img src="{$sprinkles_root_url}images/{$topic_head.topic_style}_med.png" alt="{$topic_head.topic_style}" style="float: right" />
         <h1>{$topic_head.title}</h1>
         <div>{$topic_head.content}</div>
         {if $topic_head.emotitag_face || $topic_head.emotitag_emotion}
