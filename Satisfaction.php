@@ -559,7 +559,7 @@ function topics($company_sfnid, $options) {
                     $url_path = 'products/' . $options['product'] . '/topics';
   } else if ($options['tag']) {
     $options['tag'] = preg_replace('/ /', '_', $options['tag']);
-    $url_path = 'tags/' . $options['tag'] . '/topics';
+    $url_path = 'companies/' . $company_sfnid . '/tags/' . $options['tag'] . '/topics';
   } else if ($options['person']) {
     $url_path = 'people/' . $options['person'] . '/topics';
   } else if ($options['followed']) {

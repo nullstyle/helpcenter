@@ -20,7 +20,7 @@
       posted this {$topic.published_relative}
 			{if $topic.reply_count}
       <span class="last-reply"> | 
-			  <a href="">Last reply</a> {$topic.updated_relative}.
+			  Last reply {$topic.updated_relative}.
 		  </span>
 		  {/if}
     </div>
