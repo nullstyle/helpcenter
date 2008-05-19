@@ -3,6 +3,9 @@ try {
 require_once('Sprinkles.php');
 
 $sprink = new Sprinkles();
+if($sprink->site_configured()) {
+  redirect('helpstart.php');
+}
 
 $defaults = $sprink->findsite_data();
 

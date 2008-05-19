@@ -39,7 +39,6 @@ if (!$result) throw new Exception("Failed to store auth tokens on oauth response
 $sprink = new Sprinkles();
 
 $sprink->open_session($token);
-message($sprink->site_configured());
 
 if (!$sprink->site_configured() && request_param('first_login')) {
   $user = $sprink->current_user();
