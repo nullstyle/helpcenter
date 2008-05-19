@@ -45,12 +45,12 @@ $sprinkles_root_url = preg_replace('|([^/])/*$|', '\1/', $sprinkles_root_url);
 
 $result = $sprink->set_site_settings(
                 array('company_id' => $company_sfnid,
-                      'configured' => 'Y',
                       'oauth_consumer_key' => $oauth_consumer_key,
                       'oauth_consumer_secret' => $oauth_consumer_secret,
                       'sprinkles_root_url' => $sprinkles_root_url));
 if (!$result) die (mysql_error());
 
+message($sprink->site_configured());
 redirect($sprink->authorize_url('admin.php?hooked=true', true));
 
 } catch (Exception $e) {

@@ -39,11 +39,14 @@ if (!$result) throw new Exception("Failed to store auth tokens on oauth response
 $sprink = new Sprinkles();
 
 $sprink->open_session($token);
+message($sprink->site_configured());
 
 if (!$sprink->site_configured() && request_param('first_login')) {
   $user = $sprink->current_user();
   if (!$user) throw new Exception("Internal error: No current user just after opening session.");
   $sprink->set_admin_users(array($user['canonical_name']));
+  $result = $sprink->set_site_settings(array('configured' => 'Y'));
+  if (!$result) die (mysql_error());
 }
 
 $return = request_param('return');
