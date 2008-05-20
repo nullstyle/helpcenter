@@ -34,7 +34,6 @@ if (!$creds) {
 }
 
 $POST_URL = $api_root . 'companies/'. $sprink->company_sfnid .'/topics';
-
 $req = $sprink->oauthed_request('POST', $POST_URL, $creds, null, 
                     array('topic[subject]' => $subject,
                           'topic[additional_detail]' => $details,

@@ -46,7 +46,7 @@
     live_search = new LiveSearch();
 
 		function addTag(tag) {
-		  var tagField = document.getElementById('topic-keywords');
+		  var tagField = document.getElementById('topic_keywords');
 		  var flattened = tagField.value.replace(/\s+/g,'');
 		  var prefix = flattened.charAt(flattened.length-1) != "," && tagField.value != "" ? ", " : "";
 		  tagField.value = tagField.value + prefix + tag;
@@ -80,7 +80,7 @@
   		      <label id="idea_prompt" class="prompt"{if $style != "idea"} style="display:none;"{/if}>Tell us about this idea. (One or two paragraphs work best.)</label>
   		      <label id="problem_prompt" class="prompt"{if $style != "problem"} style="display:none;"{/if}>What seems to be the problem? (One or two paragraphs work best.)</label>
   		      <label id="talk_prompt" class="prompt"{if $style != "talk"} style="display:none;"{/if}>What's on your mind? (One or two paragraphs work best.)</label>
-  		      <textarea id="topic-additional-detail" name="additional_detail" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" rows="6" cols="36" style="width: 400px"></textarea>  		        
+  		      <textarea id="topic-additional-detail" name="details" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" rows="6" cols="36" style="width: 400px"></textarea>  		        
 		      </li>
 		      <li>
   		      <label>Give your <span class="dyn_style">{$friendly_style}</span> a great title:</label>
@@ -111,7 +111,7 @@
         
 	      <div id="new_topic_tags" class="t-al">
 	        <label for="topic_keywords">Add words that describe your <span class="dyn_style">question</span> (optional)</label>
-	        <textarea class="text" id="topic_keywords" name="keywords" rows="2" cols="40"></textarea>
+	        <textarea class="text" id="topic_keywords" name="tags" rows="2" cols="40"></textarea>
 	        <small class="helper">Comma-separated (e.g. hot dogs, cake, pie)</small>
 	        <p>Or choose from these popular tags:</p>
           {foreach from=$top_tags key=i item=tag}
