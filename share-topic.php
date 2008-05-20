@@ -12,7 +12,6 @@ if (!$items) die("Internal error: Empty topic $topic_id.");
 
 $topic_head = array_shift($items['replies']);
 
-$sprink->add_std_hash_elems($smarty);
 
 $smarty->assign('topic_head', $topic_head);
 $smarty->assign('topic_id', $topic_id);
@@ -20,6 +19,7 @@ $smarty->assign('body_css_id', 'share-topic');
 
 $smarty->assign('current_url', 'share-topic.php?id=' . $topic_id);
 
+$sprink->add_std_hash_elems($smarty);
 $smarty->display('share-topic.t');
 
 finish_request('share-topic');

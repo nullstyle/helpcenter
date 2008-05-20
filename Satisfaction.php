@@ -17,6 +17,9 @@ $logging = true;
 $verbose = true;
 $debugging = true;
 
+$api_calls  = 0;
+$cached_api_calls  = 0;
+
 # dump: for debugging.
 function dump($obj) {
   print("<pre>");
@@ -152,7 +155,9 @@ function insert_into($table, $fields) {
 
 function get_url($url, $cache_hard=true) {
   global $http_cache_timeout;
-
+  global $api_calls;
+  global $cached_api_calls;
+  
   # Check whether we have a cached response for this URL
   # Note there are two cache timestamps: fetched_on_server is tied to the 
   # server (mothership)'s clock and fetched_on is tied to the local clock.
@@ -168,6 +173,7 @@ function get_url($url, $cache_hard=true) {
          '\' and fetched_on >= now() - ' . $http_cache_timeout;
   $q = mysql_query($sql);
   if (!$q) throw new Exception("Getting cache, got database error: " . mysql_error());
+
 
   require_once('HTTP/Request.php');
   if ($row = mysql_fetch_row($q)) {
@@ -186,6 +192,7 @@ function get_url($url, $cache_hard=true) {
     $request_timer -= microtime(true);
     $ok = $req->sendRequest();
     $request_timer += microtime(true);
+    $cached_api_calls = $cached_api_calls + 1;
 
     if (!PEAR::isError($ok)) {
       $respCode = $req->getResponseCode();
@@ -217,6 +224,7 @@ function get_url($url, $cache_hard=true) {
     $request_timer -= microtime(true);
     $ok = $req->sendRequest();
     $request_timer += microtime(true);
+    $api_calls = $api_calls + 1;
     message("Cache miss at $url Request timer: " . $request_timer . "s");  
 
     if (PEAR::isError($ok)) 

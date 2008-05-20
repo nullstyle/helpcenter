@@ -44,6 +44,6 @@
     </p>
   </div>
 </div><!-- END FOOTER -->
-
+<!-- rendered in {$page_timer} seconds, with {$api_calls} full api calls and {$cached_api_calls} cached api calls-->
 </body>
 </html>
