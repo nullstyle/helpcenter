@@ -5,8 +5,8 @@ try {
 require_once("Sprinkles.php");
 
 $sprink = new Sprinkles();
-
-$smarty->assign('return', request_param('return'));         # FIXME: check for nastiness?
+$return = request_param('return');
+$smarty->assign('return', $return);         # FIXME: check for nastiness?
 
 redirect($sprink->authorize_url($return, false));
 
