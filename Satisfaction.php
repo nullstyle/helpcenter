@@ -356,12 +356,6 @@ function employees($company_sfnid) {
 
   $employees_cache = array();
   foreach ($employee_list as $employee_record) {
-    $person_record = get_person($employee_record["url"]);
-    # Superimpose fields from $person_record onto $employee_record 
-    # (incl. person's role).
-    foreach ($person_record as $key => $value) {
-      $employee_record[$key] = $value;
-    }
     # Resolve the role token into a human-readable role name.
     $employee_record['role_name'] = $role_names[$employee_record['role']];
     array_push($employees_cache, $employee_record);

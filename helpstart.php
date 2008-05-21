@@ -17,15 +17,13 @@ $top_topic_tags = array_chunk($top_topic_tags, $chunk);
 $entries = $sprink->topics(array("limit" => $helpstart_topic_count, "sort" => 'recently_active'));
 $sprink->resolve_authors($entries['topics']);
 
-$topics = $sprink->topics(array("limit" => "1"));
-
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign('entries', $entries['topics']);
 
 # Standard stash items
 $smarty->assign('products', $sprink->product_list());
 $smarty->assign('current_url', 'helpstart.php');
-$smarty->assign('totals', $topics['totals']);
+$smarty->assign('totals', $entries['totals']);
 $smarty->assign('filter_style', 'question');
 $sprink->add_std_hash_elems($smarty);
 $smarty->display('helpstart.t');
