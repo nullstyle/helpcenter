@@ -454,8 +454,8 @@ $tags_cache = array();
 function tags($url) {
   global $tags_cache;
   if ($tags_cache[$url]) return $tags_cache[$url];
-
-  $xml = simplexml_load_file($url);  # FIXME: caching.
+  $raw = get_url($url);
+  $xml = simplexml_load_string($raw);
   $root_nodes = $xml->xpath("//*[@class='tag']");
   $tags = array();
   if ($root_nodes) {

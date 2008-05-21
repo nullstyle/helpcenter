@@ -19,7 +19,7 @@ $suggested = $sprink->topics(array('query' => $subject, "limit" => $submit_sugge
 $suggested = $suggested['topics'];
 
 $top_tags = take(8, 
-                    $sprink->tags('http://api.getsatisfaction.com/companies/' . 
+                    $sprink->tags($api_root . 'companies/' . 
                     $sprink->company_sfnid . 
                     '/tags?on=topics&sort=usage&limit=8'));
 

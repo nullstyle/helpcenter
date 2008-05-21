@@ -6,7 +6,7 @@ require_once("Sprinkles.php");
 $sprink = new Sprinkles();
 
 $top_topic_tags = take(20, 
-                    $sprink->tags('http://api.getsatisfaction.com/companies/' . 
+                    $sprink->tags($api_root . 'companies/' . 
                     $sprink->company_sfnid . 
                     '/tags?on=topics&sort=usage&limit=20'));
 
