@@ -15,7 +15,7 @@ $chunk = intval(ceil(sizeof($top_topic_tags)/4));
 $top_topic_tags = array_chunk($top_topic_tags, $chunk);
 
 $entries = $sprink->topics(array("limit" => $helpstart_topic_count, "sort" => 'recently_active'));
-$sprink->resolve_authors($entries['topics']);
+// $sprink->resolve_authors($entries['topics']);
 
 $smarty->assign('top_topic_tags', $top_topic_tags);
 $smarty->assign('entries', $entries['topics']);

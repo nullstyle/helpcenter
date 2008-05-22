@@ -36,7 +36,7 @@ list($company_topics, $noncompany_topics) =
 $company_topics = take(5, $company_topics);
 $noncompany_topics = take(4, $noncompany_topics);
 
-$sprink->resolve_authors($company_topics);
+// $sprink->resolve_authors($company_topics);
 
 resolve_companies($noncompany_topics);
 

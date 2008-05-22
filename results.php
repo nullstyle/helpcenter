@@ -23,7 +23,7 @@ if ($filter_query) {
 $topics = $sprink->topics($topic_filters);
 $topic_count = $topics['totals']['this'];
 
-$sprink->resolve_authors($topics['topics']);
+// $sprink->resolve_authors($topics['topics']);
 
 $smarty->assign('page_num', $page_num);
 $smarty->assign('num_pages', ceil($topic_count/$discuss_page_size));

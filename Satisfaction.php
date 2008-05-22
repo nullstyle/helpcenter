@@ -775,6 +775,9 @@ function fix_atom_entry($entry, $kind) {
   $item['author'] = array();
   $item['author']['name'] = $entry->author();
   $item['author']['uri'] = $entry->author(0, array('param' => 'uri'));
+  $item['author']['url'] = $item['author']['uri'];
+  $item['author']['photo'] = $entry->author(0, array('param' => 'avatar'));
+  $item['author']['canonical_name'] = $entry->author(0, array('param' => 'canonical_name'));
 
   $item['updated'] = $entry->updated;
   $item['updated_relative'] = ago($entry->updated, time());
