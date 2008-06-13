@@ -166,7 +166,7 @@
   		</fieldset>
 
   		<fieldset>
-  			<button style="height:40px; font-size:1.4em;border:3px solid #ccc; padding: 5px 10px;">Post your topic</button>
+  			<button type="submit" style="height:40px; font-size:1.4em;border:3px solid #ccc; padding: 5px 10px;">Post your topic</button>
   		</fieldset>
 	  </form>
 
