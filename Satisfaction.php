@@ -256,7 +256,7 @@ function api_url($path) {
     $path = $parts['path'] . ($parts['query'] ? '?'. $parts['query'] : '')
               . ($parts['fragment'] ? '#' : $parts['fragment']);
   }
-  preg_match('|^/*(.*)|', $path, &$temp); # (ignore any leading slashes)
+  preg_match('|^/*(.*)|', $path, $temp);  # (ignore any leading slashes)
   $path = $temp[1];
   global $api_root;
   return ($api_root . $path);

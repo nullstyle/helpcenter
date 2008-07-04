@@ -22,8 +22,8 @@ if(file_exists('config.php'))
 $vendor_path = dirname(__FILE__) . '/vendor';
 set_include_path(get_include_path() . PATH_SEPARATOR . $vendor_path);
 
-set_exception_handler(default_exception_handler);
-set_error_handler(default_error_handler);
+set_exception_handler('default_exception_handler');
+set_error_handler('default_error_handler');
 
 require_once('HTTP_Request_Oauth.php');
 
@@ -513,7 +513,7 @@ function finish_request($page) {
 }
 
 function default_exception_handler($exc) {
-  redirect('error.php?msg=' . urlescape($exc->getMessage()));
+  redirect('error.php?msg=' . urlencode($exc->getMessage()));
 }
 
 function default_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
