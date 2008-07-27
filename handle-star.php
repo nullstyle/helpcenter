@@ -16,6 +16,7 @@ if (!$creds) {
           '&topic_id=' . urlencode($topic_id);
   redirect('user-login.php?return=' .
            urlencode($target_page . '?' . $args));
+  exit(0);
 }
 
 $POST_URL = $sprink->api_url($reply_id . "/stars");     # FIXME use @rel=stars link from feed
@@ -38,6 +39,7 @@ $topic_url = request_param('topic_id');
 invalidate_http_cache($topic_url);
 
 redirect('topic.php?id=' . urlencode($topic_url));
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

@@ -32,6 +32,7 @@ redirect('topic.php?id=' . request_param('topic_id') .
            ($type == 'topic' ? '&flagged_topic=' : 
            ($type == 'reply' ? '&flagged_reply=' :
            '')) . $id);
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

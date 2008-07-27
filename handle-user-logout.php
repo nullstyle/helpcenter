@@ -11,6 +11,7 @@ $return = request_param('return');
 if (!$return) $return = 'helpstart.php';
 
 redirect($return);
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

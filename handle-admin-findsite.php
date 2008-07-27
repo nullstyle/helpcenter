@@ -53,6 +53,7 @@ if (!$result) die (mysql_error());
 
 message($sprink->site_configured());
 redirect($sprink->authorize_url('admin.php?hooked=true', true));
+  exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

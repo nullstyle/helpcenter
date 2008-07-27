@@ -8,8 +8,10 @@ $sprink = new Sprinkles();
 $topic_id = request_param('topic_id');
 $reply_url = request_param('replies_url');
 
-if (!($content = request_param('content')))
+if (!($content = request_param('content'))) {
   redirect('topic.php?blank_reply=1&id=' . urlencode($topic_id));
+  exit(0);
+}
 
 $params = array('reply[content]' => $content);
 if ($parent_id = request_param('parent_id'))
@@ -25,6 +27,7 @@ if (201 != ($responseCode = $req->getResponseCode())) {
 }
 
 redirect('topic.php?id=' . urlencode($topic_id));
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

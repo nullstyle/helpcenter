@@ -52,7 +52,7 @@ global $h;
 $h = new hKit;
 
 $mysql = mysql_connect($mysql_connect_params, $mysql_username, $mysql_password);
-if (!$mysql) throw new Exception("Stopping: Couldn't connect to MySQL database.");
+if (!$mysql) die("Stopping: Couldn't connect to MySQL database."); # Must die, else circular handling
 
 mysql_select_db($mysql_db ? $mysql_db : 'sprinkles');
 
@@ -514,6 +514,7 @@ function finish_request($page) {
 
 function default_exception_handler($exc) {
   redirect('error.php?msg=' . urlencode($exc->getMessage()));
+  exit(0);
 }
 
 function default_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {

@@ -34,6 +34,7 @@ $callback_url = $sprink->sprinkles_root_url() . 'handle-oauth-return.php?' .
                   'return=' . urlencode($return);
 
 redirect(oauth_authorization_url($token, $callback_url));
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

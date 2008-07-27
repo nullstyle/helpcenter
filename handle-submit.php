@@ -31,6 +31,7 @@ if (!$creds) {
     $args .= '&product[]=' . urlencode($product);
   redirect('user-login.php?return=' .
            urlencode($target_page . '?' . $args));
+  exit(0);
 }
 
 $POST_URL = $api_root . 'companies/'. $sprink->company_sfnid .'/topics';
@@ -57,6 +58,7 @@ try {
 
 if ($topic_feed->id()) {     # FIXME: better error checking here.
   redirect('topic.php?id=' . $topic_feed->id());
+  exit(0);
 } else {
   print "An error occured";
 }

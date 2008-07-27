@@ -9,5 +9,6 @@ if ($sprink->site_configured()) {
 } else {
   redirect('admin-findsite.php');
 }
+exit(0);
 
 ?>

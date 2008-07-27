@@ -40,6 +40,7 @@ if ($result) {
 } else {
   redirect('topic.php?id=' . $id . '&share_failed=true');
 }
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

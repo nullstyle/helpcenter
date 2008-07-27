@@ -16,6 +16,7 @@ if (!$creds) {
   $args = 'sfn_id=' . urlencode($sfn_id);
   redirect('user-login.php?return=' .
            urlencode($target_page . '?' . $args));
+  exit(0);
 }
 
 $POST_URL = $sprink->api_url("topics/" . $sfn_id . "/me_toos");
@@ -27,6 +28,7 @@ if (0 == $responseCode) {
 } else if (400 == $responseCode) {
   redirect('topic.php?sfn_id=' . $sfn_id . 
            '&me_too_failed=true');
+  exit(0);
 } else if (201 != $responseCode) {
   die("API Error $responseCode me-tooing topic $sfn_id.");
 }
@@ -36,6 +38,7 @@ invalidate_http_cache($topic_url);
 
 redirect('topic.php?sfn_id=' . $sfn_id . 
          '&me_tood_topic=true');
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());

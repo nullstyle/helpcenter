@@ -96,6 +96,7 @@ if (!$bad_fields) {
     $params .= '&new_admins=' . join(',', $new_admins);
   }
   redirect('admin.php?settings_saved=true' . $params);
+  exit(0);
 } else {
   foreach ($bad_fields as $field) {
     $params .= '&invalid[' . $field . ']=true';
@@ -105,6 +106,7 @@ if (!$bad_fields) {
   }
   $params .= '&admin_users=' . urlencode($admin_users_str);
   redirect('admin.php?errors=true' . $params);
+  exit(0);
 }
 
 } catch (Exception $e) {

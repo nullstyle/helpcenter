@@ -24,6 +24,7 @@ mail($to, $subject, $message, "From: $from");
 $name = request_param('name');
 
 redirect('contactus-success.php?name=' . urlencode($name));
+exit(0);
 
 } catch (Exception $e) {
   error_log("Exception thrown while preparing page: " . $e->getMessage());
