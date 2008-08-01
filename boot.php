@@ -22,7 +22,7 @@ $http_cache_timeout = 3600; # seconds (must be whole number)
 # preview a topic for submission, after being sent to the Get Satisfaction 
 # authorization page and before actually posting the topic.
 
-$preview_after_login = true;
+$preview_after_login = false;
 
 // ====================================
 // = Defaults, override in config.php =
