@@ -26,6 +26,9 @@ if (201 != ($responseCode = $req->getResponseCode())) {
   die("API Error $responseCode replying to $topic_id.");
 }
 
+$topic_url = $topic_id;
+invalidate_http_cache($topic_url);
+
 redirect('topic.php?id=' . urlencode($topic_id));
 exit(0);
 
