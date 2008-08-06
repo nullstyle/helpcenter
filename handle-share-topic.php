@@ -32,7 +32,7 @@ $subject = "'" . $topic['title'] . "' on Get Satisfaction!";
 
 $to = request_param('to_email');     # TBD: handle more than one address
 if (preg_match('/,/', $to))
-  die("Sharing with more than one recipient is not yet implemented. :-(");
+  die("Sharing with more than one recipient is not yet implemented. :-("); # FIXME: not graceful.
 
 $result = mail($to, $subject, $message, "From: $from");
 if ($result) {

@@ -19,7 +19,7 @@ $sprink = new Sprinkles();
 
 $creds = $sprink->current_user_session();
 if (!$creds) {
-  $target_page = $preview_after_login                   # setting in config.php
+  $target_page = $preview_after_login                   # setting in boot.php
                    ? 'submit.php' : 'handle-submit.php';
   $args = 'subject=' . urlencode($subject) .
           '&details=' . urlencode($details) .
