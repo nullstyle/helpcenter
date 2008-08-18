@@ -55,6 +55,12 @@
 		-->
 		</script>	
 		
+        {if $err_subject}
+         <div class="error-box">
+          You must give your topic a title!
+         </div>
+        {/if}
+		
 		<form id="new_topic_form" class="question" method="post" action="handle-submit.php">
   		<fieldset>
 		    <legend><strong>1)</strong> I have a...</legend>
@@ -99,7 +105,7 @@
 	      <ul id="topic_product_list" class="clearfix">
 	    	{foreach from=$products key=i item=product}
   			  <li>
-			      <input type="checkbox" id="product_{$i}" name="product[]" value="{$product.name}" {if $product.selected}checked="checked"{/if} />
+			      <input type="checkbox" id="product_{$i}" name="products[]" value="{$product.name}" {if $product.selected}checked="checked"{/if} />
   			    <label for="product_{$i}">{$product.name}</label>
   			  </li>
   			{/foreach}

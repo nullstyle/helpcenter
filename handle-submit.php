@@ -3,14 +3,25 @@ try {
 
 require_once('Sprinkles.php');
 
-
 $subject = request_param('subject');
 $details = request_param('details');
 $tags = request_param('tags');
 $face = request_param('emoticon');
 $emotion = request_param('emotion');
 $style = request_param('style');
-$products = request_param('product');
+$products = request_param('products');
+
+$args = 'subject=' . urlencode($subject) .
+        '&details=' . urlencode($details) .
+        '&tags=' . urlencode($tags) .
+        '&emoticon=' . urlencode($face) .
+        '&emotion=' . urlencode($emotion) .
+        '&style=' . urlencode($style);
+foreach ($products as $product)
+  $args .= '&product[]=' . urlencode($product);
+           
+if ($subject == '')
+  redirect('submit.php?' . $args . '&errs[]=subject');
 
 if (!$products) $products = array();
 $products_commasep = join(',', $products);
@@ -21,14 +32,6 @@ $creds = $sprink->current_user_session();
 if (!$creds) {
   $target_page = $preview_after_login                   # setting in boot.php
                    ? 'submit.php' : 'handle-submit.php';
-  $args = 'subject=' . urlencode($subject) .
-          '&details=' . urlencode($details) .
-          '&tags=' . urlencode($tags) .
-          '&emoticon=' . urlencode($face) .
-          '&emotion=' . urlencode($emotion) .
-          '&style=' . urlencode($style);
-  foreach ($products as $product)
-    $args .= '&product[]=' . urlencode($product);
   redirect('user-login.php?return=' .
            urlencode($target_page . '?' . $args));
   exit(0);
@@ -52,8 +55,7 @@ try {
 } catch (Exception $e) {
   error("Failed to post new topic; response was: " . $req->getResponseCode() . 
         ", body: " . $response_body);
-  var_dump($response_body);
-  die("Posting the topic failed.");
+  throw new Exception($response_body);
 }
 
 if ($topic_feed->id()) {     # FIXME: better error checking here.

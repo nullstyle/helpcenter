@@ -8,12 +8,14 @@ $sprink = new Sprinkles();
 $subject = request_param('subject');
 $details = request_param('details');
 $tags = request_param('tags');
-$face = request_param('emoticon');
+$emoticon = request_param('emoticon');
 $emotion = request_param('emotion');
 $style = request_param('style');
 $selected_products = request_param('product');
 if (!$selected_products)
   $selected_products = array();
+
+$validation_errors = request_param('errs');
 
 $suggested = $sprink->topics(array('query' => $subject, "limit" => $submit_suggestions));
 $suggested = $suggested['topics'];
@@ -22,7 +24,6 @@ $top_tags = take(8,
                     $sprink->tags($api_root . 'companies/' . 
                     $sprink->company_sfnid . 
                     '/tags?on=topics&sort=usage&limit=8'));
-
 
 switch ($style) {
 case 'question':
@@ -47,14 +48,13 @@ $sprink->resolve_authors($suggested);
 $smarty->assign('subject', $subject);
 $smarty->assign('details', $details);
 $smarty->assign('tags', $tags);
-$smarty->assign('emoticon', $face);
+$smarty->assign('emoticon', $emoticon);
 $smarty->assign('emotion', $emotion);
 $smarty->assign('style', $style);
 $smarty->assign('friendly_style', $friendly_style);
 $smarty->assign('product', $selected_products);
 $smarty->assign('top_tags', $top_tags);
 $smarty->assign('top_tags_count', count($top_tags));
-
 
 
 $smarty->assign('suggested', $suggested);
@@ -64,6 +64,8 @@ foreach ($products as &$product) {
 }
 
 $smarty->assign('products', $products);
+
+$smarty->assign('err_subject', in_array('subject', $validation_errors));
 
 $smarty->assign('current_url', 'submit.php');
 
