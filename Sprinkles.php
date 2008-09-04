@@ -58,8 +58,8 @@ mysql_select_db($mysql_db ? $mysql_db : 'sprinkles');
 
 function unbollocks($str) {  ## CURSE CURSE CURSE
   ## unencodes strings that are needlessly encoded by default in PHP < 6.0
-  return preg_replace(array("/\\\\'/", "/\\\\\\\\/", "/\\\\0/"),
-                      array("'", "\\", "\x00"),
+  return preg_replace(array("/\\\\'/", '/\\\"/', "/\\\\\\\\/", "/\\\\0/"),
+                      array("'", '"', "\\", "\x00"),
                       $str);
 }
 

@@ -20,8 +20,7 @@ $validation_errors = request_param('errs');
 $suggested = $sprink->topics(array('query' => $subject, "limit" => $submit_suggestions));
 $suggested = $suggested['topics'];
 
-$top_tags = take(8, 
-                    $sprink->tags($api_root . 'companies/' . 
+$top_tags = take(8, $sprink->tags($api_root . 'companies/' . 
                     $sprink->company_sfnid . 
                     '/tags?on=topics&sort=usage&limit=8'));
 

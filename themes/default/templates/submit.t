@@ -86,11 +86,11 @@
   		      <label id="idea_prompt" class="prompt"{if $style != "idea"} style="display:none;"{/if}>Tell us about this idea. (One or two paragraphs work best.)</label>
   		      <label id="problem_prompt" class="prompt"{if $style != "problem"} style="display:none;"{/if}>What seems to be the problem? (One or two paragraphs work best.)</label>
   		      <label id="talk_prompt" class="prompt"{if $style != "talk"} style="display:none;"{/if}>What's on your mind? (One or two paragraphs work best.)</label>
-  		      <textarea id="topic-additional-detail" name="details" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" rows="6" cols="36" style="width: 400px">{$details}</textarea>
+  		      <textarea id="topic-additional-detail" name="details" onfocus="live_search.start(this, 'suggestions')" onblur="live_search.stop()" rows="6" cols="36" style="width: 400px">{$details|htmlentities}</textarea>
 		      </li>
 		      <li>
   		      <label>Give your <span class="dyn_style">{$friendly_style}</span> a great title:</label>
-  		      <input id="topic-subject" name="subject" value="{$subject}" type="text" style="width: 400px" />
+  		      <input id="topic-subject" name="subject" value="{$subject|escape:'html'}" type="text" style="width: 400px" />
 		        <div class="helper">
   		        <small>Great: <strong>Why won't my iPhone's calendar sync with Outlook 2007?</strong></small><br />
   		        <small>Not so great: <strong>syncing calendar?????</strong></small>
@@ -117,7 +117,7 @@
         
 	      <div id="new_topic_tags" class="t-al">
 	        <label for="topic_keywords">Add words that describe your <span class="dyn_style">question</span> (optional)</label>
-	        <textarea class="text" id="topic_keywords" name="tags" rows="2" cols="40">{$tags}</textarea>
+	        <textarea class="text" id="topic_keywords" name="tags" rows="2" cols="40">{$tags|htmlentities}</textarea>
 	        <small class="helper">Comma-separated (e.g. hot dogs, cake, pie)</small>
 	        <p>Or choose from these popular tags:</p>
           {foreach from=$top_tags key=i item=tag}
@@ -166,7 +166,7 @@
     			</span>
 		      <br />
 		      <br />
-		      <span>I'm: <input name="emotion" value="{$emotion}" /></span>
+		      <span>I'm: <input name="emotion" value="{$emotion|escape:'html'}" /></span>
 		    </div><!-- End Emoticon Picker -->
         <div class="clear"></div>
   		</fieldset>

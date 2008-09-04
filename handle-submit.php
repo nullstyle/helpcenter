@@ -20,8 +20,10 @@ $args = 'subject=' . urlencode($subject) .
 foreach ($products as $product)
   $args .= '&product[]=' . urlencode($product);
            
-if ($subject == '')
+if ($subject == '') {
   redirect('submit.php?' . $args . '&errs[]=subject');
+  exit(0);
+}
 
 if (!$products) $products = array();
 $products_commasep = join(',', $products);
