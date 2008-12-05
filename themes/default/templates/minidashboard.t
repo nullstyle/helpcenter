@@ -22,7 +22,7 @@
       {else}
         You haven't
       {/if}
-       haven't participated in any {$company_name} discussions so far.
+       participated in any {$company_name} discussions so far.
 		{/foreach}			
 		</div>
 	</div><!-- #content -->

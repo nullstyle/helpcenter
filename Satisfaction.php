@@ -274,6 +274,8 @@ function company_hcard($company_id) {
   global $h;
   try {
     $company_hcards = $h->getByString('hcard', get_url($company_url));
+    array_push($company_hcards[0]['url'],
+               'http://api.getsatisfaction.com/companies/' . $company_hcards[0]['id']);
   } catch (Exception $e) {
     invalidate_http_cache($company_url);
     throw $e;
@@ -892,7 +894,6 @@ function filter_promoted($replies) {
 # is based on the array of URLs found in the company hCard.
 function company_partition($company_hcard, $topics) {
   $company_urls = $company_hcard['url'];
-
   $company_topics = array();
   $noncompany_topics = array();
   foreach ($topics as $topic) {

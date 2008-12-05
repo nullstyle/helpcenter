@@ -14,7 +14,7 @@
         'tel', array('type', 'value'),
         'geo', array('latitude', 'longitude'),
         'tz', 'uid', 'url', 'rev', 'role', 'sort-string', 'sound', 'title',
-        'canonical_name'
+        'canonical_name', 'id'
     );
     
     // classes that must only appear once per card
